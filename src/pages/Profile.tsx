@@ -106,11 +106,11 @@ const Profile = () => {
         </div>
       </header>
 
-      {/* My Squad Card - Minimal Design */}
+      {/* My Squad Card - XL Feature Card */}
       <section className="px-4 max-w-md mx-auto">
         <button
           onClick={() => navigate("/my-squad")}
-          className="w-full card-premium p-5 hover:scale-[1.01] transition-all active:scale-[0.99]"
+          className="w-full card-xl hover:scale-[1.01] transition-all active:scale-[0.99]"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
@@ -150,9 +150,9 @@ const Profile = () => {
         </button>
       </section>
 
-      {/* Asset Bar */}
+      {/* Asset Bar - LG Card */}
       <section className="px-4 mt-4 max-w-md mx-auto">
-        <div className="card-premium p-4">
+        <div className="card-asset-bar">
           <div className="flex items-center justify-around">
             {assetItems.map((item, index) => {
               const IconComponent = item.Icon;
@@ -160,7 +160,7 @@ const Profile = () => {
                 <button
                   key={item.label}
                   onClick={item.onClick}
-                  className={`flex-1 flex flex-col items-center gap-1.5 py-2 min-h-[64px] hover:scale-105 transition-transform ${
+                  className={`flex-1 flex flex-col items-center gap-1.5 py-2 card-menu-item hover:scale-105 transition-transform ${
                     index !== assetItems.length - 1 ? "border-r border-white/10" : ""
                   }`}
                 >
@@ -176,16 +176,16 @@ const Profile = () => {
         </div>
       </section>
 
-      {/* Menu List */}
+      {/* Menu List - LG Card */}
       <section className="px-4 mt-4 max-w-md mx-auto">
-        <div className="card-premium overflow-hidden">
+        <div className="card-lg !p-0 overflow-hidden">
           {menuItems.map((item, index) => {
             const IconComponent = item.Icon;
             return (
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className={`w-full flex items-center gap-4 px-4 py-4 min-h-[64px] hover:bg-white/5 transition-colors ${
+                className={`w-full flex items-center gap-4 px-4 card-menu-item hover:bg-white/5 transition-colors ${
                   index !== menuItems.length - 1 ? "border-b border-white/10" : ""
                 }`}
               >

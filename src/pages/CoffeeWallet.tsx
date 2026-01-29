@@ -96,29 +96,23 @@ const CoffeeWallet = () => {
         </div>
       </header>
 
-      {/* Summary Card */}
-      <div className="px-4 py-4">
-        <div className="bg-gradient-to-br from-primary via-purple-500 to-primary-foreground/20 rounded-2xl p-5 text-white relative overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+      {/* Summary Card - XL Feature Card */}
+      <div className="px-4 py-4 max-w-md mx-auto">
+        <div className="card-xl bg-gradient-to-br from-primary/80 via-purple-600/60 to-primary/40 text-white relative overflow-hidden">
+          <div className="flex items-center gap-2 mb-4">
+            <Wallet className="w-5 h-5" />
+            <span className="text-sm font-medium opacity-90">咖啡钱包</span>
+          </div>
           
-          <div className="relative">
-            <div className="flex items-center gap-2 mb-4">
-              <Wallet className="w-5 h-5" />
-              <span className="text-sm font-medium opacity-90">咖啡钱包</span>
-            </div>
-            
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-black">{availableCoupons.length}</span>
-              <span className="text-sm opacity-80">张可用券</span>
-            </div>
-            
-            <div className="mt-4 flex items-center gap-4 text-sm opacity-80">
-              <span>总价值 ¥{availableCoupons.reduce((sum, c) => sum + c.value, 0)}</span>
-              <span>·</span>
-              <span>已节省 ¥{historyCoupons.filter(c => c.isUsed).reduce((sum, c) => sum + c.value, 0)}</span>
-            </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-4xl font-black">{availableCoupons.length}</span>
+            <span className="text-sm opacity-80">张可用券</span>
+          </div>
+          
+          <div className="mt-4 flex items-center gap-4 text-sm opacity-80">
+            <span>总价值 ¥{availableCoupons.reduce((sum, c) => sum + c.value, 0)}</span>
+            <span>·</span>
+            <span>已节省 ¥{historyCoupons.filter(c => c.isUsed).reduce((sum, c) => sum + c.value, 0)}</span>
           </div>
         </div>
       </div>
