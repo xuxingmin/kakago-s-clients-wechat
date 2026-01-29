@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Clock, Store, ChevronRight, Star } from "lucide-react";
+import { Clock, Store, ChevronRight, Star, Coffee } from "lucide-react";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
 interface OrderCardProps {
   id: string;
   productName: string;
-  productImage: string;
+  productImage?: string; // Now optional, not used in minimalist design
   price: number;
   status: OrderStatus;
   cafeName?: string;
@@ -18,12 +18,12 @@ interface OrderCardProps {
   onClick: () => void;
 }
 
-const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
-  pending: { label: "待接单", color: "text-white/60" },
-  preparing: { label: "制作中", color: "text-primary" },
-  ready: { label: "待取货", color: "text-primary" },
-  delivering: { label: "配送中", color: "text-primary" },
-  completed: { label: "已完成", color: "text-white/50" },
+const statusConfig: Record<OrderStatus, { label: string; color: string; bgColor: string }> = {
+  pending: { label: "待接单", color: "text-white/60", bgColor: "bg-white/10" },
+  preparing: { label: "制作中", color: "text-primary", bgColor: "bg-primary/20" },
+  ready: { label: "待取货", color: "text-primary", bgColor: "bg-primary/20" },
+  delivering: { label: "配送中", color: "text-primary", bgColor: "bg-primary/20" },
+  completed: { label: "已完成", color: "text-white/50", bgColor: "bg-white/10" },
 };
 
 export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
@@ -31,7 +31,6 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     {
       id,
       productName,
-      productImage,
       price,
       status,
       cafeName,
@@ -50,21 +49,22 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       <button
         ref={ref}
         onClick={onClick}
-        className="card-premium p-4 w-full text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] min-h-[120px]"
+        className="card-premium p-4 w-full text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Store className="w-4 h-4 text-white/60" />
+        {/* Top Row: Store & Status */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+              <Coffee className="w-4 h-4 text-primary" />
+            </div>
             {isRevealed ? (
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-white">
+                  <span className="text-sm font-medium text-white truncate">
                     {cafeName}
                   </span>
-                  {/* Store Rating Display */}
                   {cafeRating && (
-                    <div className="flex items-center gap-0.5 bg-primary/20 px-1.5 py-0.5 rounded-full">
+                    <div className="flex items-center gap-0.5 flex-shrink-0">
                       <Star className="w-3 h-3 fill-primary text-primary" />
                       <span className="text-xs font-medium text-primary">
                         {cafeRating.toFixed(1)}
@@ -72,8 +72,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                     </div>
                   )}
                 </div>
-                {/* Merchant ID Display - show for preparing status */}
-                {status === "preparing" && merchantId && (
+                {merchantId && (
                   <span className="text-xs text-white/40 font-mono">
                     ID: {merchantId.slice(0, 8).toUpperCase()}
                   </span>
@@ -85,41 +84,35 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               </span>
             )}
           </div>
-          <span className={`text-sm font-medium ${statusInfo.color}`}>
+          <span className={`text-xs font-medium px-2 py-1 rounded-full ${statusInfo.color} ${statusInfo.bgColor}`}>
             {statusInfo.label}
           </span>
         </div>
 
-        {/* Content */}
-        <div className="flex gap-3">
-          <div className="w-16 h-16 rounded-xl overflow-hidden bg-secondary flex-shrink-0">
-            <img
-              src={productImage}
-              alt={productName}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-white truncate">{productName}</h3>
+        {/* Middle Row: Product Info */}
+        <div className="flex items-center justify-between py-2 border-t border-b border-white/5">
+          <div className="flex-1">
+            <h3 className="font-medium text-white">{productName}</h3>
             <div className="flex items-center gap-1 mt-1 text-white/50 text-xs">
               <Clock className="w-3 h-3" />
               <span>{createdAt}</span>
             </div>
-            <p className="text-primary font-bold text-lg mt-2">¥{price.toFixed(0)}</p>
           </div>
-          <ChevronRight className="w-5 h-5 text-white/40 self-center" />
+          <div className="text-right">
+            <p className="text-primary font-bold text-lg">¥{price.toFixed(0)}</p>
+          </div>
         </div>
 
-        {/* User Rating (for completed orders) */}
-        {status === "completed" && userRating && (
-          <div className="mt-3 pt-3 border-t border-white/10">
+        {/* Bottom Row: Actions or Rating */}
+        <div className="flex items-center justify-between mt-3">
+          {status === "completed" && userRating ? (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/50">我的评价：</span>
+              <span className="text-xs text-white/50">我的评价</span>
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`w-3.5 h-3.5 ${
+                    className={`w-3 h-3 ${
                       star <= userRating
                         ? "fill-primary text-primary"
                         : "text-white/20"
@@ -128,33 +121,18 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 ))}
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Pending to rate hint (for completed orders without rating) */}
-        {status === "completed" && !userRating && (
-          <div className="mt-3 pt-3 border-t border-white/10">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-white/50">点击评价获取积分</span>
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-3.5 h-3.5 text-white/20" />
-                ))}
-              </div>
+          ) : status === "completed" && !userRating ? (
+            <span className="text-xs text-primary">点击评价获取积分 →</span>
+          ) : !isRevealed && status === "pending" ? (
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs text-white/50">咖啡馆正在确认中...</span>
             </div>
-          </div>
-        )}
-
-        {/* Mystery reveal animation hint */}
-        {!isRevealed && status === "pending" && (
-          <div className="mt-3 pt-3 border-t border-white/10">
-            <div className="shimmer h-8 rounded-lg bg-secondary flex items-center justify-center">
-              <span className="text-xs text-white/50 relative z-10">
-                咖啡馆正在确认中，稍后揭晓...
-              </span>
-            </div>
-          </div>
-        )}
+          ) : (
+            <span className="text-xs text-white/40">点击查看详情</span>
+          )}
+          <ChevronRight className="w-4 h-4 text-white/30" />
+        </div>
       </button>
     );
   }

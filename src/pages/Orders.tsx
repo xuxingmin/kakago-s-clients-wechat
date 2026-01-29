@@ -1,23 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
 import { OrderCard } from "@/components/OrderCard";
 import { EmptyState } from "@/components/EmptyState";
 import { BottomNav } from "@/components/BottomNav";
 import { RatingModal } from "@/components/RatingModal";
 import { useToast } from "@/hooks/use-toast";
 
-// Import images for demo
-import coffeeLatte from "@/assets/coffee-latte.jpg";
-import coffeeAmericano from "@/assets/coffee-americano.jpg";
-import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
-
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
 interface Order {
   id: string;
   productName: string;
-  productImage: string;
   price: number;
   status: OrderStatus;
   cafeName?: string;
@@ -28,12 +21,11 @@ interface Order {
   userRating?: number;
 }
 
-// 演示订单数据
+// 演示订单数据 - 极简设计，无图片
 const demoOrders: Order[] = [
   {
     id: "order-001",
     productName: "拿铁 (热)",
-    productImage: coffeeLatte,
     price: 15,
     status: "preparing",
     cafeName: "静思咖啡工作室",
@@ -45,7 +37,6 @@ const demoOrders: Order[] = [
   {
     id: "order-002",
     productName: "美式咖啡 (冰)",
-    productImage: coffeeAmericano,
     price: 12,
     status: "pending",
     createdAt: "今天 14:28",
@@ -54,7 +45,6 @@ const demoOrders: Order[] = [
   {
     id: "order-003",
     productName: "卡布奇诺",
-    productImage: coffeeCappuccino,
     price: 15,
     status: "completed",
     cafeName: "微醺咖啡",
@@ -66,14 +56,12 @@ const demoOrders: Order[] = [
   {
     id: "order-004",
     productName: "澳白",
-    productImage: coffeeLatte,
     price: 15,
     status: "completed",
     cafeName: "慢时光咖啡",
     cafeRating: 4.8,
     createdAt: "前天 15:42",
     isRevealed: true,
-    // 未评价
   },
 ];
 
@@ -100,12 +88,10 @@ const Orders = () => {
     const order = orders.find((o) => o.id === orderId);
     if (!order) return;
 
-    // If completed and not rated, open rating modal
     if (order.status === "completed" && !order.userRating) {
       setSelectedOrderForRating(order);
       setRatingModalOpen(true);
     } else if (order.status !== "completed") {
-      // Navigate to order tracking for active orders
       navigate("/order-tracking");
     }
   };
@@ -113,7 +99,6 @@ const Orders = () => {
   const handleRatingSubmit = (rating: number, tags: string[], note: string) => {
     if (!selectedOrderForRating) return;
 
-    // Update order with user rating
     setOrders((prev) =>
       prev.map((order) =>
         order.id === selectedOrderForRating.id
@@ -125,13 +110,6 @@ const Orders = () => {
     toast({
       title: "评价已提交",
       description: `感谢您的${rating}星评价！已获得10积分奖励`,
-    });
-
-    console.log("Rating submitted:", {
-      orderId: selectedOrderForRating.id,
-      rating,
-      tags,
-      note,
     });
   };
 
@@ -165,7 +143,7 @@ const Orders = () => {
       <div className="fog-divider" />
 
       {/* Orders List */}
-      <section className="px-4 py-4 space-y-3">
+      <section className="px-4 py-4 space-y-3 max-w-md mx-auto">
         {filteredOrders.length > 0 ? (
           filteredOrders.map((order, index) => (
             <div
@@ -176,7 +154,6 @@ const Orders = () => {
               <OrderCard
                 id={order.id}
                 productName={order.productName}
-                productImage={order.productImage}
                 price={order.price}
                 status={order.status}
                 cafeName={order.cafeName}
