@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { ShoppingCart, X, Minus, Plus, Trash2 } from "lucide-react";
+import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
 export const FloatingCart = () => {
-  const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, totalItems, totalPrice, updateQuantity, clearCart } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  if (totalItems === 0) return null;
+  // Expose open function globally for BrandStandardsGrid to call
+  (window as any).__openCart = () => setIsOpen(true);
+
+  if (totalItems === 0 && !isOpen) return null;
 
   const handleCheckout = () => {
     setIsOpen(false);
@@ -110,17 +113,13 @@ export const FloatingCart = () => {
           </div>
         </div>
       </div>
-
-      {/* Floating Button - Matches GO button size, positioned to overlay it */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-[88px] right-4 z-[65] w-[calc((100vw-32px-24px)/4)] h-12 bg-gradient-to-br from-primary to-purple-dark text-white rounded-lg shadow-purple transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-1.5 ${
-          isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <ShoppingCart className="w-4 h-4" />
-        <span className="text-xs font-mono font-bold">{totalItems}</span>
-      </button>
     </>
   );
+};
+
+// Export a function to open cart from outside
+export const openCart = () => {
+  if ((window as any).__openCart) {
+    (window as any).__openCart();
+  }
 };

@@ -241,7 +241,7 @@ const Index = () => {
       <div className="fog-divider mx-4" />
 
       {/* Brand Standards Grid - Bottom Section */}
-      <BrandStandardsGrid />
+      <BrandStandardsGrid onCartClick={() => (window as any).__openCart?.()} />
 
       {/* Quick Info Footer */}
       <section className="px-4 py-4">
