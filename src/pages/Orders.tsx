@@ -70,16 +70,12 @@ const Orders = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("active");
   const [orders, setOrders] = useState<Order[]>(demoOrders);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
   const [selectedOrderForRating, setSelectedOrderForRating] = useState<Order | null>(null);
 
-  const filteredOrders = orders.filter((order) =>
-    activeTab === "active"
-      ? order.status !== "completed"
-      : order.status === "completed"
-  );
+  // Only show completed orders
+  const filteredOrders = orders.filter((order) => order.status === "completed");
 
   const handleOrderClick = (orderId: string) => {
     const order = orders.find((o) => o.id === orderId);
@@ -110,11 +106,6 @@ const Orders = () => {
     });
   };
 
-  const tabs = [
-    { id: "active", label: t("进行中", "In Progress") },
-    { id: "completed", label: t("已完成", "Completed") },
-  ];
-
   return (
     <div className="min-h-screen pb-20">
       {/* Brand Header */}
@@ -124,23 +115,6 @@ const Orders = () => {
       <header className="sticky top-0 z-40 glass">
         <div className="px-4 py-3 max-w-md mx-auto">
           <h2 className="text-lg font-bold text-white">{t("我的订单", "My Orders")}</h2>
-        </div>
-        
-        {/* Tabs */}
-        <div className="flex px-4 max-w-md mx-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-3 min-h-[48px] text-sm font-medium border-b-2 transition-colors ${
-                activeTab === tab.id
-                  ? "text-primary border-primary"
-                  : "text-white/50 border-transparent hover:text-white"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
         </div>
       </header>
 
@@ -173,9 +147,9 @@ const Orders = () => {
           ))
         ) : (
           <EmptyState
-            title={activeTab === "active" ? "暂无进行中订单" : "暂无历史订单"}
-            description="去选购一杯神秘咖啡吧，好运等着你！"
-            actionLabel="立即选购"
+            title={t("暂无历史订单", "No order history")}
+            description={t("去选购一杯神秘咖啡吧，好运等着你！", "Go pick a mystery coffee, luck awaits!")}
+            actionLabel={t("立即选购", "Order Now")}
             actionPath="/"
           />
         )}
