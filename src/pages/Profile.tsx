@@ -124,7 +124,7 @@ const Profile = () => {
             {/* Identity Badges */}
             <div className="flex flex-wrap gap-1">
               {allBadges.length > 0 ? (
-                allBadges.slice(0, 2).map((badge, index) => {
+                allBadges.map((badge, index) => {
                   const IconComponent = badge.icon;
                   return (
                     <span 
@@ -139,11 +139,6 @@ const Profile = () => {
               ) : (
                 <span className="text-[10px] text-white/40 px-2 py-0.5 rounded-full bg-secondary/50">
                   {t("未认证", "Not verified")}
-                </span>
-              )}
-              {allBadges.length > 2 && (
-                <span className="text-[10px] text-white/40 px-2 py-0.5 rounded-full bg-secondary/50">
-                  +{allBadges.length - 2}
                 </span>
               )}
             </div>
