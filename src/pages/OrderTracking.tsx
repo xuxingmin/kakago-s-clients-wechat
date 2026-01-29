@@ -278,30 +278,30 @@ const OrderTracking = () => {
     }
   };
 
-  // Demo data
+  // Demo data with bilingual support
   const demoMerchant = {
-    name: "静思咖啡工作室",
+    name: t("静思咖啡工作室", "Tranquil Coffee Studio"),
     rating: 4.9,
-    barista: "小杰",
+    barista: t("小杰", "Jay"),
     equipment: "La Marzocco",
     merchantId: "A1B2C3D4",
     phone: "021-12345678",
     latitude: 31.2304,
     longitude: 121.4737,
-    address: "上海市静安区南京西路123号",
-    description: "专注精品咖啡十二年，坚持产地直采精品豆。",
-    greeting_message: "愿这杯咖啡带来温暖与能量。",
+    address: t("上海市静安区南京西路123号", "123 West Nanjing Rd, Jing'an, Shanghai"),
+    description: t("专注精品咖啡十二年，坚持产地直采精品豆。", "12 years of specialty coffee. Direct-sourced premium beans."),
+    greeting_message: t("愿这杯咖啡带来温暖与能量。", "May this cup bring warmth and energy."),
   };
 
   const demoRider = {
-    name: "王师傅",
+    name: t("王师傅", "Driver Wang"),
     phone: "138****8888",
-    platform: "顺丰配送",
+    platform: t("顺丰配送", "SF Express"),
     rating: 98,
   };
 
   const demoProduct = {
-    name: "拿铁 (热)",
+    name: t("拿铁 (热)", "Latte (Hot)"),
     price: 15,
   };
 
