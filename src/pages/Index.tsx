@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { BlindBoxHero } from "@/components/BlindBoxHero";
-import { CategoryTabs } from "@/components/CategoryTabs";
-import { ProductCard } from "@/components/ProductCard";
-import { ProductSheet } from "@/components/ProductSheet";
+import { HeroBanner } from "@/components/HeroBanner";
+import { ProductGridCard } from "@/components/ProductGridCard";
+import { CheckoutModal } from "@/components/CheckoutModal";
 import { BottomNav } from "@/components/BottomNav";
 
 // Import coffee images
@@ -13,136 +12,117 @@ import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
 
-// Product data
-const categories = [
-  { id: "all", name: "全部" },
-  { id: "black", name: "黑咖啡" },
-  { id: "milk", name: "奶咖" },
-];
-
+// Product data - 6 hardcoded items
 const products = [
   {
-    id: "americano-hot",
-    name: "美式咖啡",
-    nameEn: "Americano",
-    price: 22,
+    id: "hot-americano",
+    name: "热美式",
+    price: 12,
     image: coffeeAmericano,
-    category: "black",
-    isHot: true,
-    hasIceOption: true,
+    tag: "Single Origin SOE",
   },
   {
-    id: "latte",
-    name: "拿铁",
-    nameEn: "Caffè Latte",
-    price: 28,
+    id: "iced-americano",
+    name: "冰美式",
+    price: 12,
+    image: coffeeAmericano,
+    tag: "Cold Refresh",
+  },
+  {
+    id: "hot-latte",
+    name: "热拿铁",
+    price: 15,
     image: coffeeLatte,
-    category: "milk",
-    isHot: true,
-    hasIceOption: true,
+    tag: "Silky & Rich",
+  },
+  {
+    id: "iced-latte",
+    name: "冰拿铁",
+    price: 15,
+    image: coffeeLatte,
+    tag: "4.0 Protein Milk",
   },
   {
     id: "cappuccino",
     name: "卡布奇诺",
-    nameEn: "Cappuccino",
-    price: 28,
+    price: 15,
     image: coffeeCappuccino,
-    category: "milk",
-    isHot: false,
-    hasIceOption: false,
+    tag: "Dense Foam",
   },
   {
     id: "flat-white",
     name: "澳白",
-    nameEn: "Flat White",
-    price: 30,
+    price: 15,
     image: coffeeFlatWhite,
-    category: "milk",
-    isHot: true,
-    hasIceOption: false,
+    tag: "Ristretto Base",
   },
 ];
 
 const Index = () => {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState("all");
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const filteredProducts =
-    activeCategory === "all"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleProductSelect = (productId: string) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
       setSelectedProduct(product);
-      setIsSheetOpen(true);
+      setIsModalOpen(true);
     }
   };
 
-  const handleAddToCart = (
-    productId: string,
-    options: { temperature: "hot" | "iced"; quantity: number }
-  ) => {
-    // In a real app, this would add to cart or create an order
-    console.log("Order:", { productId, ...options });
+  const handleConfirmOrder = (productId: string) => {
+    // Navigate to order confirmation
     navigate("/order-confirm", {
       state: {
         product: selectedProduct,
-        options,
+        options: { quantity: 1 },
       },
     });
   };
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <Header location="上海市浦东新区" />
+      <Header />
 
-      {/* Hero Section */}
-      <BlindBoxHero onExplore={() => setActiveCategory("all")} />
+      {/* Hero Banner */}
+      <HeroBanner />
 
-      {/* Category Tabs */}
-      <CategoryTabs
-        categories={categories}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
-
-      {/* Product List */}
-      <section className="px-4 space-y-3 pb-6">
+      {/* Product Grid */}
+      <section className="px-4 py-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-foreground">精选咖啡</h2>
-          <span className="text-sm text-muted-foreground">
-            {filteredProducts.length} 款可选
+          <span className="text-xs text-muted-foreground px-2 py-1 bg-secondary rounded-full">
+            SCA Barista Crafted
           </span>
         </div>
-        {filteredProducts.map((product, index) => (
-          <div
-            key={product.id}
-            className="animate-fade-in"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <ProductCard
-              id={product.id}
-              name={product.name}
-              nameEn={product.nameEn}
-              price={product.price}
-              image={product.image}
-              isHot={product.isHot}
-              onSelect={handleProductSelect}
-            />
-          </div>
-        ))}
+        
+        <div className="grid grid-cols-2 gap-3">
+          {products.map((product, index) => (
+            <div
+              key={product.id}
+              className="animate-fade-in"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              <ProductGridCard
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.image}
+                tag={product.tag}
+                onSelect={handleProductSelect}
+              />
+            </div>
+          ))}
+        </div>
       </section>
 
-      {/* Product Sheet */}
-      <ProductSheet
-        isOpen={isSheetOpen}
-        onClose={() => setIsSheetOpen(false)}
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         product={selectedProduct}
-        onAddToCart={handleAddToCart}
+        onConfirm={handleConfirmOrder}
       />
 
       {/* Bottom Navigation */}
