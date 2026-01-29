@@ -130,7 +130,7 @@ const Profile = () => {
               </div>
               <div className="text-left">
                 <h3 className="font-bold text-white">拉帮结派</h3>
-                <p className="text-xs text-white/70">My Squad · 邀请返佣</p>
+                <p className="text-xs text-white/70">邀请返佣 · 永久有效</p>
               </div>
             </div>
             

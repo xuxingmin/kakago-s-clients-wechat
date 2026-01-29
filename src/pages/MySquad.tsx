@@ -91,7 +91,7 @@ const MySquad = () => {
             {/* Total Earned */}
             <div className="text-center mb-6">
               <p className="text-white/70 text-sm font-medium mb-2">
-                Lifetime Passive Income
+                累计被动收入
               </p>
               <div className="flex items-baseline justify-center gap-1">
                 <span className="text-white/70 text-2xl font-bold">¥</span>
@@ -108,7 +108,7 @@ const MySquad = () => {
                   <Users className="w-4 h-4 text-white/70" />
                   <span className="text-2xl font-bold text-white">{squadStats.squadSize}</span>
                 </div>
-                <p className="text-xs text-white/60">Squad Members</p>
+                <p className="text-xs text-white/60">我的队员</p>
               </div>
               <div className="w-px bg-white/20" />
               <div className="text-center">
@@ -116,7 +116,7 @@ const MySquad = () => {
                   <TrendingUp className="w-4 h-4 text-white/70" />
                   <span className="text-2xl font-bold text-white">+{squadStats.todayGrowth}</span>
                 </div>
-                <p className="text-xs text-white/60">Today's Growth</p>
+                <p className="text-xs text-white/60">今日新增</p>
               </div>
             </div>
           </div>
@@ -133,8 +133,8 @@ const MySquad = () => {
                 <Users className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Recruit New Members</h3>
-                <p className="text-xs text-muted-foreground">招募新成员</p>
+                <h3 className="font-semibold text-foreground">招募新成员</h3>
+                <p className="text-xs text-muted-foreground">分享邀请码，永久获得返佣</p>
               </div>
             </div>
           </div>
@@ -175,7 +175,7 @@ const MySquad = () => {
               className="w-full py-4 rounded-2xl btn-gold font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
             >
               <Share2 className="w-5 h-5" />
-              Generate My Poster
+              生成我的海报
             </button>
             
             <p className="text-center text-muted-foreground text-xs mt-3">
@@ -190,9 +190,9 @@ const MySquad = () => {
         <div className="flex items-center justify-between mb-3 px-1">
           <div className="flex items-center gap-2">
             <Coins className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold text-foreground">Money Stream</h3>
+            <h3 className="font-semibold text-foreground">收益流水</h3>
           </div>
-          <span className="text-xs text-muted-foreground">实时收益</span>
+          <span className="text-xs text-muted-foreground">实时更新</span>
         </div>
         
         <div className="card-premium overflow-hidden">
@@ -210,7 +210,7 @@ const MySquad = () => {
                 <div>
                   <p className="text-sm text-foreground">
                     <span className="text-muted-foreground">{item.userName}</span>
-                    {" "}bought{" "}
+                    {" "}购买了{" "}
                     <span className="text-primary font-medium">{item.product}</span>
                   </p>
                   <p className="text-xs text-muted-foreground">{item.time}</p>
