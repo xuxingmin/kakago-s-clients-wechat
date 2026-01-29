@@ -276,6 +276,10 @@ const OrderTracking = () => {
     barista: "小杰",
     equipment: "La Marzocco",
     merchantId: "A1B2C3D4",
+    phone: "021-12345678",
+    latitude: 31.2304,
+    longitude: 121.4737,
+    address: "上海市静安区南京西路123号",
   };
 
   const demoRider = {
@@ -288,6 +292,45 @@ const OrderTracking = () => {
   const demoProduct = {
     name: "拿铁 (热)",
     price: 15,
+  };
+
+  // 导航到门店 - 调用高德地图
+  const handleNavigateToStore = () => {
+    const merchant = order?.merchants || demoMerchant;
+    const lat = merchant.latitude || demoMerchant.latitude;
+    const lng = merchant.longitude || demoMerchant.longitude;
+    const name = encodeURIComponent(merchant.name || demoMerchant.name);
+    const address = encodeURIComponent(merchant.address || demoMerchant.address);
+    
+    // 高德地图导航 URL
+    const amapUrl = `https://uri.amap.com/navigation?to=${lng},${lat},${name}&mode=car&policy=1&src=kafei&coordinate=gaode`;
+    
+    window.open(amapUrl, '_blank');
+    
+    toast({
+      title: "正在打开高德地图",
+      description: `导航至: ${merchant.name || demoMerchant.name}`,
+    });
+  };
+
+  // 联系门店 - 拨打电话
+  const handleContactStore = () => {
+    const merchant = order?.merchants || demoMerchant;
+    const phone = merchant.phone || demoMerchant.phone;
+    
+    if (phone) {
+      window.location.href = `tel:${phone}`;
+      toast({
+        title: "正在呼叫门店",
+        description: `电话: ${phone}`,
+      });
+    } else {
+      toast({
+        title: "暂无联系方式",
+        description: "该门店未提供联系电话",
+        variant: "destructive",
+      });
+    }
   };
 
   if (loading) {
@@ -438,11 +481,17 @@ const OrderTracking = () => {
 
             {/* Actions */}
             <div className="flex gap-2">
-              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors">
+              <button 
+                onClick={handleNavigateToStore}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors"
+              >
                 <Navigation className="w-3.5 h-3.5" />
                 <span>导航到店</span>
               </button>
-              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors">
+              <button 
+                onClick={handleContactStore}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors"
+              >
                 <Phone className="w-3.5 h-3.5" />
                 <span>联系门店</span>
               </button>
