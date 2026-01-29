@@ -49,9 +49,9 @@ const Profile = () => {
     },
     { 
       Icon: Wallet, 
-      value: "¥0.00", 
-      label: "余额",
-      onClick: () => {},
+      value: "1680", 
+      label: "Kaka豆",
+      onClick: () => navigate("/kaka-beans"),
     },
     { 
       Icon: Coffee, 
