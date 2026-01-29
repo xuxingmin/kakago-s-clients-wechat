@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import OrderConfirm from "./pages/OrderConfirm";
 import OrderTracking from "./pages/OrderTracking";
 import CoffeeWallet from "./pages/CoffeeWallet";
+import KakaBeans from "./pages/KakaBeans";
 import AddressManagement from "./pages/AddressManagement";
 import MySquad from "./pages/MySquad";
 import MerchantAuth from "./pages/MerchantAuth";
@@ -38,6 +39,7 @@ const App = () => (
                   <Route path="/order-confirm" element={<OrderConfirm />} />
                   <Route path="/order-tracking" element={<OrderTracking />} />
                   <Route path="/wallet" element={<CoffeeWallet />} />
+                  <Route path="/kaka-beans" element={<KakaBeans />} />
                   <Route path="/address" element={<AddressManagement />} />
                   <Route path="/my-squad" element={<MySquad />} />
                   <Route path="/merchant-auth" element={<MerchantAuth />} />
