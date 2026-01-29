@@ -2,6 +2,7 @@ import { Plus, Flame, Ticket } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { FloatingCart } from "@/components/FloatingCart";
+import { BrandStandardsGrid } from "@/components/BrandStandardsGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -136,7 +137,7 @@ const Index = () => {
       <Header />
 
       {/* Minimal Brand Header */}
-      <section className="px-4 pt-6 pb-4">
+      <section className="px-4 pt-6 pb-2">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
@@ -155,6 +156,9 @@ const Index = () => {
           )}
         </div>
       </section>
+
+      {/* Brand Standards Grid */}
+      <BrandStandardsGrid />
 
       {/* Fog Divider */}
       <div className="fog-divider mx-4" />
