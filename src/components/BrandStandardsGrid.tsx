@@ -1,6 +1,7 @@
-import { Bean, Droplet, ShieldCheck, Leaf, Settings, ClipboardCheck, Zap } from "lucide-react";
+import { Bean, Droplet, ShieldCheck, Leaf, Settings, ClipboardCheck, Zap, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCart } from "@/contexts/CartContext";
 import type { LucideIcon } from "lucide-react";
 
 interface StandardItem {
@@ -19,9 +20,16 @@ const standards: StandardItem[] = [
   { Icon: Zap, labelZh: "极速", labelEn: "Fast" },
 ];
 
-export const BrandStandardsGrid = () => {
+interface BrandStandardsGridProps {
+  onCartClick?: () => void;
+}
+
+export const BrandStandardsGrid = ({ onCartClick }: BrandStandardsGridProps) => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { totalItems } = useCart();
+
+  const hasCartItems = totalItems > 0;
 
   return (
     <section className="px-4 py-3">
@@ -52,15 +60,27 @@ export const BrandStandardsGrid = () => {
           );
         })}
 
-        {/* Special CTA Card - GO Button */}
-        <button
-          onClick={() => navigate("/my-squad")}
-          className="relative flex items-center justify-center h-12 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
-        >
-          <span className="text-sm font-mono font-black text-white tracking-wider">
-            GO
-          </span>
-        </button>
+        {/* 8th Card - Cart (when items) or GO (when empty) */}
+        {hasCartItems ? (
+          <button
+            onClick={onCartClick}
+            className="relative flex items-center justify-center h-12 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95 gap-1.5"
+          >
+            <ShoppingCart className="w-4 h-4 text-white" />
+            <span className="text-sm font-mono font-bold text-white">
+              {totalItems}
+            </span>
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate("/my-squad")}
+            className="relative flex items-center justify-center h-12 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+          >
+            <span className="text-sm font-mono font-black text-white tracking-wider">
+              GO
+            </span>
+          </button>
+        )}
       </div>
     </section>
   );
