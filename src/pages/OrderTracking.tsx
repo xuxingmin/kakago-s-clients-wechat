@@ -138,21 +138,26 @@ interface StatusTimelineProps {
     picked_up_at?: string | null;
     delivered_at?: string | null;
   };
+  onStatusClick?: (status: OrderState) => void;
+  isInteractive?: boolean;
 }
 
-const StatusTimeline = ({ currentStatus, timestamps }: StatusTimelineProps) => {
+const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractive }: StatusTimelineProps) => {
   const steps = [
-    { key: "pending", label: "待接单", icon: Clock },
-    { key: "accepted", label: "制作中", icon: Coffee },
-    { key: "rider_assigned", label: "骑手接单", icon: Navigation },
-    { key: "picked_up", label: "配送中", icon: Package },
-    { key: "delivered", label: "已送达", icon: CheckCircle2 },
+    { key: "pending" as OrderState, label: "待接单", icon: Clock },
+    { key: "accepted" as OrderState, label: "制作中", icon: Coffee },
+    { key: "rider_assigned" as OrderState, label: "骑手接单", icon: Navigation },
+    { key: "picked_up" as OrderState, label: "配送中", icon: Package },
+    { key: "delivered" as OrderState, label: "已送达", icon: CheckCircle2 },
   ];
 
   const statusIndex = steps.findIndex(s => s.key === currentStatus);
 
   return (
     <div className="card-lg !p-4 mx-4 mb-4">
+      {isInteractive && (
+        <p className="text-[10px] text-white/30 text-center mb-3">🛠 点击切换状态演示</p>
+      )}
       <div className="flex justify-between items-center">
         {steps.map((step, index) => {
           const Icon = step.icon;
@@ -160,7 +165,12 @@ const StatusTimeline = ({ currentStatus, timestamps }: StatusTimelineProps) => {
           const isCurrent = step.key === currentStatus;
           
           return (
-            <div key={step.key} className="flex flex-col items-center flex-1">
+            <button
+              key={step.key}
+              onClick={() => isInteractive && onStatusClick?.(step.key)}
+              disabled={!isInteractive}
+              className={`flex flex-col items-center flex-1 ${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}
+            >
               <div
                 className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
                   isActive
@@ -168,7 +178,7 @@ const StatusTimeline = ({ currentStatus, timestamps }: StatusTimelineProps) => {
                       ? "bg-primary text-white"
                       : "bg-primary/30 text-primary"
                     : "bg-secondary text-white/30"
-                }`}
+                } ${isInteractive ? 'hover:scale-110' : ''}`}
               >
                 <Icon className="w-3.5 h-3.5" />
               </div>
@@ -179,7 +189,7 @@ const StatusTimeline = ({ currentStatus, timestamps }: StatusTimelineProps) => {
               >
                 {step.label}
               </span>
-            </div>
+            </button>
           );
         })}
       </div>
@@ -286,33 +296,7 @@ const OrderTracking = () => {
         </div>
       </header>
 
-      {/* Dev Panel */}
-      {!orderId && (
-        <div className="bg-secondary/50 border-b border-white/10 px-4 py-2">
-          <p className="text-xs text-white/40 mb-2 text-center">🛠 开发演示</p>
-          <div className="flex gap-1 justify-center flex-wrap">
-            {(["pending", "accepted", "rider_assigned", "picked_up", "delivered"] as OrderState[]).map((state) => (
-              <button
-                key={state}
-                onClick={() => setDemoState(state)}
-                className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
-                  demoState === state 
-                    ? "bg-primary text-white" 
-                    : "bg-secondary text-white/50 hover:bg-white/10"
-                }`}
-              >
-                {state === "pending" && "待接单"}
-                {state === "accepted" && "制作中"}
-                {state === "rider_assigned" && "骑手接单"}
-                {state === "picked_up" && "配送中"}
-                {state === "delivered" && "已送达"}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Status Timeline */}
+      {/* Status Timeline - Interactive in demo mode */}
       <StatusTimeline 
         currentStatus={currentState}
         timestamps={{
@@ -322,6 +306,8 @@ const OrderTracking = () => {
           picked_up_at: order?.picked_up_at,
           delivered_at: order?.delivered_at,
         }}
+        isInteractive={!orderId}
+        onStatusClick={(status) => setDemoState(status)}
       />
 
       {/* Main Content */}
