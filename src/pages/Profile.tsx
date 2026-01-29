@@ -1,80 +1,140 @@
 import { useNavigate } from "react-router-dom";
-import { User, MapPin, Wallet, Settings, ChevronRight, LogOut } from "lucide-react";
+import { 
+  Ticket, 
+  Wallet, 
+  Coffee, 
+  ClipboardList, 
+  Share2, 
+  HelpCircle, 
+  Store, 
+  ChevronRight,
+  Crown
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/BottomNav";
 
 const Profile = () => {
   const navigate = useNavigate();
 
-  const menuItems = [
+  const assetItems = [
     { 
-      icon: Wallet, 
-      label: "我的咖啡资产", 
-      description: "优惠券与代金券",
-      badge: "3张可用",
+      icon: Ticket, 
+      value: "3", 
+      label: "张优惠券",
       onClick: () => navigate("/wallet"),
     },
     { 
-      icon: MapPin, 
-      label: "收货地址", 
-      description: "管理您的配送地址",
-      badge: "2个地址",
-      onClick: () => navigate("/address"),
+      icon: Wallet, 
+      value: "¥0.00", 
+      label: "余额",
+      onClick: () => {},
     },
     { 
-      icon: Settings, 
-      label: "设置", 
-      description: "账号与偏好设置",
+      icon: Coffee, 
+      value: "12", 
+      label: "杯咖啡",
+      onClick: () => navigate("/orders"),
+    },
+  ];
+
+  const menuItems = [
+    { 
+      icon: ClipboardList, 
+      label: "订单历史", 
+      description: "查看订单与评价状态",
+      onClick: () => navigate("/orders"),
+    },
+    { 
+      icon: Share2, 
+      label: "分享赚佣金", 
+      description: "邀请好友，享1%返佣",
+      badge: "热门",
+      onClick: () => {},
+    },
+    { 
+      icon: HelpCircle, 
+      label: "帮助与支持", 
+      description: "常见问题与联系客服",
+      onClick: () => {},
+    },
+    { 
+      icon: Store, 
+      label: "成为合作商家", 
+      description: "加入我们，一起成长",
       onClick: () => {},
     },
   ];
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
+      {/* Header with Avatar */}
       <header className="relative safe-top">
-        <div className="h-32 bg-gradient-to-b from-lavender to-background" />
+        <div className="h-36 bg-gradient-to-br from-primary/20 via-lavender to-background" />
         
-        {/* User Info */}
-        <div className="px-4 -mt-12 max-w-md mx-auto">
+        {/* User Card */}
+        <div className="px-4 -mt-16 max-w-md mx-auto">
           <div className="card-premium p-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center border-2 border-primary">
-                <User className="w-8 h-8 text-primary" />
-              </div>
+              {/* Avatar */}
+              <Avatar className="w-18 h-18 border-3 border-primary/30 shadow-lg">
+                <AvatarImage src="/placeholder.svg" alt="用户头像" />
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-primary-foreground text-xl font-bold">
+                  咖
+                </AvatarFallback>
+              </Avatar>
+              
               <div className="flex-1">
-                <h2 className="text-lg font-semibold text-foreground">
-                  咖啡爱好者
+                {/* Nickname */}
+                <h2 className="text-xl font-bold text-foreground">
+                  咖啡探索家
                 </h2>
-                <p className="text-muted-foreground text-sm">
-                  点击登录，享受专属优惠
+                
+                {/* Member Level Badge */}
+                <div className="flex items-center gap-1.5 mt-1.5">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-gradient-to-r from-amber-100 to-amber-50 text-amber-700 border border-amber-200/50 gap-1 px-2 py-0.5"
+                  >
+                    <Crown className="w-3 h-3" />
+                    <span className="text-xs font-medium">Coffee Explorer</span>
+                  </Badge>
+                </div>
+                
+                <p className="text-muted-foreground text-xs mt-2">
+                  已探索 8 家咖啡馆
                 </p>
-              </div>
-            </div>
-            
-            {/* Stats */}
-            <div className="flex justify-around mt-6 pt-6 border-t border-border">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-gold-gradient">12</p>
-                <p className="text-xs text-muted-foreground mt-1">累计订单</p>
-              </div>
-              <button 
-                onClick={() => navigate("/wallet")}
-                className="text-center hover:scale-105 transition-transform"
-              >
-                <p className="text-2xl font-bold text-gold-gradient">3</p>
-                <p className="text-xs text-muted-foreground mt-1">优惠券</p>
-              </button>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-gold-gradient">8</p>
-                <p className="text-xs text-muted-foreground mt-1">探索咖啡馆</p>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Menu Items */}
-      <section className="px-4 mt-6 max-w-md mx-auto">
+      {/* Asset Bar */}
+      <section className="px-4 mt-4 max-w-md mx-auto">
+        <div className="card-premium p-4">
+          <div className="flex items-center justify-around">
+            {assetItems.map((item, index) => (
+              <button
+                key={item.label}
+                onClick={item.onClick}
+                className={`flex-1 flex flex-col items-center gap-1.5 py-2 hover:scale-105 transition-transform ${
+                  index !== assetItems.length - 1 ? "border-r border-border" : ""
+                }`}
+              >
+                <div className="flex items-center gap-1">
+                  <item.icon className="w-4 h-4 text-primary" />
+                  <span className="text-lg font-bold text-foreground">{item.value}</span>
+                </div>
+                <span className="text-xs text-muted-foreground">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Menu List */}
+      <section className="px-4 mt-4 max-w-md mx-auto">
         <div className="card-premium overflow-hidden">
           {menuItems.map((item, index) => (
             <button
@@ -104,15 +164,7 @@ const Profile = () => {
         </div>
       </section>
 
-      {/* Logout */}
-      <section className="px-4 mt-6 max-w-md mx-auto">
-        <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-muted-foreground hover:text-destructive transition-colors">
-          <LogOut className="w-5 h-5" />
-          <span className="font-medium">退出登录</span>
-        </button>
-      </section>
-
-      {/* Version */}
+      {/* Version Footer */}
       <p className="text-center text-xs text-muted-foreground mt-8">
         KAKAGO v1.0.0
       </p>
