@@ -153,11 +153,29 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
 
   const statusIndex = steps.findIndex(s => s.key === currentStatus);
 
+  const getStatusMessage = () => {
+    switch (currentStatus) {
+      case "pending": return "正在匹配咖啡师...";
+      case "accepted": return "订单已接受，正在制作中";
+      case "rider_assigned": return "骑手已接单，即将取货";
+      case "picked_up": return "骑手正在配送中";
+      case "delivered": return "咖啡已送达";
+      default: return "";
+    }
+  };
+
   return (
     <div className="card-lg !p-4 mx-4 mb-4">
       {isInteractive && (
-        <p className="text-[10px] text-white/30 text-center mb-3">🛠 点击切换状态演示</p>
+        <p className="text-[10px] text-white/30 text-center mb-2">🛠 点击切换状态演示</p>
       )}
+      
+      {/* Status message integrated as small text */}
+      <p className="text-xs text-green-400 text-center mb-3 flex items-center justify-center gap-1.5">
+        <CheckCircle2 className="w-3 h-3" />
+        {getStatusMessage()}
+      </p>
+      
       <div className="flex justify-between items-center">
         {steps.map((step, index) => {
           const Icon = step.icon;
@@ -329,12 +347,6 @@ const OrderTracking = () => {
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 overflow-y-auto ${
           currentState === "accepted" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}>
-          {/* Success Banner */}
-          <div className="bg-green-500/20 border-b border-green-500/30 text-green-400 py-3 px-4 flex items-center justify-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span className="text-sm font-medium">订单已接受，正在制作中</span>
-          </div>
-
           {/* Content Area */}
           <div className={`flex-1 p-4 space-y-4 transition-all duration-700 ease-out ${
             showRevealCard ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
@@ -444,11 +456,6 @@ const OrderTracking = () => {
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${
           currentState === "rider_assigned" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}>
-          <div className="bg-blue-500/20 border-b border-blue-500/30 text-blue-400 py-3 px-4 flex items-center justify-center gap-2">
-            <span className="text-sm">🏍️</span>
-            <span className="text-sm font-medium">骑手已接单，即将取货</span>
-          </div>
-
           <div className="flex-1 flex items-center justify-center p-4">
             <div className="w-full card-xl text-center">
               <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-3xl mx-auto mb-4">
@@ -476,11 +483,6 @@ const OrderTracking = () => {
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${
           currentState === "picked_up" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}>
-          <div className="bg-primary/20 border-b border-primary/30 text-primary py-3 px-4 flex items-center justify-center gap-2">
-            <span className="text-sm">🏍️</span>
-            <span className="text-sm font-medium">骑手正在配送中</span>
-          </div>
-
           <div className="flex-1 p-4">
             <DeliveryMap 
               riderLat={order?.rider_lat}
