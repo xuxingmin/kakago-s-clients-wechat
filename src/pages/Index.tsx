@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Flame } from "lucide-react";
+import { Plus, Flame, Ticket } from "lucide-react";
 import { Header } from "@/components/Header";
 import { CheckoutModal } from "@/components/CheckoutModal";
 import { BottomNav } from "@/components/BottomNav";
@@ -11,6 +11,23 @@ import coffeeLatte from "@/assets/coffee-latte.jpg";
 import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
+
+// 用户可用优惠券
+const userCoupons = [
+  {
+    id: "coupon-001",
+    type: "universal",
+    title: "新用户专享礼券",
+    value: 5,
+  },
+  {
+    id: "coupon-002",
+    type: "americano",
+    title: "美式咖啡专属券",
+    value: 3,
+    applicableProducts: ["hot-americano", "iced-americano"],
+  },
+];
 
 // 产品数据 - 6款精选咖啡 (bilingual)
 const products = [
@@ -72,6 +89,26 @@ const products = [
   },
 ];
 
+// 计算产品的最佳优惠价
+const getDiscountedPrice = (productId: string, originalPrice: number) => {
+  // 找到适用于该产品的最佳优惠券
+  const applicableCoupons = userCoupons.filter((coupon) => {
+    if (coupon.type === "universal") return true;
+    if (coupon.applicableProducts?.includes(productId)) return true;
+    return false;
+  });
+
+  if (applicableCoupons.length === 0) return null;
+
+  // 选择折扣最大的券
+  const bestCoupon = applicableCoupons.reduce((best, coupon) => 
+    coupon.value > best.value ? coupon : best
+  );
+
+  const discountedPrice = Math.max(0, originalPrice - bestCoupon.value);
+  return discountedPrice;
+};
+
 const Index = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -99,16 +136,31 @@ const Index = () => {
     tag: t(selectedProduct.tagZh, selectedProduct.tagEn),
   } : null;
 
+  const totalCoupons = userCoupons.length;
+
   return (
     <div className="min-h-screen pb-20">
       <Header />
 
       {/* Minimal Brand Header */}
       <section className="px-4 pt-6 pb-4">
-        <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-        <p className="text-sm text-white/50 mt-0.5">
-          {t("城市精品咖啡联盟", "Urban Specialty Coffee Alliance")}
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+            <p className="text-sm text-white/50 mt-0.5">
+              {t("城市精品咖啡联盟", "Urban Specialty Coffee Alliance")}
+            </p>
+          </div>
+          {/* Coupon Badge */}
+          {totalCoupons > 0 && (
+            <div className="flex items-center gap-1.5 bg-primary/20 border border-primary/30 px-3 py-1.5 rounded-full">
+              <Ticket className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs text-primary font-medium">
+                {totalCoupons}{t("张券", " Coupons")}
+              </span>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Fog Divider */}
@@ -126,40 +178,61 @@ const Index = () => {
         </div>
         
         <div className="grid grid-cols-2 gap-2">
-          {products.map((product, index) => (
-            <button
-              key={product.id}
-              onClick={() => handleProductSelect(product.id)}
-              className="group card-premium p-3 text-left transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-[72px] relative"
-              style={{ animationDelay: `${index * 0.03}s` }}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <h3 className="font-semibold text-white text-sm group-hover:text-primary transition-colors">
-                      {t(product.nameZh, product.nameEn)}
-                    </h3>
-                    {product.isHot && (
-                      <Flame className="w-3 h-3 text-orange-400" />
+          {products.map((product, index) => {
+            const discountedPrice = getDiscountedPrice(product.id, product.price);
+            const hasDiscount = discountedPrice !== null && discountedPrice < product.price;
+            
+            return (
+              <button
+                key={product.id}
+                onClick={() => handleProductSelect(product.id)}
+                className="group card-premium p-3 text-left transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-[72px] relative"
+                style={{ animationDelay: `${index * 0.03}s` }}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="font-semibold text-white text-sm group-hover:text-primary transition-colors">
+                        {t(product.nameZh, product.nameEn)}
+                      </h3>
+                      {product.isHot && (
+                        <Flame className="w-3 h-3 text-orange-400" />
+                      )}
+                    </div>
+                    <p className="text-xs text-white/40 mt-0.5 truncate">
+                      {t(product.tagZh, product.tagEn)}
+                    </p>
+                  </div>
+                  
+                  {/* Price & Add */}
+                  <div className="flex flex-col items-end gap-0.5">
+                    {hasDiscount ? (
+                      <>
+                        <span className="text-white/40 text-xs line-through">
+                          ¥{product.price}
+                        </span>
+                        <span className="text-primary font-bold text-base">
+                          ¥{discountedPrice}
+                        </span>
+                        <span className="text-[10px] text-primary/70">
+                          {t("预估到手价", "Est. price")}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-primary font-bold text-base">
+                        ¥{product.price}
+                      </span>
                     )}
                   </div>
-                  <p className="text-xs text-white/40 mt-0.5 truncate">
-                    {t(product.tagZh, product.tagEn)}
-                  </p>
                 </div>
                 
-                {/* Price & Add */}
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-bold text-base">
-                    ¥{product.price}
-                  </span>
-                  <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-purple">
-                    <Plus className="w-4 h-4" />
-                  </div>
+                {/* Hover Add Button */}
+                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-purple">
+                  <Plus className="w-4 h-4" />
                 </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </section>
 
