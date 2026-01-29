@@ -17,11 +17,15 @@ export default {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
       },
       colors: {
+        /* ═══════════════════════════════════════════════════════════
+           KAKAGO MASTER COLOR SYSTEM - Tailwind Mapping
+           ═══════════════════════════════════════════════════════════ */
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -50,20 +54,63 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // KAKAGO custom colors
+
+        /* ─────────────────────────────────────────────────────────────
+           🟣 PURPLE SPECTRUM
+           ───────────────────────────────────────────────────────────── */
         purple: {
-          DEFAULT: "hsl(var(--purple))",
-          light: "hsl(var(--purple-light))",
-          dark: "hsl(var(--purple-dark))",
+          50: "hsl(var(--purple-50))",
+          100: "hsl(var(--purple-100))",
+          200: "hsl(var(--purple-200))",
+          300: "hsl(var(--purple-300))",
+          400: "hsl(var(--purple-400))",
+          500: "hsl(var(--purple-500))",
+          600: "hsl(var(--purple-600))",
+          700: "hsl(var(--purple-700))",
+          800: "hsl(var(--purple-800))",
+          900: "hsl(var(--purple-900))",
+          DEFAULT: "hsl(var(--purple-500))",
         },
+
+        /* ─────────────────────────────────────────────────────────────
+           🔘 FOG GREY SPECTRUM
+           ───────────────────────────────────────────────────────────── */
         fog: {
-          DEFAULT: "hsl(var(--fog))",
-          light: "hsl(var(--fog-light))",
+          50: "hsl(var(--fog-50))",
+          100: "hsl(var(--fog-100))",
+          200: "hsl(var(--fog-200))",
+          300: "hsl(var(--fog-300))",
+          400: "hsl(var(--fog-400))",
+          500: "hsl(var(--fog-500))",
+          600: "hsl(var(--fog-600))",
+          700: "hsl(var(--fog-700))",
+          800: "hsl(var(--fog-800))",
+          900: "hsl(var(--fog-900))",
+          DEFAULT: "hsl(var(--fog-700))",
         },
+
+        /* ─────────────────────────────────────────────────────────────
+           ⚫ BLACK SPECTRUM
+           ───────────────────────────────────────────────────────────── */
         obsidian: "hsl(var(--obsidian))",
-        midnight: "hsl(var(--midnight))",
-        silver: "hsl(var(--silver))",
-        lavender: "hsl(var(--lavender))",
+        void: "hsl(var(--void))",
+        charcoal: "hsl(var(--charcoal))",
+        onyx: "hsl(var(--onyx))",
+
+        /* ─────────────────────────────────────────────────────────────
+           ⚪ WHITE SPECTRUM (for opacity utilities)
+           ───────────────────────────────────────────────────────────── */
+        white: {
+          DEFAULT: "hsl(var(--white-100))",
+          90: "hsl(var(--white-90))",
+          70: "hsl(var(--white-70))",
+          50: "hsl(var(--white-50))",
+          30: "hsl(var(--white-30))",
+          15: "hsl(var(--white-15))",
+          8: "hsl(var(--white-08))",
+          4: "hsl(var(--white-04))",
+        },
+
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -83,10 +130,20 @@ export default {
         "3xl": "1.5rem",
       },
       boxShadow: {
+        /* Elevation System */
+        xs: "var(--shadow-xs)",
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+        /* Purple Glow */
+        "purple-sm": "var(--shadow-purple-sm)",
         purple: "var(--shadow-purple)",
-        card: "var(--shadow-card)",
-        float: "var(--shadow-float)",
+        "purple-lg": "var(--shadow-purple-lg)",
         glow: "var(--shadow-glow)",
+        /* Special */
+        inner: "var(--shadow-inner)",
+        "inner-strong": "var(--shadow-inner-strong)",
       },
       transitionTimingFunction: {
         'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
