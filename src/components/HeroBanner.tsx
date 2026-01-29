@@ -21,8 +21,8 @@ export const HeroBanner = () => {
         <p className="text-sm text-muted-foreground mt-1 tracking-wide">
           城市精品咖啡联盟
         </p>
-        <p className="text-xs text-muted-foreground/70 mt-0.5 tracking-widest uppercase">
-          Urban Boutique Coffee Collective
+        <p className="text-xs text-muted-foreground/70 mt-0.5 tracking-widest">
+          发现城市中的精品咖啡馆
         </p>
       </div>
     </section>

@@ -106,7 +106,7 @@ const CoffeeWallet = () => {
           <div className="relative">
             <div className="flex items-center gap-2 mb-4">
               <Wallet className="w-5 h-5" />
-              <span className="text-sm font-medium opacity-90">Coffee Wallet</span>
+              <span className="text-sm font-medium opacity-90">咖啡钱包</span>
             </div>
             
             <div className="flex items-baseline gap-2">

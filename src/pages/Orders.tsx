@@ -27,7 +27,7 @@ interface Order {
   userRating?: number;
 }
 
-// Demo orders data with ratings
+// 演示订单数据
 const demoOrders: Order[] = [
   {
     id: "order-001",
@@ -35,7 +35,7 @@ const demoOrders: Order[] = [
     productImage: coffeeLatte,
     price: 15,
     status: "preparing",
-    cafeName: "Refrain Coffee Studio",
+    cafeName: "静思咖啡工作室",
     cafeRating: 4.9,
     createdAt: "今天 14:32",
     isRevealed: true,
@@ -55,7 +55,7 @@ const demoOrders: Order[] = [
     productImage: coffeeCappuccino,
     price: 15,
     status: "completed",
-    cafeName: "Seesaw Coffee",
+    cafeName: "微醺咖啡",
     cafeRating: 4.7,
     createdAt: "昨天 10:15",
     isRevealed: true,
@@ -67,11 +67,11 @@ const demoOrders: Order[] = [
     productImage: coffeeLatte,
     price: 15,
     status: "completed",
-    cafeName: "M Stand",
+    cafeName: "慢时光咖啡",
     cafeRating: 4.8,
     createdAt: "前天 15:42",
     isRevealed: true,
-    // No userRating - pending review
+    // 未评价
   },
 ];
 

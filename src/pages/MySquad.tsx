@@ -15,22 +15,22 @@ import {
 import { BottomNav } from "@/components/BottomNav";
 import { toast } from "@/hooks/use-toast";
 
-// Demo data
+// 演示数据
 const squadStats = {
   totalEarned: 1240.50,
   squadSize: 348,
   todayGrowth: 12,
-  inviteCode: "SQUAD2024",
+  inviteCode: "KAKA2024",
 };
 
 const recentCommissions = [
-  { id: "1", userName: "Mike***", product: "冰拿铁", amount: 0.30, time: "刚刚" },
+  { id: "1", userName: "小明**", product: "冰拿铁", amount: 0.30, time: "刚刚" },
   { id: "2", userName: "李**", product: "澳白", amount: 0.30, time: "5分钟前" },
-  { id: "3", userName: "Emma***", product: "美式", amount: 0.24, time: "12分钟前" },
+  { id: "3", userName: "小红**", product: "美式", amount: 0.24, time: "12分钟前" },
   { id: "4", userName: "张**", product: "卡布奇诺", amount: 0.32, time: "28分钟前" },
-  { id: "5", userName: "Tom***", product: "摩卡", amount: 0.35, time: "1小时前" },
+  { id: "5", userName: "阿杰**", product: "摩卡", amount: 0.35, time: "1小时前" },
   { id: "6", userName: "王**", product: "拿铁", amount: 0.28, time: "2小时前" },
-  { id: "7", userName: "Sarah***", product: "冷萃", amount: 0.26, time: "3小时前" },
+  { id: "7", userName: "小芳**", product: "冷萃", amount: 0.26, time: "3小时前" },
   { id: "8", userName: "陈**", product: "燕麦拿铁", amount: 0.34, time: "5小时前" },
 ];
 

@@ -236,13 +236,13 @@ const OrderTracking = () => {
               <div className="relative h-48 overflow-hidden">
                 <img
                   src={cafeInterior}
-                  alt="Cafe Interior"
+                  alt="咖啡馆内景"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white/70 text-xs mb-1">为您制作</p>
-                  <h3 className="text-white text-2xl font-bold">Refrain Coffee Studio</h3>
+                  <h3 className="text-white text-2xl font-bold">静思咖啡工作室</h3>
                 </div>
               </div>
 
@@ -252,11 +252,11 @@ const OrderTracking = () => {
                 <div className="flex gap-4">
                   <div className="flex-1 bg-secondary rounded-xl p-3">
                     <p className="text-xs text-muted-foreground">首席咖啡师</p>
-                    <p className="text-sm font-semibold text-foreground mt-0.5">Jay</p>
+                    <p className="text-sm font-semibold text-foreground mt-0.5">小杰</p>
                   </div>
                   <div className="flex-1 bg-secondary rounded-xl p-3">
                     <p className="text-xs text-muted-foreground">设备</p>
-                    <p className="text-sm font-semibold text-foreground mt-0.5">La Marzocco PB-X</p>
+                    <p className="text-sm font-semibold text-foreground mt-0.5">辣妈咖啡机</p>
                   </div>
                 </div>
 
