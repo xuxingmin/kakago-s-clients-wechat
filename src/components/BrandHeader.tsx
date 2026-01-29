@@ -1,5 +1,4 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import kakagoLogo from "@/assets/kakago-logo.png";
 
 interface BrandHeaderProps {
   showTagline?: boolean;
@@ -10,12 +9,8 @@ export const BrandHeader = ({ showTagline = true }: BrandHeaderProps) => {
 
   return (
     <header className="px-4 pt-14 pb-6 safe-top max-w-md mx-auto">
-      <img 
-        src={kakagoLogo} 
-        alt="KAKAGO" 
-        className="h-7 w-auto object-contain"
-      />
-      <p className="text-base text-primary font-medium mt-2">
+      <h1 className="text-3xl font-black text-white tracking-tight">KAKAGO</h1>
+      <p className="text-base text-primary font-medium mt-1">
         {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
       </p>
       
