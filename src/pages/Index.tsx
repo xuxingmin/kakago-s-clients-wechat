@@ -220,12 +220,12 @@ const Index = () => {
                 </div>
                 
                 {/* Add Button with quantity badge */}
-                <div className={`absolute bottom-2 right-2 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center shadow-purple transition-all duration-200 ${
+                <div className={`absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center shadow-purple transition-all duration-200 ${
                   quantityInCart > 0 ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                 } group-hover:scale-110`}>
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3 h-3" />
                   {quantityInCart > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white text-primary text-[8px] font-bold rounded-full flex items-center justify-center">
                       {quantityInCart}
                     </span>
                   )}
