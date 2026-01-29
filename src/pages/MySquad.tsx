@@ -24,14 +24,14 @@ const squadStats = {
 };
 
 const recentCommissions = [
-  { id: "1", userName: "小明**", product: "冰拿铁", amount: 0.30, time: "刚刚" },
-  { id: "2", userName: "李**", product: "澳白", amount: 0.30, time: "5分钟前" },
-  { id: "3", userName: "小红**", product: "美式", amount: 0.24, time: "12分钟前" },
-  { id: "4", userName: "张**", product: "卡布奇诺", amount: 0.32, time: "28分钟前" },
-  { id: "5", userName: "阿杰**", product: "摩卡", amount: 0.35, time: "1小时前" },
-  { id: "6", userName: "王**", product: "拿铁", amount: 0.28, time: "2小时前" },
-  { id: "7", userName: "小芳**", product: "冷萃", amount: 0.26, time: "3小时前" },
-  { id: "8", userName: "陈**", product: "燕麦拿铁", amount: 0.34, time: "5小时前" },
+  { id: "1", product: "冰拿铁", amount: 0.30, time: "刚刚" },
+  { id: "2", product: "澳白", amount: 0.30, time: "5分钟前" },
+  { id: "3", product: "美式", amount: 0.24, time: "12分钟前" },
+  { id: "4", product: "卡布奇诺", amount: 0.32, time: "28分钟前" },
+  { id: "5", product: "摩卡", amount: 0.35, time: "1小时前" },
+  { id: "6", product: "拿铁", amount: 0.28, time: "2小时前" },
+  { id: "7", product: "冷萃", amount: 0.26, time: "3小时前" },
+  { id: "8", product: "燕麦拿铁", amount: 0.34, time: "5小时前" },
 ];
 
 const MySquad = () => {
@@ -215,7 +215,7 @@ const MySquad = () => {
                 </div>
                 <div>
                   <p className="text-sm text-white">
-                    <span className="text-white/60">{item.userName}</span>
+                    <span className="text-white/60">你的队员</span>
                     {" "}购买了{" "}
                     <span className="text-primary font-medium">{item.product}</span>
                   </p>
