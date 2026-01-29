@@ -72,13 +72,8 @@ const Index = () => {
   };
 
   const handleConfirmOrder = (productId: string) => {
-    // Navigate to order confirmation
-    navigate("/order-confirm", {
-      state: {
-        product: selectedProduct,
-        options: { quantity: 1 },
-      },
-    });
+    // Navigate to order tracking (matching state)
+    navigate("/order-tracking");
   };
 
   return (
