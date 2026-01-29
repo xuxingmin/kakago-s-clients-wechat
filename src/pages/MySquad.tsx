@@ -10,10 +10,13 @@ import {
   Coffee,
   Check,
   MessageCircle,
-  Bean
+  Coins,
+  Infinity,
+  Gift
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // 演示数据 - KAKA豆系统 (1元 = 100豆)
 const squadStats = {
@@ -25,12 +28,11 @@ const squadStats = {
 
 // 2% 返豆记录
 const recentCommissions = [
-  { id: "1", product: "冰拿铁", beans: 30, time: "刚刚" }, // ¥15 × 2% = ¥0.30 = 30豆
-  { id: "2", product: "澳白", beans: 30, time: "5分钟前" },
-  { id: "3", product: "美式", beans: 24, time: "12分钟前" },
-  { id: "4", product: "卡布奇诺", beans: 32, time: "28分钟前" },
-  { id: "5", product: "摩卡", beans: 35, time: "1小时前" },
-  { id: "6", product: "拿铁", beans: 28, time: "2小时前" },
+  { id: "1", productZh: "冰拿铁", productEn: "Iced Latte", beans: 30, time: "刚刚" },
+  { id: "2", productZh: "澳白", productEn: "Flat White", beans: 30, time: "5分钟前" },
+  { id: "3", productZh: "美式", productEn: "Americano", beans: 24, time: "12分钟前" },
+  { id: "4", productZh: "卡布奇诺", productEn: "Cappuccino", beans: 32, time: "28分钟前" },
+  { id: "5", productZh: "摩卡", productEn: "Mocha", beans: 35, time: "1小时前" },
 ];
 
 // 豆转人民币
@@ -38,6 +40,7 @@ const beansToRMB = (beans: number) => (beans / 100).toFixed(2);
 
 const MySquad = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [showPoster, setShowPoster] = useState(false);
 
@@ -45,27 +48,29 @@ const MySquad = () => {
     try {
       await navigator.clipboard.writeText(squadStats.inviteCode);
       setCopied(true);
-      toast({ title: "复制成功", description: "邀请码已复制" });
+      toast({ title: t("复制成功", "Copied"), description: t("邀请码已复制", "Invite code copied") });
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast({ title: "复制失败", variant: "destructive" });
+      toast({ title: t("复制失败", "Copy failed"), variant: "destructive" });
     }
   };
 
   const handleShare = async () => {
     const shareData = {
-      title: 'KAKAGO 咖啡联盟',
-      text: `使用我的邀请码 ${squadStats.inviteCode} 加入KAKAGO，首杯立减5元！`,
+      title: 'KAKAGO',
+      text: t(
+        `使用我的邀请码 ${squadStats.inviteCode} 加入KAKAGO，首杯立减5元！`,
+        `Join KAKAGO with my code ${squadStats.inviteCode} and get ¥5 off!`
+      ),
       url: window.location.origin,
     };
 
     try {
       if (navigator.share) {
         await navigator.share(shareData);
-        toast({ title: "分享成功" });
       } else {
         await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-        toast({ title: "已复制分享内容", description: "可粘贴到微信发送" });
+        toast({ title: t("已复制分享内容", "Copied share content") });
       }
     } catch {
       // User cancelled share
@@ -83,96 +88,25 @@ const MySquad = () => {
           >
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <h1 className="text-base font-semibold text-white">拉帮结派</h1>
+          <h1 className="text-base font-semibold text-white">{t("拉帮结派", "My Squad")}</h1>
           <div className="w-9" />
         </div>
       </header>
 
-      {/* Compact Scoreboard - KAKA豆 */}
-      <section className="px-4 pt-4 pb-3">
-        <div className="card-lg bg-gradient-to-br from-amber-500/20 to-orange-600/20 border-amber-500/20">
-          <div className="flex items-center justify-between">
-            {/* Total Beans */}
-            <div>
-              <p className="text-white/50 text-xs mb-0.5">累计获得 KAKA豆</p>
-              <div className="flex items-baseline gap-1">
-                <Bean className="w-5 h-5 text-amber-400" />
-                <span className="text-3xl font-black text-amber-400">
-                  {squadStats.totalBeans.toLocaleString()}
-                </span>
-              </div>
-              <p className="text-[10px] text-white/40 mt-1">≈ ¥{beansToRMB(squadStats.totalBeans)}</p>
-            </div>
-            
-            {/* Stats */}
-            <div className="flex gap-4">
-              <div className="text-center">
-                <div className="flex items-center gap-1">
-                  <Users className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-xl font-bold text-white">{squadStats.squadSize}</span>
-                </div>
-                <p className="text-[10px] text-white/50">队员</p>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center gap-1">
-                  <TrendingUp className="w-3.5 h-3.5 text-green-400" />
-                  <span className="text-xl font-bold text-white">+{squadStats.todayGrowth}</span>
-                </div>
-                <p className="text-[10px] text-white/50">今日</p>
-              </div>
-            </div>
+      {/* Brand Header */}
+      <section className="px-4 pt-6 pb-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">{t("拉帮结派", "My Squad")}</h1>
+            <p className="text-sm text-white/50 mt-0.5">
+              {t("邀请好友 · 终身返利", "Invite & Earn Forever")}
+            </p>
           </div>
-        </div>
-      </section>
-
-      {/* Rules Banner */}
-      <section className="px-4 pb-3">
-        <div className="card-sm bg-primary/10 border-primary/20">
-          <p className="text-xs text-white/70 text-center">
-            队员每次消费，你获得 <span className="text-amber-400 font-bold">2%</span> KAKA豆返利 · 终身有效 · 可兑换咖啡
-          </p>
-        </div>
-      </section>
-
-      {/* Invite Card - Compact */}
-      <section className="px-4 pb-3">
-        <div className="card-md">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center">
-                <QrCode className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-white">邀请码</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-mono text-sm font-bold">{squadStats.inviteCode}</span>
-                  <button onClick={handleCopyCode} className="p-1">
-                    {copied ? (
-                      <Check className="w-3.5 h-3.5 text-green-400" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5 text-white/50" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowPoster(true)}
-                className="px-3 py-2 rounded-lg bg-secondary text-xs font-medium text-white/80 hover:bg-secondary/80 transition-colors"
-              >
-                海报
-              </button>
-              <button
-                onClick={handleShare}
-                className="px-3 py-2 rounded-lg bg-primary text-xs font-medium text-white flex items-center gap-1 hover:bg-primary/80 transition-colors"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                转发
-              </button>
-            </div>
+          <div className="flex items-center gap-1.5 bg-primary/20 border border-primary/30 px-3 py-1.5 rounded-full">
+            <Users className="w-3.5 h-3.5 text-primary" />
+            <span className="text-xs text-primary font-medium">
+              2% {t("返利", "Cashback")}
+            </span>
           </div>
         </div>
       </section>
@@ -180,38 +114,150 @@ const MySquad = () => {
       {/* Fog Divider */}
       <div className="fog-divider mx-4" />
 
-      {/* Commission Stream - Compact */}
-      <section className="px-4 py-3">
-        <div className="flex items-center justify-between mb-2 px-1">
-          <h3 className="text-sm font-medium text-white/70">返豆流水</h3>
-          <span className="text-[10px] text-white/40">2% 返利</span>
-        </div>
-        
-        <div className="card-premium overflow-hidden">
-          {recentCommissions.map((item, index) => (
-            <div
-              key={item.id}
-              className={`flex items-center justify-between px-3 py-2.5 ${
-                index !== recentCommissions.length - 1 ? "border-b border-white/5" : ""
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Coffee className="w-4 h-4 text-primary/60" />
-                <div>
-                  <p className="text-xs text-white/70">
-                    队员购买了 <span className="text-primary">{item.product}</span>
-                  </p>
-                  <p className="text-[10px] text-white/30">{item.time}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="text-amber-400 font-bold text-sm flex items-center gap-0.5">
-                  +{item.beans} <Bean className="w-3 h-3" />
+      {/* Stats Card - Purple Theme */}
+      <section className="px-4 py-4">
+        <div className="card-lg">
+          {/* Main Stats Row */}
+          <div className="flex items-center gap-4">
+            {/* Total Beans Icon */}
+            <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center">
+              <Coins className="w-7 h-7 text-primary" />
+            </div>
+            
+            {/* Total Beans */}
+            <div className="flex-1">
+              <p className="text-xs text-white/50 mb-0.5">{t("累计获得 KAKA豆", "Total Earned")}</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-black text-primary">
+                  {squadStats.totalBeans.toLocaleString()}
                 </span>
-                <p className="text-[9px] text-white/30">≈¥{beansToRMB(item.beans)}</p>
+              </div>
+              <p className="text-[10px] text-white/40 mt-0.5">≈ ¥{beansToRMB(squadStats.totalBeans)}</p>
+            </div>
+            
+            {/* Quick Stats */}
+            <div className="flex gap-4">
+              <div className="text-center">
+                <div className="flex items-center gap-1 justify-center">
+                  <Users className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-xl font-bold text-white">{squadStats.squadSize}</span>
+                </div>
+                <p className="text-[10px] text-white/50">{t("队员", "Members")}</p>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center gap-1 justify-center">
+                  <TrendingUp className="w-3.5 h-3.5 text-green-400" />
+                  <span className="text-xl font-bold text-green-400">+{squadStats.todayGrowth}</span>
+                </div>
+                <p className="text-[10px] text-white/50">{t("今日", "Today")}</p>
               </div>
             </div>
-          ))}
+          </div>
+          
+          {/* Divider */}
+          <div className="h-px bg-white/10 my-4" />
+          
+          {/* Benefits Row - Simplified Graphics */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="flex flex-col items-center gap-1.5 py-2">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <span className="text-primary font-black text-sm">2%</span>
+              </div>
+              <p className="text-[10px] text-white/50 text-center">{t("豆豆返利", "Rebate")}</p>
+            </div>
+            <div className="flex flex-col items-center gap-1.5 py-2">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Infinity className="w-4 h-4 text-primary" />
+              </div>
+              <p className="text-[10px] text-white/50 text-center">{t("终身有效", "Lifetime")}</p>
+            </div>
+            <div className="flex flex-col items-center gap-1.5 py-2">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Coffee className="w-4 h-4 text-primary" />
+              </div>
+              <p className="text-[10px] text-white/50 text-center">{t("兑换咖啡", "Redeem")}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Invite Card */}
+      <section className="px-4 pb-4">
+        <div className="card-md flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+              <QrCode className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <p className="text-xs text-white/50">{t("我的邀请码", "Invite Code")}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-primary font-mono font-bold">{squadStats.inviteCode}</span>
+                <button onClick={handleCopyCode} className="p-1">
+                  {copied ? (
+                    <Check className="w-3.5 h-3.5 text-green-400" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5 text-white/50 hover:text-white transition-colors" />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Share Button */}
+          <button
+            onClick={handleShare}
+            className="btn-gold px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-1.5"
+          >
+            <MessageCircle className="w-4 h-4" />
+            {t("邀请", "Invite")}
+          </button>
+        </div>
+      </section>
+
+      {/* Fog Divider */}
+      <div className="fog-divider mx-4" />
+
+      {/* Section Header */}
+      <section className="px-4 pt-4 pb-2">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-medium text-white/70">
+            {t("返豆流水", "Commission History")}
+          </h2>
+          <span className="text-xs text-white/40">2% {t("返利", "rebate")}</span>
+        </div>
+      </section>
+
+      {/* Commission List */}
+      <section className="px-4 space-y-2">
+        {recentCommissions.map((item, index) => (
+          <div
+            key={item.id}
+            className="card-sm flex items-center justify-between"
+            style={{ animationDelay: `${index * 0.03}s` }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                <Coffee className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-white">
+                  {t("队员购买", "Member bought")} <span className="text-primary">{t(item.productZh, item.productEn)}</span>
+                </p>
+                <p className="text-[10px] text-white/40">{item.time}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-primary font-bold">+{item.beans}</span>
+              <p className="text-[9px] text-white/40">≈¥{beansToRMB(item.beans)}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* Quick Info Footer */}
+      <section className="px-4 py-4">
+        <div className="flex items-center justify-center text-xs text-white/30">
+          <span>{t("💜 队员每次消费你都能获得2%返利", "💜 Earn 2% on every member purchase")}</span>
         </div>
       </section>
 
@@ -223,50 +269,47 @@ const MySquad = () => {
             onClick={() => setShowPoster(false)}
           />
           <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[85] max-w-sm mx-auto">
-            {/* Poster Card */}
-            <div className="bg-gradient-to-br from-[#1a1025] to-[#0d0a12] rounded-2xl overflow-hidden border border-primary/20 shadow-glow">
+            <div className="card-lg bg-gradient-to-br from-[#1a1025] to-[#0d0a12]">
               {/* Poster Content */}
-              <div className="p-6 text-center">
-                {/* Brand */}
+              <div className="text-center">
                 <h2 className="text-2xl font-black text-white tracking-tight mb-1">KAKAGO</h2>
-                <p className="text-xs text-white/50 mb-6">城市精品咖啡联盟</p>
+                <p className="text-xs text-white/50 mb-6">{t("城市精品咖啡联盟", "Urban Specialty Coffee")}</p>
                 
                 {/* QR Placeholder */}
-                <div className="w-40 h-40 mx-auto bg-white rounded-xl p-3 mb-4">
+                <div className="w-36 h-36 mx-auto bg-white rounded-xl p-3 mb-4">
                   <div className="w-full h-full bg-gradient-to-br from-primary/20 to-purple-dark/20 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/30">
-                    <QrCode className="w-16 h-16 text-primary" />
+                    <QrCode className="w-12 h-12 text-primary" />
                   </div>
                 </div>
                 
                 {/* Invite Code */}
-                <div className="bg-amber-500/20 rounded-lg px-4 py-2 inline-block mb-4">
-                  <p className="text-[10px] text-white/50 mb-0.5">邀请码</p>
-                  <p className="text-lg font-mono font-black text-amber-400 tracking-wider">{squadStats.inviteCode}</p>
+                <div className="bg-primary/20 rounded-xl px-4 py-2 inline-block mb-4">
+                  <p className="text-[10px] text-white/50 mb-0.5">{t("邀请码", "Code")}</p>
+                  <p className="text-lg font-mono font-black text-primary tracking-wider">{squadStats.inviteCode}</p>
                 </div>
                 
-                {/* Benefit */}
                 <p className="text-sm text-white/70">
-                  扫码加入，首杯立减 <span className="text-primary font-bold">¥5</span>
+                  {t("扫码加入，首杯立减", "Join now, get")} <span className="text-primary font-bold">¥5</span> {t("", "off")}
                 </p>
               </div>
               
               {/* Actions */}
-              <div className="px-4 pb-4 flex gap-2">
+              <div className="flex gap-2 mt-6">
                 <button
                   onClick={() => setShowPoster(false)}
                   className="flex-1 py-3 rounded-xl bg-secondary text-white/70 text-sm font-medium"
                 >
-                  关闭
+                  {t("关闭", "Close")}
                 </button>
                 <button
                   onClick={() => {
                     handleShare();
                     setShowPoster(false);
                   }}
-                  className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-bold flex items-center justify-center gap-2"
+                  className="flex-1 py-3 rounded-xl btn-gold text-sm font-bold flex items-center justify-center gap-2"
                 >
                   <Share2 className="w-4 h-4" />
-                  转发微信
+                  {t("分享", "Share")}
                 </button>
               </div>
             </div>
