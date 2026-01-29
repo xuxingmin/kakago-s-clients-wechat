@@ -12,7 +12,7 @@ const Profile = () => {
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
       <header className="relative safe-top">
-        <div className="h-32 bg-gradient-to-b from-charcoal to-background" />
+        <div className="h-32 bg-gradient-to-b from-mist to-background" />
         
         {/* User Info */}
         <div className="px-4 -mt-12 max-w-md mx-auto">
