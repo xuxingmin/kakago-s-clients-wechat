@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      merchant_rating_stats: {
+        Row: {
+          avg_overall_rating: number | null
+          avg_packaging_rating: number | null
+          avg_taste_rating: number | null
+          avg_timeliness_rating: number | null
+          dispatch_score: number | null
+          merchant_id: string
+          total_orders: number
+          total_ratings: number
+          updated_at: string
+        }
+        Insert: {
+          avg_overall_rating?: number | null
+          avg_packaging_rating?: number | null
+          avg_taste_rating?: number | null
+          avg_timeliness_rating?: number | null
+          dispatch_score?: number | null
+          merchant_id: string
+          total_orders?: number
+          total_ratings?: number
+          updated_at?: string
+        }
+        Update: {
+          avg_overall_rating?: number | null
+          avg_packaging_rating?: number | null
+          avg_taste_rating?: number | null
+          avg_timeliness_rating?: number | null
+          dispatch_score?: number | null
+          merchant_id?: string
+          total_orders?: number
+          total_ratings?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_rating_stats_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: true
+            referencedRelation: "merchants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       merchants: {
         Row: {
           address: string
@@ -76,6 +120,190 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      order_ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          merchant_id: string
+          order_id: string
+          overall_rating: number | null
+          packaging_rating: number
+          taste_rating: number
+          timeliness_rating: number
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          merchant_id: string
+          order_id: string
+          overall_rating?: number | null
+          packaging_rating: number
+          taste_rating: number
+          timeliness_rating: number
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          merchant_id?: string
+          order_id?: string
+          overall_rating?: number | null
+          packaging_rating?: number
+          taste_rating?: number
+          timeliness_rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_ratings_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_ratings_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_status_history: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          order_id: string
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          order_id: string
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          order_id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          delivered_at: string | null
+          delivery_address: string
+          delivery_contact_name: string
+          delivery_contact_phone: string
+          delivery_lat: number | null
+          delivery_lng: number | null
+          delivery_order_id: string | null
+          delivery_platform: string | null
+          id: string
+          merchant_id: string
+          picked_up_at: string | null
+          price: number
+          product_image: string | null
+          product_name: string
+          quantity: number
+          rider_assigned_at: string | null
+          rider_avatar: string | null
+          rider_lat: number | null
+          rider_lng: number | null
+          rider_name: string | null
+          rider_phone: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          delivery_address: string
+          delivery_contact_name: string
+          delivery_contact_phone: string
+          delivery_lat?: number | null
+          delivery_lng?: number | null
+          delivery_order_id?: string | null
+          delivery_platform?: string | null
+          id?: string
+          merchant_id: string
+          picked_up_at?: string | null
+          price: number
+          product_image?: string | null
+          product_name: string
+          quantity?: number
+          rider_assigned_at?: string | null
+          rider_avatar?: string | null
+          rider_lat?: number | null
+          rider_lng?: number | null
+          rider_name?: string | null
+          rider_phone?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          delivery_address?: string
+          delivery_contact_name?: string
+          delivery_contact_phone?: string
+          delivery_lat?: number | null
+          delivery_lng?: number | null
+          delivery_order_id?: string | null
+          delivery_platform?: string | null
+          id?: string
+          merchant_id?: string
+          picked_up_at?: string | null
+          price?: number
+          product_image?: string | null
+          product_name?: string
+          quantity?: number
+          rider_assigned_at?: string | null
+          rider_avatar?: string | null
+          rider_lat?: number | null
+          rider_lng?: number | null
+          rider_name?: string | null
+          rider_phone?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       spatial_ref_sys: {
         Row: {
@@ -1079,7 +1307,14 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      order_status:
+        | "pending"
+        | "accepted"
+        | "rider_assigned"
+        | "picked_up"
+        | "delivered"
+        | "rated"
+        | "cancelled"
     }
     CompositeTypes: {
       geometry_dump: {
@@ -1214,6 +1449,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      order_status: [
+        "pending",
+        "accepted",
+        "rider_assigned",
+        "picked_up",
+        "delivered",
+        "rated",
+        "cancelled",
+      ],
+    },
   },
 } as const
