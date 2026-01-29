@@ -80,7 +80,7 @@ const Profile = () => {
       Icon: Store, 
       label: "成为合作商家", 
       description: "加入我们，一起成长",
-      onClick: () => {},
+      onClick: () => navigate("/merchant-auth"),
     },
   ];
 
