@@ -10,8 +10,7 @@ import {
   QrCode,
   Sparkles,
   Coffee,
-  Check,
-  Crown
+  Check
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { toast } from "@/hooks/use-toast";
@@ -65,44 +64,37 @@ const MySquad = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-950 pb-24">
+    <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-zinc-900/90 backdrop-blur-md border-b border-amber-500/20 safe-top">
+      <header className="sticky top-0 z-40 glass border-b border-border safe-top">
         <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
           <button 
             onClick={() => navigate("/profile")}
-            className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center border border-amber-500/30"
+            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
           >
-            <ChevronLeft className="w-5 h-5 text-amber-400" />
+            <ChevronLeft className="w-5 h-5 text-foreground" />
           </button>
-          <div className="flex items-center gap-2">
-            <Crown className="w-5 h-5 text-amber-400" />
-            <h1 className="text-base font-bold text-amber-400">拉帮结派</h1>
-          </div>
+          <h1 className="text-base font-semibold text-foreground">拉帮结派</h1>
           <div className="w-9" />
         </div>
       </header>
 
       {/* Scoreboard Section */}
       <section className="px-4 py-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 p-6 shadow-2xl shadow-amber-500/20">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-500 to-primary/80 p-6 shadow-xl shadow-primary/20">
           {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-          </div>
-          
-          {/* Sparkle Effects */}
-          <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white/40 animate-pulse" />
+          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+          <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white/30 animate-pulse" />
           
           <div className="relative">
             {/* Total Earned */}
             <div className="text-center mb-6">
-              <p className="text-amber-100/80 text-sm font-medium mb-2">
+              <p className="text-white/70 text-sm font-medium mb-2">
                 Lifetime Passive Income
               </p>
               <div className="flex items-baseline justify-center gap-1">
-                <span className="text-white/80 text-2xl font-bold">¥</span>
+                <span className="text-white/70 text-2xl font-bold">¥</span>
                 <span className="text-5xl font-black text-white tracking-tight">
                   {squadStats.totalEarned.toLocaleString('zh-CN', { minimumFractionDigits: 2 })}
                 </span>
@@ -116,7 +108,7 @@ const MySquad = () => {
                   <Users className="w-4 h-4 text-white/70" />
                   <span className="text-2xl font-bold text-white">{squadStats.squadSize}</span>
                 </div>
-                <p className="text-xs text-amber-100/70">Squad Members</p>
+                <p className="text-xs text-white/60">Squad Members</p>
               </div>
               <div className="w-px bg-white/20" />
               <div className="text-center">
@@ -124,7 +116,7 @@ const MySquad = () => {
                   <TrendingUp className="w-4 h-4 text-white/70" />
                   <span className="text-2xl font-bold text-white">+{squadStats.todayGrowth}</span>
                 </div>
-                <p className="text-xs text-amber-100/70">Today's Growth</p>
+                <p className="text-xs text-white/60">Today's Growth</p>
               </div>
             </div>
           </div>
@@ -133,43 +125,43 @@ const MySquad = () => {
 
       {/* Invite Tools Section */}
       <section className="px-4 mb-6">
-        <div className="rounded-2xl bg-zinc-800/80 border border-zinc-700/50 overflow-hidden">
+        <div className="card-premium overflow-hidden">
           {/* Header */}
-          <div className="px-5 py-4 border-b border-zinc-700/50">
+          <div className="px-5 py-4 border-b border-border">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                <Users className="w-4 h-4 text-amber-400" />
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Users className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <h3 className="font-bold text-white">Recruit New Members</h3>
-                <p className="text-xs text-zinc-400">招募新成员</p>
+                <h3 className="font-semibold text-foreground">Recruit New Members</h3>
+                <p className="text-xs text-muted-foreground">招募新成员</p>
               </div>
             </div>
           </div>
           
           {/* Poster Preview */}
           <div className="p-5">
-            <div className="relative rounded-xl bg-gradient-to-br from-zinc-900 to-zinc-800 border border-amber-500/30 p-4 mb-4">
+            <div className="relative rounded-xl bg-secondary/50 border border-border p-4 mb-4">
               {/* Mini Poster Preview */}
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                  <QrCode className="w-12 h-12 text-amber-400" />
+                <div className="w-20 h-20 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <QrCode className="w-12 h-12 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-white font-semibold text-sm">您的专属推广海报</p>
-                  <p className="text-zinc-400 text-xs mt-1">扫码即成为您的永久队员</p>
+                  <p className="text-foreground font-semibold text-sm">您的专属推广海报</p>
+                  <p className="text-muted-foreground text-xs mt-1">扫码即成为您的永久队员</p>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-amber-400 font-mono text-xs bg-amber-500/10 px-2 py-0.5 rounded">
+                    <span className="text-primary font-mono text-xs bg-primary/10 px-2 py-0.5 rounded">
                       {squadStats.inviteCode}
                     </span>
                     <button
                       onClick={handleCopyCode}
-                      className="p-1 rounded hover:bg-zinc-700 transition-colors"
+                      className="p-1 rounded hover:bg-secondary transition-colors"
                     >
                       {copied ? (
-                        <Check className="w-3.5 h-3.5 text-green-400" />
+                        <Check className="w-3.5 h-3.5 text-green-500" />
                       ) : (
-                        <Copy className="w-3.5 h-3.5 text-zinc-400" />
+                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
                       )}
                     </button>
                   </div>
@@ -180,13 +172,13 @@ const MySquad = () => {
             {/* Generate Button */}
             <button
               onClick={handleGeneratePoster}
-              className="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-900 font-bold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20 active:scale-[0.98]"
+              className="w-full py-4 rounded-2xl btn-gold font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
             >
               <Share2 className="w-5 h-5" />
               Generate My Poster
             </button>
             
-            <p className="text-center text-zinc-500 text-xs mt-3">
+            <p className="text-center text-muted-foreground text-xs mt-3">
               分享到微信群，扫码者将成为您的永久队员
             </p>
           </div>
@@ -197,34 +189,34 @@ const MySquad = () => {
       <section className="px-4 mb-6">
         <div className="flex items-center justify-between mb-3 px-1">
           <div className="flex items-center gap-2">
-            <Coins className="w-5 h-5 text-amber-400" />
-            <h3 className="font-bold text-white">Money Stream</h3>
+            <Coins className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-foreground">Money Stream</h3>
           </div>
-          <span className="text-xs text-zinc-500">实时收益</span>
+          <span className="text-xs text-muted-foreground">实时收益</span>
         </div>
         
-        <div className="rounded-2xl bg-zinc-800/80 border border-zinc-700/50 overflow-hidden">
+        <div className="card-premium overflow-hidden">
           {recentCommissions.map((item, index) => (
             <div
               key={item.id}
               className={`flex items-center justify-between px-4 py-3.5 ${
-                index !== recentCommissions.length - 1 ? "border-b border-zinc-700/50" : ""
+                index !== recentCommissions.length - 1 ? "border-b border-border" : ""
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-zinc-700/50 flex items-center justify-center">
-                  <Coffee className="w-4 h-4 text-amber-400" />
+                <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center">
+                  <Coffee className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-white">
-                    <span className="text-zinc-400">{item.userName}</span>
+                  <p className="text-sm text-foreground">
+                    <span className="text-muted-foreground">{item.userName}</span>
                     {" "}bought{" "}
-                    <span className="text-amber-400">{item.product}</span>
+                    <span className="text-primary font-medium">{item.product}</span>
                   </p>
-                  <p className="text-xs text-zinc-500">{item.time}</p>
+                  <p className="text-xs text-muted-foreground">{item.time}</p>
                 </div>
               </div>
-              <span className="text-amber-400 font-bold">
+              <span className="text-primary font-bold">
                 +¥{item.amount.toFixed(2)}
               </span>
             </div>
@@ -232,32 +224,7 @@ const MySquad = () => {
         </div>
       </section>
 
-      {/* Custom Dark Bottom Nav Override */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 safe-bottom z-50">
-        <div className="flex justify-around items-center h-16 max-w-md mx-auto">
-          <button 
-            onClick={() => navigate("/")}
-            className="flex flex-col items-center justify-center gap-1 px-6 py-2 text-zinc-500"
-          >
-            <Coffee className="w-5 h-5" />
-            <span className="text-xs">首页</span>
-          </button>
-          <button 
-            onClick={() => navigate("/orders")}
-            className="flex flex-col items-center justify-center gap-1 px-6 py-2 text-zinc-500"
-          >
-            <Coins className="w-5 h-5" />
-            <span className="text-xs">订单</span>
-          </button>
-          <button 
-            onClick={() => navigate("/profile")}
-            className="flex flex-col items-center justify-center gap-1 px-6 py-2 text-amber-400"
-          >
-            <Users className="w-5 h-5" />
-            <span className="text-xs">我的</span>
-          </button>
-        </div>
-      </nav>
+      <BottomNav />
     </div>
   );
 };

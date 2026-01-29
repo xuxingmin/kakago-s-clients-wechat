@@ -5,18 +5,15 @@ import {
   Wallet, 
   Coffee, 
   ClipboardList, 
-  Share2, 
   HelpCircle, 
   Store, 
   ChevronRight,
-  Crown,
   Users,
   TrendingUp,
   Sparkles,
   LucideIcon
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/BottomNav";
 import { 
   IdentityVerificationModal, 
@@ -35,7 +32,6 @@ interface MenuItem {
   Icon: LucideIcon;
   label: string;
   description: string;
-  badge?: string;
   onClick: () => void;
 }
 
@@ -45,13 +41,12 @@ const Profile = () => {
   const [currentIdentity, setCurrentIdentity] = useState<IdentityType>("fan");
 
   const identityBadge = getIdentityBadge(currentIdentity);
-  const IdentityIcon = identityBadge.icon;
 
   const assetItems: AssetItem[] = [
     { 
       Icon: Ticket, 
       value: "3", 
-      label: "张优惠券",
+      label: "优惠券",
       onClick: () => navigate("/wallet"),
     },
     { 
@@ -76,13 +71,6 @@ const Profile = () => {
       onClick: () => navigate("/orders"),
     },
     { 
-      Icon: Share2, 
-      label: "分享赚佣金", 
-      description: "邀请好友，享1%返佣",
-      badge: "热门",
-      onClick: () => navigate("/share-earn"),
-    },
-    { 
       Icon: HelpCircle, 
       label: "帮助与支持", 
       description: "常见问题与联系客服",
@@ -98,54 +86,87 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header with Avatar */}
-      <header className="relative pt-8 pb-4 safe-top">
-        {/* Gradient Background */}
-        <div className="absolute inset-0 h-32 bg-gradient-to-br from-primary/20 via-lavender to-background" />
-        
-        {/* User Card */}
-        <div className="relative px-4 pt-4 max-w-md mx-auto">
-          <div className="card-premium p-5">
-            <div className="flex items-center gap-4">
-              {/* Avatar */}
-              <Avatar className="w-16 h-16 border-2 border-primary/30 shadow-lg">
-                <AvatarImage src="/placeholder.svg" alt="用户头像" />
-                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-primary-foreground text-xl font-bold">
-                  咖
-                </AvatarFallback>
-              </Avatar>
-              
-              <div className="flex-1">
-                {/* Nickname */}
-                <h2 className="text-lg font-bold text-foreground">
-                  咖啡探索家
-                </h2>
-                
-                {/* Identity Badge - Clickable */}
-                <button
-                  onClick={() => setIdentityModalOpen(true)}
-                  className={`inline-flex items-center gap-1 mt-1.5 px-2.5 py-1 rounded-full border text-xs font-medium transition-all hover:scale-105 active:scale-95 ${identityBadge.color}`}
-                >
-                  <IdentityIcon className="w-3 h-3" />
-                  <span>☕️ {identityBadge.label}</span>
-                  <ChevronRight className="w-3 h-3 opacity-50" />
-                </button>
-                
-                {/* Member Level Badge */}
-                <div className="flex items-center gap-1.5 mt-1.5">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-gradient-to-r from-amber-100 to-amber-50 text-amber-700 border border-amber-200/50 gap-1 px-2 py-0.5"
-                  >
-                    <Crown className="w-3 h-3" />
-                    <span className="text-xs font-medium">Coffee Explorer</span>
-                  </Badge>
-                </div>
-              </div>
+      {/* Minimal Header */}
+      <header className="px-4 pt-12 pb-4 safe-top max-w-md mx-auto">
+        <div className="flex items-center justify-between">
+          {/* User Info - Minimal */}
+          <div className="flex items-center gap-3">
+            <Avatar className="w-12 h-12 border-2 border-primary/20">
+              <AvatarImage src="/placeholder.svg" alt="用户头像" />
+              <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                咖
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h2 className="text-base font-semibold text-foreground">咖啡探索家</h2>
+              <button
+                onClick={() => setIdentityModalOpen(true)}
+                className="text-xs text-muted-foreground flex items-center gap-1 hover:text-primary transition-colors"
+              >
+                <span>☕️ {identityBadge.label}</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
             </div>
           </div>
         </div>
       </header>
+
+      {/* My Squad Card - Hero Section */}
+      <section className="px-4 max-w-md mx-auto">
+        <button
+          onClick={() => navigate("/my-squad")}
+          className="w-full relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-500 to-primary/80 p-6 shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-[0.98]"
+        >
+          {/* Background Decorations */}
+          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+          <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white/30 animate-pulse" />
+          
+          <div className="relative">
+            {/* Header */}
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                <Users className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left">
+                <h3 className="font-bold text-white">拉帮结派</h3>
+                <p className="text-xs text-white/70">My Squad · 邀请返佣</p>
+              </div>
+            </div>
+            
+            {/* Stats */}
+            <div className="flex items-end justify-between">
+              <div className="text-left">
+                <p className="text-white/70 text-xs mb-1">累计收益</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-black text-white">¥1,240</span>
+                  <span className="text-white/60 text-sm">.50</span>
+                </div>
+              </div>
+              
+              <div className="text-right">
+                <div className="flex items-center gap-3">
+                  <div>
+                    <p className="text-xl font-bold text-white">348</p>
+                    <p className="text-xs text-white/60">队员</p>
+                  </div>
+                  <div className="h-8 w-px bg-white/20" />
+                  <div className="flex items-center gap-1 text-green-300">
+                    <TrendingUp className="w-4 h-4" />
+                    <span className="text-sm font-semibold">+12</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* CTA */}
+            <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+              <span className="text-sm text-white/80">邀请好友，享永久返佣</span>
+              <ChevronRight className="w-5 h-5 text-white/60" />
+            </div>
+          </div>
+        </button>
+      </section>
 
       {/* Asset Bar */}
       <section className="px-4 mt-4 max-w-md mx-auto">
@@ -173,45 +194,6 @@ const Profile = () => {
         </div>
       </section>
 
-      {/* My Squad Card - Entry Point */}
-      <section className="px-4 mt-4 max-w-md mx-auto">
-        <button
-          onClick={() => navigate("/my-squad")}
-          className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-5 border border-amber-500/30 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 transition-all active:scale-[0.98]"
-        >
-          {/* Background Decorations */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <Sparkles className="absolute top-3 right-3 w-5 h-5 text-amber-400/50 animate-pulse" />
-          
-          <div className="relative flex items-center gap-4">
-            {/* Icon */}
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
-              <Users className="w-7 h-7 text-zinc-900" />
-            </div>
-            
-            {/* Content */}
-            <div className="flex-1 text-left">
-              <div className="flex items-center gap-2">
-                <h3 className="font-bold text-white">拉帮结派</h3>
-                <span className="text-[10px] font-medium text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full">
-                  My Squad
-                </span>
-              </div>
-              <p className="text-xs text-zinc-400 mt-1">
-                348 Members · ¥1,240 Earned
-              </p>
-              <div className="flex items-center gap-1 mt-1.5 text-xs text-green-400">
-                <TrendingUp className="w-3 h-3" />
-                <span>+12 today</span>
-              </div>
-            </div>
-            
-            <ChevronRight className="w-5 h-5 text-amber-400" />
-          </div>
-        </button>
-      </section>
-
-
       {/* Menu List */}
       <section className="px-4 mt-4 max-w-md mx-auto">
         <div className="card-premium overflow-hidden">
@@ -229,14 +211,7 @@ const Profile = () => {
                   <IconComponent className="w-5 h-5 text-primary" />
                 </div>
                 <div className="flex-1 text-left">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium text-foreground">{item.label}</p>
-                    {item.badge && (
-                      <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                        {item.badge}
-                      </span>
-                    )}
-                  </div>
+                  <p className="font-medium text-foreground">{item.label}</p>
                   <p className="text-xs text-muted-foreground">{item.description}</p>
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground" />
