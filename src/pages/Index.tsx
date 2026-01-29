@@ -20,26 +20,8 @@ interface Coupon {
   applicableProducts?: string[];
 }
 
-// 用户可用优惠券
-const userCoupons: Coupon[] = [
-  {
-    id: "coupon-001",
-    type: "universal",
-    value: 5,
-  },
-  {
-    id: "coupon-002",
-    type: "americano",
-    value: 8,
-    applicableProducts: ["hot-americano", "iced-americano"],
-  },
-  {
-    id: "coupon-003",
-    type: "latte",
-    value: 6,
-    applicableProducts: ["hot-latte", "iced-latte"],
-  },
-];
+// 用户可用优惠券（测试：空数组模拟无优惠券场景）
+const userCoupons: Coupon[] = [];
 
 // 产品数据 - 6款精选咖啡 (bilingual)
 const products = [
