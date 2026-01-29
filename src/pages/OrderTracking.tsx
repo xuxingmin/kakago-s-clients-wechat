@@ -10,21 +10,13 @@ import {
   Navigation,
   CheckCircle2,
   Clock,
-  Package
+  Package,
+  X
 } from "lucide-react";
 import { MultiDimensionRatingModal } from "@/components/MultiDimensionRatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 type OrderState = "pending" | "accepted" | "rider_assigned" | "picked_up" | "delivered" | "rating";
 
 // Radar Scanner Component - Minimal
@@ -622,61 +614,118 @@ const OrderTracking = () => {
         onSubmit={handleRatingSubmit}
       />
 
-      {/* Navigate Dialog */}
-      <AlertDialog open={showNavigateDialog} onOpenChange={setShowNavigateDialog}>
-        <AlertDialogContent className="bg-card border-white/10 max-w-[90vw] rounded-2xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-white flex items-center gap-2">
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] transition-opacity duration-300 ${
+          showNavigateDialog || showContactDialog ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => {
+          setShowNavigateDialog(false);
+          setShowContactDialog(false);
+        }}
+      />
+
+      {/* Navigate Bottom Sheet */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-[70] transition-transform duration-300 ease-out ${
+          showNavigateDialog ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="bg-card rounded-t-3xl max-w-md mx-auto">
+          {/* Handle */}
+          <div className="flex justify-center pt-3 pb-2">
+            <div className="w-10 h-1 bg-border rounded-full" />
+          </div>
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 pb-4 border-b border-border">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <Navigation className="w-5 h-5 text-primary" />
               导航到门店
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-white/60 space-y-2">
-              <p className="font-medium text-white">{getMerchantInfo().name}</p>
-              <p className="text-sm">{getMerchantInfo().address}</p>
-              <p className="text-xs text-white/40 mt-2">将打开高德地图为您导航</p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-row gap-2">
-            <AlertDialogCancel className="flex-1 m-0 bg-secondary border-0 text-white hover:bg-secondary/80">
+            </h3>
+            <button
+              onClick={() => setShowNavigateDialog(false)}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="px-6 py-6 space-y-3">
+            <p className="text-base font-medium text-white">{getMerchantInfo().name}</p>
+            <p className="text-sm text-white/60">{getMerchantInfo().address}</p>
+            <p className="text-xs text-white/40 pt-2">将打开高德地图为您导航</p>
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 py-4 border-t border-border safe-bottom flex gap-3">
+            <button
+              onClick={() => setShowNavigateDialog(false)}
+              className="flex-1 py-3 rounded-xl bg-secondary text-white font-medium hover:bg-secondary/80 transition-colors"
+            >
               取消
-            </AlertDialogCancel>
-            <AlertDialogAction 
+            </button>
+            <button
               onClick={confirmNavigateToStore}
-              className="flex-1 m-0 bg-primary text-white hover:bg-primary/90"
+              className="flex-1 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors"
             >
               开始导航
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </button>
+          </div>
+        </div>
+      </div>
 
-      {/* Contact Dialog */}
-      <AlertDialog open={showContactDialog} onOpenChange={setShowContactDialog}>
-        <AlertDialogContent className="bg-card border-white/10 max-w-[90vw] rounded-2xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-white flex items-center gap-2">
+      {/* Contact Bottom Sheet */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-[70] transition-transform duration-300 ease-out ${
+          showContactDialog ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="bg-card rounded-t-3xl max-w-md mx-auto">
+          {/* Handle */}
+          <div className="flex justify-center pt-3 pb-2">
+            <div className="w-10 h-1 bg-border rounded-full" />
+          </div>
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 pb-4 border-b border-border">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <Phone className="w-5 h-5 text-green-500" />
               联系门店
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-white/60 space-y-2">
-              <p className="font-medium text-white">{getMerchantInfo().name}</p>
-              <p className="text-2xl font-bold text-primary mt-2">{getMerchantInfo().phone}</p>
-              <p className="text-xs text-white/40 mt-2">将呼叫门店联系电话</p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-row gap-2">
-            <AlertDialogCancel className="flex-1 m-0 bg-secondary border-0 text-white hover:bg-secondary/80">
+            </h3>
+            <button
+              onClick={() => setShowContactDialog(false)}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="px-6 py-6 space-y-3 text-center">
+            <p className="text-base font-medium text-white">{getMerchantInfo().name}</p>
+            <p className="text-3xl font-bold text-primary py-2">{getMerchantInfo().phone}</p>
+            <p className="text-xs text-white/40">将呼叫门店联系电话</p>
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 py-4 border-t border-border safe-bottom flex gap-3">
+            <button
+              onClick={() => setShowContactDialog(false)}
+              className="flex-1 py-3 rounded-xl bg-secondary text-white font-medium hover:bg-secondary/80 transition-colors"
+            >
               取消
-            </AlertDialogCancel>
-            <AlertDialogAction 
+            </button>
+            <button
               onClick={confirmContactStore}
-              className="flex-1 m-0 bg-green-500 text-white hover:bg-green-600"
+              className="flex-1 py-3 rounded-xl bg-green-500 text-white font-medium hover:bg-green-600 transition-colors"
             >
               立即拨打
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
