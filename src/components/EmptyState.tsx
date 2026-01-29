@@ -17,12 +17,12 @@ export const EmptyState = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
-      <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-6">
-        <Coffee className="w-10 h-10 text-white/40" />
+    <div className="card-xl flex flex-col items-center justify-center py-8 text-center">
+      <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-4">
+        <Coffee className="w-8 h-8 text-white/40" />
       </div>
-      <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-      <p className="text-white/60 text-sm mb-6 max-w-[240px]">
+      <h3 className="text-base font-semibold text-white mb-1.5">{title}</h3>
+      <p className="text-white/60 text-sm mb-4 max-w-[200px]">
         {description}
       </p>
       {actionLabel && actionPath && (

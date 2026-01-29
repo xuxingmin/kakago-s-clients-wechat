@@ -52,16 +52,16 @@ export const CouponCard = ({
     <button
       onClick={() => !isDisabled && onSelect?.(id)}
       disabled={isDisabled}
-      className={`relative w-full overflow-hidden transition-all duration-300 ${
+      className={`relative w-full overflow-hidden transition-all duration-300 card-lg !p-0 ${
         isDisabled 
           ? "opacity-50 cursor-not-allowed" 
           : "hover:scale-[1.02] active:scale-[0.98]"
       } ${selected ? "ring-2 ring-primary ring-offset-2" : ""}`}
     >
       {/* Ticket Shape Container */}
-      <div className="flex">
+      <div className="flex min-h-[100px]">
         {/* Left Section - Value */}
-        <div className={`relative flex-shrink-0 w-28 bg-gradient-to-br ${style.gradient} p-4 flex flex-col items-center justify-center`}>
+        <div className={`relative flex-shrink-0 w-28 bg-gradient-to-br ${style.gradient} p-4 flex flex-col items-center justify-center rounded-l-2xl`}>
           {/* Perforated edge effect */}
           <div className="absolute right-0 top-0 bottom-0 w-3 flex flex-col justify-around">
             {[...Array(6)].map((_, i) => (

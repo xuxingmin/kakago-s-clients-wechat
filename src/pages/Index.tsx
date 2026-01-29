@@ -181,7 +181,7 @@ const Index = () => {
               <button
                 key={product.id}
                 onClick={() => handleProductSelect(product)}
-                className="group card-premium p-3 text-left transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-[72px] relative"
+                className="group card-md text-left transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] relative"
                 style={{ animationDelay: `${index * 0.03}s` }}
               >
                 <div className="flex items-start justify-between">

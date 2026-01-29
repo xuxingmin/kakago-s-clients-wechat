@@ -152,7 +152,7 @@ const StatusTimeline = ({ currentStatus, timestamps }: StatusTimelineProps) => {
   const statusIndex = steps.findIndex(s => s.key === currentStatus);
 
   return (
-    <div className="card-premium p-4 mx-4 mb-4">
+    <div className="card-lg !p-4 mx-4 mb-4">
       <div className="flex justify-between items-center">
         {steps.map((step, index) => {
           const Icon = step.icon;
@@ -353,7 +353,7 @@ const OrderTracking = () => {
           <div className={`flex-1 flex items-center p-4 transition-all duration-700 ease-out ${
             showRevealCard ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}>
-            <div className="w-full card-premium p-6 space-y-4">
+            <div className="w-full card-xl space-y-4">
               {/* Store Info */}
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center">
@@ -413,7 +413,7 @@ const OrderTracking = () => {
           </div>
 
           <div className="flex-1 flex items-center justify-center p-4">
-            <div className="w-full card-premium p-6 text-center">
+            <div className="w-full card-xl text-center">
               <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-3xl mx-auto mb-4">
                 🧑‍💼
               </div>
@@ -451,7 +451,7 @@ const OrderTracking = () => {
             />
           </div>
 
-          <div className="mx-4 mb-4 card-premium p-4">
+          <div className="mx-4 mb-4 card-lg">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-xl">
                 🧑‍💼
@@ -501,7 +501,7 @@ const OrderTracking = () => {
           )}
 
           {order?.order_ratings && (
-            <div className="mt-6 card-premium p-4 w-full max-w-xs">
+            <div className="mt-6 card-lg w-full max-w-xs">
               <p className="text-xs text-white/50 text-center mb-2">您的评价</p>
               <div className="flex justify-center gap-4">
                 <div className="text-center">

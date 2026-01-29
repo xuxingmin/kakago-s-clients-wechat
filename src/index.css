@@ -110,7 +110,13 @@
     transform: translateY(0);
   }
 
-  /* Glassmorphism card styles */
+  /* ========================================
+     KAKAGO Card Sizing System
+     ----------------------------------------
+     4 standardized sizes for visual harmony
+     ======================================== */
+
+  /* Base card styles - shared by all sizes */
   .card-premium {
     @apply rounded-2xl;
     background: hsla(270, 15%, 12%, 0.8);
@@ -118,6 +124,41 @@
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid hsla(0, 0%, 100%, 0.08);
     box-shadow: var(--shadow-card);
+  }
+
+  /* Card XL - Feature cards, hero sections, summaries */
+  .card-xl {
+    @apply card-premium p-5;
+    min-height: 140px;
+  }
+
+  /* Card LG - Standard content cards, order cards */
+  .card-lg {
+    @apply card-premium p-4;
+    min-height: 100px;
+  }
+
+  /* Card MD - Compact cards, product items, grid items */
+  .card-md {
+    @apply card-premium p-3;
+    min-height: 72px;
+  }
+
+  /* Card SM - Inline items, coupons, list items */
+  .card-sm {
+    @apply card-premium p-3;
+    min-height: 56px;
+  }
+
+  /* Asset bar items - special horizontal layout */
+  .card-asset-bar {
+    @apply card-premium p-4;
+    min-height: 80px;
+  }
+
+  /* Menu list items - consistent row height */
+  .card-menu-item {
+    min-height: 64px;
   }
 
   /* Fog glass effect */
