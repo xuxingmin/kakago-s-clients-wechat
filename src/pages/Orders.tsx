@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { OrderCard } from "@/components/OrderCard";
 import { EmptyState } from "@/components/EmptyState";
 import { BottomNav } from "@/components/BottomNav";
+import { RatingModal } from "@/components/RatingModal";
+import { useToast } from "@/hooks/use-toast";
 
 // Import images for demo
 import coffeeLatte from "@/assets/coffee-latte.jpg";
 import coffeeAmericano from "@/assets/coffee-americano.jpg";
+import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -17,19 +21,22 @@ interface Order {
   price: number;
   status: OrderStatus;
   cafeName?: string;
+  cafeRating?: number;
   createdAt: string;
   isRevealed: boolean;
+  userRating?: number;
 }
 
-// Demo orders data
+// Demo orders data with ratings
 const demoOrders: Order[] = [
   {
     id: "order-001",
     productName: "拿铁 (热)",
     productImage: coffeeLatte,
-    price: 28,
+    price: 15,
     status: "preparing",
-    cafeName: "Blue Bottle Coffee",
+    cafeName: "Refrain Coffee Studio",
+    cafeRating: 4.9,
     createdAt: "今天 14:32",
     isRevealed: true,
   },
@@ -37,10 +44,34 @@ const demoOrders: Order[] = [
     id: "order-002",
     productName: "美式咖啡 (冰)",
     productImage: coffeeAmericano,
-    price: 22,
+    price: 12,
     status: "pending",
     createdAt: "今天 14:28",
     isRevealed: false,
+  },
+  {
+    id: "order-003",
+    productName: "卡布奇诺",
+    productImage: coffeeCappuccino,
+    price: 15,
+    status: "completed",
+    cafeName: "Seesaw Coffee",
+    cafeRating: 4.7,
+    createdAt: "昨天 10:15",
+    isRevealed: true,
+    userRating: 5,
+  },
+  {
+    id: "order-004",
+    productName: "澳白",
+    productImage: coffeeLatte,
+    price: 15,
+    status: "completed",
+    cafeName: "M Stand",
+    cafeRating: 4.8,
+    createdAt: "前天 15:42",
+    isRevealed: true,
+    // No userRating - pending review
   },
 ];
 
@@ -50,8 +81,12 @@ const tabs = [
 ];
 
 const Orders = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("active");
-  const [orders] = useState<Order[]>(demoOrders);
+  const [orders, setOrders] = useState<Order[]>(demoOrders);
+  const [ratingModalOpen, setRatingModalOpen] = useState(false);
+  const [selectedOrderForRating, setSelectedOrderForRating] = useState<Order | null>(null);
 
   const filteredOrders = orders.filter((order) =>
     activeTab === "active"
@@ -60,8 +95,42 @@ const Orders = () => {
   );
 
   const handleOrderClick = (orderId: string) => {
-    console.log("View order:", orderId);
-    // Navigate to order detail
+    const order = orders.find((o) => o.id === orderId);
+    if (!order) return;
+
+    // If completed and not rated, open rating modal
+    if (order.status === "completed" && !order.userRating) {
+      setSelectedOrderForRating(order);
+      setRatingModalOpen(true);
+    } else if (order.status !== "completed") {
+      // Navigate to order tracking for active orders
+      navigate("/order-tracking");
+    }
+  };
+
+  const handleRatingSubmit = (rating: number, tags: string[], note: string) => {
+    if (!selectedOrderForRating) return;
+
+    // Update order with user rating
+    setOrders((prev) =>
+      prev.map((order) =>
+        order.id === selectedOrderForRating.id
+          ? { ...order, userRating: rating }
+          : order
+      )
+    );
+
+    toast({
+      title: "评价已提交",
+      description: `感谢您的${rating}星评价！已获得10积分奖励`,
+    });
+
+    console.log("Rating submitted:", {
+      orderId: selectedOrderForRating.id,
+      rating,
+      tags,
+      note,
+    });
   };
 
   return (
@@ -106,8 +175,10 @@ const Orders = () => {
                 price={order.price}
                 status={order.status}
                 cafeName={order.cafeName}
+                cafeRating={order.cafeRating}
                 createdAt={order.createdAt}
                 isRevealed={order.isRevealed}
+                userRating={order.userRating}
                 onClick={() => handleOrderClick(order.id)}
               />
             </div>
@@ -121,6 +192,17 @@ const Orders = () => {
           />
         )}
       </section>
+
+      {/* Rating Modal */}
+      <RatingModal
+        isOpen={ratingModalOpen}
+        onClose={() => {
+          setRatingModalOpen(false);
+          setSelectedOrderForRating(null);
+        }}
+        storeName={selectedOrderForRating?.cafeName || ""}
+        onSubmit={handleRatingSubmit}
+      />
 
       <BottomNav />
     </div>

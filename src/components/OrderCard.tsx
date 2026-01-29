@@ -1,4 +1,4 @@
-import { Clock, Store, ChevronRight } from "lucide-react";
+import { Clock, Store, ChevronRight, Star } from "lucide-react";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -9,16 +9,18 @@ interface OrderCardProps {
   price: number;
   status: OrderStatus;
   cafeName?: string;
+  cafeRating?: number;
   createdAt: string;
   isRevealed: boolean;
+  userRating?: number;
   onClick: () => void;
 }
 
 const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
   pending: { label: "待接单", color: "text-muted-foreground" },
   preparing: { label: "制作中", color: "text-primary" },
-  ready: { label: "待取货", color: "text-gold" },
-  delivering: { label: "配送中", color: "text-gold-light" },
+  ready: { label: "待取货", color: "text-primary" },
+  delivering: { label: "配送中", color: "text-primary" },
   completed: { label: "已完成", color: "text-muted-foreground" },
 };
 
@@ -29,8 +31,10 @@ export const OrderCard = ({
   price,
   status,
   cafeName,
+  cafeRating,
   createdAt,
   isRevealed,
+  userRating,
   onClick,
 }: OrderCardProps) => {
   const statusInfo = statusConfig[status];
@@ -45,9 +49,20 @@ export const OrderCard = ({
         <div className="flex items-center gap-2">
           <Store className="w-4 h-4 text-muted-foreground" />
           {isRevealed ? (
-            <span className="text-sm font-medium text-foreground animate-reveal">
-              {cafeName}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-foreground">
+                {cafeName}
+              </span>
+              {/* Store Rating Display */}
+              {cafeRating && (
+                <div className="flex items-center gap-0.5 bg-primary/10 px-1.5 py-0.5 rounded-full">
+                  <Star className="w-3 h-3 fill-primary text-primary" />
+                  <span className="text-xs font-medium text-primary">
+                    {cafeRating.toFixed(1)}
+                  </span>
+                </div>
+              )}
+            </div>
           ) : (
             <span className="text-sm text-muted-foreground italic">
               等待揭晓...
@@ -78,6 +93,41 @@ export const OrderCard = ({
         </div>
         <ChevronRight className="w-5 h-5 text-muted-foreground self-center" />
       </div>
+
+      {/* User Rating (for completed orders) */}
+      {status === "completed" && userRating && (
+        <div className="mt-3 pt-3 border-t border-border">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">我的评价：</span>
+            <div className="flex gap-0.5">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-3.5 h-3.5 ${
+                    star <= userRating
+                      ? "fill-primary text-primary"
+                      : "text-border"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pending to rate hint (for completed orders without rating) */}
+      {status === "completed" && !userRating && (
+        <div className="mt-3 pt-3 border-t border-border">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">点击评价获取积分</span>
+            <div className="flex gap-0.5">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star key={star} className="w-3.5 h-3.5 text-border" />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mystery reveal animation hint */}
       {!isRevealed && status === "pending" && (
