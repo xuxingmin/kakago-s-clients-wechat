@@ -58,6 +58,44 @@ export type Database = {
           },
         ]
       }
+      merchant_staff: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          merchant_id: string
+          role: Database["public"]["Enums"]["merchant_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          merchant_id: string
+          role?: Database["public"]["Enums"]["merchant_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          merchant_id?: string
+          role?: Database["public"]["Enums"]["merchant_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_staff_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       merchants: {
         Row: {
           address: string
@@ -304,6 +342,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          is_merchant: boolean
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_merchant?: boolean
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_merchant?: boolean
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       spatial_ref_sys: {
         Row: {
@@ -658,6 +729,17 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_user_merchant: {
+        Args: never
+        Returns: {
+          is_online: boolean
+          merchant_id: string
+          merchant_name: string
+          merchant_name_en: string
+          rating: number
+          role: Database["public"]["Enums"]["merchant_role"]
+        }[]
+      }
       gettransactionid: { Args: never; Returns: unknown }
       longtransactionsenabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
@@ -700,6 +782,18 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      register_merchant: {
+        Args: {
+          p_address: string
+          p_description?: string
+          p_latitude: number
+          p_longitude: number
+          p_name: string
+          p_name_en?: string
+          p_phone?: string
+        }
+        Returns: Json
+      }
       st_3dclosestpoint: {
         Args: { geom1: unknown; geom2: unknown }
         Returns: unknown
@@ -1307,6 +1401,7 @@ export type Database = {
       }
     }
     Enums: {
+      merchant_role: "owner" | "manager" | "staff"
       order_status:
         | "pending"
         | "accepted"
@@ -1450,6 +1545,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      merchant_role: ["owner", "manager", "staff"],
       order_status: [
         "pending",
         "accepted",
