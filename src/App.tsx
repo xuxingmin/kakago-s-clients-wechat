@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// App with Language support
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
