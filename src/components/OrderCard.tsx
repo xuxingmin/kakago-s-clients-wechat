@@ -11,6 +11,7 @@ interface OrderCardProps {
   status: OrderStatus;
   cafeName?: string;
   cafeRating?: number;
+  merchantId?: string;
   createdAt: string;
   isRevealed: boolean;
   userRating?: number;
@@ -35,6 +36,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       status,
       cafeName,
       cafeRating,
+      merchantId,
       createdAt,
       isRevealed,
       userRating,
@@ -55,18 +57,26 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
           <div className="flex items-center gap-2">
             <Store className="w-4 h-4 text-white/60" />
             {isRevealed ? (
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-white">
-                  {cafeName}
-                </span>
-                {/* Store Rating Display */}
-                {cafeRating && (
-                  <div className="flex items-center gap-0.5 bg-primary/20 px-1.5 py-0.5 rounded-full">
-                    <Star className="w-3 h-3 fill-primary text-primary" />
-                    <span className="text-xs font-medium text-primary">
-                      {cafeRating.toFixed(1)}
-                    </span>
-                  </div>
+              <div className="flex flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-white">
+                    {cafeName}
+                  </span>
+                  {/* Store Rating Display */}
+                  {cafeRating && (
+                    <div className="flex items-center gap-0.5 bg-primary/20 px-1.5 py-0.5 rounded-full">
+                      <Star className="w-3 h-3 fill-primary text-primary" />
+                      <span className="text-xs font-medium text-primary">
+                        {cafeRating.toFixed(1)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {/* Merchant ID Display - show for preparing status */}
+                {status === "preparing" && merchantId && (
+                  <span className="text-xs text-white/40 font-mono">
+                    ID: {merchantId.slice(0, 8).toUpperCase()}
+                  </span>
                 )}
               </div>
             ) : (
