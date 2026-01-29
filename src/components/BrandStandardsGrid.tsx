@@ -1,15 +1,22 @@
-import { CheckCircle2, Rocket } from "lucide-react";
+import { Bean, Droplet, ShieldCheck, Leaf, Settings, ClipboardCheck, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import type { LucideIcon } from "lucide-react";
 
-const standards = [
-  { labelZh: "精品咖啡", labelEn: "Specialty" },
-  { labelZh: "蛋白4.0", labelEn: "4.0 Protein" },
-  { labelZh: "食品安全", labelEn: "Food Safe" },
-  { labelZh: "有机认证", labelEn: "Organic" },
-  { labelZh: "专业设备", labelEn: "Pro Gear" },
-  { labelZh: "100% SOP", labelEn: "100% SOP" },
-  { labelZh: "快速送达", labelEn: "Fast Ship" },
+interface StandardItem {
+  Icon: LucideIcon;
+  labelZh: string;
+  labelEn: string;
+}
+
+const standards: StandardItem[] = [
+  { Icon: Bean, labelZh: "精品豆", labelEn: "Beans" },
+  { Icon: Droplet, labelZh: "蛋白4.0", labelEn: "4.0" },
+  { Icon: ShieldCheck, labelZh: "食安", labelEn: "Safe" },
+  { Icon: Leaf, labelZh: "有机", labelEn: "Organic" },
+  { Icon: Settings, labelZh: "Pro设备", labelEn: "Pro" },
+  { Icon: ClipboardCheck, labelZh: "100% SOP", labelEn: "SOP" },
+  { Icon: Zap, labelZh: "极速", labelEn: "Fast" },
 ];
 
 export const BrandStandardsGrid = () => {
@@ -19,27 +26,39 @@ export const BrandStandardsGrid = () => {
   return (
     <section className="px-4 py-3">
       <div className="grid grid-cols-4 gap-2">
-        {/* Standard Cards */}
-        {standards.map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center justify-center p-2 rounded-lg bg-white/5 backdrop-blur-md border border-white/10"
-          >
-            <CheckCircle2 className="w-3.5 h-3.5 text-primary mb-1" />
-            <span className="text-[10px] font-mono text-[#CCCCCC] text-center leading-tight">
-              {t(item.labelZh, item.labelEn)}
-            </span>
-          </div>
-        ))}
+        {/* Standard Cards - Icon Only with Morph */}
+        {standards.map((item, index) => {
+          const IconComponent = item.Icon;
+          return (
+            <div
+              key={index}
+              className="group relative flex items-center justify-center h-12 rounded-lg bg-white/5 backdrop-blur-md border border-white/10 cursor-default transition-all duration-300 hover:bg-white/10 hover:border-primary/30"
+            >
+              {/* Icon Glow Effect */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-8 h-8 rounded-full bg-primary/20 blur-lg opacity-60 group-hover:opacity-0 transition-opacity duration-300" />
+              </div>
+              
+              {/* Icon - visible by default, fades on hover */}
+              <IconComponent 
+                className="w-6 h-6 text-primary relative z-10 transition-all duration-300 ease-in-out group-hover:opacity-0 group-hover:scale-75" 
+              />
+              
+              {/* Text Label - hidden by default, appears on hover */}
+              <span className="absolute inset-0 flex items-center justify-center text-[11px] font-mono font-semibold text-white opacity-0 scale-110 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:scale-100">
+                {t(item.labelZh, item.labelEn)}
+              </span>
+            </div>
+          );
+        })}
 
-        {/* Special CTA Card - Growth Engine */}
+        {/* Special CTA Card - GO Button */}
         <button
           onClick={() => navigate("/my-squad")}
-          className="flex flex-col items-center justify-center p-2 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow"
+          className="relative flex items-center justify-center h-12 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
         >
-          <Rocket className="w-3.5 h-3.5 text-white mb-1" />
-          <span className="text-[10px] font-mono text-white text-center font-semibold leading-tight">
-            {t("拉帮结派", "Squad")}
+          <span className="text-sm font-mono font-black text-white tracking-wider">
+            GO
           </span>
         </button>
       </div>
