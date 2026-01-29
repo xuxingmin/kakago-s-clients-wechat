@@ -22,6 +22,7 @@ interface Order {
   status: OrderStatus;
   cafeName?: string;
   cafeRating?: number;
+  merchantId?: string;
   createdAt: string;
   isRevealed: boolean;
   userRating?: number;
@@ -37,6 +38,7 @@ const demoOrders: Order[] = [
     status: "preparing",
     cafeName: "静思咖啡工作室",
     cafeRating: 4.9,
+    merchantId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     createdAt: "今天 14:32",
     isRevealed: true,
   },
@@ -179,6 +181,7 @@ const Orders = () => {
                 status={order.status}
                 cafeName={order.cafeName}
                 cafeRating={order.cafeRating}
+                merchantId={order.merchantId}
                 createdAt={order.createdAt}
                 isRevealed={order.isRevealed}
                 userRating={order.userRating}
