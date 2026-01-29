@@ -11,6 +11,7 @@ import OrderTracking from "./pages/OrderTracking";
 import CoffeeWallet from "./pages/CoffeeWallet";
 import AddressManagement from "./pages/AddressManagement";
 import ShareEarn from "./pages/ShareEarn";
+import MySquad from "./pages/MySquad";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/wallet" element={<CoffeeWallet />} />
             <Route path="/address" element={<AddressManagement />} />
             <Route path="/share-earn" element={<ShareEarn />} />
+            <Route path="/my-squad" element={<MySquad />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

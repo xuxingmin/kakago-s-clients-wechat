@@ -10,6 +10,9 @@ import {
   Store, 
   ChevronRight,
   Crown,
+  Users,
+  TrendingUp,
+  Sparkles,
   LucideIcon
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -169,6 +172,45 @@ const Profile = () => {
           </div>
         </div>
       </section>
+
+      {/* My Squad Card - Entry Point */}
+      <section className="px-4 mt-4 max-w-md mx-auto">
+        <button
+          onClick={() => navigate("/my-squad")}
+          className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-5 border border-amber-500/30 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 transition-all active:scale-[0.98]"
+        >
+          {/* Background Decorations */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <Sparkles className="absolute top-3 right-3 w-5 h-5 text-amber-400/50 animate-pulse" />
+          
+          <div className="relative flex items-center gap-4">
+            {/* Icon */}
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
+              <Users className="w-7 h-7 text-zinc-900" />
+            </div>
+            
+            {/* Content */}
+            <div className="flex-1 text-left">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-white">拉帮结派</h3>
+                <span className="text-[10px] font-medium text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full">
+                  My Squad
+                </span>
+              </div>
+              <p className="text-xs text-zinc-400 mt-1">
+                348 Members · ¥1,240 Earned
+              </p>
+              <div className="flex items-center gap-1 mt-1.5 text-xs text-green-400">
+                <TrendingUp className="w-3 h-3" />
+                <span>+12 today</span>
+              </div>
+            </div>
+            
+            <ChevronRight className="w-5 h-5 text-amber-400" />
+          </div>
+        </button>
+      </section>
+
 
       {/* Menu List */}
       <section className="px-4 mt-4 max-w-md mx-auto">
