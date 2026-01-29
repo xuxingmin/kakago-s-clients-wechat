@@ -1,4 +1,5 @@
-import { Plus, Flame, Ticket, Sparkles } from "lucide-react";
+import { Plus, Flame, Ticket } from "lucide-react";
+import kakagoLogo from "@/assets/kakago-logo.png";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { FloatingCart } from "@/components/FloatingCart";
@@ -132,11 +133,12 @@ const Index = () => {
       <section className="px-4 pt-6 pb-5 hero-reveal">
         <div className="flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-              <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
-            </div>
-            <p className="text-sm text-white/45 mt-1 font-light tracking-wide">
+            <img 
+              src={kakagoLogo} 
+              alt="KAKAGO" 
+              className="h-7 w-auto object-contain"
+            />
+            <p className="text-sm text-white/45 mt-1.5 font-light tracking-wide">
               {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
             </p>
           </div>
