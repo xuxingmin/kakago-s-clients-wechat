@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { X, Star } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface RatingModalProps {
   isOpen: boolean;
@@ -9,36 +10,39 @@ interface RatingModalProps {
   onSubmit: (rating: number, tags: string[], note: string) => void;
 }
 
-const negativeTags = [
-  { id: "watery", label: "口感偏淡" },
-  { id: "cold", label: "温度偏低" },
-  { id: "spilled", label: "洒漏" },
-  { id: "late", label: "送达较慢" },
-  { id: "bitter", label: "过于苦涩" },
-  { id: "packaging", label: "包装问题" },
-];
-
-const positiveTags = [
-  { id: "crema", label: "完美油脂" },
-  { id: "silky", label: "丝滑顺口" },
-  { id: "packaging", label: "包装精美" },
-  { id: "fast", label: "配送迅速" },
-  { id: "temperature", label: "温度适宜" },
-  { id: "art", label: "拉花精致" },
-];
+const getTagsConfig = (t: (zh: string, en: string) => string) => ({
+  negative: [
+    { id: "watery", label: t("口感偏淡", "Too Watery") },
+    { id: "cold", label: t("温度偏低", "Too Cold") },
+    { id: "spilled", label: t("洒漏", "Spilled") },
+    { id: "late", label: t("送达较慢", "Late Delivery") },
+    { id: "bitter", label: t("过于苦涩", "Too Bitter") },
+    { id: "packaging", label: t("包装问题", "Packaging Issue") },
+  ],
+  positive: [
+    { id: "crema", label: t("完美油脂", "Perfect Crema") },
+    { id: "silky", label: t("丝滑顺口", "Silky Smooth") },
+    { id: "packaging", label: t("包装精美", "Nice Packaging") },
+    { id: "fast", label: t("配送迅速", "Fast Delivery") },
+    { id: "temperature", label: t("温度适宜", "Perfect Temp") },
+    { id: "art", label: t("拉花精致", "Beautiful Art") },
+  ],
+});
 
 export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
   ({ isOpen, onClose, storeName, onSubmit }, ref) => {
+    const { t } = useLanguage();
     const [rating, setRating] = useState(0);
     const [hoveredStar, setHoveredStar] = useState(0);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [note, setNote] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const tagsConfig = getTagsConfig(t);
     const displayRating = hoveredStar || rating;
     const isNegative = rating >= 1 && rating <= 3;
     const isPositive = rating >= 4;
-    const availableTags = isNegative ? negativeTags : isPositive ? positiveTags : [];
+    const availableTags = isNegative ? tagsConfig.negative : isPositive ? tagsConfig.positive : [];
 
     const toggleTag = (tagId: string) => {
       setSelectedTags((prev) =>
@@ -65,12 +69,12 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
     };
 
     const getRatingText = () => {
-      if (displayRating === 0) return "点击星星评分";
-      if (displayRating === 1) return "非常不满意";
-      if (displayRating === 2) return "不太满意";
-      if (displayRating === 3) return "一般般";
-      if (displayRating === 4) return "比较满意";
-      if (displayRating === 5) return "非常满意";
+      if (displayRating === 0) return t("点击星星评分", "Tap to rate");
+      if (displayRating === 1) return t("非常不满意", "Very Disappointed");
+      if (displayRating === 2) return t("不太满意", "Disappointed");
+      if (displayRating === 3) return t("一般般", "Average");
+      if (displayRating === 4) return t("比较满意", "Satisfied");
+      if (displayRating === 5) return t("非常满意", "Very Satisfied");
       return "";
     };
 
@@ -104,7 +108,7 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
                 <X className="w-4 h-4" />
               </button>
               <h2 className="text-lg font-bold text-white text-center pr-8">
-                {storeName} 的咖啡如何？
+                {t(`${storeName} 的咖啡如何？`, `How was ${storeName}'s coffee?`)}
               </h2>
             </div>
 
@@ -148,7 +152,9 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
               }`}
             >
               <p className="text-xs text-white/50 mb-3">
-                {isNegative ? "请告诉我们哪里需要改进：" : "分享您喜欢的地方："}
+                {isNegative 
+                  ? t("请告诉我们哪里需要改进：", "What could be improved?") 
+                  : t("分享您喜欢的地方：", "What did you like?")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {availableTags.map((tag) => (
@@ -178,7 +184,7 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
               <textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="添加备注（可选）..."
+                placeholder={t("添加备注（可选）...", "Add a note (optional)...")}
                 className="w-full h-20 px-4 py-3 bg-secondary rounded-xl text-sm text-white placeholder:text-white/40 resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
                 maxLength={200}
               />
@@ -201,10 +207,10 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    提交中...
+                    {t("提交中...", "Submitting...")}
                   </span>
                 ) : (
-                  "提交评价"
+                  t("提交评价", "Submit Review")
                 )}
               </button>
             </div>
