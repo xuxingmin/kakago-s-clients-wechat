@@ -51,18 +51,18 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         // KAKAGO custom colors
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          light: "hsl(var(--gold-light))",
-          dark: "hsl(var(--gold-dark))",
+        purple: {
+          DEFAULT: "hsl(var(--purple))",
+          light: "hsl(var(--purple-light))",
+          dark: "hsl(var(--purple-dark))",
         },
-        charcoal: {
-          DEFAULT: "hsl(var(--charcoal))",
-          light: "hsl(var(--charcoal-light))",
+        mist: {
+          DEFAULT: "hsl(var(--mist))",
+          light: "hsl(var(--mist-light))",
         },
         obsidian: "hsl(var(--obsidian))",
         silver: "hsl(var(--silver))",
-        cream: "hsl(var(--cream))",
+        lavender: "hsl(var(--lavender))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

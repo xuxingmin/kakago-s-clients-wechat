@@ -2,73 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-/* KAKAGO Design System - Premium Dark Luxury */
+/* KAKAGO Design System - Purple & Mist Gray */
 
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Dark luxury palette */
-    --background: 0 0% 7%;
+    /* Premium dark palette with purple accent */
+    --background: 240 10% 6%;
     --foreground: 0 0% 100%;
 
-    --card: 0 0% 10%;
+    --card: 240 8% 10%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 10%;
+    --popover: 240 8% 10%;
     --popover-foreground: 0 0% 100%;
 
-    /* Gold/Champagne primary accent */
-    --primary: 43 56% 52%;
-    --primary-foreground: 0 0% 7%;
+    /* KAKAGO Purple - Primary */
+    --primary: 245 58% 51%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 14%;
+    /* Mist Gray - Secondary */
+    --secondary: 240 6% 16%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 67%;
+    --muted: 240 6% 16%;
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 43 56% 52%;
-    --accent-foreground: 0 0% 7%;
+    --accent: 245 58% 51%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 43 56% 52%;
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 245 58% 51%;
 
     --radius: 1rem;
 
     /* Custom KAKAGO tokens */
-    --gold: 43 56% 52%;
-    --gold-light: 43 56% 62%;
-    --gold-dark: 43 56% 42%;
-    --charcoal: 0 0% 10%;
-    --charcoal-light: 0 0% 14%;
-    --obsidian: 0 0% 7%;
-    --silver: 0 0% 67%;
-    --cream: 40 33% 94%;
-    
-    /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(43 56% 52%), hsl(43 56% 42%));
-    --gradient-dark: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 7%));
-    --gradient-shine: linear-gradient(135deg, hsl(43 56% 62%) 0%, hsl(43 56% 52%) 50%, hsl(43 56% 42%) 100%);
+    --purple: 245 58% 51%;
+    --purple-light: 245 58% 65%;
+    --purple-dark: 245 58% 40%;
+    --mist: 240 6% 16%;
+    --mist-light: 240 5% 25%;
+    --obsidian: 240 10% 6%;
+    --silver: 240 5% 65%;
+    --lavender: 245 30% 90%;
     
     /* Shadows */
-    --shadow-gold: 0 4px 20px -4px hsl(43 56% 52% / 0.3);
-    --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
-    --shadow-float: 0 16px 48px -12px hsl(0 0% 0% / 0.8);
+    --shadow-purple: 0 4px 20px -4px hsla(245, 58%, 51%, 0.35);
+    --shadow-card: 0 8px 32px -8px hsla(0, 0%, 0%, 0.6);
+    --shadow-float: 0 16px 48px -12px hsla(0, 0%, 0%, 0.8);
 
     /* Sidebar (keeping for compatibility) */
-    --sidebar-background: 0 0% 7%;
+    --sidebar-background: 240 10% 6%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 43 56% 52%;
-    --sidebar-primary-foreground: 0 0% 7%;
-    --sidebar-accent: 0 0% 14%;
+    --sidebar-primary: 245 58% 51%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 6% 16%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 43 56% 52%;
+    --sidebar-border: 240 6% 20%;
+    --sidebar-ring: 245 58% 51%;
   }
 }
 
@@ -91,17 +87,17 @@
 }
 
 @layer components {
-  /* Premium button styles */
+  /* Premium button styles - Purple gradient */
   .btn-gold {
-    @apply bg-primary text-primary-foreground font-semibold;
-    background: var(--gradient-gold);
-    box-shadow: var(--shadow-gold);
+    @apply bg-primary text-primary-foreground font-semibold rounded-full;
+    background: linear-gradient(135deg, hsl(245 58% 55%), hsl(245 58% 45%));
+    box-shadow: var(--shadow-purple);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .btn-gold:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 24px -4px hsl(43 56% 52% / 0.4);
+    box-shadow: 0 6px 24px -4px hsla(245, 58%, 51%, 0.45);
   }
   
   .btn-gold:active {
@@ -116,14 +112,14 @@
 
   /* Glass effect */
   .glass {
-    background: hsl(0 0% 10% / 0.8);
+    background: hsla(240, 8%, 10%, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* Gold text gradient */
+  /* Purple text gradient */
   .text-gold-gradient {
-    background: var(--gradient-shine);
+    background: linear-gradient(135deg, hsl(245 58% 65%), hsl(245 58% 51%), hsl(245 58% 40%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -142,7 +138,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      hsl(43 56% 52% / 0.1) 50%,
+      hsla(245, 58%, 51%, 0.1) 50%,
       transparent 100%
     );
     animation: shimmer 2s infinite;
@@ -159,8 +155,8 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px hsl(43 56% 52% / 0.2); }
-    50% { box-shadow: 0 0 30px hsl(43 56% 52% / 0.4); }
+    0%, 100% { box-shadow: 0 0 20px hsla(245, 58%, 51%, 0.25); }
+    50% { box-shadow: 0 0 30px hsla(245, 58%, 51%, 0.45); }
   }
 
   /* Fade in animation */
