@@ -1,6 +1,18 @@
 import { useState } from "react";
-import { X, MapPin, Phone, Shield, ChevronRight, Ticket } from "lucide-react";
+import { X, MapPin, Phone, Shield, ChevronRight, Ticket, Plus, Check } from "lucide-react";
 import { CouponType } from "./CouponCard";
+import { AddressForm } from "./AddressForm";
+
+interface Address {
+  id: string;
+  name: string;
+  phone: string;
+  province: string;
+  city: string;
+  district: string;
+  detail: string;
+  isDefault: boolean;
+}
 
 interface Coupon {
   id: string;
@@ -23,6 +35,30 @@ interface CheckoutModalProps {
   } | null;
   onConfirm: (productId: string) => void;
 }
+
+// Demo addresses
+const demoAddresses: Address[] = [
+  {
+    id: "addr-001",
+    name: "张三",
+    phone: "13888888888",
+    province: "安徽省",
+    city: "合肥市",
+    district: "蜀山区",
+    detail: "天鹅湖CBD · 万达广场3号楼15层1502室",
+    isDefault: true,
+  },
+  {
+    id: "addr-002",
+    name: "张三",
+    phone: "13888888888",
+    province: "安徽省",
+    city: "合肥市",
+    district: "包河区",
+    detail: "滨湖新区·银泰城B座2201",
+    isDefault: false,
+  },
+];
 
 // Demo available coupons
 const availableCoupons: Coupon[] = [
@@ -56,7 +92,13 @@ export const CheckoutModal = ({
   onConfirm,
 }: CheckoutModalProps) => {
   const [showCouponPicker, setShowCouponPicker] = useState(false);
+  const [showAddressPicker, setShowAddressPicker] = useState(false);
+  const [showAddressForm, setShowAddressForm] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const [addresses, setAddresses] = useState<Address[]>(demoAddresses);
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(
+    demoAddresses.find((a) => a.isDefault) || null
+  );
 
   if (!product) return null;
 
@@ -77,15 +119,46 @@ export const CheckoutModal = ({
   const totalPrice = subtotal + fulfillmentFee;
 
   const handlePayment = () => {
+    if (!selectedAddress) {
+      setShowAddressPicker(true);
+      return;
+    }
     onConfirm(product.id);
     onClose();
     setSelectedCoupon(null);
     setShowCouponPicker(false);
+    setShowAddressPicker(false);
   };
 
   const handleSelectCoupon = (coupon: Coupon | null) => {
     setSelectedCoupon(coupon);
     setShowCouponPicker(false);
+  };
+
+  const handleSelectAddress = (address: Address) => {
+    setSelectedAddress(address);
+    setShowAddressPicker(false);
+  };
+
+  const handleAddAddress = (newAddress: Omit<Address, "id">) => {
+    const address: Address = {
+      ...newAddress,
+      id: `addr-${Date.now()}`,
+    };
+
+    if (address.isDefault) {
+      setAddresses((prev) =>
+        prev.map((addr) => ({ ...addr, isDefault: false }))
+      );
+    }
+
+    setAddresses((prev) => [...prev, address]);
+    setSelectedAddress(address);
+    setShowAddressForm(false);
+  };
+
+  const maskPhone = (phone: string) => {
+    return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
   };
 
   return (
@@ -98,7 +171,7 @@ export const CheckoutModal = ({
         onClick={onClose}
       />
 
-      {/* Modal - 70% height */}
+      {/* Modal - 75% height */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${
           isOpen ? "translate-y-0" : "translate-y-full"
@@ -124,31 +197,37 @@ export const CheckoutModal = ({
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-5 space-y-4">
-            {/* Delivery Info */}
-            <div className="bg-secondary rounded-2xl p-4 space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-4 h-4 text-primary" />
+            {/* Delivery Info - Clickable to change address */}
+            <button
+              onClick={() => setShowAddressPicker(true)}
+              className="w-full bg-secondary rounded-2xl p-4 text-left hover:bg-mist-light transition-colors group"
+            >
+              {selectedAddress ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-foreground">{selectedAddress.name}</span>
+                      <span className="text-sm text-muted-foreground">{maskPhone(selectedAddress.phone)}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {selectedAddress.province}{selectedAddress.city}{selectedAddress.district} {selectedAddress.detail}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground">配送地址</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 truncate">
-                    天鹅湖CBD · 万达广场3号楼15层1502室
-                  </p>
+              ) : (
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-2 text-primary">
+                    <Plus className="w-4 h-4" />
+                    <span className="font-medium">请添加收货地址</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-4 h-4 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground">联系电话</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    138****8888
-                  </p>
-                </div>
-              </div>
-            </div>
+              )}
+            </button>
 
             {/* Trust Badge */}
             <div className="border-2 border-primary/30 bg-primary/5 rounded-2xl p-4 flex items-start gap-3">
@@ -264,6 +343,81 @@ export const CheckoutModal = ({
         </div>
       </div>
 
+      {/* Address Picker Sheet */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-[60] transition-transform duration-300 ease-out ${
+          showAddressPicker ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div 
+          className={`fixed inset-0 bg-black/40 transition-opacity ${
+            showAddressPicker ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => setShowAddressPicker(false)}
+        />
+        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[70vh] flex flex-col safe-bottom">
+          <div className="flex justify-center pt-3 pb-2">
+            <div className="w-10 h-1 bg-border rounded-full" />
+          </div>
+          
+          <div className="flex items-center justify-between px-5 pb-4 border-b border-border">
+            <h3 className="text-base font-semibold text-foreground">选择收货地址</h3>
+            <button
+              onClick={() => setShowAddressPicker(false)}
+              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {addresses.map((address) => (
+              <button
+                key={address.id}
+                onClick={() => handleSelectAddress(address)}
+                className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                  selectedAddress?.id === address.id
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/50"
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-semibold text-foreground">{address.name}</span>
+                      <span className="text-sm text-muted-foreground">{maskPhone(address.phone)}</span>
+                      {address.isDefault && (
+                        <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                          默认
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {address.province}{address.city}{address.district} {address.detail}
+                    </p>
+                  </div>
+                  {selectedAddress?.id === address.id && (
+                    <Check className="w-5 h-5 text-primary flex-shrink-0 ml-2" />
+                  )}
+                </div>
+              </button>
+            ))}
+
+            {/* Add New Address Button */}
+            <button
+              onClick={() => {
+                setShowAddressPicker(false);
+                setShowAddressForm(true);
+              }}
+              className="w-full p-4 rounded-xl border-2 border-dashed border-primary/50 text-primary font-medium flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              <span>添加新地址</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Coupon Picker Sheet */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-[60] transition-transform duration-300 ease-out ${
@@ -271,7 +425,9 @@ export const CheckoutModal = ({
         }`}
       >
         <div 
-          className="fixed inset-0 bg-black/40"
+          className={`fixed inset-0 bg-black/40 transition-opacity ${
+            showCouponPicker ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
           onClick={() => setShowCouponPicker(false)}
         />
         <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[60vh] flex flex-col safe-bottom">
@@ -335,6 +491,14 @@ export const CheckoutModal = ({
           </div>
         </div>
       </div>
+
+      {/* Add Address Form */}
+      <AddressForm
+        isOpen={showAddressForm}
+        onClose={() => setShowAddressForm(false)}
+        onSubmit={handleAddAddress}
+        mode="add"
+      />
     </>
   );
 };

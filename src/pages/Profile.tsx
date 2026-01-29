@@ -17,7 +17,8 @@ const Profile = () => {
       icon: MapPin, 
       label: "收货地址", 
       description: "管理您的配送地址",
-      onClick: () => {},
+      badge: "2个地址",
+      onClick: () => navigate("/address"),
     },
     { 
       icon: Settings, 
