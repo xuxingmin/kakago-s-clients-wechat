@@ -12,49 +12,49 @@ import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
 
-// Product data - 6 hardcoded items
+// 产品数据 - 6款精选咖啡
 const products = [
   {
     id: "hot-americano",
     name: "热美式",
     price: 12,
     image: coffeeAmericano,
-    tag: "Single Origin SOE",
+    tag: "单一产地精品豆",
   },
   {
     id: "iced-americano",
     name: "冰美式",
     price: 12,
     image: coffeeAmericano,
-    tag: "Cold Refresh",
+    tag: "清爽冰饮",
   },
   {
     id: "hot-latte",
     name: "热拿铁",
     price: 15,
     image: coffeeLatte,
-    tag: "Silky & Rich",
+    tag: "丝滑醇厚",
   },
   {
     id: "iced-latte",
     name: "冰拿铁",
     price: 15,
     image: coffeeLatte,
-    tag: "4.0 Protein Milk",
+    tag: "4.0高蛋白牛奶",
   },
   {
     id: "cappuccino",
     name: "卡布奇诺",
     price: 15,
     image: coffeeCappuccino,
-    tag: "Dense Foam",
+    tag: "绵密奶泡",
   },
   {
     id: "flat-white",
     name: "澳白",
     price: 15,
     image: coffeeFlatWhite,
-    tag: "Ristretto Base",
+    tag: "浓缩精萃",
   },
 ];
 
@@ -88,7 +88,7 @@ const Index = () => {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-foreground">精选咖啡</h2>
           <span className="text-xs text-muted-foreground px-2 py-1 bg-secondary rounded-full">
-            SCA Barista Crafted
+            专业咖啡师出品
           </span>
         </div>
         

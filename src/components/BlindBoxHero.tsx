@@ -8,11 +8,11 @@ interface BlindBoxHeroProps {
 export const BlindBoxHero = ({ onExplore }: BlindBoxHeroProps) => {
   return (
     <section className="relative overflow-hidden rounded-3xl mx-4 mt-4">
-      {/* Background Image */}
+      {/* 背景图片 */}
       <div className="absolute inset-0">
         <img
           src={blindBoxImage}
-          alt="Mystery Coffee Box"
+          alt="神秘咖啡盲盒"
           className="w-full h-full object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
