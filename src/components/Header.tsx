@@ -17,11 +17,11 @@ export const Header = () => {
 
         {/* Right Controls */}
         <div className="flex items-center gap-2">
-          {/* Network Status */}
+          {/* Service Status */}
           <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-border">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs text-white/80 font-medium">
-              {t("运行中", "Online")}
+              {t("可提供服务", "Available")}
             </span>
           </div>
 
