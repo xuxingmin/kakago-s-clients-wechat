@@ -12,20 +12,32 @@ import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
 
+// 优惠券类型
+interface Coupon {
+  id: string;
+  type: "universal" | "americano" | "latte" | "cappuccino";
+  value: number;
+  applicableProducts?: string[];
+}
+
 // 用户可用优惠券
-const userCoupons = [
+const userCoupons: Coupon[] = [
   {
     id: "coupon-001",
     type: "universal",
-    title: "新用户专享礼券",
     value: 5,
   },
   {
     id: "coupon-002",
     type: "americano",
-    title: "美式咖啡专属券",
-    value: 3,
+    value: 8,
     applicableProducts: ["hot-americano", "iced-americano"],
+  },
+  {
+    id: "coupon-003",
+    type: "latte",
+    value: 6,
+    applicableProducts: ["hot-latte", "iced-latte"],
   },
 ];
 
@@ -89,24 +101,27 @@ const products = [
   },
 ];
 
-// 计算产品的最佳优惠价
-const getDiscountedPrice = (productId: string, originalPrice: number) => {
-  // 找到适用于该产品的最佳优惠券
+// 精准计算产品的最佳优惠价（选择最高折扣的优惠券）
+const getBestDiscount = (productId: string, originalPrice: number): number | null => {
+  // 筛选适用于该产品的所有优惠券
   const applicableCoupons = userCoupons.filter((coupon) => {
+    // 通用券适用于所有产品
     if (coupon.type === "universal") return true;
+    // 专属券检查是否在适用列表中
     if (coupon.applicableProducts?.includes(productId)) return true;
     return false;
   });
 
   if (applicableCoupons.length === 0) return null;
 
-  // 选择折扣最大的券
-  const bestCoupon = applicableCoupons.reduce((best, coupon) => 
-    coupon.value > best.value ? coupon : best
-  );
-
-  const discountedPrice = Math.max(0, originalPrice - bestCoupon.value);
-  return discountedPrice;
+  // 选择折扣金额最大的优惠券
+  const maxDiscount = Math.max(...applicableCoupons.map(c => c.value));
+  
+  // 计算到手价（不能低于0）
+  const finalPrice = Math.max(0, originalPrice - maxDiscount);
+  
+  // 只有真正有折扣时才返回
+  return finalPrice < originalPrice ? finalPrice : null;
 };
 
 const Index = () => {
@@ -179,8 +194,8 @@ const Index = () => {
         
         <div className="grid grid-cols-2 gap-2">
           {products.map((product, index) => {
-            const discountedPrice = getDiscountedPrice(product.id, product.price);
-            const hasDiscount = discountedPrice !== null && discountedPrice < product.price;
+            const discountedPrice = getBestDiscount(product.id, product.price);
+            const hasDiscount = discountedPrice !== null;
             
             return (
               <button
@@ -204,25 +219,16 @@ const Index = () => {
                     </p>
                   </div>
                   
-                  {/* Price & Add */}
-                  <div className="flex flex-col items-end gap-0.5">
-                    {hasDiscount ? (
-                      <>
-                        <span className="text-white/40 text-xs line-through">
-                          ¥{product.price}
-                        </span>
-                        <span className="text-primary font-bold text-base">
-                          ¥{discountedPrice}
-                        </span>
-                        <span className="text-[10px] text-primary/70">
-                          {t("预估到手价", "Est. price")}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-primary font-bold text-base">
+                  {/* Price - Side by Side */}
+                  <div className="flex items-baseline gap-1.5">
+                    {hasDiscount && (
+                      <span className="text-white/40 text-xs line-through">
                         ¥{product.price}
                       </span>
                     )}
+                    <span className="text-primary font-bold text-base">
+                      ¥{hasDiscount ? discountedPrice : product.price}
+                    </span>
                   </div>
                 </div>
                 
