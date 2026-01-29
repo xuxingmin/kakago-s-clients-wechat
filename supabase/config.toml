@@ -1,1 +1,10 @@
 project_id = "axjmvahdacjohvpdeofd"
+
+[functions.check-service]
+verify_jwt = false
+
+[functions.merchant-status]
+verify_jwt = false
+
+[functions.order-management]
+verify_jwt = false
