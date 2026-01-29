@@ -84,67 +84,66 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen pb-20">
-      {/* Minimal Header */}
-      <header className="px-4 pt-12 pb-4 safe-top max-w-md mx-auto">
-        <div className="flex items-center justify-between">
-          {/* User Info - Minimal, no avatar image */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-              <Coffee className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h2 className="text-base font-semibold text-white">咖啡探索家</h2>
-              <button
-                onClick={() => setIdentityModalOpen(true)}
-                className="text-xs text-white/60 flex items-center gap-1 hover:text-primary transition-colors min-h-[32px]"
-              >
-                <span>☕️ {identityBadge.label}</span>
-                <ChevronRight className="w-3 h-3" />
-              </button>
-            </div>
+      {/* Minimal Header - Compact user info */}
+      <header className="px-4 pt-12 pb-2 safe-top max-w-md mx-auto">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+            <Coffee className="w-5 h-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-base font-semibold text-white">咖啡探索家</h2>
+            <button
+              onClick={() => setIdentityModalOpen(true)}
+              className="text-xs text-white/60 flex items-center gap-1 hover:text-primary transition-colors"
+            >
+              <span>☕️ {identityBadge.label}</span>
+              <ChevronRight className="w-3 h-3" />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* My Squad Card - XL Feature Card */}
-      <section className="px-4 max-w-md mx-auto">
+      {/* My Squad Card - Merged layout */}
+      <section className="px-4 pt-4 max-w-md mx-auto">
         <button
           onClick={() => navigate("/my-squad")}
-          className="w-full card-xl"
+          className="w-full card-lg"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
+          <div className="flex">
+            {/* Left Section - Icon + Title + Earnings */}
+            <div className="flex-1 pr-4 border-r border-white/10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-primary" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-bold text-white">拉帮结派</h3>
+                  <p className="text-xs text-white/50">邀请返佣 · 永久有效</p>
+                </div>
               </div>
+              
               <div className="text-left">
-                <h3 className="font-bold text-white">拉帮结派</h3>
-                <p className="text-xs text-white/50">邀请返佣 · 永久有效</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-white/40" />
-          </div>
-          
-          {/* Stats Row */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
-            <div className="text-left">
-              <p className="text-white/50 text-xs mb-1">累计收益</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-black text-primary">¥1,240</span>
-                <span className="text-white/40 text-sm">.50</span>
+                <p className="text-white/50 text-xs mb-1">累计收益</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-black text-primary">¥1,240</span>
+                  <span className="text-white/40 text-sm">.50</span>
+                </div>
               </div>
             </div>
             
-            <div className="flex items-center gap-4 text-right">
-              <div>
-                <p className="text-lg font-bold text-white">348</p>
+            {/* Right Section - Stats + Arrow */}
+            <div className="flex items-center gap-3 pl-4">
+              <div className="text-center">
+                <p className="text-xl font-bold text-white">348</p>
                 <p className="text-xs text-white/50">队员</p>
               </div>
-              <div className="flex items-center gap-1 text-green-400">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-sm font-semibold">+12</span>
+              <div className="flex flex-col items-center">
+                <div className="flex items-center gap-1 text-green-400">
+                  <TrendingUp className="w-4 h-4" />
+                  <span className="text-sm font-bold">+12</span>
+                </div>
               </div>
+              <ChevronRight className="w-5 h-5 text-white/30" />
             </div>
           </div>
         </button>
