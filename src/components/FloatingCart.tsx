@@ -111,22 +111,15 @@ export const FloatingCart = () => {
         </div>
       </div>
 
-      {/* Floating Button */}
+      {/* Floating Button - Matches GO button size, positioned to overlay it */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-24 right-4 z-[65] bg-primary text-primary-foreground rounded-full shadow-purple transition-all duration-300 hover:scale-105 active:scale-95 ${
+        className={`fixed bottom-[88px] right-4 z-[65] w-[calc((100vw-32px-24px)/4)] h-12 bg-gradient-to-br from-primary to-purple-dark text-white rounded-lg shadow-purple transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-1.5 ${
           isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        <div className="relative px-5 py-3 flex items-center gap-3">
-          <div className="relative">
-            <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-2 -right-2 w-5 h-5 bg-white text-primary text-xs font-bold rounded-full flex items-center justify-center">
-              {totalItems > 99 ? "99+" : totalItems}
-            </span>
-          </div>
-          <span className="font-semibold">¥{totalPrice}</span>
-        </div>
+        <ShoppingCart className="w-4 h-4" />
+        <span className="text-xs font-mono font-bold">{totalItems}</span>
       </button>
     </>
   );
