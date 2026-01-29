@@ -1,29 +1,79 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Wallet, Gift, Ticket, Coffee } from "lucide-react";
+import { ChevronLeft, Wallet, Gift, Ticket } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Coupon {
   id: string;
   title: string;
+  titleEn: string;
   value: number;
   minSpend?: number;
   expiryDate: string;
+  expiryDateEn: string;
   isUsed: boolean;
   isExpired: boolean;
 }
 
-// Demo coupons
+// Demo coupons with bilingual data
 const demoCoupons: Coupon[] = [
-  { id: "1", title: "新用户专享", value: 15, expiryDate: "03-31", isUsed: false, isExpired: false },
-  { id: "2", title: "美式免单券", value: 12, expiryDate: "02-28", isUsed: false, isExpired: false },
-  { id: "3", title: "拿铁立减", value: 5, minSpend: 15, expiryDate: "01-31", isUsed: false, isExpired: false },
-  { id: "4", title: "会员周年礼", value: 20, expiryDate: "12-31", isUsed: true, isExpired: false },
-  { id: "5", title: "限时体验券", value: 8, expiryDate: "01-15", isUsed: false, isExpired: true },
+  { 
+    id: "1", 
+    title: "新用户专享", 
+    titleEn: "New User Exclusive",
+    value: 15, 
+    expiryDate: "03-31", 
+    expiryDateEn: "Mar 31",
+    isUsed: false, 
+    isExpired: false 
+  },
+  { 
+    id: "2", 
+    title: "美式免单券", 
+    titleEn: "Free Americano",
+    value: 12, 
+    expiryDate: "02-28", 
+    expiryDateEn: "Feb 28",
+    isUsed: false, 
+    isExpired: false 
+  },
+  { 
+    id: "3", 
+    title: "拿铁立减", 
+    titleEn: "Latte Discount",
+    value: 5, 
+    minSpend: 15, 
+    expiryDate: "01-31", 
+    expiryDateEn: "Jan 31",
+    isUsed: false, 
+    isExpired: false 
+  },
+  { 
+    id: "4", 
+    title: "会员周年礼", 
+    titleEn: "Anniversary Gift",
+    value: 20, 
+    expiryDate: "12-31", 
+    expiryDateEn: "Dec 31",
+    isUsed: true, 
+    isExpired: false 
+  },
+  { 
+    id: "5", 
+    title: "限时体验券", 
+    titleEn: "Limited Trial",
+    value: 8, 
+    expiryDate: "01-15", 
+    expiryDateEn: "Jan 15",
+    isUsed: false, 
+    isExpired: true 
+  },
 ];
 
 const CoffeeWallet = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"available" | "history">("available");
   const [coupons] = useState<Coupon[]>(demoCoupons);
 
@@ -33,6 +83,12 @@ const CoffeeWallet = () => {
   
   const totalValue = availableCoupons.reduce((sum, c) => sum + c.value, 0);
   const savedValue = historyCoupons.filter(c => c.isUsed).reduce((sum, c) => sum + c.value, 0);
+
+  const getCouponStatus = (coupon: Coupon) => {
+    if (coupon.isUsed) return t("已使用", "Used");
+    if (coupon.isExpired) return t("已过期", "Expired");
+    return t(`${coupon.expiryDate}到期`, `Expires ${coupon.expiryDateEn}`);
+  };
 
   return (
     <div className="min-h-screen pb-20">
@@ -45,7 +101,9 @@ const CoffeeWallet = () => {
           >
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <h1 className="text-base font-semibold text-white">咖啡资产</h1>
+          <h1 className="text-base font-semibold text-white">
+            {t("咖啡资产", "Coffee Wallet")}
+          </h1>
           <div className="w-9" />
         </div>
       </header>
@@ -61,14 +119,16 @@ const CoffeeWallet = () => {
               <div>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">{availableCoupons.length}</span>
-                  <span className="text-sm text-white/50">张券</span>
+                  <span className="text-sm text-white/50">{t("张券", "coupons")}</span>
                 </div>
-                <p className="text-xs text-white/40">价值 ¥{totalValue}</p>
+                <p className="text-xs text-white/40">
+                  {t(`价值 ¥${totalValue}`, `Worth ¥${totalValue}`)}
+                </p>
               </div>
             </div>
             
             <div className="text-right">
-              <p className="text-xs text-white/40">已省</p>
+              <p className="text-xs text-white/40">{t("已省", "Saved")}</p>
               <p className="text-lg font-bold text-primary">¥{savedValue}</p>
             </div>
           </div>
@@ -85,7 +145,7 @@ const CoffeeWallet = () => {
               : "text-white/40 border-transparent"
           }`}
         >
-          可用 ({availableCoupons.length})
+          {t(`可用 (${availableCoupons.length})`, `Available (${availableCoupons.length})`)}
         </button>
         <button
           onClick={() => setActiveTab("history")}
@@ -95,7 +155,7 @@ const CoffeeWallet = () => {
               : "text-white/40 border-transparent"
           }`}
         >
-          历史
+          {t("历史", "History")}
         </button>
       </div>
 
@@ -118,10 +178,12 @@ const CoffeeWallet = () => {
                       <Ticket className={`w-4 h-4 ${isDisabled ? "text-white/40" : "text-primary"}`} />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{coupon.title}</p>
+                      <p className="text-sm font-medium text-white">
+                        {t(coupon.title, coupon.titleEn)}
+                      </p>
                       <p className="text-[10px] text-white/40">
-                        {coupon.minSpend ? `满¥${coupon.minSpend}可用 · ` : ""}
-                        {coupon.isUsed ? "已使用" : coupon.isExpired ? "已过期" : `${coupon.expiryDate}到期`}
+                        {coupon.minSpend ? t(`满¥${coupon.minSpend}可用 · `, `Min. ¥${coupon.minSpend} · `) : ""}
+                        {getCouponStatus(coupon)}
                       </p>
                     </div>
                   </div>
@@ -140,7 +202,9 @@ const CoffeeWallet = () => {
               <Gift className="w-6 h-6 text-white/30" />
             </div>
             <p className="text-white/40 text-sm">
-              {activeTab === "available" ? "暂无可用券" : "暂无记录"}
+              {activeTab === "available" 
+                ? t("暂无可用券", "No available coupons") 
+                : t("暂无记录", "No history")}
             </p>
           </div>
         )}
