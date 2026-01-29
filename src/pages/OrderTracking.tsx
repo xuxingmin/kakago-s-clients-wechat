@@ -16,6 +16,7 @@ import {
 import { MultiDimensionRatingModal } from "@/components/MultiDimensionRatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type OrderState = "pending" | "accepted" | "rider_assigned" | "picked_up" | "delivered" | "rating";
 
@@ -122,8 +123,8 @@ const DeliveryMap = ({ riderLat, riderLng }: DeliveryMapProps) => {
 
       {/* ETA badge */}
       <div className="absolute top-3 right-3 bg-card/90 px-3 py-2 rounded-xl">
-        <p className="text-xs text-white/60">预计送达</p>
-        <p className="text-lg font-bold text-white">12 分钟</p>
+        <p className="text-xs text-white/60">ETA</p>
+        <p className="text-lg font-bold text-white">12 min</p>
       </div>
     </div>
   );
@@ -141,26 +142,27 @@ interface StatusTimelineProps {
   };
   onStatusClick?: (status: OrderState) => void;
   isInteractive?: boolean;
+  t: (zh: string, en: string) => string;
 }
 
-const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractive }: StatusTimelineProps) => {
+const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractive, t }: StatusTimelineProps) => {
   const steps = [
-    { key: "pending" as OrderState, label: "待接单", icon: Clock },
-    { key: "accepted" as OrderState, label: "制作中", icon: Coffee },
-    { key: "rider_assigned" as OrderState, label: "骑手接单", icon: Navigation },
-    { key: "picked_up" as OrderState, label: "配送中", icon: Package },
-    { key: "delivered" as OrderState, label: "已送达", icon: CheckCircle2 },
+    { key: "pending" as OrderState, labelZh: "待接单", labelEn: "Pending", icon: Clock },
+    { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee },
+    { key: "rider_assigned" as OrderState, labelZh: "骑手接单", labelEn: "Rider", icon: Navigation },
+    { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package },
+    { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2 },
   ];
 
   const statusIndex = steps.findIndex(s => s.key === currentStatus);
 
   const getStatusMessage = () => {
     switch (currentStatus) {
-      case "pending": return "正在匹配咖啡师...";
-      case "accepted": return "订单已接受，正在制作中";
-      case "rider_assigned": return "骑手已接单，即将取货";
-      case "picked_up": return "骑手正在配送中";
-      case "delivered": return "咖啡已送达";
+      case "pending": return t("正在匹配咖啡师...", "Finding nearby barista...");
+      case "accepted": return t("订单已接受，正在制作中", "Order accepted, brewing");
+      case "rider_assigned": return t("骑手已接单，即将取货", "Rider assigned");
+      case "picked_up": return t("骑手正在配送中", "On the way");
+      case "delivered": return t("咖啡已送达", "Delivered");
       default: return "";
     }
   };
@@ -168,7 +170,7 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
   return (
     <div className="card-lg !p-3 mx-4 mb-2">
       {isInteractive && (
-        <p className="text-[10px] text-white/30 text-center mb-1">🛠 点击切换状态演示</p>
+        <p className="text-[10px] text-white/30 text-center mb-1">🛠 {t("点击切换状态演示", "Click to switch status")}</p>
       )}
       
       {/* Status message integrated as small text */}
@@ -206,7 +208,7 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
                   isActive ? "text-white font-medium" : "text-white/40"
                 }`}
               >
-                {step.label}
+                {t(step.labelZh, step.labelEn)}
               </span>
             </button>
           );
@@ -221,6 +223,7 @@ const OrderTracking = () => {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("id");
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   const { order, loading } = useOrder(orderId);
   
@@ -260,13 +263,16 @@ const OrderTracking = () => {
       }
       
       toast({
-        title: "评价已提交",
-        description: `感谢您的评价！综合评分: ${((tasteRating + packagingRating + timelinessRating) / 3).toFixed(1)}`,
+        title: t("评价已提交", "Review Submitted"),
+        description: t(
+          `感谢您的评价！综合评分: ${((tasteRating + packagingRating + timelinessRating) / 3).toFixed(1)}`,
+          `Thanks for your review! Average: ${((tasteRating + packagingRating + timelinessRating) / 3).toFixed(1)}`
+        ),
       });
     } catch (error) {
       toast({
-        title: "评价提交失败",
-        description: "请稍后重试",
+        title: t("评价提交失败", "Submission Failed"),
+        description: t("请稍后重试", "Please try again later"),
         variant: "destructive",
       });
     }
@@ -353,7 +359,7 @@ const OrderTracking = () => {
           >
             <ChevronLeft className="w-4 h-4 text-white" />
           </button>
-          <h1 className="text-sm font-semibold text-white">订单追踪</h1>
+          <h1 className="text-sm font-semibold text-white">{t("订单追踪", "Order Tracking")}</h1>
           <div className="w-8" />
         </div>
       </header>
@@ -370,6 +376,7 @@ const OrderTracking = () => {
         }}
         isInteractive={!orderId}
         onStatusClick={(status) => setDemoState(status)}
+        t={t}
       />
 
       {/* Main Content */}
@@ -380,10 +387,10 @@ const OrderTracking = () => {
         }`}>
           <RadarScanner />
           <h2 className="text-lg font-bold text-white mt-8 text-center">
-            正在寻找最近的咖啡师...
+            {t("正在寻找最近的咖啡师...", "Finding nearby barista...")}
           </h2>
           <p className="text-sm text-white/50 mt-2 text-center">
-            请稍候，通常需要 10-30 秒
+            {t("请稍候，通常需要 10-30 秒", "Please wait, usually 10-30 seconds")}
           </p>
         </div>
 
@@ -399,32 +406,32 @@ const OrderTracking = () => {
             <div className="card-lg !p-3 space-y-2">
               <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
                 <Coffee className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[10px] text-white/50 tracking-wider">您的咖啡制作的相关参数</span>
+                <span className="text-[10px] text-white/50 tracking-wider">{t("您的咖啡制作的相关参数", "Your Coffee Parameters")}</span>
               </div>
               
               <div className="grid grid-cols-2 gap-1.5">
                 <div className="bg-secondary/50 rounded-lg p-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">咖啡机</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("咖啡机", "Machine")}</p>
                   <p className="text-[11px] font-medium text-white">La Marzocco</p>
                 </div>
                 <div className="bg-secondary/50 rounded-lg p-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">磨豆机</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("磨豆机", "Grinder")}</p>
                   <p className="text-[11px] font-medium text-white">Mahlkönig EK43</p>
                 </div>
               </div>
 
               <div className="bg-secondary/50 rounded-lg p-2">
-                <p className="text-[10px] text-white/40 uppercase tracking-wider">咖啡豆拼配</p>
-                <p className="text-[11px] font-medium text-white">埃塞俄比亚 耶加雪菲 60% + 哥伦比亚 慧兰 40%</p>
+                <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("咖啡豆拼配", "Blend")}</p>
+                <p className="text-[11px] font-medium text-white">{t("埃塞俄比亚 耶加雪菲 60% + 哥伦比亚 慧兰 40%", "Ethiopia Yirgacheffe 60% + Colombia Huila 40%")}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-1.5">
                 <div className="bg-secondary/50 rounded-lg p-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">SCA 风味指向</p>
-                  <p className="text-[11px] font-medium text-white">花香 · 柑橘 · 焦糖</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("SCA 风味指向", "SCA Flavor")}</p>
+                  <p className="text-[11px] font-medium text-white">{t("花香 · 柑橘 · 焦糖", "Floral · Citrus · Caramel")}</p>
                 </div>
                 <div className="bg-secondary/50 rounded-lg p-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">萃取参数</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("萃取参数", "Extraction")}</p>
                   <p className="text-[11px] font-medium text-white">93°C / 25s / 1:2</p>
                 </div>
               </div>
@@ -434,7 +441,7 @@ const OrderTracking = () => {
             <div className="card-lg !p-3 space-y-2">
               <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
                 <Home className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[10px] text-white/50 uppercase tracking-wider">为您呈现</span>
+                <span className="text-[10px] text-white/50 uppercase tracking-wider">{t("为您呈现", "Presented By")}</span>
               </div>
 
               {/* Store Header */}
@@ -446,7 +453,7 @@ const OrderTracking = () => {
                   <h3 className="text-sm font-bold text-white">
                     {order?.merchants?.name || demoMerchant.name}
                   </h3>
-                  <p className="text-[10px] text-white/50">首席咖啡师: {demoMerchant.barista}</p>
+                  <p className="text-[10px] text-white/50">{t("首席咖啡师", "Head Barista")}: {demoMerchant.barista}</p>
                 </div>
                 <div className="flex items-center gap-1 bg-primary/20 px-2 py-0.5 rounded-full">
                   <Star className="w-3 h-3 fill-primary text-primary" />
@@ -459,13 +466,13 @@ const OrderTracking = () => {
               {/* Store Description & Message in row */}
               <div className="grid grid-cols-2 gap-1.5">
                 <div className="bg-secondary/50 rounded-lg p-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">门店简介</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("门店简介", "About")}</p>
                   <p className="text-[10px] text-white/70 leading-snug mt-0.5">
                     {getMerchantInfo().description}
                   </p>
                 </div>
                 <div className="bg-secondary/50 rounded-lg p-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">店家寄语</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{t("店家寄语", "Message")}</p>
                   <p className="text-[10px] text-white/70 italic leading-snug mt-0.5">
                     "{getMerchantInfo().greeting_message}"
                   </p>
@@ -487,14 +494,14 @@ const OrderTracking = () => {
                 className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors"
               >
                 <Navigation className="w-3.5 h-3.5" />
-                <span>导航到店</span>
+                <span>{t("导航到店", "Navigate")}</span>
               </button>
               <button 
                 onClick={() => setShowContactDialog(true)}
                 className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5" />
-                <span>联系门店</span>
+                <span>{t("联系门店", "Contact")}</span>
               </button>
             </div>
           </div>
@@ -517,11 +524,11 @@ const OrderTracking = () => {
               </span>
               <div className="flex items-center justify-center gap-1 mt-3">
                 <Star className="w-3 h-3 fill-primary text-primary" />
-                <span className="text-xs text-white/50">{demoRider.rating}% 好评率</span>
+                <span className="text-xs text-white/50">{demoRider.rating}% {t("好评率", "Rating")}</span>
               </div>
               <button className="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-green-500 text-white text-sm font-medium">
                 <Phone className="w-4 h-4" />
-                <span>联系骑手</span>
+                <span>{t("联系骑手", "Contact Rider")}</span>
               </button>
             </div>
           </div>
@@ -554,7 +561,7 @@ const OrderTracking = () => {
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   <Star className="w-3 h-3 fill-primary text-primary" />
-                  <span className="text-xs text-white/50">{demoRider.rating}% 好评率</span>
+                  <span className="text-xs text-white/50">{demoRider.rating}% {t("好评率", "Rating")}</span>
                 </div>
               </div>
               <button className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white">
@@ -572,10 +579,10 @@ const OrderTracking = () => {
             <CheckCircle2 className="w-10 h-10 text-green-500" />
           </div>
           <h2 className="text-xl font-bold text-white text-center">
-            咖啡已送达！
+            {t("咖啡已送达！", "Coffee Delivered!")}
           </h2>
           <p className="text-sm text-white/50 mt-2 text-center">
-            感谢您的订购，请享用您的咖啡
+            {t("感谢您的订购，请享用您的咖啡", "Thank you for ordering. Enjoy your coffee!")}
           </p>
           
           {!order?.order_ratings && (
@@ -583,25 +590,25 @@ const OrderTracking = () => {
               onClick={() => setShowRatingModal(true)}
               className="mt-8 px-8 py-4 bg-primary text-white rounded-2xl font-semibold"
             >
-              为这杯咖啡评分
+              {t("为这杯咖啡评分", "Rate Your Coffee")}
             </button>
           )}
 
           {order?.order_ratings && (
             <div className="mt-6 card-lg w-full max-w-xs">
-              <p className="text-xs text-white/50 text-center mb-2">您的评价</p>
+              <p className="text-xs text-white/50 text-center mb-2">{t("您的评价", "Your Rating")}</p>
               <div className="flex justify-center gap-4">
                 <div className="text-center">
                   <p className="text-lg font-bold text-primary">{order.order_ratings.taste_rating}</p>
-                  <p className="text-xs text-white/50">口味</p>
+                  <p className="text-xs text-white/50">{t("口味", "Taste")}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-lg font-bold text-primary">{order.order_ratings.packaging_rating}</p>
-                  <p className="text-xs text-white/50">包装</p>
+                  <p className="text-xs text-white/50">{t("包装", "Package")}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-lg font-bold text-primary">{order.order_ratings.timeliness_rating}</p>
-                  <p className="text-xs text-white/50">时效</p>
+                  <p className="text-xs text-white/50">{t("时效", "Speed")}</p>
                 </div>
               </div>
             </div>
@@ -645,7 +652,7 @@ const OrderTracking = () => {
           <div className="flex items-center justify-between px-6 pb-4 border-b border-border">
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <Navigation className="w-5 h-5 text-primary" />
-              导航到门店
+              {t("导航到门店", "Navigate to Store")}
             </h3>
             <button
               onClick={() => setShowNavigateDialog(false)}
@@ -659,7 +666,7 @@ const OrderTracking = () => {
           <div className="px-6 py-6 space-y-3">
             <p className="text-base font-medium text-white">{getMerchantInfo().name}</p>
             <p className="text-sm text-white/60">{getMerchantInfo().address}</p>
-            <p className="text-xs text-white/40 pt-2">将打开高德地图为您导航</p>
+            <p className="text-xs text-white/40 pt-2">{t("将打开高德地图为您导航", "Opens Amap for navigation")}</p>
           </div>
 
           {/* Footer */}
@@ -668,13 +675,13 @@ const OrderTracking = () => {
               onClick={() => setShowNavigateDialog(false)}
               className="flex-1 py-3 rounded-xl bg-secondary text-white font-medium hover:bg-secondary/80 transition-colors"
             >
-              取消
+              {t("取消", "Cancel")}
             </button>
             <button
               onClick={confirmNavigateToStore}
               className="flex-1 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors"
             >
-              开始导航
+              {t("开始导航", "Start")}
             </button>
           </div>
         </div>
@@ -696,7 +703,7 @@ const OrderTracking = () => {
           <div className="flex items-center justify-between px-6 pb-4 border-b border-border">
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <Phone className="w-5 h-5 text-green-500" />
-              联系门店
+              {t("联系门店", "Contact Store")}
             </h3>
             <button
               onClick={() => setShowContactDialog(false)}
@@ -710,7 +717,7 @@ const OrderTracking = () => {
           <div className="px-6 py-6 space-y-3 text-center">
             <p className="text-base font-medium text-white">{getMerchantInfo().name}</p>
             <p className="text-3xl font-bold text-primary py-2">{getMerchantInfo().phone}</p>
-            <p className="text-xs text-white/40">将呼叫门店联系电话</p>
+            <p className="text-xs text-white/40">{t("将呼叫门店联系电话", "Will call store phone number")}</p>
           </div>
 
           {/* Footer */}
@@ -719,13 +726,13 @@ const OrderTracking = () => {
               onClick={() => setShowContactDialog(false)}
               className="flex-1 py-3 rounded-xl bg-secondary text-white font-medium hover:bg-secondary/80 transition-colors"
             >
-              取消
+              {t("取消", "Cancel")}
             </button>
             <button
               onClick={confirmContactStore}
               className="flex-1 py-3 rounded-xl bg-green-500 text-white font-medium hover:bg-green-600 transition-colors"
             >
-              立即拨打
+              {t("立即拨打", "Call Now")}
             </button>
           </div>
         </div>
