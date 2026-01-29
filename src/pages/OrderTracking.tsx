@@ -283,6 +283,8 @@ const OrderTracking = () => {
     latitude: 31.2304,
     longitude: 121.4737,
     address: "上海市静安区南京西路123号",
+    description: "专注精品咖啡十二年，坚持产地直采精品豆。",
+    greeting_message: "愿这杯咖啡带来温暖与能量。",
   };
 
   const demoRider = {
@@ -306,6 +308,8 @@ const OrderTracking = () => {
       address: merchant.address || demoMerchant.address,
       latitude: merchant.latitude || demoMerchant.latitude,
       longitude: merchant.longitude || demoMerchant.longitude,
+      description: (merchant as any).description || demoMerchant.description,
+      greeting_message: (merchant as any).greeting_message || demoMerchant.greeting_message,
     };
   };
 
@@ -457,13 +461,13 @@ const OrderTracking = () => {
                 <div className="bg-secondary/50 rounded-lg p-2">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider">门店简介</p>
                   <p className="text-[10px] text-white/70 leading-snug mt-0.5">
-                    专注精品咖啡十二年，坚持产地直采精品豆。
+                    {getMerchantInfo().description}
                   </p>
                 </div>
                 <div className="bg-secondary/50 rounded-lg p-2">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider">店家寄语</p>
                   <p className="text-[10px] text-white/70 italic leading-snug mt-0.5">
-                    "愿这杯咖啡带来温暖与能量。"
+                    "{getMerchantInfo().greeting_message}"
                   </p>
                 </div>
               </div>

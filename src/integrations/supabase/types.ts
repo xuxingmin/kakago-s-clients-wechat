@@ -155,6 +155,7 @@ export type Database = {
           created_at: string
           description: string | null
           description_en: string | null
+          greeting_message: string | null
           id: string
           is_online: boolean
           latitude: number
@@ -175,6 +176,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_en?: string | null
+          greeting_message?: string | null
           id?: string
           is_online?: boolean
           latitude: number
@@ -195,6 +197,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_en?: string | null
+          greeting_message?: string | null
           id?: string
           is_online?: boolean
           latitude?: number
