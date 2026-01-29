@@ -10,10 +10,8 @@ import {
   ChevronRight,
   Users,
   TrendingUp,
-  Sparkles,
   LucideIcon
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BottomNav } from "@/components/BottomNav";
 import { 
   IdentityVerificationModal, 
@@ -89,14 +87,11 @@ const Profile = () => {
       {/* Minimal Header */}
       <header className="px-4 pt-12 pb-4 safe-top max-w-md mx-auto">
         <div className="flex items-center justify-between">
-          {/* User Info - Minimal */}
+          {/* User Info - Minimal, no avatar image */}
           <div className="flex items-center gap-3">
-            <Avatar className="w-12 h-12 border-2 border-primary/30">
-              <AvatarImage src="/placeholder.svg" alt="用户头像" />
-              <AvatarFallback className="bg-primary/20 text-primary font-bold">
-                咖
-              </AvatarFallback>
-            </Avatar>
+            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <Coffee className="w-6 h-6 text-primary" />
+            </div>
             <div>
               <h2 className="text-base font-semibold text-white">咖啡探索家</h2>
               <button
@@ -111,58 +106,45 @@ const Profile = () => {
         </div>
       </header>
 
-      {/* My Squad Card - Hero Section */}
+      {/* My Squad Card - Minimal Design */}
       <section className="px-4 max-w-md mx-auto">
         <button
           onClick={() => navigate("/my-squad")}
-          className="w-full relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-600 to-purple-dark p-6 shadow-glow hover:shadow-purple transition-all active:scale-[0.98] min-h-[180px]"
+          className="w-full card-premium p-5 hover:scale-[1.01] transition-all active:scale-[0.99]"
         >
-          {/* Background Decorations */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-          <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white/30 animate-pulse" />
-          
-          <div className="relative">
-            {/* Header */}
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                <Users className="w-5 h-5 text-white" />
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                <Users className="w-5 h-5 text-primary" />
               </div>
               <div className="text-left">
                 <h3 className="font-bold text-white">拉帮结派</h3>
-                <p className="text-xs text-white/70">邀请返佣 · 永久有效</p>
+                <p className="text-xs text-white/50">邀请返佣 · 永久有效</p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-white/40" />
+          </div>
+          
+          {/* Stats Row */}
+          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+            <div className="text-left">
+              <p className="text-white/50 text-xs mb-1">累计收益</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-primary">¥1,240</span>
+                <span className="text-white/40 text-sm">.50</span>
               </div>
             </div>
             
-            {/* Stats */}
-            <div className="flex items-end justify-between">
-              <div className="text-left">
-                <p className="text-white/70 text-xs mb-1">累计收益</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-black text-white">¥1,240</span>
-                  <span className="text-white/60 text-sm">.50</span>
-                </div>
+            <div className="flex items-center gap-4 text-right">
+              <div>
+                <p className="text-lg font-bold text-white">348</p>
+                <p className="text-xs text-white/50">队员</p>
               </div>
-              
-              <div className="text-right">
-                <div className="flex items-center gap-3">
-                  <div>
-                    <p className="text-xl font-bold text-white">348</p>
-                    <p className="text-xs text-white/60">队员</p>
-                  </div>
-                  <div className="h-8 w-px bg-white/20" />
-                  <div className="flex items-center gap-1 text-green-400">
-                    <TrendingUp className="w-4 h-4" />
-                    <span className="text-sm font-semibold">+12</span>
-                  </div>
-                </div>
+              <div className="flex items-center gap-1 text-green-400">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm font-semibold">+12</span>
               </div>
-            </div>
-            
-            {/* CTA */}
-            <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
-              <span className="text-sm text-white/80">邀请好友，享永久返佣</span>
-              <ChevronRight className="w-5 h-5 text-white/60" />
             </div>
           </div>
         </button>
@@ -203,18 +185,18 @@ const Profile = () => {
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className={`w-full flex items-center gap-4 px-4 py-4 min-h-[72px] hover:bg-white/5 transition-colors ${
+                className={`w-full flex items-center gap-4 px-4 py-4 min-h-[64px] hover:bg-white/5 transition-colors ${
                   index !== menuItems.length - 1 ? "border-b border-white/10" : ""
                 }`}
               >
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                  <IconComponent className="w-5 h-5 text-primary" />
+                <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
+                  <IconComponent className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="font-medium text-white">{item.label}</p>
+                  <p className="font-medium text-white text-sm">{item.label}</p>
                   <p className="text-xs text-white/50">{item.description}</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-white/40" />
+                <ChevronRight className="w-4 h-4 text-white/40" />
               </button>
             );
           })}
