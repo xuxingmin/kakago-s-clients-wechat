@@ -13,7 +13,8 @@ export const BrandHeader = ({ showTagline = true }: BrandHeaderProps) => {
       <img 
         src={kakagoLogo} 
         alt="KAKAGO" 
-        className="h-8 w-auto object-contain"
+        className="h-8 w-auto object-contain mix-blend-multiply invert brightness-[2]"
+        style={{ filter: 'invert(1) brightness(2) hue-rotate(0deg)' }}
       />
       <p className="text-base text-primary font-medium mt-2">
         {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
