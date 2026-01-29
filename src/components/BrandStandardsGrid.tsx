@@ -32,51 +32,54 @@ export const BrandStandardsGrid = ({ onCartClick }: BrandStandardsGridProps) => 
   const hasCartItems = totalItems > 0;
 
   return (
-    <section className="px-4 py-3">
-      <div className="grid grid-cols-4 gap-2">
-        {/* Standard Cards - Icon Only with Morph */}
+    <section className="px-4 py-4">
+      <div className="grid grid-cols-4 gap-2 stagger-fade-in">
+        {/* Standard Cards - Refined Glass Morphism */}
         {standards.map((item, index) => {
           const IconComponent = item.Icon;
           return (
             <div
               key={index}
-              className="group relative flex items-center justify-center h-12 rounded-lg bg-white/5 backdrop-blur-md border border-white/10 cursor-default transition-all duration-300 hover:bg-white/10 hover:border-primary/30"
+              className="group relative flex items-center justify-center h-12 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.06] cursor-default transition-all duration-400 hover:bg-white/[0.08] hover:border-primary/20 active:scale-95"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
             >
-              {/* Icon Glow Effect */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-8 h-8 rounded-full bg-primary/20 blur-lg opacity-60 group-hover:opacity-0 transition-opacity duration-300" />
-              </div>
+              {/* Subtle glow on hover */}
+              <div className="absolute inset-0 rounded-xl bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-400 blur-xl pointer-events-none" />
               
-              {/* Icon - visible by default, fades on hover */}
+              {/* Icon - fades on hover */}
               <IconComponent 
-                className="w-6 h-6 text-primary relative z-10 transition-all duration-300 ease-in-out group-hover:opacity-0 group-hover:scale-75" 
+                className="w-5 h-5 text-primary/70 relative z-10 transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-75" 
               />
               
-              {/* Text Label - hidden by default, appears on hover */}
-              <span className="absolute inset-0 flex items-center justify-center text-[11px] font-mono font-semibold text-white opacity-0 scale-110 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:scale-100">
+              {/* Text Label - appears on hover */}
+              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-white/80 opacity-0 scale-110 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100">
                 {t(item.labelZh, item.labelEn)}
               </span>
             </div>
           );
         })}
 
-        {/* 8th Card - Cart (when items) or GO (when empty) */}
+        {/* Action Card - Cart or GO */}
         {hasCartItems ? (
           <button
             onClick={onCartClick}
-            className="relative flex items-center justify-center h-12 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95 gap-1.5"
+            className="relative flex items-center justify-center h-12 rounded-xl bg-gradient-to-br from-primary/90 to-purple-dark/90 border border-primary/30 pulse-glow cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 gap-1.5 overflow-hidden"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
           >
-            <ShoppingCart className="w-4 h-4 text-white" />
-            <span className="text-sm font-mono font-bold text-white">
+            {/* Shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+            <ShoppingCart className="w-4 h-4 text-white relative z-10" />
+            <span className="text-sm font-semibold text-white relative z-10">
               {totalItems}
             </span>
           </button>
         ) : (
           <button
             onClick={() => navigate("/my-squad")}
-            className="relative flex items-center justify-center h-12 rounded-lg bg-gradient-to-br from-primary to-purple-dark border border-primary/30 pulse-glow cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="relative flex items-center justify-center h-12 rounded-xl bg-gradient-to-br from-primary/90 to-purple-dark/90 border border-primary/30 pulse-glow cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
           >
-            <span className="text-sm font-mono font-black text-white tracking-wider">
+            <span className="text-sm font-bold text-white tracking-wider relative z-10">
               GO
             </span>
           </button>

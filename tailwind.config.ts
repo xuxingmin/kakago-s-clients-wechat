@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Instrument Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -88,6 +88,15 @@ export default {
         float: "var(--shadow-float)",
         glow: "var(--shadow-glow)",
       },
+      transitionTimingFunction: {
+        'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'smooth': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+        'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+      },
+      transitionDuration: {
+        '400': '400ms',
+        '600': '600ms',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -113,14 +122,24 @@ export default {
           "0%": { opacity: "0", filter: "blur(20px)" },
           "100%": { opacity: "1", filter: "blur(0)" },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
+        },
+        "pulse-soft": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.7" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        "slide-up": "slide-up 0.6s ease-out forwards",
-        "scale-in": "scale-in 0.3s ease-out forwards",
+        "fade-in": "fade-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        "slide-up": "slide-up 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        "scale-in": "scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
         "reveal": "reveal 1s ease-out forwards",
+        "float": "float 6s ease-in-out infinite",
+        "pulse-soft": "pulse-soft 2s ease-in-out infinite",
       },
     },
   },
