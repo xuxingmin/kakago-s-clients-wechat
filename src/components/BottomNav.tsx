@@ -1,15 +1,18 @@
 import * as React from "react";
 import { Home, ClipboardList, User } from "lucide-react";
 import { NavLink } from "react-router-dom";
-
-const navItems = [
-  { icon: Home, label: "首页", path: "/" },
-  { icon: ClipboardList, label: "订单", path: "/orders" },
-  { icon: User, label: "我的", path: "/profile" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   (props, ref) => {
+    const { t } = useLanguage();
+    
+    const navItems = [
+      { icon: Home, labelZh: "首页", labelEn: "Home", path: "/" },
+      { icon: ClipboardList, labelZh: "订单", labelEn: "Orders", path: "/orders" },
+      { icon: User, labelZh: "我的", labelEn: "Profile", path: "/profile" },
+    ];
+
     return (
       <nav
         ref={ref}
@@ -36,7 +39,9 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
                     strokeWidth={isActive ? 2.5 : 2}
                     className="transition-all duration-300"
                   />
-                  <span className="text-xs font-medium">{item.label}</span>
+                  <span className="text-xs font-medium">
+                    {t(item.labelZh, item.labelEn)}
+                  </span>
                 </>
               )}
             </NavLink>

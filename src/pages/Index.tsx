@@ -4,6 +4,7 @@ import { Plus, Flame } from "lucide-react";
 import { Header } from "@/components/Header";
 import { CheckoutModal } from "@/components/CheckoutModal";
 import { BottomNav } from "@/components/BottomNav";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import coffee images for modal only
 import coffeeLatte from "@/assets/coffee-latte.jpg";
@@ -11,56 +12,69 @@ import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
 
-// 产品数据 - 6款精选咖啡
+// 产品数据 - 6款精选咖啡 (bilingual)
 const products = [
   {
     id: "hot-americano",
-    name: "热美式",
+    nameZh: "热美式",
+    nameEn: "Hot Americano",
     price: 12,
     image: coffeeAmericano,
-    tag: "单一产地精品豆",
+    tagZh: "单一产地精品豆",
+    tagEn: "Single Origin Beans",
     isHot: true,
   },
   {
     id: "iced-americano",
-    name: "冰美式",
+    nameZh: "冰美式",
+    nameEn: "Iced Americano",
     price: 12,
     image: coffeeAmericano,
-    tag: "清爽冰饮",
+    tagZh: "清爽冰饮",
+    tagEn: "Refreshing & Cool",
   },
   {
     id: "hot-latte",
-    name: "热拿铁",
+    nameZh: "热拿铁",
+    nameEn: "Hot Latte",
     price: 15,
     image: coffeeLatte,
-    tag: "丝滑醇厚",
+    tagZh: "丝滑醇厚",
+    tagEn: "Silky & Rich",
     isHot: true,
   },
   {
     id: "iced-latte",
-    name: "冰拿铁",
+    nameZh: "冰拿铁",
+    nameEn: "Iced Latte",
     price: 15,
     image: coffeeLatte,
-    tag: "4.0高蛋白牛奶",
+    tagZh: "4.0高蛋白牛奶",
+    tagEn: "4.0 High-Protein Milk",
   },
   {
     id: "cappuccino",
-    name: "卡布奇诺",
+    nameZh: "卡布奇诺",
+    nameEn: "Cappuccino",
     price: 15,
     image: coffeeCappuccino,
-    tag: "绵密奶泡",
+    tagZh: "绵密奶泡",
+    tagEn: "Creamy Foam",
   },
   {
     id: "flat-white",
-    name: "澳白",
+    nameZh: "澳白",
+    nameEn: "Flat White",
     price: 15,
     image: coffeeFlatWhite,
-    tag: "浓缩精萃",
+    tagZh: "浓缩精萃",
+    tagEn: "Intense Espresso",
   },
 ];
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -76,6 +90,15 @@ const Index = () => {
     navigate("/order-tracking");
   };
 
+  // Convert selected product to modal format
+  const modalProduct = selectedProduct ? {
+    id: selectedProduct.id,
+    name: t(selectedProduct.nameZh, selectedProduct.nameEn),
+    price: selectedProduct.price,
+    image: selectedProduct.image,
+    tag: t(selectedProduct.tagZh, selectedProduct.tagEn),
+  } : null;
+
   return (
     <div className="min-h-screen pb-20">
       <Header />
@@ -83,7 +106,9 @@ const Index = () => {
       {/* Minimal Brand Header */}
       <section className="px-4 pt-6 pb-4">
         <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-        <p className="text-sm text-white/50 mt-0.5">城市精品咖啡联盟</p>
+        <p className="text-sm text-white/50 mt-0.5">
+          {t("城市精品咖啡联盟", "Urban Specialty Coffee Alliance")}
+        </p>
       </section>
 
       {/* Fog Divider */}
@@ -92,8 +117,12 @@ const Index = () => {
       {/* Compact Product List */}
       <section className="px-4 py-4">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-medium text-white/70">精选咖啡</h2>
-          <span className="text-xs text-white/40">专业咖啡师出品</span>
+          <h2 className="text-sm font-medium text-white/70">
+            {t("精选咖啡", "Featured Coffee")}
+          </h2>
+          <span className="text-xs text-white/40">
+            {t("专业咖啡师出品", "Crafted by Pro Baristas")}
+          </span>
         </div>
         
         <div className="grid grid-cols-2 gap-2">
@@ -108,14 +137,14 @@ const Index = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-semibold text-white text-sm group-hover:text-primary transition-colors">
-                      {product.name}
+                      {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
                       <Flame className="w-3 h-3 text-orange-400" />
                     )}
                   </div>
                   <p className="text-xs text-white/40 mt-0.5 truncate">
-                    {product.tag}
+                    {t(product.tagZh, product.tagEn)}
                   </p>
                 </div>
                 
@@ -140,8 +169,8 @@ const Index = () => {
       {/* Quick Info Footer */}
       <section className="px-4 py-4">
         <div className="flex items-center justify-between text-xs text-white/30">
-          <span>☕ 认证精品咖啡馆制作</span>
-          <span>配送约15-30分钟</span>
+          <span>{t("☕ 认证精品咖啡馆制作", "☕ Certified Specialty Cafés")}</span>
+          <span>{t("配送约15-30分钟", "Delivery 15-30 min")}</span>
         </div>
       </section>
 
@@ -149,7 +178,7 @@ const Index = () => {
       <CheckoutModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        product={selectedProduct}
+        product={modalProduct}
         onConfirm={handleConfirmOrder}
       />
 
