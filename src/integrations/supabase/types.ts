@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      merchant_applications: {
+        Row: {
+          business_hours: Json
+          business_license_url: string
+          coffee_machine_model: string
+          created_at: string
+          daily_peak_cups: number
+          food_permit_url: string
+          id: string
+          owner_name: string
+          phone: string
+          reviewed_at: string | null
+          reviewer_notes: string | null
+          status: Database["public"]["Enums"]["merchant_application_status"]
+          store_features: string
+          updated_at: string
+        }
+        Insert: {
+          business_hours?: Json
+          business_license_url: string
+          coffee_machine_model: string
+          created_at?: string
+          daily_peak_cups: number
+          food_permit_url: string
+          id?: string
+          owner_name: string
+          phone: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          status?: Database["public"]["Enums"]["merchant_application_status"]
+          store_features: string
+          updated_at?: string
+        }
+        Update: {
+          business_hours?: Json
+          business_license_url?: string
+          coffee_machine_model?: string
+          created_at?: string
+          daily_peak_cups?: number
+          food_permit_url?: string
+          id?: string
+          owner_name?: string
+          phone?: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          status?: Database["public"]["Enums"]["merchant_application_status"]
+          store_features?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       merchant_rating_stats: {
         Row: {
           avg_overall_rating: number | null
@@ -1401,6 +1452,7 @@ export type Database = {
       }
     }
     Enums: {
+      merchant_application_status: "pending" | "approved" | "rejected"
       merchant_role: "owner" | "manager" | "staff"
       order_status:
         | "pending"
@@ -1545,6 +1597,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      merchant_application_status: ["pending", "approved", "rejected"],
       merchant_role: ["owner", "manager", "staff"],
       order_status: [
         "pending",
