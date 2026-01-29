@@ -355,8 +355,7 @@ const OrderTracking = () => {
             <div className="card-lg !p-3 space-y-2">
               <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
                 <Coffee className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[10px] text-white/50 uppercase tracking-wider">萃取参数</span>
-                <span className="text-[10px] text-white/30 ml-auto">您的咖啡正以以下参数进行萃取</span>
+                <span className="text-[10px] text-white/50 tracking-wider">您的咖啡制作的相关参数</span>
               </div>
               
               <div className="grid grid-cols-2 gap-1.5">
