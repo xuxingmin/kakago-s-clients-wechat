@@ -142,7 +142,7 @@ const Index = () => {
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
             <p className="text-sm text-white/50 mt-0.5">
-              {t("城市精品咖啡联盟", "Urban Specialty Coffee Alliance")}
+              {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
             </p>
           </div>
           {/* Coupon Badge */}
@@ -246,7 +246,7 @@ const Index = () => {
       {/* Quick Info Footer */}
       <section className="px-4 py-4">
         <div className="flex items-center justify-between text-xs text-white/30">
-          <span>{t("☕ 认证精品咖啡馆制作", "☕ Certified Specialty Cafés")}</span>
+          <span>{t("☕ KAKA认证精品咖啡馆出品", "☕ KAKA Certified Specialty Cafés")}</span>
           <span>{t("配送约15-30分钟", "Delivery 15-30 min")}</span>
         </div>
       </section>

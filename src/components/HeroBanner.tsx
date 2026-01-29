@@ -19,7 +19,7 @@ export const HeroBanner = () => {
           KAKAGO
         </h1>
         <p className="text-sm text-white/80 mt-1 tracking-wide">
-          城市精品咖啡联盟
+          可负担的精品咖啡
         </p>
         <p className="text-xs text-white/60 mt-0.5 tracking-widest">
           发现城市中的精品咖啡馆
