@@ -12,7 +12,7 @@ import {
   MessageCircle,
   Coins,
   Infinity,
-  Gift
+  ChevronRight
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { toast } from "@/hooks/use-toast";
@@ -25,15 +25,6 @@ const squadStats = {
   todayGrowth: 12,
   inviteCode: "KAKA2024",
 };
-
-// 2% 返豆记录
-const recentCommissions = [
-  { id: "1", productZh: "冰拿铁", productEn: "Iced Latte", beans: 30, time: "刚刚" },
-  { id: "2", productZh: "澳白", productEn: "Flat White", beans: 30, time: "5分钟前" },
-  { id: "3", productZh: "美式", productEn: "Americano", beans: 24, time: "12分钟前" },
-  { id: "4", productZh: "卡布奇诺", productEn: "Cappuccino", beans: 32, time: "28分钟前" },
-  { id: "5", productZh: "摩卡", productEn: "Mocha", beans: 35, time: "1小时前" },
-];
 
 // 豆转人民币
 const beansToRMB = (beans: number) => (beans / 100).toFixed(2);
@@ -217,41 +208,23 @@ const MySquad = () => {
       {/* Fog Divider */}
       <div className="fog-divider mx-4" />
 
-      {/* Section Header */}
-      <section className="px-4 pt-4 pb-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-white/70">
-            {t("返豆流水", "Commission History")}
-          </h2>
-          <span className="text-xs text-white/40">2% {t("返利", "rebate")}</span>
-        </div>
-      </section>
-
-      {/* Commission List */}
-      <section className="px-4 space-y-2">
-        {recentCommissions.map((item, index) => (
-          <div
-            key={item.id}
-            className="card-sm flex items-center justify-between"
-            style={{ animationDelay: `${index * 0.03}s` }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                <Coffee className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-white">
-                  {t("队员购买", "Member bought")} <span className="text-primary">{t(item.productZh, item.productEn)}</span>
-                </p>
-                <p className="text-[10px] text-white/40">{item.time}</p>
-              </div>
+      {/* View Records Link */}
+      <section className="px-4 py-4">
+        <button
+          onClick={() => navigate("/kaka-beans")}
+          className="card-sm w-full flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+              <Coins className="w-5 h-5 text-primary" />
             </div>
-            <div className="text-right">
-              <span className="text-primary font-bold">+{item.beans}</span>
-              <p className="text-[9px] text-white/40">≈¥{beansToRMB(item.beans)}</p>
+            <div className="text-left">
+              <p className="text-sm font-medium text-white">{t("查看豆豆收支记录", "View Transaction History")}</p>
+              <p className="text-[10px] text-white/40">{t("所有返利记录统一在这里查看", "All rebate records in one place")}</p>
             </div>
           </div>
-        ))}
+          <ChevronRight className="w-5 h-5 text-white/30 group-hover:text-primary transition-colors" />
+        </button>
       </section>
 
       {/* Quick Info Footer */}
