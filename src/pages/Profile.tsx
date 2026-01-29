@@ -110,7 +110,7 @@ const Profile = () => {
       <section className="px-4 max-w-md mx-auto">
         <button
           onClick={() => navigate("/my-squad")}
-          className="w-full card-xl hover:scale-[1.01] transition-all active:scale-[0.99]"
+          className="w-full card-xl"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-4">

@@ -23,7 +23,7 @@ export const ProductGridCard = ({
   return (
     <div
       onClick={() => onSelect(id)}
-      className="card-md flex flex-col cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group relative"
+      className="card-md flex flex-col cursor-pointer group relative"
     >
       {/* Image */}
       <div className="relative aspect-square rounded-xl overflow-hidden bg-secondary mb-3">
