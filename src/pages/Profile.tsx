@@ -13,6 +13,7 @@ import {
   Coins
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandHeader } from "@/components/BrandHeader";
 import { 
   IdentityVerificationModal, 
   getIdentityBadge,
@@ -100,8 +101,11 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen pb-20">
+      {/* Brand Header */}
+      <BrandHeader showTagline={false} />
+
       {/* Top Row - Two Column Layout */}
-      <section className="px-4 pt-12 safe-top max-w-md mx-auto">
+      <section className="px-4 pt-4 max-w-md mx-auto">
         <div className="grid grid-cols-2 gap-3">
           {/* Left Card - User Profile */}
           <button

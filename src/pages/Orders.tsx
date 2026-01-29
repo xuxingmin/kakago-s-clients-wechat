@@ -4,7 +4,9 @@ import { OrderCard } from "@/components/OrderCard";
 import { EmptyState } from "@/components/EmptyState";
 import { BottomNav } from "@/components/BottomNav";
 import { RatingModal } from "@/components/RatingModal";
+import { BrandHeader } from "@/components/BrandHeader";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -64,15 +66,10 @@ const demoOrders: Order[] = [
     isRevealed: true,
   },
 ];
-
-const tabs = [
-  { id: "active", label: "进行中" },
-  { id: "completed", label: "已完成" },
-];
-
 const Orders = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("active");
   const [orders, setOrders] = useState<Order[]>(demoOrders);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
@@ -113,12 +110,20 @@ const Orders = () => {
     });
   };
 
+  const tabs = [
+    { id: "active", label: t("进行中", "In Progress") },
+    { id: "completed", label: t("已完成", "Completed") },
+  ];
+
   return (
     <div className="min-h-screen pb-20">
+      {/* Brand Header */}
+      <BrandHeader showTagline={false} />
+
       {/* Header */}
-      <header className="sticky top-0 z-40 glass safe-top">
-        <div className="px-4 py-4 max-w-md mx-auto">
-          <h1 className="text-xl font-bold text-white">我的订单</h1>
+      <header className="sticky top-0 z-40 glass">
+        <div className="px-4 py-3 max-w-md mx-auto">
+          <h2 className="text-lg font-bold text-white">{t("我的订单", "My Orders")}</h2>
         </div>
         
         {/* Tabs */}
