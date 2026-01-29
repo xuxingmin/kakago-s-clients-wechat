@@ -11,7 +11,7 @@ export const BrandHeader = ({ showTagline = true }: BrandHeaderProps) => {
     <header className="px-4 pt-14 pb-6 safe-top max-w-md mx-auto">
       <h1 className="text-3xl font-black text-white tracking-tight">KAKAGO</h1>
       <p className="text-base text-primary font-medium mt-1">
-        {t("城市精品咖啡联盟", "Urban Specialty Coffee Alliance")}
+        {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
       </p>
       
       {showTagline && (

@@ -246,7 +246,7 @@ const MySquad = () => {
               {/* Poster Content */}
               <div className="text-center">
                 <h2 className="text-2xl font-black text-white tracking-tight mb-1">KAKAGO</h2>
-                <p className="text-xs text-white/50 mb-6">{t("城市精品咖啡联盟", "Urban Specialty Coffee")}</p>
+                <p className="text-xs text-white/50 mb-6">{t("可负担的精品咖啡", "Affordable Specialty Coffee")}</p>
                 
                 {/* QR Placeholder */}
                 <div className="w-36 h-36 mx-auto bg-white rounded-xl p-3 mb-4">
