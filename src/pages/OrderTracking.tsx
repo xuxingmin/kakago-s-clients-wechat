@@ -15,7 +15,16 @@ import {
 import { MultiDimensionRatingModal } from "@/components/MultiDimensionRatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 type OrderState = "pending" | "accepted" | "rider_assigned" | "picked_up" | "delivered" | "rating";
 
 // Radar Scanner Component - Minimal
@@ -226,6 +235,8 @@ const OrderTracking = () => {
   const [demoState, setDemoState] = useState<OrderState>("pending");
   const [showRevealCard, setShowRevealCard] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
+  const [showNavigateDialog, setShowNavigateDialog] = useState(false);
+  const [showContactDialog, setShowContactDialog] = useState(false);
 
   const currentState: OrderState = order?.status as OrderState || demoState;
 
@@ -294,43 +305,37 @@ const OrderTracking = () => {
     price: 15,
   };
 
-  // 导航到门店 - 调用高德地图
-  const handleNavigateToStore = () => {
+  // 获取门店信息
+  const getMerchantInfo = () => {
     const merchant = order?.merchants || demoMerchant;
-    const lat = merchant.latitude || demoMerchant.latitude;
-    const lng = merchant.longitude || demoMerchant.longitude;
-    const name = encodeURIComponent(merchant.name || demoMerchant.name);
-    const address = encodeURIComponent(merchant.address || demoMerchant.address);
-    
-    // 高德地图导航 URL
-    const amapUrl = `https://uri.amap.com/navigation?to=${lng},${lat},${name}&mode=car&policy=1&src=kafei&coordinate=gaode`;
-    
-    window.open(amapUrl, '_blank');
-    
-    toast({
-      title: "正在打开高德地图",
-      description: `导航至: ${merchant.name || demoMerchant.name}`,
-    });
+    return {
+      name: merchant.name || demoMerchant.name,
+      phone: merchant.phone || demoMerchant.phone,
+      address: merchant.address || demoMerchant.address,
+      latitude: merchant.latitude || demoMerchant.latitude,
+      longitude: merchant.longitude || demoMerchant.longitude,
+    };
   };
 
-  // 联系门店 - 拨打电话
-  const handleContactStore = () => {
-    const merchant = order?.merchants || demoMerchant;
-    const phone = merchant.phone || demoMerchant.phone;
+  // 确认导航到门店
+  const confirmNavigateToStore = () => {
+    const info = getMerchantInfo();
+    const name = encodeURIComponent(info.name);
     
-    if (phone) {
-      window.location.href = `tel:${phone}`;
-      toast({
-        title: "正在呼叫门店",
-        description: `电话: ${phone}`,
-      });
-    } else {
-      toast({
-        title: "暂无联系方式",
-        description: "该门店未提供联系电话",
-        variant: "destructive",
-      });
+    // 高德地图导航 URL
+    const amapUrl = `https://uri.amap.com/navigation?to=${info.longitude},${info.latitude},${name}&mode=car&policy=1&src=kafei&coordinate=gaode`;
+    
+    window.open(amapUrl, '_blank');
+    setShowNavigateDialog(false);
+  };
+
+  // 确认拨打电话
+  const confirmContactStore = () => {
+    const info = getMerchantInfo();
+    if (info.phone) {
+      window.location.href = `tel:${info.phone}`;
     }
+    setShowContactDialog(false);
   };
 
   if (loading) {
@@ -482,14 +487,14 @@ const OrderTracking = () => {
             {/* Actions */}
             <div className="flex gap-2">
               <button 
-                onClick={handleNavigateToStore}
+                onClick={() => setShowNavigateDialog(true)}
                 className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors"
               >
                 <Navigation className="w-3.5 h-3.5" />
                 <span>导航到店</span>
               </button>
               <button 
-                onClick={handleContactStore}
+                onClick={() => setShowContactDialog(true)}
                 className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5" />
@@ -616,6 +621,62 @@ const OrderTracking = () => {
         productName={order?.product_name || demoProduct.name}
         onSubmit={handleRatingSubmit}
       />
+
+      {/* Navigate Dialog */}
+      <AlertDialog open={showNavigateDialog} onOpenChange={setShowNavigateDialog}>
+        <AlertDialogContent className="bg-card border-white/10 max-w-[90vw] rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white flex items-center gap-2">
+              <Navigation className="w-5 h-5 text-primary" />
+              导航到门店
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white/60 space-y-2">
+              <p className="font-medium text-white">{getMerchantInfo().name}</p>
+              <p className="text-sm">{getMerchantInfo().address}</p>
+              <p className="text-xs text-white/40 mt-2">将打开高德地图为您导航</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row gap-2">
+            <AlertDialogCancel className="flex-1 m-0 bg-secondary border-0 text-white hover:bg-secondary/80">
+              取消
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmNavigateToStore}
+              className="flex-1 m-0 bg-primary text-white hover:bg-primary/90"
+            >
+              开始导航
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Contact Dialog */}
+      <AlertDialog open={showContactDialog} onOpenChange={setShowContactDialog}>
+        <AlertDialogContent className="bg-card border-white/10 max-w-[90vw] rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white flex items-center gap-2">
+              <Phone className="w-5 h-5 text-green-500" />
+              联系门店
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white/60 space-y-2">
+              <p className="font-medium text-white">{getMerchantInfo().name}</p>
+              <p className="text-2xl font-bold text-primary mt-2">{getMerchantInfo().phone}</p>
+              <p className="text-xs text-white/40 mt-2">将呼叫门店联系电话</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row gap-2">
+            <AlertDialogCancel className="flex-1 m-0 bg-secondary border-0 text-white hover:bg-secondary/80">
+              取消
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmContactStore}
+              className="flex-1 m-0 bg-green-500 text-white hover:bg-green-600"
+            >
+              立即拨打
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
