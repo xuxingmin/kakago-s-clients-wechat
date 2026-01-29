@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { X, Minus, Plus, Trash2, Check } from "lucide-react";
+import { X, Minus, Plus, Trash2, Loader2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "@/hooks/use-toast";
 
 // Mock user beans balance
 const userBeansBalance = 124050;
@@ -37,6 +38,8 @@ export const FloatingCart = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<"wechat" | "alipay" | "beans">("wechat");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingStep, setProcessingStep] = useState<"idle" | "redirecting" | "processing" | "verifying">("idle");
 
   // Expose open function globally for BrandStandardsGrid to call
   (window as any).__openCart = () => setIsOpen(true);
@@ -51,11 +54,97 @@ export const FloatingCart = () => {
     setShowPaymentModal(true);
   };
 
-  const handleConfirmPayment = () => {
-    setShowPaymentModal(false);
-    setIsOpen(false);
-    navigate("/order-tracking");
-    clearCart();
+  // Simulate payment process
+  const handleConfirmPayment = async () => {
+    setIsProcessing(true);
+
+    if (selectedPayment === "beans") {
+      // KAKA Beans payment - instant processing
+      setProcessingStep("processing");
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      if (hasEnoughBeans) {
+        setProcessingStep("verifying");
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        toast({
+          title: t("支付成功", "Payment Successful"),
+          description: t(
+            `已扣除 ${totalBeansNeeded.toLocaleString()} KAKA豆`,
+            `${totalBeansNeeded.toLocaleString()} KAKA Beans deducted`
+          ),
+        });
+        
+        setIsProcessing(false);
+        setProcessingStep("idle");
+        setShowPaymentModal(false);
+        setIsOpen(false);
+        clearCart();
+        navigate("/order-tracking");
+      } else {
+        setIsProcessing(false);
+        setProcessingStep("idle");
+        toast({
+          title: t("支付失败", "Payment Failed"),
+          description: t("KAKA豆余额不足", "Insufficient KAKA Beans"),
+          variant: "destructive",
+        });
+      }
+    } else {
+      // WeChat/Alipay - simulate SDK redirect
+      setProcessingStep("redirecting");
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      setProcessingStep("processing");
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // 90% success rate for demo
+      const isSuccess = Math.random() > 0.1;
+      
+      if (isSuccess) {
+        setProcessingStep("verifying");
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        toast({
+          title: t("支付成功", "Payment Successful"),
+          description: t(
+            `${selectedPayment === "wechat" ? "微信" : "支付宝"}支付完成`,
+            `${selectedPayment === "wechat" ? "WeChat" : "Alipay"} payment completed`
+          ),
+        });
+        
+        setIsProcessing(false);
+        setProcessingStep("idle");
+        setShowPaymentModal(false);
+        setIsOpen(false);
+        clearCart();
+        navigate("/order-tracking");
+      } else {
+        setIsProcessing(false);
+        setProcessingStep("idle");
+        toast({
+          title: t("支付失败", "Payment Failed"),
+          description: t("支付已取消或超时，请重试", "Payment cancelled or timed out, please retry"),
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const getProcessingText = () => {
+    switch (processingStep) {
+      case "redirecting":
+        return t(
+          `正在跳转${selectedPayment === "wechat" ? "微信" : "支付宝"}...`,
+          `Redirecting to ${selectedPayment === "wechat" ? "WeChat" : "Alipay"}...`
+        );
+      case "processing":
+        return t("正在处理支付...", "Processing payment...");
+      case "verifying":
+        return t("验证支付结果...", "Verifying payment...");
+      default:
+        return "";
+    }
   };
 
   const paymentMethods = [
@@ -271,10 +360,17 @@ export const FloatingCart = () => {
           <div className="px-6 py-4 safe-bottom">
             <button
               onClick={handleConfirmPayment}
-              disabled={selectedPayment === "beans" && !hasEnoughBeans}
-              className="btn-gold w-full py-4 rounded-2xl text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={(selectedPayment === "beans" && !hasEnoughBeans) || isProcessing}
+              className="btn-gold w-full py-4 rounded-2xl text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {t("确认支付", "Confirm Payment")}
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  {getProcessingText()}
+                </>
+              ) : (
+                t("确认支付", "Confirm Payment")
+              )}
             </button>
           </div>
         </div>
