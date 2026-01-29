@@ -137,7 +137,7 @@ const Index = () => {
       <Header />
 
       {/* Minimal Brand Header */}
-      <section className="px-4 pt-6 pb-2">
+      <section className="px-4 pt-6 pb-4">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
@@ -156,9 +156,6 @@ const Index = () => {
           )}
         </div>
       </section>
-
-      {/* Brand Standards Grid */}
-      <BrandStandardsGrid />
 
       {/* Fog Divider */}
       <div className="fog-divider mx-4" />
@@ -242,6 +239,9 @@ const Index = () => {
 
       {/* Fog Divider */}
       <div className="fog-divider mx-4" />
+
+      {/* Brand Standards Grid - Bottom Section */}
+      <BrandStandardsGrid />
 
       {/* Quick Info Footer */}
       <section className="px-4 py-4">
