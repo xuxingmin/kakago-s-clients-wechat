@@ -8,35 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Step = "intro" | "verify" | "info" | "success";
-
-const benefits = [
-  {
-    icon: TrendingUp,
-    title: "精准流量",
-    description: "盲盒模式带来高质量咖啡爱好者，转化率远超传统平台",
-  },
-  {
-    icon: Shield,
-    title: "品质保障",
-    description: "严选合作商户，维护高端品牌调性，拒绝价格战",
-  },
-  {
-    icon: Users,
-    title: "社群赋能",
-    description: "加入精品咖啡联盟，共享行业资源与用户洞察",
-  },
-  {
-    icon: Coffee,
-    title: "智能调度",
-    description: "AI驱动订单分配，平衡产能与用户体验",
-  },
-];
 
 const MerchantAuth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [step, setStep] = useState<Step>("intro");
   const [loading, setLoading] = useState(false);
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
@@ -60,23 +39,62 @@ const MerchantAuth = () => {
   const businessLicenseRef = useRef<HTMLInputElement>(null);
   const foodPermitRef = useRef<HTMLInputElement>(null);
 
+  const benefits = [
+    {
+      icon: TrendingUp,
+      title: t("精准流量", "Targeted Traffic"),
+      description: t(
+        "盲盒模式带来高质量咖啡爱好者，转化率远超传统平台",
+        "Mystery box model attracts quality coffee lovers with higher conversion rates"
+      ),
+    },
+    {
+      icon: Shield,
+      title: t("品质保障", "Quality Assurance"),
+      description: t(
+        "严选合作商户，维护高端品牌调性，拒绝价格战",
+        "Curated merchants, premium brand positioning, no price wars"
+      ),
+    },
+    {
+      icon: Users,
+      title: t("社群赋能", "Community Power"),
+      description: t(
+        "加入精品咖啡联盟，共享行业资源与用户洞察",
+        "Join specialty coffee alliance, share resources and insights"
+      ),
+    },
+    {
+      icon: Coffee,
+      title: t("智能调度", "Smart Dispatch"),
+      description: t(
+        "AI驱动订单分配，平衡产能与用户体验",
+        "AI-powered order distribution, balancing capacity and experience"
+      ),
+    },
+  ];
+
   // Send verification code
   const handleSendCode = async () => {
     if (!phone || phone.length !== 11) {
-      toast({ title: "请输入正确的手机号", variant: "destructive" });
+      toast({ 
+        title: t("请输入正确的手机号", "Please enter a valid phone number"), 
+        variant: "destructive" 
+      });
       return;
     }
     
     setLoading(true);
-    // Simulate sending SMS (in production, use actual SMS service)
     await new Promise(resolve => setTimeout(resolve, 1000));
     setCodeSent(true);
     setCountdown(60);
     setLoading(false);
     
-    toast({ title: "验证码已发送", description: "请查看您的短信" });
+    toast({ 
+      title: t("验证码已发送", "Code sent"), 
+      description: t("请查看您的短信", "Please check your SMS") 
+    });
     
-    // Countdown timer
     const timer = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
@@ -91,15 +109,15 @@ const MerchantAuth = () => {
   // Verify code
   const handleVerifyCode = async () => {
     if (verificationCode.length !== 6) {
-      toast({ title: "请输入6位验证码", variant: "destructive" });
+      toast({ 
+        title: t("请输入6位验证码", "Please enter 6-digit code"), 
+        variant: "destructive" 
+      });
       return;
     }
     
     setLoading(true);
-    // Simulate verification (in production, verify with SMS service)
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // For demo, accept any 6-digit code
     setLoading(false);
     setStep("info");
   };
@@ -125,20 +143,21 @@ const MerchantAuth = () => {
   // Submit application
   const handleSubmit = async () => {
     if (!ownerName || !storeFeatures || !coffeeMachine || !dailyPeakCups || !businessLicense || !foodPermit) {
-      toast({ title: "请填写完整信息", variant: "destructive" });
+      toast({ 
+        title: t("请填写完整信息", "Please complete all fields"), 
+        variant: "destructive" 
+      });
       return;
     }
     
     setLoading(true);
     
     try {
-      // Upload documents
       const [licenseUrl, permitUrl] = await Promise.all([
         uploadFile(businessLicense, 'licenses'),
         uploadFile(foodPermit, 'permits'),
       ]);
       
-      // Submit application
       const { error } = await supabase
         .from('merchant_applications')
         .insert({
@@ -157,7 +176,10 @@ const MerchantAuth = () => {
       setSuccessDialogOpen(true);
     } catch (error) {
       console.error("Submit error:", error);
-      toast({ title: "提交失败，请重试", variant: "destructive" });
+      toast({ 
+        title: t("提交失败，请重试", "Submission failed, please retry"), 
+        variant: "destructive" 
+      });
     } finally {
       setLoading(false);
     }
@@ -173,7 +195,9 @@ const MerchantAuth = () => {
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-secondary/50 transition-colors">
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-lg font-medium text-white">成为合作商家</h1>
+            <h1 className="text-lg font-medium text-white">
+              {t("成为合作商家", "Become a Partner")}
+            </h1>
           </div>
         </header>
 
@@ -185,10 +209,13 @@ const MerchantAuth = () => {
             <Coffee className="w-8 h-8 text-primary" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-3">
-            为什么加入 KAKA?
+            {t("为什么加入 KAKA?", "Why Join KAKA?")}
           </h2>
           <p className="text-white/60 text-sm leading-relaxed max-w-xs mx-auto">
-            与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味
+            {t(
+              "与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味",
+              "Partner with our mystery coffee platform and let more coffee lovers discover your unique flavors"
+            )}
           </p>
         </section>
 
@@ -196,7 +223,7 @@ const MerchantAuth = () => {
         <section className="px-4 pb-8 space-y-3">
           {benefits.map((benefit, index) => (
             <div
-              key={benefit.title}
+              key={index}
               className="card-premium p-5 animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -219,10 +246,13 @@ const MerchantAuth = () => {
             className="w-full h-14 rounded-2xl text-base font-medium"
             onClick={() => setStep("verify")}
           >
-            立即入驻
+            {t("立即入驻", "Apply Now")}
           </Button>
           <p className="text-center text-xs text-white/40 mt-4">
-            提交申请后，24小时内将有工作人员与您联系
+            {t(
+              "提交申请后，24小时内将有工作人员与您联系",
+              "Our team will contact you within 24 hours after submission"
+            )}
           </p>
         </section>
       </div>
@@ -238,7 +268,9 @@ const MerchantAuth = () => {
             <button onClick={() => setStep("intro")} className="p-2 -ml-2 rounded-full hover:bg-secondary/50 transition-colors">
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-lg font-medium text-white">验证手机号</h1>
+            <h1 className="text-lg font-medium text-white">
+              {t("验证手机号", "Verify Phone")}
+            </h1>
           </div>
         </header>
 
@@ -250,17 +282,21 @@ const MerchantAuth = () => {
               <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4">
                 <Phone className="w-7 h-7 text-primary" />
               </div>
-              <h2 className="text-lg font-semibold text-white mb-2">输入您的手机号</h2>
-              <p className="text-sm text-white/60">我们将发送验证码到您的手机</p>
+              <h2 className="text-lg font-semibold text-white mb-2">
+                {t("输入您的手机号", "Enter Your Phone")}
+              </h2>
+              <p className="text-sm text-white/60">
+                {t("我们将发送验证码到您的手机", "We'll send a verification code to your phone")}
+              </p>
             </div>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-white/80">手机号</Label>
+                <Label className="text-white/80">{t("手机号", "Phone Number")}</Label>
                 <div className="flex gap-2">
                   <Input
                     type="tel"
-                    placeholder="请输入11位手机号"
+                    placeholder={t("请输入11位手机号", "Enter 11-digit phone")}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 11))}
                     className="flex-1 h-12 bg-secondary border-white/10 text-white rounded-xl"
@@ -272,17 +308,17 @@ const MerchantAuth = () => {
                     disabled={loading || countdown > 0 || phone.length !== 11}
                     className="h-12 px-4 rounded-xl border-primary/50 text-primary hover:bg-primary/10"
                   >
-                    {countdown > 0 ? `${countdown}s` : "发送"}
+                    {countdown > 0 ? `${countdown}s` : t("发送", "Send")}
                   </Button>
                 </div>
               </div>
 
               {codeSent && (
                 <div className="space-y-2 animate-fade-in">
-                  <Label className="text-white/80">验证码</Label>
+                  <Label className="text-white/80">{t("验证码", "Verification Code")}</Label>
                   <Input
                     type="text"
-                    placeholder="请输入6位验证码"
+                    placeholder={t("请输入6位验证码", "Enter 6-digit code")}
                     value={verificationCode}
                     onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     className="h-12 bg-secondary border-white/10 text-white rounded-xl text-center text-lg tracking-widest"
@@ -297,7 +333,7 @@ const MerchantAuth = () => {
               onClick={handleVerifyCode}
               disabled={!codeSent || verificationCode.length !== 6 || loading}
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "下一步"}
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t("下一步", "Next")}
             </Button>
           </div>
         </section>
@@ -314,7 +350,9 @@ const MerchantAuth = () => {
             <button onClick={() => setStep("verify")} className="p-2 -ml-2 rounded-full hover:bg-secondary/50 transition-colors">
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-lg font-medium text-white">填写商户信息</h1>
+            <h1 className="text-lg font-medium text-white">
+              {t("填写商户信息", "Merchant Information")}
+            </h1>
           </div>
         </header>
 
@@ -323,7 +361,9 @@ const MerchantAuth = () => {
         <section className="px-4 py-4 space-y-3">
           {/* Document Upload Cards */}
           <div className="card-premium p-5">
-            <h3 className="font-medium text-white mb-4">证件上传</h3>
+            <h3 className="font-medium text-white mb-4">
+              {t("证件上传", "Document Upload")}
+            </h3>
             <div className="grid grid-cols-2 gap-3">
               {/* Business License */}
               <div 
@@ -342,12 +382,12 @@ const MerchantAuth = () => {
                 {businessLicense ? (
                   <>
                     <Check className="w-6 h-6 text-primary mb-1" />
-                    <span className="text-xs text-primary">已上传</span>
+                    <span className="text-xs text-primary">{t("已上传", "Uploaded")}</span>
                   </>
                 ) : (
                   <>
                     <Upload className="w-6 h-6 text-white/40 mb-1" />
-                    <span className="text-xs text-white/40">营业执照</span>
+                    <span className="text-xs text-white/40">{t("营业执照", "Business License")}</span>
                   </>
                 )}
               </div>
@@ -369,12 +409,12 @@ const MerchantAuth = () => {
                 {foodPermit ? (
                   <>
                     <Check className="w-6 h-6 text-primary mb-1" />
-                    <span className="text-xs text-primary">已上传</span>
+                    <span className="text-xs text-primary">{t("已上传", "Uploaded")}</span>
                   </>
                 ) : (
                   <>
                     <Upload className="w-6 h-6 text-white/40 mb-1" />
-                    <span className="text-xs text-white/40">食品经营许可证</span>
+                    <span className="text-xs text-white/40">{t("食品经营许可证", "Food Permit")}</span>
                   </>
                 )}
               </div>
@@ -383,21 +423,21 @@ const MerchantAuth = () => {
 
           {/* Owner Info Card */}
           <div className="card-premium p-5 space-y-4">
-            <h3 className="font-medium text-white">主理人信息</h3>
+            <h3 className="font-medium text-white">{t("主理人信息", "Owner Information")}</h3>
             <div className="space-y-3">
               <div>
-                <Label className="text-white/60 text-xs">主理人名称</Label>
+                <Label className="text-white/60 text-xs">{t("主理人名称", "Owner Name")}</Label>
                 <Input
-                  placeholder="您的称呼"
+                  placeholder={t("您的称呼", "Your name")}
                   value={ownerName}
                   onChange={(e) => setOwnerName(e.target.value)}
                   className="mt-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
                 />
               </div>
               <div>
-                <Label className="text-white/60 text-xs">本店特色</Label>
+                <Label className="text-white/60 text-xs">{t("本店特色", "Store Features")}</Label>
                 <Textarea
-                  placeholder="介绍您的咖啡馆特色、理念..."
+                  placeholder={t("介绍您的咖啡馆特色、理念...", "Describe your café's features and philosophy...")}
                   value={storeFeatures}
                   onChange={(e) => setStoreFeatures(e.target.value)}
                   className="mt-1 bg-secondary border-white/10 text-white rounded-xl min-h-[80px] resize-none"
@@ -408,22 +448,22 @@ const MerchantAuth = () => {
 
           {/* Equipment Card */}
           <div className="card-premium p-5 space-y-4">
-            <h3 className="font-medium text-white">设备与产能</h3>
+            <h3 className="font-medium text-white">{t("设备与产能", "Equipment & Capacity")}</h3>
             <div className="space-y-3">
               <div>
-                <Label className="text-white/60 text-xs">咖啡机型号</Label>
+                <Label className="text-white/60 text-xs">{t("咖啡机型号", "Coffee Machine Model")}</Label>
                 <Input
-                  placeholder="如: La Marzocco Linea PB"
+                  placeholder={t("如: La Marzocco Linea PB", "e.g., La Marzocco Linea PB")}
                   value={coffeeMachine}
                   onChange={(e) => setCoffeeMachine(e.target.value)}
                   className="mt-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
                 />
               </div>
               <div>
-                <Label className="text-white/60 text-xs">日峰值出品杯数</Label>
+                <Label className="text-white/60 text-xs">{t("日峰值出品杯数", "Daily Peak Cups")}</Label>
                 <Input
                   type="number"
-                  placeholder="预估每日最大产能"
+                  placeholder={t("预估每日最大产能", "Estimated daily max capacity")}
                   value={dailyPeakCups}
                   onChange={(e) => setDailyPeakCups(e.target.value)}
                   className="mt-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
@@ -434,7 +474,7 @@ const MerchantAuth = () => {
 
           {/* Business Hours Card */}
           <div className="card-premium p-5 space-y-4">
-            <h3 className="font-medium text-white">营业时间</h3>
+            <h3 className="font-medium text-white">{t("营业时间", "Business Hours")}</h3>
             <div className="flex items-center gap-3">
               <Input
                 type="time"
@@ -442,7 +482,7 @@ const MerchantAuth = () => {
                 onChange={(e) => setBusinessHoursOpen(e.target.value)}
                 className="flex-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
               />
-              <span className="text-white/40">至</span>
+              <span className="text-white/40">{t("至", "to")}</span>
               <Input
                 type="time"
                 value={businessHoursClose}
@@ -458,7 +498,7 @@ const MerchantAuth = () => {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "提交审核"}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t("提交审核", "Submit for Review")}
           </Button>
         </section>
 
@@ -469,16 +509,21 @@ const MerchantAuth = () => {
               <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
                 <Check className="w-8 h-8 text-primary" />
               </div>
-              <DialogTitle className="text-xl text-white">申请已提交</DialogTitle>
+              <DialogTitle className="text-xl text-white">
+                {t("申请已提交", "Application Submitted")}
+              </DialogTitle>
               <DialogDescription className="text-white/60 mt-2">
-                24小时内将有 KAKAGO 的 Fellow 伙伴与您联系，请保持手机畅通
+                {t(
+                  "24小时内将有 KAKAGO 的 Fellow 伙伴与您联系，请保持手机畅通",
+                  "A KAKAGO Fellow will contact you within 24 hours. Please keep your phone available."
+                )}
               </DialogDescription>
             </DialogHeader>
             <Button
               className="w-full h-12 rounded-xl mt-4"
               onClick={() => navigate("/")}
             >
-              返回首页
+              {t("返回首页", "Back to Home")}
             </Button>
           </DialogContent>
         </Dialog>

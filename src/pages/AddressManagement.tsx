@@ -4,15 +4,20 @@ import { ChevronLeft, Plus, MapPin, Phone, Edit2, Trash2, Check } from "lucide-r
 import { BottomNav } from "@/components/BottomNav";
 import { AddressForm } from "@/components/AddressForm";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface Address {
   id: string;
   name: string;
   phone: string;
   province: string;
+  provinceEn: string;
   city: string;
+  cityEn: string;
   district: string;
+  districtEn: string;
   detail: string;
+  detailEn: string;
   isDefault: boolean;
 }
 
@@ -23,9 +28,13 @@ const initialAddresses: Address[] = [
     name: "张三",
     phone: "13888888888",
     province: "安徽省",
+    provinceEn: "Anhui Province",
     city: "合肥市",
+    cityEn: "Hefei City",
     district: "蜀山区",
+    districtEn: "Shushan District",
     detail: "天鹅湖CBD · 万达广场3号楼15层1502室",
+    detailEn: "Swan Lake CBD · Wanda Plaza Building 3, 15F, Unit 1502",
     isDefault: true,
   },
   {
@@ -33,9 +42,13 @@ const initialAddresses: Address[] = [
     name: "张三",
     phone: "13888888888",
     province: "安徽省",
+    provinceEn: "Anhui Province",
     city: "合肥市",
+    cityEn: "Hefei City",
     district: "包河区",
+    districtEn: "Baohe District",
     detail: "滨湖新区·银泰城B座2201",
+    detailEn: "Binhu New District · Yintai City Tower B, Unit 2201",
     isDefault: false,
   },
 ];
@@ -43,6 +56,7 @@ const initialAddresses: Address[] = [
 const AddressManagement = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
@@ -61,7 +75,7 @@ const AddressManagement = () => {
     }
 
     setAddresses((prev) => [...prev, address]);
-    toast({ title: "地址添加成功" });
+    toast({ title: t("地址添加成功", "Address added successfully") });
   };
 
   const handleEditAddress = (updatedAddress: Omit<Address, "id">) => {
@@ -87,12 +101,12 @@ const AddressManagement = () => {
     }
 
     setEditingAddress(null);
-    toast({ title: "地址更新成功" });
+    toast({ title: t("地址更新成功", "Address updated successfully") });
   };
 
   const handleDeleteAddress = (id: string) => {
     setAddresses((prev) => prev.filter((addr) => addr.id !== id));
-    toast({ title: "地址已删除" });
+    toast({ title: t("地址已删除", "Address deleted") });
   };
 
   const handleSetDefault = (id: string) => {
@@ -102,11 +116,18 @@ const AddressManagement = () => {
         isDefault: addr.id === id,
       }))
     );
-    toast({ title: "已设为默认地址" });
+    toast({ title: t("已设为默认地址", "Set as default address") });
   };
 
   const maskPhone = (phone: string) => {
     return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+  };
+
+  const getFullAddress = (address: Address) => {
+    return t(
+      `${address.province}${address.city}${address.district} ${address.detail}`,
+      `${address.detailEn}, ${address.districtEn}, ${address.cityEn}, ${address.provinceEn}`
+    );
   };
 
   return (
@@ -120,7 +141,9 @@ const AddressManagement = () => {
           >
             <ChevronLeft className="w-5 h-5 text-foreground" />
           </button>
-          <h1 className="text-base font-semibold text-foreground">地址管理</h1>
+          <h1 className="text-base font-semibold text-foreground">
+            {t("地址管理", "Address Management")}
+          </h1>
           <button
             onClick={() => setShowAddForm(true)}
             className="w-9 h-9 rounded-full bg-primary flex items-center justify-center"
@@ -143,7 +166,7 @@ const AddressManagement = () => {
               {address.isDefault && (
                 <div className="flex items-center gap-1 mb-2">
                   <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    默认地址
+                    {t("默认地址", "Default")}
                   </span>
                 </div>
               )}
@@ -161,7 +184,7 @@ const AddressManagement = () => {
               <div className="flex items-start gap-2 mb-3">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {address.province}{address.city}{address.district} {address.detail}
+                  {getFullAddress(address)}
                 </p>
               </div>
 
@@ -173,14 +196,14 @@ const AddressManagement = () => {
                     className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <Edit2 className="w-4 h-4" />
-                    <span>编辑</span>
+                    <span>{t("编辑", "Edit")}</span>
                   </button>
                   <button
                     onClick={() => handleDeleteAddress(address.id)}
                     className="flex items-center gap-1 text-sm text-muted-foreground hover:text-destructive transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
-                    <span>删除</span>
+                    <span>{t("删除", "Delete")}</span>
                   </button>
                 </div>
 
@@ -190,7 +213,7 @@ const AddressManagement = () => {
                     className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
                   >
                     <Check className="w-4 h-4" />
-                    <span>设为默认</span>
+                    <span>{t("设为默认", "Set Default")}</span>
                   </button>
                 )}
               </div>
@@ -201,12 +224,14 @@ const AddressManagement = () => {
             <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-4">
               <MapPin className="w-8 h-8 text-muted-foreground" />
             </div>
-            <p className="text-muted-foreground text-sm mb-4">暂无收货地址</p>
+            <p className="text-muted-foreground text-sm mb-4">
+              {t("暂无收货地址", "No delivery addresses")}
+            </p>
             <button
               onClick={() => setShowAddForm(true)}
               className="btn-gold px-6 py-3 rounded-xl text-sm font-medium"
             >
-              添加新地址
+              {t("添加新地址", "Add New Address")}
             </button>
           </div>
         )}
@@ -220,7 +245,7 @@ const AddressManagement = () => {
             className="w-full py-4 rounded-2xl border-2 border-dashed border-primary/50 text-primary font-medium flex items-center justify-center gap-2 bg-card hover:bg-primary/5 transition-colors"
           >
             <Plus className="w-5 h-5" />
-            <span>添加新地址</span>
+            <span>{t("添加新地址", "Add New Address")}</span>
           </button>
         </div>
       )}

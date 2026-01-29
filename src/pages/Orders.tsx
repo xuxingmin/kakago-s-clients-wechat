@@ -13,59 +13,74 @@ type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed
 interface Order {
   id: string;
   productName: string;
+  productNameEn: string;
   price: number;
   status: OrderStatus;
   cafeName?: string;
+  cafeNameEn?: string;
   cafeRating?: number;
   merchantId?: string;
   createdAt: string;
+  createdAtEn: string;
   isRevealed: boolean;
   userRating?: number;
 }
 
-// 演示订单数据 - 极简设计，无图片
+// Demo orders with bilingual data
 const demoOrders: Order[] = [
   {
     id: "order-001",
     productName: "拿铁 (热)",
+    productNameEn: "Latte (Hot)",
     price: 15,
     status: "preparing",
     cafeName: "静思咖啡工作室",
+    cafeNameEn: "Tranquil Coffee Studio",
     cafeRating: 4.9,
     merchantId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     createdAt: "今天 14:32",
+    createdAtEn: "Today 14:32",
     isRevealed: true,
   },
   {
     id: "order-002",
     productName: "美式咖啡 (冰)",
+    productNameEn: "Americano (Iced)",
     price: 12,
     status: "pending",
     createdAt: "今天 14:28",
+    createdAtEn: "Today 14:28",
     isRevealed: false,
   },
   {
     id: "order-003",
     productName: "卡布奇诺",
+    productNameEn: "Cappuccino",
     price: 15,
     status: "completed",
     cafeName: "微醺咖啡",
+    cafeNameEn: "Tipsy Coffee",
     cafeRating: 4.7,
     createdAt: "昨天 10:15",
+    createdAtEn: "Yesterday 10:15",
     isRevealed: true,
     userRating: 5,
   },
   {
     id: "order-004",
     productName: "澳白",
+    productNameEn: "Flat White",
     price: 15,
     status: "completed",
     cafeName: "慢时光咖啡",
+    cafeNameEn: "Slow Time Coffee",
     cafeRating: 4.8,
     createdAt: "前天 15:42",
+    createdAtEn: "2 days ago 15:42",
     isRevealed: true,
   },
 ];
+
 const Orders = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -106,7 +121,10 @@ const Orders = () => {
 
     toast({
       title: t("评价已提交", "Review Submitted"),
-      description: t(`感谢您的${rating}星评价！已获得10积分奖励`, `Thanks for your ${rating}-star review! +10 points earned`),
+      description: t(
+        `感谢您的${rating}星评价！已获得10积分奖励`,
+        `Thanks for your ${rating}-star review! +10 points earned`
+      ),
     });
   };
 
@@ -159,15 +177,19 @@ const Orders = () => {
               <OrderCard
                 id={order.id}
                 productName={order.productName}
+                productNameEn={order.productNameEn}
                 price={order.price}
                 status={order.status}
                 cafeName={order.cafeName}
+                cafeNameEn={order.cafeNameEn}
                 cafeRating={order.cafeRating}
                 merchantId={order.merchantId}
                 createdAt={order.createdAt}
+                createdAtEn={order.createdAtEn}
                 isRevealed={order.isRevealed}
                 userRating={order.userRating}
                 onClick={() => handleOrderClick(order.id)}
+                t={t}
               />
             </div>
           ))
@@ -176,7 +198,10 @@ const Orders = () => {
             title={activeTab === "active" 
               ? t("暂无进行中订单", "No Active Orders") 
               : t("暂无历史订单", "No Order History")}
-            description={t("去选购一杯神秘咖啡吧，好运等着你！", "Order a mystery coffee and let luck find you!")}
+            description={t(
+              "去选购一杯神秘咖啡吧，好运等着你！",
+              "Order a mystery coffee and let luck find you!"
+            )}
             actionLabel={t("立即选购", "Order Now")}
             actionPath="/"
           />
@@ -190,7 +215,10 @@ const Orders = () => {
           setRatingModalOpen(false);
           setSelectedOrderForRating(null);
         }}
-        storeName={selectedOrderForRating?.cafeName || ""}
+        storeName={t(
+          selectedOrderForRating?.cafeName || "",
+          selectedOrderForRating?.cafeNameEn || selectedOrderForRating?.cafeName || ""
+        )}
         onSubmit={handleRatingSubmit}
       />
 
