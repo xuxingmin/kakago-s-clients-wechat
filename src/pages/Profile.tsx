@@ -10,47 +10,63 @@ import {
   Users,
   TrendingUp,
   LucideIcon,
-  Bean
+  Coins
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { 
   IdentityVerificationModal, 
   getIdentityBadge,
-  type IdentityType 
+  getAllBadges,
+  type UserIdentities 
 } from "@/components/IdentityVerificationModal";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AssetItem {
   Icon: LucideIcon;
   value: string;
-  label: string;
+  labelZh: string;
+  labelEn: string;
   onClick: () => void;
 }
 
 interface MenuItem {
   Icon: LucideIcon;
-  label: string;
-  description: string;
+  labelZh: string;
+  labelEn: string;
+  descZh: string;
+  descEn: string;
   onClick: () => void;
 }
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [identityModalOpen, setIdentityModalOpen] = useState(false);
-  const [currentIdentity, setCurrentIdentity] = useState<IdentityType>("fan");
+  const [currentIdentities, setCurrentIdentities] = useState<UserIdentities>({
+    industry: null,
+    user: "expert",
+    squad: "leader",
+  });
 
-  const identityBadge = getIdentityBadge(currentIdentity);
+  // Mock user data
+  const userName = "微信用户_8K3nF";
+
+  const identityBadge = getIdentityBadge(currentIdentities);
+  const allBadges = getAllBadges(currentIdentities);
 
   const assetItems: AssetItem[] = [
     { 
       Icon: Ticket, 
       value: "3", 
-      label: "优惠券",
+      labelZh: "优惠券",
+      labelEn: "Coupons",
       onClick: () => navigate("/wallet"),
     },
     { 
-      Icon: Bean, 
+      Icon: Coins, 
       value: "124K", 
-      label: "KAKA豆",
+      labelZh: "KAKA豆",
+      labelEn: "KAKA Beans",
       onClick: () => navigate("/kaka-beans"),
     },
   ];
@@ -58,20 +74,26 @@ const Profile = () => {
   const menuItems: MenuItem[] = [
     { 
       Icon: ClipboardList, 
-      label: "订单历史", 
-      description: "查看订单与评价状态",
+      labelZh: "订单历史", 
+      labelEn: "Order History",
+      descZh: "查看订单与评价状态",
+      descEn: "View orders and ratings",
       onClick: () => navigate("/orders"),
     },
     { 
       Icon: HelpCircle, 
-      label: "帮助与支持", 
-      description: "常见问题与联系客服",
+      labelZh: "帮助与支持", 
+      labelEn: "Help & Support",
+      descZh: "常见问题与联系客服",
+      descEn: "FAQ and customer service",
       onClick: () => {},
     },
     {
       Icon: Store, 
-      label: "成为合作商家", 
-      description: "加入我们，一起成长",
+      labelZh: "成为合作商家", 
+      labelEn: "Become a Partner",
+      descZh: "加入我们，一起成长",
+      descEn: "Join us and grow together",
       onClick: () => navigate("/merchant-auth"),
     },
   ];
@@ -86,17 +108,44 @@ const Profile = () => {
             onClick={() => setIdentityModalOpen(true)}
             className="card-md text-left"
           >
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
                 <Coffee className="w-5 h-5 text-primary" />
               </div>
-              <div>
-                <h2 className="text-sm font-semibold text-white">咖啡探索家</h2>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-sm font-semibold text-white truncate">{userName}</h2>
                 <div className="text-[10px] text-white/50 flex items-center gap-1">
-                  <span>☕️ {identityBadge.label}</span>
+                  <span>{t("点击认证", "Tap to verify")}</span>
                   <ChevronRight className="w-2.5 h-2.5" />
                 </div>
               </div>
+            </div>
+            
+            {/* Identity Badges */}
+            <div className="flex flex-wrap gap-1">
+              {allBadges.length > 0 ? (
+                allBadges.slice(0, 2).map((badge, index) => {
+                  const IconComponent = badge.icon;
+                  return (
+                    <span 
+                      key={index}
+                      className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-secondary/50 ${badge.color}`}
+                    >
+                      <IconComponent className="w-2.5 h-2.5" />
+                      {badge.label}
+                    </span>
+                  );
+                })
+              ) : (
+                <span className="text-[10px] text-white/40 px-2 py-0.5 rounded-full bg-secondary/50">
+                  {t("未认证", "Not verified")}
+                </span>
+              )}
+              {allBadges.length > 2 && (
+                <span className="text-[10px] text-white/40 px-2 py-0.5 rounded-full bg-secondary/50">
+                  +{allBadges.length - 2}
+                </span>
+              )}
             </div>
           </button>
 
@@ -110,20 +159,20 @@ const Profile = () => {
                 <Users className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-white">拉帮结派</h3>
-                <p className="text-[10px] text-white/50">邀请返佣</p>
+                <h3 className="text-sm font-semibold text-white">{t("拉帮结派", "My Squad")}</h3>
+                <p className="text-[10px] text-white/50">{t("邀请返佣", "Invite & Earn")}</p>
               </div>
             </div>
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] text-white/40">累计收益</p>
+                <p className="text-[10px] text-white/40">{t("累计收益", "Earnings")}</p>
                 <span className="text-lg font-black text-primary">¥1,240</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="text-right">
                   <p className="text-sm font-bold text-white">348</p>
-                  <p className="text-[10px] text-white/40">队员</p>
+                  <p className="text-[10px] text-white/40">{t("队员", "Members")}</p>
                 </div>
                 <div className="flex items-center gap-0.5 text-green-400">
                   <TrendingUp className="w-3 h-3" />
@@ -142,7 +191,7 @@ const Profile = () => {
             const IconComponent = item.Icon;
             return (
               <button
-                key={item.label}
+                key={item.labelZh}
                 onClick={item.onClick}
                 className="card-sm flex items-center justify-between"
               >
@@ -150,7 +199,7 @@ const Profile = () => {
                   <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center">
                     <IconComponent className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-white">{item.label}</span>
+                  <span className="text-sm font-medium text-white">{t(item.labelZh, item.labelEn)}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="text-lg font-bold text-primary">{item.value}</span>
@@ -169,7 +218,7 @@ const Profile = () => {
             const IconComponent = item.Icon;
             return (
               <button
-                key={item.label}
+                key={item.labelZh}
                 onClick={item.onClick}
                 className={`w-full flex items-center gap-4 px-4 card-menu-item hover:bg-white/5 transition-colors ${
                   index !== menuItems.length - 1 ? "border-b border-white/10" : ""
@@ -179,8 +228,8 @@ const Profile = () => {
                   <IconComponent className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="font-medium text-white text-sm">{item.label}</p>
-                  <p className="text-xs text-white/50">{item.description}</p>
+                  <p className="font-medium text-white text-sm">{t(item.labelZh, item.labelEn)}</p>
+                  <p className="text-xs text-white/50">{t(item.descZh, item.descEn)}</p>
                 </div>
                 <ChevronRight className="w-4 h-4 text-white/40" />
               </button>
@@ -200,8 +249,8 @@ const Profile = () => {
       <IdentityVerificationModal
         isOpen={identityModalOpen}
         onClose={() => setIdentityModalOpen(false)}
-        currentIdentity={currentIdentity}
-        onSelectIdentity={setCurrentIdentity}
+        currentIdentities={currentIdentities}
+        onUpdateIdentities={setCurrentIdentities}
       />
     </div>
   );
