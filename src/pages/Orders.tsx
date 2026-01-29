@@ -105,8 +105,8 @@ const Orders = () => {
     );
 
     toast({
-      title: "评价已提交",
-      description: `感谢您的${rating}星评价！已获得10积分奖励`,
+      title: t("评价已提交", "Review Submitted"),
+      description: t(`感谢您的${rating}星评价！已获得10积分奖励`, `Thanks for your ${rating}-star review! +10 points earned`),
     });
   };
 
@@ -173,9 +173,11 @@ const Orders = () => {
           ))
         ) : (
           <EmptyState
-            title={activeTab === "active" ? "暂无进行中订单" : "暂无历史订单"}
-            description="去选购一杯神秘咖啡吧，好运等着你！"
-            actionLabel="立即选购"
+            title={activeTab === "active" 
+              ? t("暂无进行中订单", "No Active Orders") 
+              : t("暂无历史订单", "No Order History")}
+            description={t("去选购一杯神秘咖啡吧，好运等着你！", "Order a mystery coffee and let luck find you!")}
+            actionLabel={t("立即选购", "Order Now")}
             actionPath="/"
           />
         )}
