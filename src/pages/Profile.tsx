@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Ticket, 
-  Wallet, 
   Coffee, 
   ClipboardList, 
   HelpCircle, 
@@ -10,7 +9,8 @@ import {
   ChevronRight,
   Users,
   TrendingUp,
-  LucideIcon
+  LucideIcon,
+  Bean
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { 
@@ -48,9 +48,9 @@ const Profile = () => {
       onClick: () => navigate("/wallet"),
     },
     { 
-      Icon: Wallet, 
-      value: "1680", 
-      label: "Kaka豆",
+      Icon: Bean, 
+      value: "124K", 
+      label: "KAKA豆",
       onClick: () => navigate("/kaka-beans"),
     },
     { 
