@@ -136,8 +136,7 @@ const Index = () => {
             <img 
               src={kakagoLogo} 
               alt="KAKAGO" 
-              className="h-7 w-auto object-contain mix-blend-multiply invert brightness-[2]"
-              style={{ filter: 'invert(1) brightness(2) hue-rotate(0deg)' }}
+              className="h-6 w-auto object-contain"
             />
             <p className="text-sm text-white/45 mt-1.5 font-light tracking-wide">
               {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
