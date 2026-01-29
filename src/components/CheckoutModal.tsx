@@ -1,4 +1,15 @@
-import { X, MapPin, Phone, Shield } from "lucide-react";
+import { useState } from "react";
+import { X, MapPin, Phone, Shield, ChevronRight, Ticket } from "lucide-react";
+import { CouponType } from "./CouponCard";
+
+interface Coupon {
+  id: string;
+  type: CouponType;
+  title: string;
+  value: number;
+  minSpend?: number;
+  applicableProducts?: string[];
+}
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -12,6 +23,23 @@ interface CheckoutModalProps {
   } | null;
   onConfirm: (productId: string) => void;
 }
+
+// Demo available coupons
+const availableCoupons: Coupon[] = [
+  {
+    id: "coupon-001",
+    type: "universal",
+    title: "新用户专享礼券",
+    value: 15,
+  },
+  {
+    id: "coupon-002",
+    type: "americano",
+    title: "美式咖啡免单券",
+    value: 12,
+    applicableProducts: ["hot-americano", "iced-americano"],
+  },
+];
 
 // WeChat Pay icon component
 const WeChatPayIcon = () => (
@@ -27,14 +55,37 @@ export const CheckoutModal = ({
   product,
   onConfirm,
 }: CheckoutModalProps) => {
+  const [showCouponPicker, setShowCouponPicker] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+
   if (!product) return null;
 
   const fulfillmentFee = 2.10;
-  const totalPrice = product.price + fulfillmentFee;
+  
+  // Find applicable coupons for this product
+  const applicableCoupons = availableCoupons.filter((coupon) => {
+    if (coupon.type === "universal") return true;
+    if (coupon.applicableProducts?.includes(product.id)) return true;
+    return false;
+  });
+
+  // Auto-select best coupon if none selected
+  const activeCoupon = selectedCoupon || (applicableCoupons.length > 0 ? applicableCoupons[0] : null);
+  
+  const discount = activeCoupon ? Math.min(activeCoupon.value, product.price) : 0;
+  const subtotal = product.price - discount;
+  const totalPrice = subtotal + fulfillmentFee;
 
   const handlePayment = () => {
     onConfirm(product.id);
     onClose();
+    setSelectedCoupon(null);
+    setShowCouponPicker(false);
+  };
+
+  const handleSelectCoupon = (coupon: Coupon | null) => {
+    setSelectedCoupon(coupon);
+    setShowCouponPicker(false);
   };
 
   return (
@@ -47,12 +98,12 @@ export const CheckoutModal = ({
         onClick={onClose}
       />
 
-      {/* Modal - 60% height */}
+      {/* Modal - 70% height */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
-        style={{ height: "70vh" }}
+        style={{ height: "75vh" }}
       >
         <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden">
           {/* Handle */}
@@ -141,6 +192,32 @@ export const CheckoutModal = ({
                   <span className="text-sm text-muted-foreground">商品金额</span>
                   <span className="text-sm text-foreground">¥{product.price.toFixed(2)}</span>
                 </div>
+                
+                {/* Coupon Row */}
+                <button
+                  onClick={() => setShowCouponPicker(true)}
+                  className="w-full flex items-center justify-between py-1 group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Ticket className="w-4 h-4 text-primary" />
+                    <span className="text-sm text-muted-foreground">优惠券/代金券</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {activeCoupon ? (
+                      <span className="text-sm font-semibold text-primary">
+                        -¥{discount.toFixed(2)}
+                      </span>
+                    ) : applicableCoupons.length > 0 ? (
+                      <span className="text-sm text-primary">
+                        {applicableCoupons.length}张可用
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">暂无可用</span>
+                    )}
+                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  </div>
+                </button>
+
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">精品履约服务费</span>
                   <span className="text-sm text-foreground">¥{fulfillmentFee.toFixed(2)}</span>
@@ -151,10 +228,27 @@ export const CheckoutModal = ({
 
           {/* Footer - Fixed at bottom */}
           <div className="flex-shrink-0 px-5 py-4 bg-card border-t border-border">
+            {/* Applied Coupon Badge */}
+            {activeCoupon && (
+              <div className="flex items-center justify-center gap-2 mb-3 py-2 bg-primary/5 rounded-xl">
+                <Ticket className="w-4 h-4 text-primary" />
+                <span className="text-xs text-primary font-medium">
+                  已使用「{activeCoupon.title}」立减 ¥{discount.toFixed(2)}
+                </span>
+              </div>
+            )}
+
             {/* Total */}
             <div className="flex items-center justify-between mb-4">
               <span className="text-base font-semibold text-foreground">合计</span>
-              <span className="text-2xl font-bold text-primary">¥{totalPrice.toFixed(2)}</span>
+              <div className="flex items-baseline gap-2">
+                {discount > 0 && (
+                  <span className="text-sm text-muted-foreground line-through">
+                    ¥{(product.price + fulfillmentFee).toFixed(2)}
+                  </span>
+                )}
+                <span className="text-2xl font-bold text-primary">¥{totalPrice.toFixed(2)}</span>
+              </div>
             </div>
 
             {/* WeChat Pay Button */}
@@ -166,6 +260,78 @@ export const CheckoutModal = ({
               <WeChatPayIcon />
               <span>微信支付 ¥{totalPrice.toFixed(2)}</span>
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Coupon Picker Sheet */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-[60] transition-transform duration-300 ease-out ${
+          showCouponPicker ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div 
+          className="fixed inset-0 bg-black/40"
+          onClick={() => setShowCouponPicker(false)}
+        />
+        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[60vh] flex flex-col safe-bottom">
+          <div className="flex justify-center pt-3 pb-2">
+            <div className="w-10 h-1 bg-border rounded-full" />
+          </div>
+          
+          <div className="flex items-center justify-between px-5 pb-4 border-b border-border">
+            <h3 className="text-base font-semibold text-foreground">选择优惠券</h3>
+            <button
+              onClick={() => setShowCouponPicker(false)}
+              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {/* No coupon option */}
+            <button
+              onClick={() => handleSelectCoupon(null)}
+              className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                !selectedCoupon && !activeCoupon
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:border-primary/50"
+              }`}
+            >
+              <p className="text-sm font-medium text-foreground">不使用优惠券</p>
+              <p className="text-xs text-muted-foreground mt-0.5">原价支付</p>
+            </button>
+
+            {applicableCoupons.map((coupon) => (
+              <button
+                key={coupon.id}
+                onClick={() => handleSelectCoupon(coupon)}
+                className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                  activeCoupon?.id === coupon.id
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/50"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{coupon.title}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {coupon.type === "universal" ? "全品类通用" : "限定商品可用"}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-bold text-primary">-¥{coupon.value}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+
+            {applicableCoupons.length === 0 && (
+              <div className="py-8 text-center text-muted-foreground text-sm">
+                暂无可用优惠券
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,13 +1,32 @@
-import { User, MapPin, Gift, Settings, ChevronRight, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { User, MapPin, Wallet, Settings, ChevronRight, LogOut } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 
-const menuItems = [
-  { icon: MapPin, label: "收货地址", description: "管理您的配送地址" },
-  { icon: Gift, label: "我的优惠券", description: "查看可用优惠" },
-  { icon: Settings, label: "设置", description: "账号与偏好设置" },
-];
-
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { 
+      icon: Wallet, 
+      label: "我的咖啡资产", 
+      description: "优惠券与代金券",
+      badge: "3张可用",
+      onClick: () => navigate("/wallet"),
+    },
+    { 
+      icon: MapPin, 
+      label: "收货地址", 
+      description: "管理您的配送地址",
+      onClick: () => {},
+    },
+    { 
+      icon: Settings, 
+      label: "设置", 
+      description: "账号与偏好设置",
+      onClick: () => {},
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
@@ -37,10 +56,13 @@ const Profile = () => {
                 <p className="text-2xl font-bold text-gold-gradient">12</p>
                 <p className="text-xs text-muted-foreground mt-1">累计订单</p>
               </div>
-              <div className="text-center">
+              <button 
+                onClick={() => navigate("/wallet")}
+                className="text-center hover:scale-105 transition-transform"
+              >
                 <p className="text-2xl font-bold text-gold-gradient">3</p>
                 <p className="text-xs text-muted-foreground mt-1">优惠券</p>
-              </div>
+              </button>
               <div className="text-center">
                 <p className="text-2xl font-bold text-gold-gradient">8</p>
                 <p className="text-xs text-muted-foreground mt-1">探索咖啡馆</p>
@@ -56,6 +78,7 @@ const Profile = () => {
           {menuItems.map((item, index) => (
             <button
               key={item.label}
+              onClick={item.onClick}
               className={`w-full flex items-center gap-4 px-4 py-4 hover:bg-secondary/50 transition-colors ${
                 index !== menuItems.length - 1 ? "border-b border-border" : ""
               }`}
@@ -64,7 +87,14 @@ const Profile = () => {
                 <item.icon className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1 text-left">
-                <p className="font-medium text-foreground">{item.label}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium text-foreground">{item.label}</p>
+                  {item.badge && (
+                    <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs text-muted-foreground">{item.description}</p>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
