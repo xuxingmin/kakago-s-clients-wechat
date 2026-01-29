@@ -175,11 +175,12 @@ export const FloatingCart = () => {
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop - Enhanced blur */}
       <div
-        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/60 backdrop-blur-md z-[70] transition-all duration-400 ${
           isOpen || showPaymentModal ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
+        style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
         onClick={() => {
           if (showPaymentModal) {
             setShowPaymentModal(false);
@@ -189,15 +190,16 @@ export const FloatingCart = () => {
         }}
       />
 
-      {/* Cart Drawer */}
+      {/* Cart Drawer - Spring animation */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-[70] transition-transform duration-300 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 z-[70] transition-transform duration-400 ${
           isOpen && !showPaymentModal ? "translate-y-0" : "translate-y-full"
         }`}
+        style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
       >
-        <div className="bg-card rounded-t-3xl max-w-md mx-auto max-h-[70vh] flex flex-col">
-          {/* Handle */}
-          <div className="flex justify-center pt-3 pb-2">
+        <div className="bg-card/95 backdrop-blur-xl rounded-t-[28px] max-w-md mx-auto max-h-[70vh] flex flex-col border-t border-white/10 shadow-float">
+          {/* Handle - More subtle */}
+          <div className="flex justify-center pt-4 pb-2">
             <div className="w-10 h-1 bg-border rounded-full" />
           </div>
 
@@ -272,45 +274,50 @@ export const FloatingCart = () => {
         </div>
       </div>
 
-      {/* Payment Method Modal */}
+      {/* Payment Method Modal - Spring animation */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-[80] transition-transform duration-300 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 z-[80] transition-transform duration-400 ${
           showPaymentModal ? "translate-y-0" : "translate-y-full"
         }`}
+        style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
       >
-        <div className="bg-card rounded-t-3xl max-w-md mx-auto">
+        <div className="bg-card/95 backdrop-blur-xl rounded-t-[28px] max-w-md mx-auto border-t border-white/10 shadow-float">
           {/* Handle */}
-          <div className="flex justify-center pt-3 pb-2">
-            <div className="w-10 h-1 bg-border rounded-full" />
+          <div className="flex justify-center pt-4 pb-2">
+            <div className="w-9 h-1 bg-white/20 rounded-full" />
           </div>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-6 pb-4 border-b border-border">
+          <div className="flex items-center justify-between px-6 pb-4 border-b border-white/10">
             <h3 className="text-lg font-semibold text-foreground">
               {t("选择支付方式", "Select Payment")}
             </h3>
             <button
               onClick={() => setShowPaymentModal(false)}
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="p-2 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 active:scale-95 rounded-full"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Payment Methods */}
-          <div className="px-6 py-4 space-y-3">
+          <div className="px-6 py-4 space-y-2.5">
             <RadioGroup
               value={selectedPayment}
               onValueChange={(value) => setSelectedPayment(value as typeof selectedPayment)}
             >
-              {paymentMethods.map((method) => (
+              {paymentMethods.map((method, index) => (
                 <label
                   key={method.id}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all cursor-pointer ${
+                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 cursor-pointer ${
                     selectedPayment === method.id
-                      ? "border-primary bg-primary/5"
-                      : "border-border bg-secondary/30 hover:bg-secondary/50"
-                  } ${!method.available ? "opacity-50 cursor-not-allowed" : ""}`}
+                      ? "border-primary/40 bg-primary/10 shadow-purple"
+                      : "border-white/8 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/12"
+                  } ${!method.available ? "opacity-40 cursor-not-allowed" : ""}`}
+                  style={{ 
+                    transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    animationDelay: `${index * 0.05}s`
+                  }}
                 >
                   <div className="flex-shrink-0">{method.icon}</div>
                   <div className="flex-1">

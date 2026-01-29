@@ -1,4 +1,4 @@
-import { Plus, Flame, Ticket } from "lucide-react";
+import { Plus, Flame, Ticket, Sparkles } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { FloatingCart } from "@/components/FloatingCart";
@@ -86,24 +86,17 @@ const products = [
 
 // 精准计算产品的最佳优惠价（选择最高折扣的优惠券）
 const getBestDiscount = (productId: string, originalPrice: number): number | null => {
-  // 筛选适用于该产品的所有优惠券
   const applicableCoupons = userCoupons.filter((coupon) => {
-    // 通用券适用于所有产品
     if (coupon.type === "universal") return true;
-    // 专属券检查是否在适用列表中
     if (coupon.applicableProducts?.includes(productId)) return true;
     return false;
   });
 
   if (applicableCoupons.length === 0) return null;
 
-  // 选择折扣金额最大的优惠券
   const maxDiscount = Math.max(...applicableCoupons.map(c => c.value));
-  
-  // 计算到手价（不能低于0）
   const finalPrice = Math.max(0, originalPrice - maxDiscount);
   
-  // 只有真正有折扣时才返回
   return finalPrice < originalPrice ? finalPrice : null;
 };
 
@@ -124,7 +117,6 @@ const Index = () => {
     });
   };
 
-  // Get quantity in cart for a product
   const getQuantityInCart = (productId: string) => {
     const item = items.find((i) => i.id === productId);
     return item?.quantity || 0;
@@ -133,21 +125,24 @@ const Index = () => {
   const totalCoupons = userCoupons.length;
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 page-enter">
       <Header />
 
-      {/* Minimal Brand Header */}
-      <section className="px-4 pt-6 pb-4">
+      {/* Minimal Brand Header - Hero Reveal */}
+      <section className="px-4 pt-6 pb-5 hero-reveal">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-            <p className="text-sm text-white/50 mt-0.5">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+              <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
+            </div>
+            <p className="text-sm text-white/45 mt-1 font-light tracking-wide">
               {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
             </p>
           </div>
           {/* Coupon Badge */}
           {totalCoupons > 0 && (
-            <div className="flex items-center gap-1.5 bg-primary/20 border border-primary/30 px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-1.5 bg-primary/15 border border-primary/20 px-3.5 py-2 rounded-full backdrop-blur-sm">
               <Ticket className="w-3.5 h-3.5 text-primary" />
               <span className="text-xs text-primary font-medium">
                 {totalCoupons}{t("张券", " Coupons")}
@@ -157,54 +152,52 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Fog Divider */}
+      {/* Elegant Divider */}
       <div className="fog-divider mx-4" />
 
-      {/* Compact Product List */}
-      <section className="px-4 py-4">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-medium text-white/70">
+      {/* Product List with Stagger Animation */}
+      <section className="px-4 py-5">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-medium text-white/60 tracking-wide">
             {t("每天都要喝", "Daily Must-Have")}
           </h2>
-          <span className="text-xs text-white/40">
+          <span className="text-xs text-white/35 font-light">
             {t("专业咖啡师出品", "Crafted by Pro Baristas")}
           </span>
         </div>
         
-        <div className="grid grid-cols-2 gap-2">
-          {products.map((product, index) => {
+        <div className="grid grid-cols-2 gap-2.5 stagger-fade-in">
+          {products.map((product) => {
             const discountedPrice = getBestDiscount(product.id, product.price);
             const hasDiscount = discountedPrice !== null;
-            
             const quantityInCart = getQuantityInCart(product.id);
             
             return (
               <button
                 key={product.id}
                 onClick={() => handleProductSelect(product)}
-                className="group card-md text-left relative"
-                style={{ animationDelay: `${index * 0.03}s` }}
+                className="group card-md text-left relative ripple"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between relative z-10">
+                  <div className="flex-1 min-w-0 pr-2">
                     <div className="flex items-center gap-1.5">
-                      <h3 className="font-semibold text-white text-sm group-hover:text-primary transition-colors">
+                      <h3 className="font-semibold text-white text-sm group-hover:text-primary transition-colors duration-300">
                         {t(product.nameZh, product.nameEn)}
                       </h3>
                       {product.isHot && (
-                        <Flame className="w-3 h-3 text-orange-400" />
+                        <Flame className="w-3 h-3 text-orange-400/80" />
                       )}
                     </div>
-                    <p className="text-xs text-white/40 mt-0.5 truncate">
+                    <p className="text-[11px] text-white/35 mt-1 truncate font-light">
                       {t(product.tagZh, product.tagEn)}
                     </p>
                   </div>
                   
-                  {/* Price - Side by Side */}
+                  {/* Price */}
                   <div className="flex flex-col items-end">
                     <div className="flex items-baseline gap-1.5">
                       {hasDiscount && (
-                        <span className="text-white/40 text-xs line-through">
+                        <span className="text-white/30 text-xs line-through">
                           ¥{product.price}
                         </span>
                       )}
@@ -213,20 +206,22 @@ const Index = () => {
                       </span>
                     </div>
                     {hasDiscount && (
-                      <span className="text-primary/70 text-[10px] mt-0.5">
+                      <span className="text-primary/60 text-[10px] mt-0.5 font-light">
                         {t("券后到手", "After coupon")}
                       </span>
                     )}
                   </div>
                 </div>
                 
-                {/* Add Button with quantity badge */}
-                <div className={`absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center shadow-purple transition-all duration-200 ${
-                  quantityInCart > 0 ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                } group-hover:scale-110`}>
-                  <Plus className="w-3 h-3" />
+                {/* Add Button - Always visible but subtle */}
+                <div className={`absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  quantityInCart > 0 
+                    ? "bg-primary text-white shadow-purple scale-100" 
+                    : "bg-white/10 text-white/50 group-hover:bg-primary group-hover:text-white group-hover:shadow-purple"
+                }`}>
+                  <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
                   {quantityInCart > 0 && (
-                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white text-primary text-[8px] font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-white text-primary text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
                       {quantityInCart}
                     </span>
                   )}
@@ -237,24 +232,21 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Fog Divider */}
+      {/* Elegant Divider */}
       <div className="fog-divider mx-4" />
 
-      {/* Brand Standards Grid - Bottom Section */}
+      {/* Brand Standards Grid */}
       <BrandStandardsGrid onCartClick={() => (window as any).__openCart?.()} />
 
-      {/* Quick Info Footer */}
-      <section className="px-4 py-4">
-        <div className="flex items-center justify-between text-xs text-white/30">
+      {/* Footer Info */}
+      <section className="px-4 py-5">
+        <div className="flex items-center justify-between text-[11px] text-white/25 font-light">
           <span>{t("☕ KAKA认证精品咖啡馆出品", "☕ KAKA Certified Specialty Cafés")}</span>
           <span>{t("配送约15-30分钟", "Delivery 15-30 min")}</span>
         </div>
       </section>
 
-      {/* Floating Cart */}
       <FloatingCart />
-
-      {/* Bottom Navigation */}
       <BottomNav />
     </div>
   );
