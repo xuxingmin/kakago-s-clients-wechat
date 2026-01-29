@@ -220,15 +220,22 @@ const Index = () => {
                   </div>
                   
                   {/* Price - Side by Side */}
-                  <div className="flex items-baseline gap-1.5">
+                  <div className="flex flex-col items-end">
+                    <div className="flex items-baseline gap-1.5">
+                      {hasDiscount && (
+                        <span className="text-white/40 text-xs line-through">
+                          ¥{product.price}
+                        </span>
+                      )}
+                      <span className="text-primary font-bold text-base">
+                        ¥{hasDiscount ? discountedPrice : product.price}
+                      </span>
+                    </div>
                     {hasDiscount && (
-                      <span className="text-white/40 text-xs line-through">
-                        ¥{product.price}
+                      <span className="text-primary/70 text-[10px] mt-0.5">
+                        {t("预估到手", "Est.")}
                       </span>
                     )}
-                    <span className="text-primary font-bold text-base">
-                      ¥{hasDiscount ? discountedPrice : product.price}
-                    </span>
                   </div>
                 </div>
                 
