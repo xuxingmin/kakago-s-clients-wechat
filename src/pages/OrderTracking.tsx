@@ -165,13 +165,13 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
   };
 
   return (
-    <div className="card-lg !p-4 mx-4 mb-4">
+    <div className="card-lg !p-3 mx-4 mb-2">
       {isInteractive && (
-        <p className="text-[10px] text-white/30 text-center mb-2">🛠 点击切换状态演示</p>
+        <p className="text-[10px] text-white/30 text-center mb-1">🛠 点击切换状态演示</p>
       )}
       
       {/* Status message integrated as small text */}
-      <p className="text-xs text-green-400 text-center mb-3 flex items-center justify-center gap-1.5">
+      <p className="text-xs text-green-400 text-center mb-2 flex items-center justify-center gap-1.5">
         <CheckCircle2 className="w-3 h-3" />
         {getStatusMessage()}
       </p>
@@ -190,7 +190,7 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
               className={`flex flex-col items-center flex-1 ${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}
             >
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
+                className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
                   isActive
                     ? isCurrent
                       ? "bg-primary text-white"
@@ -198,10 +198,10 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
                     : "bg-secondary text-white/30"
                 } ${isInteractive ? 'hover:scale-110' : ''}`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="w-3 h-3" />
               </div>
               <span
-                className={`text-xs mt-1 text-center ${
+                className={`text-[10px] mt-0.5 text-center ${
                   isActive ? "text-white font-medium" : "text-white/40"
                 }`}
               >
@@ -302,15 +302,15 @@ const OrderTracking = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-40 glass safe-top">
-        <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
+        <div className="flex items-center justify-between px-4 py-2 max-w-md mx-auto">
           <button 
             onClick={() => navigate("/orders")}
-            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
           >
-            <ChevronLeft className="w-5 h-5 text-white" />
+            <ChevronLeft className="w-4 h-4 text-white" />
           </button>
-          <h1 className="text-base font-semibold text-white">订单追踪</h1>
-          <div className="w-9" />
+          <h1 className="text-sm font-semibold text-white">订单追踪</h1>
+          <div className="w-8" />
         </div>
       </header>
 
@@ -344,108 +344,107 @@ const OrderTracking = () => {
         </div>
 
         {/* State 2: Accepted - Reveal */}
-        <div className={`absolute inset-0 flex flex-col transition-all duration-500 overflow-y-auto ${
+        <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${
           currentState === "accepted" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}>
           {/* Content Area */}
-          <div className={`flex-1 p-4 space-y-4 transition-all duration-700 ease-out ${
+          <div className={`flex-1 px-4 pb-4 space-y-2 transition-all duration-700 ease-out ${
             showRevealCard ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}>
             {/* Extraction Parameters Card */}
-            <div className="card-lg !p-4 space-y-3">
-              <div className="flex items-center gap-2 pb-2 border-b border-white/10">
-                <Coffee className="w-4 h-4 text-primary" />
-                <span className="text-xs text-white/50 uppercase tracking-wider">萃取参数</span>
+            <div className="card-lg !p-3 space-y-2">
+              <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
+                <Coffee className="w-3.5 h-3.5 text-primary" />
+                <span className="text-[10px] text-white/50 uppercase tracking-wider">萃取参数</span>
+                <span className="text-[10px] text-white/30 ml-auto">您的咖啡正以以下参数进行萃取</span>
               </div>
               
-              <p className="text-xs text-white/40">您的咖啡正以以下参数进行萃取</p>
-              
-              <div className="grid grid-cols-2 gap-2">
-                <div className="bg-secondary/50 rounded-lg p-2.5">
+              <div className="grid grid-cols-2 gap-1.5">
+                <div className="bg-secondary/50 rounded-lg p-2">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider">咖啡机</p>
-                  <p className="text-xs font-medium text-white mt-0.5">La Marzocco</p>
+                  <p className="text-[11px] font-medium text-white">La Marzocco</p>
                 </div>
-                <div className="bg-secondary/50 rounded-lg p-2.5">
+                <div className="bg-secondary/50 rounded-lg p-2">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider">磨豆机</p>
-                  <p className="text-xs font-medium text-white mt-0.5">Mahlkönig EK43</p>
+                  <p className="text-[11px] font-medium text-white">Mahlkönig EK43</p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 rounded-lg p-2.5">
+              <div className="bg-secondary/50 rounded-lg p-2">
                 <p className="text-[10px] text-white/40 uppercase tracking-wider">咖啡豆拼配</p>
-                <p className="text-xs font-medium text-white mt-0.5">埃塞俄比亚 耶加雪菲 60% + 哥伦比亚 慧兰 40%</p>
+                <p className="text-[11px] font-medium text-white">埃塞俄比亚 耶加雪菲 60% + 哥伦比亚 慧兰 40%</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div className="bg-secondary/50 rounded-lg p-2.5">
+              <div className="grid grid-cols-2 gap-1.5">
+                <div className="bg-secondary/50 rounded-lg p-2">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider">SCA 风味指向</p>
-                  <p className="text-xs font-medium text-white mt-0.5">花香 · 柑橘 · 焦糖</p>
+                  <p className="text-[11px] font-medium text-white">花香 · 柑橘 · 焦糖</p>
                 </div>
-                <div className="bg-secondary/50 rounded-lg p-2.5">
+                <div className="bg-secondary/50 rounded-lg p-2">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider">萃取参数</p>
-                  <p className="text-xs font-medium text-white mt-0.5">93°C / 25s / 1:2</p>
+                  <p className="text-[11px] font-medium text-white">93°C / 25s / 1:2</p>
                 </div>
               </div>
             </div>
 
             {/* Store Info Card */}
-            <div className="card-lg !p-4 space-y-3">
-              <div className="flex items-center gap-2 pb-2 border-b border-white/10">
-                <Home className="w-4 h-4 text-primary" />
-                <span className="text-xs text-white/50 uppercase tracking-wider">为您呈现</span>
+            <div className="card-lg !p-3 space-y-2">
+              <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
+                <Home className="w-3.5 h-3.5 text-primary" />
+                <span className="text-[10px] text-white/50 uppercase tracking-wider">为您呈现</span>
               </div>
 
               {/* Store Header */}
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <Coffee className="w-6 h-6 text-primary" />
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <Coffee className="w-5 h-5 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-base font-bold text-white">
+                  <h3 className="text-sm font-bold text-white">
                     {order?.merchants?.name || demoMerchant.name}
                   </h3>
-                  <p className="text-xs text-white/50">首席咖啡师: {demoMerchant.barista}</p>
+                  <p className="text-[10px] text-white/50">首席咖啡师: {demoMerchant.barista}</p>
                 </div>
-                <div className="flex items-center gap-1 bg-primary/20 px-2 py-1 rounded-full">
+                <div className="flex items-center gap-1 bg-primary/20 px-2 py-0.5 rounded-full">
                   <Star className="w-3 h-3 fill-primary text-primary" />
-                  <span className="text-xs font-medium text-primary">
+                  <span className="text-[10px] font-medium text-primary">
                     {order?.merchants?.rating || demoMerchant.rating}
                   </span>
                 </div>
               </div>
 
-              {/* Store Description */}
-              <div className="bg-secondary/50 rounded-lg p-2.5">
-                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-1">门店简介</p>
-                <p className="text-xs text-white/70 leading-relaxed">
-                  专注精品咖啡十二年，坚持使用产地直采的精品咖啡豆，每一杯都是对咖啡艺术的致敬。
-                </p>
-              </div>
-
-              {/* Store Message */}
-              <div className="bg-secondary/50 rounded-lg p-2.5">
-                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-1">店家寄语</p>
-                <p className="text-xs text-white/70 italic leading-relaxed">
-                  "愿这杯咖啡为您的一天带来温暖与能量。"
-                </p>
+              {/* Store Description & Message in row */}
+              <div className="grid grid-cols-2 gap-1.5">
+                <div className="bg-secondary/50 rounded-lg p-2">
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">门店简介</p>
+                  <p className="text-[10px] text-white/70 leading-snug mt-0.5">
+                    专注精品咖啡十二年，坚持产地直采精品豆。
+                  </p>
+                </div>
+                <div className="bg-secondary/50 rounded-lg p-2">
+                  <p className="text-[10px] text-white/40 uppercase tracking-wider">店家寄语</p>
+                  <p className="text-[10px] text-white/70 italic leading-snug mt-0.5">
+                    "愿这杯咖啡带来温暖与能量。"
+                  </p>
+                </div>
               </div>
 
               {/* ID Badge */}
               <div className="flex justify-end">
-                <span className="text-[10px] text-white/30 font-mono">
+                <span className="text-[9px] text-white/30 font-mono">
                   ID: {demoMerchant.merchantId}
                 </span>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="flex gap-3">
-              <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/50 text-primary text-sm font-medium hover:bg-primary/10 transition-colors">
-                <Navigation className="w-4 h-4" />
+            <div className="flex gap-2">
+              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors">
+                <Navigation className="w-3.5 h-3.5" />
                 <span>导航到店</span>
               </button>
-              <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/50 text-primary text-sm font-medium hover:bg-primary/10 transition-colors">
-                <Phone className="w-4 h-4" />
+              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-primary/50 text-primary text-xs font-medium hover:bg-primary/10 transition-colors">
+                <Phone className="w-3.5 h-3.5" />
                 <span>联系门店</span>
               </button>
             </div>
