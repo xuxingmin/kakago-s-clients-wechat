@@ -18,11 +18,11 @@ interface OrderCardProps {
 }
 
 const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
-  pending: { label: "待接单", color: "text-muted-foreground" },
+  pending: { label: "待接单", color: "text-white/60" },
   preparing: { label: "制作中", color: "text-primary" },
   ready: { label: "待取货", color: "text-primary" },
   delivering: { label: "配送中", color: "text-primary" },
-  completed: { label: "已完成", color: "text-muted-foreground" },
+  completed: { label: "已完成", color: "text-white/50" },
 };
 
 export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
@@ -48,20 +48,20 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       <button
         ref={ref}
         onClick={onClick}
-        className="card-premium p-4 w-full text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+        className="card-premium p-4 w-full text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] min-h-[120px]"
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Store className="w-4 h-4 text-muted-foreground" />
+            <Store className="w-4 h-4 text-white/60" />
             {isRevealed ? (
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-sm font-medium text-white">
                   {cafeName}
                 </span>
                 {/* Store Rating Display */}
                 {cafeRating && (
-                  <div className="flex items-center gap-0.5 bg-primary/10 px-1.5 py-0.5 rounded-full">
+                  <div className="flex items-center gap-0.5 bg-primary/20 px-1.5 py-0.5 rounded-full">
                     <Star className="w-3 h-3 fill-primary text-primary" />
                     <span className="text-xs font-medium text-primary">
                       {cafeRating.toFixed(1)}
@@ -70,7 +70,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 )}
               </div>
             ) : (
-              <span className="text-sm text-muted-foreground italic">
+              <span className="text-sm text-white/50 italic">
                 等待揭晓...
               </span>
             )}
@@ -90,21 +90,21 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
             />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-foreground truncate">{productName}</h3>
-            <div className="flex items-center gap-1 mt-1 text-muted-foreground text-xs">
+            <h3 className="font-medium text-white truncate">{productName}</h3>
+            <div className="flex items-center gap-1 mt-1 text-white/50 text-xs">
               <Clock className="w-3 h-3" />
               <span>{createdAt}</span>
             </div>
-            <p className="text-primary font-bold mt-2">¥{price.toFixed(0)}</p>
+            <p className="text-primary font-bold text-lg mt-2">¥{price.toFixed(0)}</p>
           </div>
-          <ChevronRight className="w-5 h-5 text-muted-foreground self-center" />
+          <ChevronRight className="w-5 h-5 text-white/40 self-center" />
         </div>
 
         {/* User Rating (for completed orders) */}
         {status === "completed" && userRating && (
-          <div className="mt-3 pt-3 border-t border-border">
+          <div className="mt-3 pt-3 border-t border-white/10">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">我的评价：</span>
+              <span className="text-xs text-white/50">我的评价：</span>
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
@@ -112,7 +112,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                     className={`w-3.5 h-3.5 ${
                       star <= userRating
                         ? "fill-primary text-primary"
-                        : "text-border"
+                        : "text-white/20"
                     }`}
                   />
                 ))}
@@ -123,12 +123,12 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
         {/* Pending to rate hint (for completed orders without rating) */}
         {status === "completed" && !userRating && (
-          <div className="mt-3 pt-3 border-t border-border">
+          <div className="mt-3 pt-3 border-t border-white/10">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">点击评价获取积分</span>
+              <span className="text-xs text-white/50">点击评价获取积分</span>
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-3.5 h-3.5 text-border" />
+                  <Star key={star} className="w-3.5 h-3.5 text-white/20" />
                 ))}
               </div>
             </div>
@@ -137,9 +137,9 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
         {/* Mystery reveal animation hint */}
         {!isRevealed && status === "pending" && (
-          <div className="mt-3 pt-3 border-t border-border">
+          <div className="mt-3 pt-3 border-t border-white/10">
             <div className="shimmer h-8 rounded-lg bg-secondary flex items-center justify-center">
-              <span className="text-xs text-muted-foreground relative z-10">
+              <span className="text-xs text-white/50 relative z-10">
                 咖啡馆正在确认中，稍后揭晓...
               </span>
             </div>

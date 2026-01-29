@@ -24,7 +24,7 @@ export const ProductCard = ({
   return (
     <button
       onClick={() => onSelect(id)}
-      className="card-premium p-4 flex gap-4 w-full text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group"
+      className="card-premium p-4 flex gap-4 w-full text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group min-h-[120px]"
     >
       {/* Image */}
       <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 bg-secondary">
@@ -40,7 +40,7 @@ export const ProductCard = ({
           <div className="absolute inset-0 shimmer bg-secondary" />
         )}
         {isHot && (
-          <span className="absolute top-1 left-1 bg-primary text-primary-foreground text-[10px] font-semibold px-2 py-0.5 rounded-full">
+          <span className="absolute top-1 left-1 bg-primary text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
             热销
           </span>
         )}
@@ -49,10 +49,10 @@ export const ProductCard = ({
       {/* Content */}
       <div className="flex flex-col justify-between flex-1 min-w-0 py-1">
         <div>
-          <h3 className="font-semibold text-foreground text-base group-hover:text-primary transition-colors">
+          <h3 className="font-semibold text-white text-base group-hover:text-primary transition-colors">
             {name}
           </h3>
-          <p className="text-muted-foreground text-xs mt-0.5 uppercase tracking-wide">
+          <p className="text-white/50 text-xs mt-0.5 uppercase tracking-wide">
             {nameEn}
           </p>
         </div>
@@ -60,7 +60,7 @@ export const ProductCard = ({
           <p className="text-primary font-bold text-xl">
             ¥{price.toFixed(0)}
           </p>
-          <span className="text-muted-foreground text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-white/50 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
             点击选购 →
           </span>
         </div>

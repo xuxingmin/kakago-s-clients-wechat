@@ -64,24 +64,24 @@ const MySquad = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-40 glass border-b border-border safe-top">
+      <header className="sticky top-0 z-40 glass safe-top">
         <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
           <button 
             onClick={() => navigate("/profile")}
-            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center min-h-[48px] min-w-[48px]"
           >
-            <ChevronLeft className="w-5 h-5 text-foreground" />
+            <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <h1 className="text-base font-semibold text-foreground">拉帮结派</h1>
-          <div className="w-9" />
+          <h1 className="text-base font-semibold text-white">拉帮结派</h1>
+          <div className="w-10" />
         </div>
       </header>
 
       {/* Scoreboard Section */}
       <section className="px-4 py-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-500 to-primary/80 p-6 shadow-xl shadow-primary/20">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-600 to-purple-dark p-6 shadow-glow">
           {/* Background Pattern */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -123,45 +123,48 @@ const MySquad = () => {
         </div>
       </section>
 
+      {/* Fog Divider */}
+      <div className="fog-divider mx-4" />
+
       {/* Invite Tools Section */}
-      <section className="px-4 mb-6">
+      <section className="px-4 py-6">
         <div className="card-premium overflow-hidden">
           {/* Header */}
-          <div className="px-5 py-4 border-b border-border">
+          <div className="px-5 py-4 border-b border-white/10">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
                 <Users className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">招募新成员</h3>
-                <p className="text-xs text-muted-foreground">分享邀请码，永久获得返佣</p>
+                <h3 className="font-semibold text-white">招募新成员</h3>
+                <p className="text-xs text-white/50">分享邀请码，永久获得返佣</p>
               </div>
             </div>
           </div>
           
           {/* Poster Preview */}
           <div className="p-5">
-            <div className="relative rounded-xl bg-secondary/50 border border-border p-4 mb-4">
+            <div className="relative rounded-xl bg-secondary/50 border border-white/10 p-4 mb-4">
               {/* Mini Poster Preview */}
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <div className="w-20 h-20 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center">
                   <QrCode className="w-12 h-12 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-foreground font-semibold text-sm">您的专属推广海报</p>
-                  <p className="text-muted-foreground text-xs mt-1">扫码即成为您的永久队员</p>
+                  <p className="text-white font-semibold text-sm">您的专属推广海报</p>
+                  <p className="text-white/50 text-xs mt-1">扫码即成为您的永久队员</p>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-primary font-mono text-xs bg-primary/10 px-2 py-0.5 rounded">
+                    <span className="text-primary font-mono text-xs bg-primary/20 px-2 py-0.5 rounded">
                       {squadStats.inviteCode}
                     </span>
                     <button
                       onClick={handleCopyCode}
-                      className="p-1 rounded hover:bg-secondary transition-colors"
+                      className="p-1 rounded hover:bg-white/10 transition-colors min-h-[32px] min-w-[32px] flex items-center justify-center"
                     >
                       {copied ? (
-                        <Check className="w-3.5 h-3.5 text-green-500" />
+                        <Check className="w-3.5 h-3.5 text-green-400" />
                       ) : (
-                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                        <Copy className="w-3.5 h-3.5 text-white/60" />
                       )}
                     </button>
                   </div>
@@ -178,29 +181,32 @@ const MySquad = () => {
               生成我的海报
             </button>
             
-            <p className="text-center text-muted-foreground text-xs mt-3">
+            <p className="text-center text-white/40 text-xs mt-3">
               分享到微信群，扫码者将成为您的永久队员
             </p>
           </div>
         </div>
       </section>
 
+      {/* Fog Divider */}
+      <div className="fog-divider mx-4" />
+
       {/* Money Stream Section */}
-      <section className="px-4 mb-6">
+      <section className="px-4 py-6">
         <div className="flex items-center justify-between mb-3 px-1">
           <div className="flex items-center gap-2">
             <Coins className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold text-foreground">收益流水</h3>
+            <h3 className="font-semibold text-white">收益流水</h3>
           </div>
-          <span className="text-xs text-muted-foreground">实时更新</span>
+          <span className="text-xs text-white/50">实时更新</span>
         </div>
         
         <div className="card-premium overflow-hidden">
           {recentCommissions.map((item, index) => (
             <div
               key={item.id}
-              className={`flex items-center justify-between px-4 py-3.5 ${
-                index !== recentCommissions.length - 1 ? "border-b border-border" : ""
+              className={`flex items-center justify-between px-4 py-3.5 min-h-[64px] ${
+                index !== recentCommissions.length - 1 ? "border-b border-white/10" : ""
               }`}
             >
               <div className="flex items-center gap-3">
@@ -208,15 +214,15 @@ const MySquad = () => {
                   <Coffee className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-foreground">
-                    <span className="text-muted-foreground">{item.userName}</span>
+                  <p className="text-sm text-white">
+                    <span className="text-white/60">{item.userName}</span>
                     {" "}购买了{" "}
                     <span className="text-primary font-medium">{item.product}</span>
                   </p>
-                  <p className="text-xs text-muted-foreground">{item.time}</p>
+                  <p className="text-xs text-white/40">{item.time}</p>
                 </div>
               </div>
-              <span className="text-primary font-bold">
+              <span className="text-primary font-bold text-lg">
                 +¥{item.amount.toFixed(2)}
               </span>
             </div>

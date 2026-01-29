@@ -71,7 +71,7 @@ export const IdentityVerificationModal = ({
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-md z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/70 backdrop-blur-md z-50 transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
@@ -84,7 +84,7 @@ export const IdentityVerificationModal = ({
         }`}
       >
         <div
-          className={`w-full max-w-md bg-card rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl transition-transform duration-300 ${
+          className={`w-full max-w-md bg-card rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl transition-transform duration-300 border-t border-white/10 ${
             isOpen ? "translate-y-0" : "translate-y-full sm:translate-y-8"
           }`}
           onClick={(e) => e.stopPropagation()}
@@ -93,15 +93,15 @@ export const IdentityVerificationModal = ({
           <div className="relative px-6 pt-6 pb-4">
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white/60 hover:text-white transition-colors min-h-[48px]"
             >
               <X className="w-4 h-4" />
             </button>
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-bold text-foreground">选择您的身份</h2>
+              <h2 className="text-lg font-bold text-white">选择您的身份</h2>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-white/60 mt-1">
               认证身份解锁专属徽章和特权
             </p>
           </div>
@@ -117,43 +117,41 @@ export const IdentityVerificationModal = ({
                 <button
                   key={option.id}
                   onClick={() => setSelectedIdentity(option.id)}
-                  className={`w-full p-4 rounded-2xl border-2 transition-all duration-200 text-left ${
+                  className={`w-full p-4 rounded-2xl border-2 transition-all duration-200 text-left min-h-[80px] ${
                     isSelected
-                      ? "border-primary bg-primary/5"
-                      : "border-border bg-secondary/30 hover:border-primary/50"
+                      ? "border-primary bg-primary/10"
+                      : "border-white/10 bg-secondary/30 hover:border-primary/50"
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isSelected ? "bg-primary/10" : "bg-secondary"
+                      isSelected ? "bg-primary/20" : "bg-secondary"
                     }`}>
                       <IconComponent className={`w-6 h-6 ${
-                        isSelected ? "text-primary" : "text-muted-foreground"
+                        isSelected ? "text-primary" : "text-white/60"
                       }`} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className={`font-semibold ${
-                          isSelected ? "text-foreground" : "text-foreground"
-                        }`}>
+                        <span className="font-semibold text-white">
                           {option.title}
                         </span>
                         {isCurrent && (
-                          <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                          <span className="text-[10px] font-medium text-primary bg-primary/20 px-2 py-0.5 rounded-full">
                             当前
                           </span>
                         )}
                         {option.isDefault && (
-                          <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
+                          <span className="text-[10px] font-medium text-white/50 bg-secondary px-2 py-0.5 rounded-full">
                             默认
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-muted-foreground mt-0.5">
+                      <p className="text-sm text-white/60 mt-0.5">
                         {option.description}
                       </p>
                       {option.requirement && (
-                        <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1.5 mt-2 text-xs text-white/50">
                           <Upload className="w-3.5 h-3.5" />
                           <span>{option.requirement}</span>
                         </div>
@@ -170,8 +168,8 @@ export const IdentityVerificationModal = ({
 
           {/* Benefit Text */}
           <div className="px-6 py-4">
-            <div className="bg-gradient-to-r from-primary/10 to-lavender/50 rounded-xl p-4">
-              <p className="text-sm text-foreground">
+            <div className="bg-gradient-to-r from-primary/20 to-lavender/30 rounded-xl p-4 border border-primary/20">
+              <p className="text-sm text-white">
                 🎁 <span className="font-medium">认证福利</span>：所有用户邀请好友均可获得 <span className="text-primary font-bold">2%</span> 返佣！
               </p>
             </div>
@@ -182,11 +180,11 @@ export const IdentityVerificationModal = ({
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="w-full py-4 rounded-2xl text-base font-semibold btn-gold transition-all duration-200"
+              className="w-full py-4 min-h-[56px] rounded-2xl text-base font-semibold btn-gold transition-all duration-200"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   提交中...
                 </span>
               ) : selectedIdentity === currentIdentity ? (
@@ -208,12 +206,12 @@ export const IdentityVerificationModal = ({
 export const getIdentityBadge = (identity: IdentityType) => {
   switch (identity) {
     case "owner":
-      return { icon: Store, label: "店主", color: "text-amber-600 bg-amber-100 border-amber-200" };
+      return { icon: Store, label: "店主", color: "text-amber-400 bg-amber-500/20 border-amber-500/30" };
     case "barista":
-      return { icon: Coffee, label: "咖啡师", color: "text-primary bg-primary/10 border-primary/20" };
+      return { icon: Coffee, label: "咖啡师", color: "text-primary bg-primary/20 border-primary/30" };
     case "fan":
     default:
-      return { icon: Heart, label: "咖啡爱好者", color: "text-muted-foreground bg-secondary border-border" };
+      return { icon: Heart, label: "咖啡爱好者", color: "text-white/60 bg-secondary border-white/10" };
   }
 };
 

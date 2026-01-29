@@ -56,11 +56,12 @@ export default {
           light: "hsl(var(--purple-light))",
           dark: "hsl(var(--purple-dark))",
         },
-        mist: {
-          DEFAULT: "hsl(var(--mist))",
-          light: "hsl(var(--mist-light))",
+        fog: {
+          DEFAULT: "hsl(var(--fog))",
+          light: "hsl(var(--fog-light))",
         },
         obsidian: "hsl(var(--obsidian))",
+        midnight: "hsl(var(--midnight))",
         silver: "hsl(var(--silver))",
         lavender: "hsl(var(--lavender))",
         sidebar: {
@@ -82,9 +83,10 @@ export default {
         "3xl": "1.5rem",
       },
       boxShadow: {
-        gold: "var(--shadow-gold)",
+        purple: "var(--shadow-purple)",
         card: "var(--shadow-card)",
         float: "var(--shadow-float)",
+        glow: "var(--shadow-glow)",
       },
       keyframes: {
         "accordion-down": {

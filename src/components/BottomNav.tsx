@@ -13,7 +13,7 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     return (
       <nav
         ref={ref}
-        className="fixed bottom-0 left-0 right-0 glass border-t border-border safe-bottom z-50"
+        className="fixed bottom-0 left-0 right-0 glass safe-bottom z-50"
         {...props}
       >
         <div className="flex justify-around items-center h-16 max-w-md mx-auto">
@@ -22,10 +22,10 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center gap-1 px-6 py-2 transition-all duration-300 ${
+                `flex flex-col items-center justify-center gap-1 px-6 py-2 min-h-[48px] transition-all duration-300 ${
                   isActive
                     ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-white/60 hover:text-white"
                 }`
               }
             >
