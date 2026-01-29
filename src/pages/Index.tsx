@@ -164,7 +164,7 @@ const Index = () => {
       <section className="px-4 py-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-medium text-white/70">
-            {t("精选咖啡", "Featured Coffee")}
+            {t("每天都要喝", "Daily Must-Have")}
           </h2>
           <span className="text-xs text-white/40">
             {t("专业咖啡师出品", "Crafted by Pro Baristas")}
