@@ -33,6 +33,7 @@ export type Database = {
           phone: string | null
           rating: number | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           address: string
@@ -52,6 +53,7 @@ export type Database = {
           phone?: string | null
           rating?: number | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           address?: string
@@ -71,6 +73,7 @@ export type Database = {
           phone?: string | null
           rating?: number | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -412,6 +415,21 @@ export type Database = {
         Returns: boolean
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
+      get_my_merchant: {
+        Args: never
+        Returns: {
+          address: string
+          business_hours: Json
+          id: string
+          is_online: boolean
+          latitude: number
+          longitude: number
+          name: string
+          name_en: string
+          rating: number
+          updated_at: string
+        }[]
+      }
       gettransactionid: { Args: never; Returns: unknown }
       longtransactionsenabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
@@ -1034,6 +1052,15 @@ export type Database = {
       st_wrapx: {
         Args: { geom: unknown; move: number; wrap: number }
         Returns: unknown
+      }
+      toggle_my_merchant_status: {
+        Args: { new_status: boolean }
+        Returns: {
+          is_online: boolean
+          merchant_id: string
+          message: string
+          success: boolean
+        }[]
       }
       unlockrows: { Args: { "": string }; Returns: number }
       update_merchant_status: {
