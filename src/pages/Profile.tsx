@@ -85,23 +85,23 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen pb-20">
       {/* Minimal Header */}
       <header className="px-4 pt-12 pb-4 safe-top max-w-md mx-auto">
         <div className="flex items-center justify-between">
           {/* User Info - Minimal */}
           <div className="flex items-center gap-3">
-            <Avatar className="w-12 h-12 border-2 border-primary/20">
+            <Avatar className="w-12 h-12 border-2 border-primary/30">
               <AvatarImage src="/placeholder.svg" alt="用户头像" />
-              <AvatarFallback className="bg-primary/10 text-primary font-bold">
+              <AvatarFallback className="bg-primary/20 text-primary font-bold">
                 咖
               </AvatarFallback>
             </Avatar>
             <div>
-              <h2 className="text-base font-semibold text-foreground">咖啡探索家</h2>
+              <h2 className="text-base font-semibold text-white">咖啡探索家</h2>
               <button
                 onClick={() => setIdentityModalOpen(true)}
-                className="text-xs text-muted-foreground flex items-center gap-1 hover:text-primary transition-colors"
+                className="text-xs text-white/60 flex items-center gap-1 hover:text-primary transition-colors min-h-[32px]"
               >
                 <span>☕️ {identityBadge.label}</span>
                 <ChevronRight className="w-3 h-3" />
@@ -115,7 +115,7 @@ const Profile = () => {
       <section className="px-4 max-w-md mx-auto">
         <button
           onClick={() => navigate("/my-squad")}
-          className="w-full relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-500 to-primary/80 p-6 shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-[0.98]"
+          className="w-full relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-purple-600 to-purple-dark p-6 shadow-glow hover:shadow-purple transition-all active:scale-[0.98] min-h-[180px]"
         >
           {/* Background Decorations */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -151,7 +151,7 @@ const Profile = () => {
                     <p className="text-xs text-white/60">队员</p>
                   </div>
                   <div className="h-8 w-px bg-white/20" />
-                  <div className="flex items-center gap-1 text-green-300">
+                  <div className="flex items-center gap-1 text-green-400">
                     <TrendingUp className="w-4 h-4" />
                     <span className="text-sm font-semibold">+12</span>
                   </div>
@@ -178,15 +178,15 @@ const Profile = () => {
                 <button
                   key={item.label}
                   onClick={item.onClick}
-                  className={`flex-1 flex flex-col items-center gap-1.5 py-2 hover:scale-105 transition-transform ${
-                    index !== assetItems.length - 1 ? "border-r border-border" : ""
+                  className={`flex-1 flex flex-col items-center gap-1.5 py-2 min-h-[64px] hover:scale-105 transition-transform ${
+                    index !== assetItems.length - 1 ? "border-r border-white/10" : ""
                   }`}
                 >
                   <div className="flex items-center gap-1">
                     <IconComponent className="w-4 h-4 text-primary" />
-                    <span className="text-lg font-bold text-foreground">{item.value}</span>
+                    <span className="text-lg font-bold text-white">{item.value}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">{item.label}</span>
+                  <span className="text-xs text-white/60">{item.label}</span>
                 </button>
               );
             })}
@@ -203,18 +203,18 @@ const Profile = () => {
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className={`w-full flex items-center gap-4 px-4 py-4 hover:bg-secondary/50 transition-colors ${
-                  index !== menuItems.length - 1 ? "border-b border-border" : ""
+                className={`w-full flex items-center gap-4 px-4 py-4 min-h-[72px] hover:bg-white/5 transition-colors ${
+                  index !== menuItems.length - 1 ? "border-b border-white/10" : ""
                 }`}
               >
                 <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
                   <IconComponent className="w-5 h-5 text-primary" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="font-medium text-foreground">{item.label}</p>
-                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                  <p className="font-medium text-white">{item.label}</p>
+                  <p className="text-xs text-white/50">{item.description}</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                <ChevronRight className="w-5 h-5 text-white/40" />
               </button>
             );
           })}
@@ -222,7 +222,7 @@ const Profile = () => {
       </section>
 
       {/* Version Footer */}
-      <p className="text-center text-xs text-muted-foreground mt-8">
+      <p className="text-center text-xs text-white/40 mt-8">
         KAKAGO v1.0.0
       </p>
 

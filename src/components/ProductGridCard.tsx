@@ -42,10 +42,10 @@ export const ProductGridCard = ({
 
       {/* Content */}
       <div className="flex flex-col flex-1">
-        <h3 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors">
+        <h3 className="font-semibold text-white text-sm group-hover:text-primary transition-colors">
           {name}
         </h3>
-        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+        <p className="text-xs text-white/50 mt-0.5 line-clamp-1">
           {tag}
         </p>
         <div className="flex items-end justify-between mt-auto pt-2">
@@ -55,15 +55,15 @@ export const ProductGridCard = ({
         </div>
       </div>
 
-      {/* Add Button */}
+      {/* Add Button - Large touch target */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           onSelect(id);
         }}
-        className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/30 transition-transform hover:scale-110 active:scale-95"
+        className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-purple transition-transform hover:scale-110 active:scale-95"
       >
-        <Plus className="w-4 h-4" />
+        <Plus className="w-5 h-5" />
       </button>
     </div>
   );

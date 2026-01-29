@@ -78,7 +78,7 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
       <>
         {/* Backdrop */}
         <div
-          className={`fixed inset-0 bg-black/60 backdrop-blur-md z-50 transition-opacity duration-300 ${
+          className={`fixed inset-0 bg-black/70 backdrop-blur-md z-50 transition-opacity duration-300 ${
             isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           onClick={onClose}
@@ -92,18 +92,18 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
           }`}
         >
           <div
-            className="w-full max-w-sm bg-card rounded-3xl overflow-hidden shadow-2xl"
+            className="w-full max-w-sm bg-card rounded-3xl overflow-hidden shadow-2xl border border-white/10"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="relative px-6 pt-6 pb-4">
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white/60 hover:text-white transition-colors min-h-[48px]"
               >
                 <X className="w-4 h-4" />
               </button>
-              <h2 className="text-lg font-bold text-foreground text-center pr-8">
+              <h2 className="text-lg font-bold text-white text-center pr-8">
                 {storeName} 的咖啡如何？
               </h2>
             </div>
@@ -120,13 +120,13 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
                     }}
                     onMouseEnter={() => setHoveredStar(star)}
                     onMouseLeave={() => setHoveredStar(0)}
-                    className="p-1 transition-transform duration-200 hover:scale-110 active:scale-95"
+                    className="p-1 min-h-[48px] min-w-[48px] flex items-center justify-center transition-transform duration-200 hover:scale-110 active:scale-95"
                   >
                     <Star
                       className={`w-10 h-10 transition-all duration-200 ${
                         star <= displayRating
                           ? "fill-primary text-primary scale-110"
-                          : "text-border hover:text-primary/50"
+                          : "text-white/20 hover:text-primary/50"
                       }`}
                     />
                   </button>
@@ -134,7 +134,7 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
               </div>
               <p
                 className={`text-center text-sm mt-3 transition-colors ${
-                  displayRating === 0 ? "text-muted-foreground" : "text-foreground font-medium"
+                  displayRating === 0 ? "text-white/50" : "text-white font-medium"
                 }`}
               >
                 {getRatingText()}
@@ -147,7 +147,7 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
                 availableTags.length > 0 ? "max-h-40 opacity-100 py-2" : "max-h-0 opacity-0 py-0"
               }`}
             >
-              <p className="text-xs text-muted-foreground mb-3">
+              <p className="text-xs text-white/50 mb-3">
                 {isNegative ? "请告诉我们哪里需要改进：" : "分享您喜欢的地方："}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -155,12 +155,12 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
                   <button
                     key={tag.id}
                     onClick={() => toggleTag(tag.id)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                    className={`px-3 py-1.5 min-h-[36px] rounded-full text-xs font-medium transition-all duration-200 ${
                       selectedTags.includes(tag.id)
                         ? isNegative
-                          ? "bg-destructive/10 text-destructive border border-destructive/30"
-                          : "bg-primary/10 text-primary border border-primary/30"
-                        : "bg-secondary text-muted-foreground hover:bg-mist-light"
+                          ? "bg-destructive/20 text-destructive border border-destructive/30"
+                          : "bg-primary/20 text-primary border border-primary/30"
+                        : "bg-secondary text-white/60 hover:bg-white/10"
                     }`}
                   >
                     {tag.label}
@@ -179,10 +179,10 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="添加备注（可选）..."
-                className="w-full h-20 px-4 py-3 bg-secondary rounded-xl text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full h-20 px-4 py-3 bg-secondary rounded-xl text-sm text-white placeholder:text-white/40 resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
                 maxLength={200}
               />
-              <p className="text-xs text-muted-foreground text-right mt-1">
+              <p className="text-xs text-white/40 text-right mt-1">
                 {note.length}/200
               </p>
             </div>
@@ -192,15 +192,15 @@ export const RatingModal = React.forwardRef<HTMLDivElement, RatingModalProps>(
               <button
                 onClick={handleSubmit}
                 disabled={rating === 0 || isSubmitting}
-                className={`w-full py-4 rounded-2xl text-base font-semibold transition-all duration-200 ${
+                className={`w-full py-4 min-h-[56px] rounded-2xl text-base font-semibold transition-all duration-200 ${
                   rating === 0
-                    ? "bg-secondary text-muted-foreground cursor-not-allowed"
+                    ? "bg-secondary text-white/40 cursor-not-allowed"
                     : "btn-gold"
                 }`}
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     提交中...
                   </span>
                 ) : (

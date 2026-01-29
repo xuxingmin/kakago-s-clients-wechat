@@ -7,15 +7,15 @@ interface BlindBoxHeroProps {
 
 export const BlindBoxHero = ({ onExplore }: BlindBoxHeroProps) => {
   return (
-    <section className="relative overflow-hidden rounded-3xl mx-4 mt-4">
+    <section className="relative overflow-hidden rounded-3xl mx-4 mt-4 border border-border">
       {/* 背景图片 */}
       <div className="absolute inset-0">
         <img
           src={blindBoxImage}
           alt="神秘咖啡盲盒"
-          className="w-full h-full object-cover opacity-60"
+          className="w-full h-full object-cover opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
       </div>
 
       {/* Content */}
@@ -25,13 +25,13 @@ export const BlindBoxHero = ({ onExplore }: BlindBoxHeroProps) => {
           <span className="text-primary text-sm font-medium">咖啡盲盒</span>
         </div>
         
-        <h2 className="text-2xl font-bold text-foreground leading-tight mb-2">
+        <h2 className="text-2xl font-bold text-white leading-tight mb-2">
           来自神秘咖啡馆的
           <br />
           <span className="text-gold-gradient">精选好咖啡</span>
         </h2>
         
-        <p className="text-muted-foreground text-sm mb-4 max-w-[200px]">
+        <p className="text-white/70 text-sm mb-4 max-w-[200px]">
           下单后揭晓为您匹配的专属咖啡馆
         </p>
 

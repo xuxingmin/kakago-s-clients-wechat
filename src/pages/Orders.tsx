@@ -134,11 +134,11 @@ const Orders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-40 glass border-b border-border safe-top">
+      <header className="sticky top-0 z-40 glass safe-top">
         <div className="px-4 py-4 max-w-md mx-auto">
-          <h1 className="text-xl font-bold text-foreground">我的订单</h1>
+          <h1 className="text-xl font-bold text-white">我的订单</h1>
         </div>
         
         {/* Tabs */}
@@ -147,10 +147,10 @@ const Orders = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${
+              className={`flex-1 py-3 min-h-[48px] text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? "text-primary border-primary"
-                  : "text-muted-foreground border-transparent hover:text-foreground"
+                  : "text-white/50 border-transparent hover:text-white"
               }`}
             >
               {tab.label}
@@ -158,6 +158,9 @@ const Orders = () => {
           ))}
         </div>
       </header>
+
+      {/* Fog Divider */}
+      <div className="fog-divider" />
 
       {/* Orders List */}
       <section className="px-4 py-4 space-y-3">

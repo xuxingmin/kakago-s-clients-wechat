@@ -165,7 +165,7 @@ export const CheckoutModal = ({
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
@@ -178,18 +178,18 @@ export const CheckoutModal = ({
         }`}
         style={{ height: "75vh" }}
       >
-        <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden">
+        <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden border-t border-white/10">
           {/* Handle */}
           <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
-            <div className="w-10 h-1 bg-border rounded-full" />
+            <div className="w-10 h-1 bg-white/20 rounded-full" />
           </div>
 
           {/* Header */}
           <div className="flex items-center justify-between px-5 pb-4 flex-shrink-0">
-            <h2 className="text-lg font-bold text-foreground">确认订单</h2>
+            <h2 className="text-lg font-bold text-white">确认订单</h2>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-mist-light transition-colors"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors min-h-[48px]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -200,20 +200,20 @@ export const CheckoutModal = ({
             {/* Delivery Info - Clickable to change address */}
             <button
               onClick={() => setShowAddressPicker(true)}
-              className="w-full bg-secondary rounded-2xl p-4 text-left hover:bg-mist-light transition-colors group"
+              className="w-full bg-secondary rounded-2xl p-4 text-left hover:bg-white/10 transition-colors group min-h-[80px]"
             >
               {selectedAddress ? (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-foreground">{selectedAddress.name}</span>
-                      <span className="text-sm text-muted-foreground">{maskPhone(selectedAddress.phone)}</span>
+                      <span className="font-semibold text-white">{selectedAddress.name}</span>
+                      <span className="text-sm text-white/60">{maskPhone(selectedAddress.phone)}</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
                   </div>
                   <div className="flex items-start gap-2">
                     <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-white/60 line-clamp-2">
                       {selectedAddress.province}{selectedAddress.city}{selectedAddress.district} {selectedAddress.detail}
                     </p>
                   </div>
@@ -224,19 +224,19 @@ export const CheckoutModal = ({
                     <Plus className="w-4 h-4" />
                     <span className="font-medium">请添加收货地址</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                  <ChevronRight className="w-4 h-4 text-white/40" />
                 </div>
               )}
             </button>
 
             {/* Trust Badge */}
-            <div className="border-2 border-primary/30 bg-primary/5 rounded-2xl p-4 flex items-start gap-3">
-              <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+            <div className="border-2 border-primary/40 bg-primary/10 rounded-2xl p-4 flex items-start gap-3">
+              <div className="w-9 h-9 rounded-full bg-primary/30 flex items-center justify-center flex-shrink-0">
                 <Shield className="w-4 h-4 text-primary" />
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-primary">KAKAGO 品质保证</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                <p className="text-xs text-white/60 mt-1 leading-relaxed">
                   您的订单将由 KAKAGO 认证精品咖啡师制作，确保每一杯都达到专业标准。
                 </p>
               </div>
@@ -244,10 +244,10 @@ export const CheckoutModal = ({
 
             {/* Order Summary */}
             <div className="bg-secondary rounded-2xl p-4">
-              <h3 className="text-sm font-semibold text-foreground mb-3">订单明细</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">订单明细</h3>
               
               {/* Product Item */}
-              <div className="flex items-center gap-3 pb-3 border-b border-border">
+              <div className="flex items-center gap-3 pb-3 border-b border-white/10">
                 <div className="w-12 h-12 rounded-xl overflow-hidden bg-card flex-shrink-0">
                   <img
                     src={product.image}
@@ -256,30 +256,30 @@ export const CheckoutModal = ({
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground">{product.name}</p>
-                  <p className="text-xs text-muted-foreground">{product.tag}</p>
+                  <p className="text-sm font-medium text-white">{product.name}</p>
+                  <p className="text-xs text-white/50">{product.tag}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-foreground">¥{product.price.toFixed(2)}</p>
-                  <p className="text-xs text-muted-foreground">x1</p>
+                  <p className="text-sm font-semibold text-white">¥{product.price.toFixed(2)}</p>
+                  <p className="text-xs text-white/50">x1</p>
                 </div>
               </div>
 
               {/* Fee Breakdown */}
               <div className="pt-3 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">商品金额</span>
-                  <span className="text-sm text-foreground">¥{product.price.toFixed(2)}</span>
+                  <span className="text-sm text-white/60">商品金额</span>
+                  <span className="text-sm text-white">¥{product.price.toFixed(2)}</span>
                 </div>
                 
                 {/* Coupon Row */}
                 <button
                   onClick={() => setShowCouponPicker(true)}
-                  className="w-full flex items-center justify-between py-1 group"
+                  className="w-full flex items-center justify-between py-1 min-h-[40px] group"
                 >
                   <div className="flex items-center gap-2">
                     <Ticket className="w-4 h-4 text-primary" />
-                    <span className="text-sm text-muted-foreground">优惠券/代金券</span>
+                    <span className="text-sm text-white/60">优惠券/代金券</span>
                   </div>
                   <div className="flex items-center gap-1">
                     {activeCoupon ? (
@@ -291,25 +291,25 @@ export const CheckoutModal = ({
                         {applicableCoupons.length}张可用
                       </span>
                     ) : (
-                      <span className="text-sm text-muted-foreground">暂无可用</span>
+                      <span className="text-sm text-white/40">暂无可用</span>
                     )}
-                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
                   </div>
                 </button>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">精品履约服务费</span>
-                  <span className="text-sm text-foreground">¥{fulfillmentFee.toFixed(2)}</span>
+                  <span className="text-sm text-white/60">精品履约服务费</span>
+                  <span className="text-sm text-white">¥{fulfillmentFee.toFixed(2)}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Footer - Fixed at bottom */}
-          <div className="flex-shrink-0 px-5 py-4 bg-card border-t border-border">
+          <div className="flex-shrink-0 px-5 py-4 bg-card border-t border-white/10">
             {/* Applied Coupon Badge */}
             {activeCoupon && (
-              <div className="flex items-center justify-center gap-2 mb-3 py-2 bg-primary/5 rounded-xl">
+              <div className="flex items-center justify-center gap-2 mb-3 py-2 bg-primary/10 rounded-xl">
                 <Ticket className="w-4 h-4 text-primary" />
                 <span className="text-xs text-primary font-medium">
                   已使用「{activeCoupon.title}」立减 ¥{discount.toFixed(2)}
@@ -319,10 +319,10 @@ export const CheckoutModal = ({
 
             {/* Total */}
             <div className="flex items-center justify-between mb-4">
-              <span className="text-base font-semibold text-foreground">合计</span>
+              <span className="text-base font-semibold text-white">合计</span>
               <div className="flex items-baseline gap-2">
                 {discount > 0 && (
-                  <span className="text-sm text-muted-foreground line-through">
+                  <span className="text-sm text-white/40 line-through">
                     ¥{(product.price + fulfillmentFee).toFixed(2)}
                   </span>
                 )}
@@ -333,7 +333,7 @@ export const CheckoutModal = ({
             {/* WeChat Pay Button */}
             <button
               onClick={handlePayment}
-              className="w-full py-4 rounded-2xl text-base font-semibold text-white flex items-center justify-center gap-2 transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
+              className="w-full py-4 min-h-[56px] rounded-2xl text-base font-semibold text-white flex items-center justify-center gap-2 transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
               style={{ backgroundColor: "#07C160" }}
             >
               <WeChatPayIcon />
@@ -350,23 +350,23 @@ export const CheckoutModal = ({
         }`}
       >
         <div 
-          className={`fixed inset-0 bg-black/40 transition-opacity ${
+          className={`fixed inset-0 bg-black/50 transition-opacity ${
             showAddressPicker ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           onClick={() => setShowAddressPicker(false)}
         />
-        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[70vh] flex flex-col safe-bottom">
+        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[70vh] flex flex-col safe-bottom border-t border-white/10">
           <div className="flex justify-center pt-3 pb-2">
-            <div className="w-10 h-1 bg-border rounded-full" />
+            <div className="w-10 h-1 bg-white/20 rounded-full" />
           </div>
           
-          <div className="flex items-center justify-between px-5 pb-4 border-b border-border">
-            <h3 className="text-base font-semibold text-foreground">选择收货地址</h3>
+          <div className="flex items-center justify-between px-5 pb-4 border-b border-white/10">
+            <h3 className="text-base font-semibold text-white">选择收货地址</h3>
             <button
               onClick={() => setShowAddressPicker(false)}
-              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center min-h-[48px]"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-white" />
             </button>
           </div>
 
@@ -375,24 +375,24 @@ export const CheckoutModal = ({
               <button
                 key={address.id}
                 onClick={() => handleSelectAddress(address)}
-                className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                className={`w-full p-4 rounded-xl border-2 text-left transition-all min-h-[80px] ${
                   selectedAddress?.id === address.id
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
+                    ? "border-primary bg-primary/10"
+                    : "border-white/10 hover:border-primary/50"
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-foreground">{address.name}</span>
-                      <span className="text-sm text-muted-foreground">{maskPhone(address.phone)}</span>
+                      <span className="font-semibold text-white">{address.name}</span>
+                      <span className="text-sm text-white/60">{maskPhone(address.phone)}</span>
                       {address.isDefault && (
-                        <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-medium text-primary bg-primary/20 px-1.5 py-0.5 rounded">
                           默认
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-white/60 line-clamp-2">
                       {address.province}{address.city}{address.district} {address.detail}
                     </p>
                   </div>
@@ -409,7 +409,7 @@ export const CheckoutModal = ({
                 setShowAddressPicker(false);
                 setShowAddressForm(true);
               }}
-              className="w-full p-4 rounded-xl border-2 border-dashed border-primary/50 text-primary font-medium flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors"
+              className="w-full p-4 min-h-[56px] rounded-xl border-2 border-dashed border-primary/50 text-primary font-medium flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
             >
               <Plus className="w-5 h-5" />
               <span>添加新地址</span>
@@ -425,23 +425,23 @@ export const CheckoutModal = ({
         }`}
       >
         <div 
-          className={`fixed inset-0 bg-black/40 transition-opacity ${
+          className={`fixed inset-0 bg-black/50 transition-opacity ${
             showCouponPicker ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           onClick={() => setShowCouponPicker(false)}
         />
-        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[60vh] flex flex-col safe-bottom">
+        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[60vh] flex flex-col safe-bottom border-t border-white/10">
           <div className="flex justify-center pt-3 pb-2">
-            <div className="w-10 h-1 bg-border rounded-full" />
+            <div className="w-10 h-1 bg-white/20 rounded-full" />
           </div>
           
-          <div className="flex items-center justify-between px-5 pb-4 border-b border-border">
-            <h3 className="text-base font-semibold text-foreground">选择优惠券</h3>
+          <div className="flex items-center justify-between px-5 pb-4 border-b border-white/10">
+            <h3 className="text-base font-semibold text-white">选择优惠券</h3>
             <button
               onClick={() => setShowCouponPicker(false)}
-              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center min-h-[48px]"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-white" />
             </button>
           </div>
 
@@ -449,30 +449,30 @@ export const CheckoutModal = ({
             {/* No coupon option */}
             <button
               onClick={() => handleSelectCoupon(null)}
-              className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+              className={`w-full p-4 rounded-xl border-2 text-left transition-all min-h-[64px] ${
                 !selectedCoupon && !activeCoupon
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-primary/50"
+                  ? "border-primary bg-primary/10"
+                  : "border-white/10 hover:border-primary/50"
               }`}
             >
-              <p className="text-sm font-medium text-foreground">不使用优惠券</p>
-              <p className="text-xs text-muted-foreground mt-0.5">原价支付</p>
+              <p className="text-sm font-medium text-white">不使用优惠券</p>
+              <p className="text-xs text-white/50 mt-0.5">原价支付</p>
             </button>
 
             {applicableCoupons.map((coupon) => (
               <button
                 key={coupon.id}
                 onClick={() => handleSelectCoupon(coupon)}
-                className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                className={`w-full p-4 rounded-xl border-2 text-left transition-all min-h-[64px] ${
                   activeCoupon?.id === coupon.id
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
+                    ? "border-primary bg-primary/10"
+                    : "border-white/10 hover:border-primary/50"
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-foreground">{coupon.title}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                    <p className="text-sm font-medium text-white">{coupon.title}</p>
+                    <p className="text-xs text-white/50 mt-0.5">
                       {coupon.type === "universal" ? "全品类通用" : "限定商品可用"}
                     </p>
                   </div>
@@ -484,7 +484,7 @@ export const CheckoutModal = ({
             ))}
 
             {applicableCoupons.length === 0 && (
-              <div className="py-8 text-center text-muted-foreground text-sm">
+              <div className="py-8 text-center text-white/50 text-sm">
                 暂无可用优惠券
               </div>
             )}

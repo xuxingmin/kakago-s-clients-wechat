@@ -77,7 +77,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen pb-20">
       <Header />
 
       {/* Hero Banner */}
@@ -86,11 +86,14 @@ const Index = () => {
       {/* Product Grid */}
       <section className="px-4 py-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-foreground">精选咖啡</h2>
-          <span className="text-xs text-muted-foreground px-2 py-1 bg-secondary rounded-full">
+          <h2 className="text-lg font-semibold text-white">精选咖啡</h2>
+          <span className="text-xs text-white/70 px-3 py-1.5 bg-secondary/80 rounded-full border border-border">
             专业咖啡师出品
           </span>
         </div>
+        
+        {/* Fog Divider */}
+        <div className="fog-divider mb-4" />
         
         <div className="grid grid-cols-2 gap-3">
           {products.map((product, index) => (
