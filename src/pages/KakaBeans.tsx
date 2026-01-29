@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Bean, TrendingUp, TrendingDown, Gift, Coffee, Users, ShoppingCart, X, Check } from "lucide-react";
+import { ChevronLeft, Bean, TrendingUp, TrendingDown, Gift, Coffee, Users, ShoppingCart } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
-import { toast } from "sonner";
 
 interface BeanRecord {
   id: string;
@@ -32,13 +31,9 @@ const iconMap = {
   order: ShoppingCart,
 };
 
-type PaymentMethod = "wechat" | "alipay" | "beans";
-
 const KakaBeans = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"all" | "earn" | "spend">("all");
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("beans");
 
   // 计算统计
   const totalBeans = 1680;
@@ -50,12 +45,7 @@ const KakaBeans = () => {
     : beanRecords.filter(r => r.type === activeTab);
 
   const handleExchange = () => {
-    setShowPaymentModal(false);
-    if (selectedPayment === "beans") {
-      toast.success("已使用 KAKA豆 兑换成功");
-    } else {
-      toast.success(`正在跳转${selectedPayment === "wechat" ? "微信" : "支付宝"}支付...`);
-    }
+    navigate("/");
   };
 
   return (
@@ -112,9 +102,9 @@ const KakaBeans = () => {
       {/* Exchange Info Bar */}
       <section className="px-4 pb-3">
         <div className="card-sm flex items-center justify-between">
-          <p className="text-xs text-white/50">100豆 = 1杯美式 | 120豆 = 1杯拿铁</p>
+          <p className="text-xs text-white/50">100豆 = ¥1</p>
           <button 
-            onClick={() => setShowPaymentModal(true)}
+            onClick={handleExchange}
             className="px-4 py-2 rounded-lg bg-amber-600/80 text-xs font-bold text-white hover:bg-amber-600 transition-colors"
           >
             去兑换
@@ -169,112 +159,6 @@ const KakaBeans = () => {
           );
         })}
       </section>
-
-      {/* Payment Method Modal */}
-      {showPaymentModal && (
-        <>
-          <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[80]"
-            onClick={() => setShowPaymentModal(false)}
-          />
-          <div className="fixed inset-x-4 bottom-0 z-[85] max-w-md mx-auto">
-            <div className="bg-card rounded-t-2xl overflow-hidden border border-white/10">
-              {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-                <h3 className="text-base font-semibold text-white">选择支付方式</h3>
-                <button 
-                  onClick={() => setShowPaymentModal(false)}
-                  className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
-                >
-                  <X className="w-4 h-4 text-white/60" />
-                </button>
-              </div>
-              
-              {/* Payment Options */}
-              <div className="p-4 space-y-2">
-                {/* Kaka豆 */}
-                <button
-                  onClick={() => setSelectedPayment("beans")}
-                  className={`w-full card-sm flex items-center justify-between ${
-                    selectedPayment === "beans" ? "border-amber-500/50 bg-amber-500/10" : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                      <Bean className="w-5 h-5 text-amber-400" />
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm font-medium text-white">KAKA豆支付</p>
-                      <p className="text-[10px] text-white/40">余额 {totalBeans} 豆</p>
-                    </div>
-                  </div>
-                  {selectedPayment === "beans" && (
-                    <div className="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-                </button>
-
-                {/* WeChat */}
-                <button
-                  onClick={() => setSelectedPayment("wechat")}
-                  className={`w-full card-sm flex items-center justify-between ${
-                    selectedPayment === "wechat" ? "border-green-500/50 bg-green-500/10" : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
-                      <span className="text-lg">💬</span>
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm font-medium text-white">微信支付</p>
-                      <p className="text-[10px] text-white/40">推荐使用</p>
-                    </div>
-                  </div>
-                  {selectedPayment === "wechat" && (
-                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-                </button>
-
-                {/* Alipay */}
-                <button
-                  onClick={() => setSelectedPayment("alipay")}
-                  className={`w-full card-sm flex items-center justify-between ${
-                    selectedPayment === "alipay" ? "border-blue-500/50 bg-blue-500/10" : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                      <span className="text-lg">🅰️</span>
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm font-medium text-white">支付宝支付</p>
-                      <p className="text-[10px] text-white/40">快捷支付</p>
-                    </div>
-                  </div>
-                  {selectedPayment === "alipay" && (
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-                </button>
-              </div>
-
-              {/* Confirm Button */}
-              <div className="px-4 pb-4 safe-bottom">
-                <button
-                  onClick={handleExchange}
-                  className="w-full py-4 rounded-xl btn-gold font-bold"
-                >
-                  确认支付
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
 
       <BottomNav />
     </div>
