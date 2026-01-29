@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Plus, Flame, Ticket } from "lucide-react";
 import { Header } from "@/components/Header";
-import { CheckoutModal } from "@/components/CheckoutModal";
 import { BottomNav } from "@/components/BottomNav";
+import { FloatingCart } from "@/components/FloatingCart";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
-// Import coffee images for modal only
+// Import coffee images
 import coffeeLatte from "@/assets/coffee-latte.jpg";
 import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
@@ -107,31 +107,27 @@ const getBestDiscount = (productId: string, originalPrice: number): number | nul
 };
 
 const Index = () => {
-  const navigate = useNavigate();
   const { t } = useLanguage();
-  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { addItem, items } = useCart();
 
-  const handleProductSelect = (productId: string) => {
-    const product = products.find((p) => p.id === productId);
-    if (product) {
-      setSelectedProduct(product);
-      setIsModalOpen(true);
-    }
+  const handleProductSelect = (product: typeof products[0]) => {
+    addItem({
+      id: product.id,
+      nameZh: product.nameZh,
+      nameEn: product.nameEn,
+      price: product.price,
+      image: product.image,
+    });
+    toast.success(t(`已添加 ${product.nameZh}`, `Added ${product.nameEn}`), {
+      duration: 1500,
+    });
   };
 
-  const handleConfirmOrder = (productId: string) => {
-    navigate("/order-tracking");
+  // Get quantity in cart for a product
+  const getQuantityInCart = (productId: string) => {
+    const item = items.find((i) => i.id === productId);
+    return item?.quantity || 0;
   };
-
-  // Convert selected product to modal format
-  const modalProduct = selectedProduct ? {
-    id: selectedProduct.id,
-    name: t(selectedProduct.nameZh, selectedProduct.nameEn),
-    price: selectedProduct.price,
-    image: selectedProduct.image,
-    tag: t(selectedProduct.tagZh, selectedProduct.tagEn),
-  } : null;
 
   const totalCoupons = userCoupons.length;
 
@@ -179,10 +175,12 @@ const Index = () => {
             const discountedPrice = getBestDiscount(product.id, product.price);
             const hasDiscount = discountedPrice !== null;
             
+            const quantityInCart = getQuantityInCart(product.id);
+            
             return (
               <button
                 key={product.id}
-                onClick={() => handleProductSelect(product.id)}
+                onClick={() => handleProductSelect(product)}
                 className="group card-premium p-3 text-left transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-[72px] relative"
                 style={{ animationDelay: `${index * 0.03}s` }}
               >
@@ -221,9 +219,14 @@ const Index = () => {
                   </div>
                 </div>
                 
-                {/* Hover Add Button */}
-                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-purple">
+                {/* Add Button with quantity badge */}
+                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center shadow-purple transition-all duration-200 group-hover:scale-110">
                   <Plus className="w-4 h-4" />
+                  {quantityInCart > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center">
+                      {quantityInCart}
+                    </span>
+                  )}
                 </div>
               </button>
             );
@@ -242,13 +245,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Checkout Modal */}
-      <CheckoutModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        product={modalProduct}
-        onConfirm={handleConfirmOrder}
-      />
+      {/* Floating Cart */}
+      <FloatingCart />
 
       {/* Bottom Navigation */}
       <BottomNav />
