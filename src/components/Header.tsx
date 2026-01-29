@@ -1,5 +1,6 @@
-import { MapPin, Globe } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ServiceStatusBadge } from "@/components/ServiceStatusBadge";
 
 export const Header = () => {
   const { language, toggleLanguage, t } = useLanguage();
@@ -17,13 +18,8 @@ export const Header = () => {
 
         {/* Right Controls */}
         <div className="flex items-center gap-2">
-          {/* Service Status */}
-          <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-border">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs text-white/80 font-medium">
-              {t("可提供服务", "Available")}
-            </span>
-          </div>
+          {/* Dynamic Service Status */}
+          <ServiceStatusBadge />
 
           {/* Language Toggle */}
           <button
