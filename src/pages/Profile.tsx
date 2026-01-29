@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Ticket, 
@@ -14,6 +15,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/BottomNav";
+import { 
+  IdentityVerificationModal, 
+  getIdentityBadge,
+  type IdentityType 
+} from "@/components/IdentityVerificationModal";
 
 interface AssetItem {
   Icon: LucideIcon;
@@ -32,6 +38,11 @@ interface MenuItem {
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [identityModalOpen, setIdentityModalOpen] = useState(false);
+  const [currentIdentity, setCurrentIdentity] = useState<IdentityType>("fan");
+
+  const identityBadge = getIdentityBadge(currentIdentity);
+  const IdentityIcon = identityBadge.icon;
 
   const assetItems: AssetItem[] = [
     { 
@@ -107,8 +118,18 @@ const Profile = () => {
                   咖啡探索家
                 </h2>
                 
+                {/* Identity Badge - Clickable */}
+                <button
+                  onClick={() => setIdentityModalOpen(true)}
+                  className={`inline-flex items-center gap-1 mt-1.5 px-2.5 py-1 rounded-full border text-xs font-medium transition-all hover:scale-105 active:scale-95 ${identityBadge.color}`}
+                >
+                  <IdentityIcon className="w-3 h-3" />
+                  <span>☕️ {identityBadge.label}</span>
+                  <ChevronRight className="w-3 h-3 opacity-50" />
+                </button>
+                
                 {/* Member Level Badge */}
-                <div className="flex items-center gap-1.5 mt-1">
+                <div className="flex items-center gap-1.5 mt-1.5">
                   <Badge 
                     variant="secondary" 
                     className="bg-gradient-to-r from-amber-100 to-amber-50 text-amber-700 border border-amber-200/50 gap-1 px-2 py-0.5"
@@ -117,10 +138,6 @@ const Profile = () => {
                     <span className="text-xs font-medium">Coffee Explorer</span>
                   </Badge>
                 </div>
-                
-                <p className="text-muted-foreground text-xs mt-1.5">
-                  已探索 8 家咖啡馆
-                </p>
               </div>
             </div>
           </div>
@@ -193,6 +210,14 @@ const Profile = () => {
       </p>
 
       <BottomNav />
+
+      {/* Identity Verification Modal */}
+      <IdentityVerificationModal
+        isOpen={identityModalOpen}
+        onClose={() => setIdentityModalOpen(false)}
+        currentIdentity={currentIdentity}
+        onSelectIdentity={setCurrentIdentity}
+      />
     </div>
   );
 };
