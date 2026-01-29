@@ -215,7 +215,7 @@ const Index = () => {
                     </div>
                     {hasDiscount && (
                       <span className="text-primary/70 text-[10px] mt-0.5">
-                        {t("预估到手", "Est.")}
+                        {t("券后到手", "After coupon")}
                       </span>
                     )}
                   </div>
