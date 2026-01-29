@@ -85,15 +85,16 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header with Avatar */}
-      <header className="relative safe-top">
-        <div className="h-36 bg-gradient-to-br from-primary/20 via-lavender to-background" />
+      <header className="relative pt-8 pb-4 safe-top">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 h-32 bg-gradient-to-br from-primary/20 via-lavender to-background" />
         
         {/* User Card */}
-        <div className="px-4 -mt-16 max-w-md mx-auto">
-          <div className="card-premium p-6">
+        <div className="relative px-4 pt-4 max-w-md mx-auto">
+          <div className="card-premium p-5">
             <div className="flex items-center gap-4">
               {/* Avatar */}
-              <Avatar className="w-18 h-18 border-3 border-primary/30 shadow-lg">
+              <Avatar className="w-16 h-16 border-2 border-primary/30 shadow-lg">
                 <AvatarImage src="/placeholder.svg" alt="用户头像" />
                 <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-primary-foreground text-xl font-bold">
                   咖
@@ -102,12 +103,12 @@ const Profile = () => {
               
               <div className="flex-1">
                 {/* Nickname */}
-                <h2 className="text-xl font-bold text-foreground">
+                <h2 className="text-lg font-bold text-foreground">
                   咖啡探索家
                 </h2>
                 
                 {/* Member Level Badge */}
-                <div className="flex items-center gap-1.5 mt-1.5">
+                <div className="flex items-center gap-1.5 mt-1">
                   <Badge 
                     variant="secondary" 
                     className="bg-gradient-to-r from-amber-100 to-amber-50 text-amber-700 border border-amber-200/50 gap-1 px-2 py-0.5"
@@ -117,7 +118,7 @@ const Profile = () => {
                   </Badge>
                 </div>
                 
-                <p className="text-muted-foreground text-xs mt-2">
+                <p className="text-muted-foreground text-xs mt-1.5">
                   已探索 8 家咖啡馆
                 </p>
               </div>
