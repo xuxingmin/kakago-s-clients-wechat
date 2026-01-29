@@ -64,9 +64,10 @@ const KakaBeans = () => {
         </div>
       </header>
 
-      {/* Balance Card - Following homepage card-lg style */}
+      {/* Balance Card - Unified module */}
       <section className="px-4 pt-4 pb-3">
         <div className="card-lg bg-gradient-to-br from-amber-700/40 to-amber-900/30 border-amber-600/30">
+          {/* Main Balance Row */}
           <div className="flex items-center gap-4">
             {/* Bean Icon */}
             <div className="w-14 h-14 rounded-2xl bg-amber-500/30 flex items-center justify-center">
@@ -96,19 +97,20 @@ const KakaBeans = () => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Exchange Info Bar */}
-      <section className="px-4 pb-3">
-        <div className="card-sm flex items-center justify-between">
-          <p className="text-xs text-white/50">100豆 = ¥1</p>
-          <button 
-            onClick={handleExchange}
-            className="px-4 py-2 rounded-lg bg-amber-600/80 text-xs font-bold text-white hover:bg-amber-600 transition-colors"
-          >
-            去兑换
-          </button>
+          
+          {/* Divider */}
+          <div className="h-px bg-amber-500/20 my-4" />
+          
+          {/* Exchange Row */}
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-white/50">100豆 = ¥1</p>
+            <button 
+              onClick={handleExchange}
+              className="px-5 py-2.5 rounded-full bg-amber-600 text-sm font-bold text-white hover:bg-amber-500 transition-colors"
+            >
+              去兑换
+            </button>
+          </div>
         </div>
       </section>
 
