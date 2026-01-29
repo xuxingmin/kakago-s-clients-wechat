@@ -50,7 +50,7 @@ const Profile = () => {
       label: "分享赚佣金", 
       description: "邀请好友，享1%返佣",
       badge: "热门",
-      onClick: () => {},
+      onClick: () => navigate("/share-earn"),
     },
     { 
       icon: HelpCircle, 
@@ -58,7 +58,7 @@ const Profile = () => {
       description: "常见问题与联系客服",
       onClick: () => {},
     },
-    { 
+    {
       icon: Store, 
       label: "成为合作商家", 
       description: "加入我们，一起成长",
