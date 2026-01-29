@@ -49,7 +49,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       <button
         ref={ref}
         onClick={onClick}
-        className="card-lg w-full text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+        className="card-lg w-full text-left"
       >
         {/* Top Row: Store & Status */}
         <div className="flex items-start justify-between mb-3">

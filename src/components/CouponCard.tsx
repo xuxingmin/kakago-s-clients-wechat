@@ -52,10 +52,8 @@ export const CouponCard = ({
     <button
       onClick={() => !isDisabled && onSelect?.(id)}
       disabled={isDisabled}
-      className={`relative w-full overflow-hidden transition-all duration-300 card-lg !p-0 ${
-        isDisabled 
-          ? "opacity-50 cursor-not-allowed" 
-          : "hover:scale-[1.02] active:scale-[0.98]"
+      className={`relative w-full overflow-hidden card-lg !p-0 ${
+        isDisabled ? "opacity-50 cursor-not-allowed" : ""
       } ${selected ? "ring-2 ring-primary ring-offset-2" : ""}`}
     >
       {/* Ticket Shape Container */}
