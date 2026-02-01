@@ -10,7 +10,9 @@ import {
   Users,
   TrendingUp,
   LucideIcon,
-  Coins
+  Coins,
+  MapPin,
+  FileText
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandHeader } from "@/components/BrandHeader";
@@ -80,6 +82,22 @@ const Profile = () => {
       descZh: "查看订单与评价状态",
       descEn: "View orders and ratings",
       onClick: () => navigate("/orders"),
+    },
+    { 
+      Icon: MapPin, 
+      labelZh: "地址管理", 
+      labelEn: "Address Management",
+      descZh: "管理收货地址",
+      descEn: "Manage delivery addresses",
+      onClick: () => navigate("/address"),
+    },
+    { 
+      Icon: FileText, 
+      labelZh: "发票管理", 
+      labelEn: "Invoice Management",
+      descZh: "管理发票抬头",
+      descEn: "Manage invoice headers",
+      onClick: () => navigate("/invoice"),
     },
     { 
       Icon: HelpCircle, 

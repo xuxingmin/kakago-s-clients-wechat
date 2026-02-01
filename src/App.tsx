@@ -14,6 +14,7 @@ import OrderTracking from "./pages/OrderTracking";
 import CoffeeWallet from "./pages/CoffeeWallet";
 import KakaBeans from "./pages/KakaBeans";
 import AddressManagement from "./pages/AddressManagement";
+import InvoiceManagement from "./pages/InvoiceManagement";
 import MySquad from "./pages/MySquad";
 import MerchantAuth from "./pages/MerchantAuth";
 import MerchantDashboard from "./pages/MerchantDashboard";
@@ -41,6 +42,7 @@ const App = () => (
                   <Route path="/wallet" element={<CoffeeWallet />} />
                   <Route path="/kaka-beans" element={<KakaBeans />} />
                   <Route path="/address" element={<AddressManagement />} />
+                  <Route path="/invoice" element={<InvoiceManagement />} />
                   <Route path="/my-squad" element={<MySquad />} />
                   <Route path="/merchant-auth" element={<MerchantAuth />} />
                   <Route path="/merchant" element={<MerchantDashboard />} />
