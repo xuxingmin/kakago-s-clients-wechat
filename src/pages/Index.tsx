@@ -31,8 +31,10 @@ const products = [
     nameEn: "Hot Americano",
     price: 12,
     image: coffeeAmericano,
-    tagZh: "无烟蒂味·非刷锅水·油脂完整",
-    tagEn: "No burnt taste · Rich crema",
+    tagZh: "无烟蒂味·非刷锅水·无纸杯味",
+    tagZh2: "油脂完整，醇厚回甘",
+    tagEn: "No burnt · No paper taste",
+    tagEn2: "Rich crema, smooth finish",
     isHot: true,
   },
   {
@@ -207,9 +209,16 @@ const Index = () => {
                 </div>
                 
                 {/* 中间：标签 */}
-                <p className="text-[10px] text-white/40 truncate mt-1">
-                  {t(product.tagZh, product.tagEn)}
-                </p>
+                <div className="mt-1 space-y-0.5">
+                  <p className="text-[10px] text-white/40 leading-tight">
+                    {t(product.tagZh, product.tagEn)}
+                  </p>
+                  {(product as any).tagZh2 && (
+                    <p className="text-[10px] text-white/40 leading-tight">
+                      {t((product as any).tagZh2, (product as any).tagEn2)}
+                    </p>
+                  )}
+                </div>
                 
                 {/* 底部：交易明细 + 按钮 */}
                 <div className="flex items-center justify-between mt-auto pt-2">
