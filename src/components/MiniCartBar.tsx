@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, Minus, Plus, CreditCard, X, Trash2, Coffee } from "lucide-react";
+import { ShoppingCart, Minus, Plus, X, Trash2, Coffee, Coins } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -12,11 +12,18 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
   const { t } = useLanguage();
   const { items, totalItems, removeItem, updateQuantity, clearCart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   if (totalItems === 0) return null;
 
   const handleCheckout = () => {
-    toast.success(t("正在跳转结算...", "Redirecting to checkout..."), {
+    setIsPaymentOpen(true);
+  };
+
+  const handlePayment = (method: string) => {
+    setIsPaymentOpen(false);
+    setIsCartOpen(false);
+    toast.success(t(`正在跳转${method}...`, `Redirecting to ${method}...`), {
       duration: 1500,
     });
   };
@@ -26,7 +33,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
       {/* 底部 Mini Cart Bar */}
       <div className="fixed bottom-16 left-4 right-4 z-40 animate-in slide-in-from-bottom duration-300">
         <div className="bg-gradient-to-r from-[#1a1a1d] via-[#1f1f23] to-[#1a1a1d] rounded-2xl border border-white/10 shadow-2xl px-4 py-3 flex items-center justify-between backdrop-blur-xl">
-          {/* 左侧：购物车图标 + 数量 */}
           <button
             onClick={() => setIsCartOpen(true)}
             className="flex items-center gap-3 group"
@@ -38,21 +44,61 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
               </span>
             </div>
             <div className="text-left">
-              <p className="text-[10px] text-white/40">{t("预估到手", "Est. Total")}</p>
+              <p className="text-[10px] text-white/40">{t("预估到手", "Est.")}</p>
               <p className="text-white font-bold text-lg">¥{estimatedTotal}</p>
             </div>
           </button>
 
-          {/* 右侧：去结算按钮 */}
           <button
             onClick={handleCheckout}
             className="h-11 px-6 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center gap-2 text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            {t("去结算", "Checkout")}
-            <CreditCard className="w-4 h-4" />
+            {t("去结算", "Pay")}
           </button>
         </div>
       </div>
+
+      {/* 支付方式选择 - 极简 */}
+      {isPaymentOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            onClick={() => setIsPaymentOpen(false)}
+          />
+          <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-200">
+            <div className="bg-[#1a1a1d] rounded-t-2xl border-t border-white/10 px-5 py-4">
+              <div className="flex justify-center mb-3">
+                <div className="w-8 h-1 bg-white/20 rounded-full" />
+              </div>
+              <p className="text-white/50 text-xs text-center mb-4">{t("选择支付方式", "Payment")}</p>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handlePayment("微信支付")}
+                  className="flex-1 h-12 rounded-xl bg-[#07C160]/10 border border-[#07C160]/30 flex items-center justify-center gap-2 text-[#07C160] font-medium text-sm hover:bg-[#07C160]/20 transition-colors active:scale-95"
+                >
+                  <span className="text-lg">💬</span>
+                  {t("微信", "WeChat")}
+                </button>
+                <button
+                  onClick={() => handlePayment("支付宝")}
+                  className="flex-1 h-12 rounded-xl bg-[#1677FF]/10 border border-[#1677FF]/30 flex items-center justify-center gap-2 text-[#1677FF] font-medium text-sm hover:bg-[#1677FF]/20 transition-colors active:scale-95"
+                >
+                  <span className="text-lg">🔵</span>
+                  {t("支付宝", "Alipay")}
+                </button>
+                <button
+                  onClick={() => handlePayment("KAKA豆")}
+                  className="flex-1 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center gap-2 text-primary font-medium text-sm hover:bg-primary/20 transition-colors active:scale-95"
+                >
+                  <Coins className="w-4 h-4" />
+                  {t("KAKA豆", "Beans")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* 购物车抽屉 */}
       {isCartOpen && (
@@ -98,9 +144,7 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                     key={item.id}
                     className="flex items-center justify-between bg-white/5 rounded-xl p-3"
                   >
-                    {/* 商品信息 - 使用图标替代照片 */}
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {/* 咖啡图标 */}
                       <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/20 flex items-center justify-center flex-shrink-0 border border-primary/20">
                         <Coffee className="w-5 h-5 text-primary" />
                       </div>
@@ -114,7 +158,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                       </div>
                     </div>
 
-                    {/* 数量控制 */}
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => {
@@ -144,7 +187,7 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
 
               <div className="px-5 py-4 border-t border-white/5 bg-black/30">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-white/50 text-sm">{t("预估到手", "Est. Total")}</span>
+                  <span className="text-white/50 text-sm">{t("预估到手", "Est.")}</span>
                   <span className="text-white font-bold text-xl">¥{estimatedTotal}</span>
                 </div>
                 <button
@@ -154,8 +197,7 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                   }}
                   className="w-full h-12 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center gap-2 text-white font-semibold shadow-purple transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  {t("去结算", "Checkout")}
-                  <CreditCard className="w-5 h-5" />
+                  {t("去结算", "Pay")}
                 </button>
               </div>
             </div>
