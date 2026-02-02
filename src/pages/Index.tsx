@@ -1,4 +1,4 @@
-import { Plus, Flame, Ticket, Sparkles } from "lucide-react";
+import { Plus, Flame, Sparkles, Truck } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { FloatingCart } from "@/components/FloatingCart";
@@ -6,6 +6,7 @@ import { BrandStandardsGrid } from "@/components/BrandStandardsGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
+import { CouponFlags, Coupon } from "@/components/CouponFlags";
 
 // Import coffee images
 import coffeeLatte from "@/assets/coffee-latte.jpg";
@@ -13,16 +14,15 @@ import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
 
-// 优惠券类型
-interface Coupon {
-  id: string;
-  type: "universal" | "americano" | "latte" | "cappuccino";
-  value: number;
-  applicableProducts?: string[];
-}
+// 用户可用优惠券（测试数据）
+const userCoupons: Coupon[] = [
+  { id: "c1", type: "universal", value: 3 },
+  { id: "c2", type: "latte", value: 2, applicableProducts: ["hot-latte", "iced-latte"] },
+  { id: "c3", type: "americano", value: 2, applicableProducts: ["hot-americano", "iced-americano"] },
+];
 
-// 用户可用优惠券（测试：空数组模拟无优惠券场景）
-const userCoupons: Coupon[] = [];
+// 预估配送费（基于LBS）
+const ESTIMATED_DELIVERY_FEE = 5;
 
 // 产品数据 - 6款精选咖啡 (bilingual)
 const products = [
@@ -84,20 +84,22 @@ const products = [
   },
 ];
 
-// 精准计算产品的最佳优惠价（选择最高折扣的优惠券）
-const getBestDiscount = (productId: string, originalPrice: number): number | null => {
+// 计算产品的最佳优惠（自动选择最高面额的可用券）
+const getBestCouponDiscount = (productId: string): number => {
   const applicableCoupons = userCoupons.filter((coupon) => {
     if (coupon.type === "universal") return true;
     if (coupon.applicableProducts?.includes(productId)) return true;
     return false;
   });
 
-  if (applicableCoupons.length === 0) return null;
+  if (applicableCoupons.length === 0) return 0;
+  return Math.max(...applicableCoupons.map(c => c.value));
+};
 
-  const maxDiscount = Math.max(...applicableCoupons.map(c => c.value));
-  const finalPrice = Math.max(0, originalPrice - maxDiscount);
-  
-  return finalPrice < originalPrice ? finalPrice : null;
+// 计算预估到手价：原价 - 券 + 配送费
+const getEstimatedPrice = (originalPrice: number, productId: string): number => {
+  const couponDiscount = getBestCouponDiscount(productId);
+  return Math.max(0, originalPrice - couponDiscount) + ESTIMATED_DELIVERY_FEE;
 };
 
 const Index = () => {
@@ -140,14 +142,9 @@ const Index = () => {
               {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
             </p>
           </div>
-          {/* Coupon Badge */}
+          {/* Coupon Flags - 旗帜式优惠券展示 */}
           {totalCoupons > 0 && (
-            <div className="flex items-center gap-1.5 bg-primary/15 border border-primary/20 px-3.5 py-2 rounded-full backdrop-blur-sm">
-              <Ticket className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs text-primary font-medium">
-                {totalCoupons}{t("张券", " Coupons")}
-              </span>
-            </div>
+            <CouponFlags coupons={userCoupons} />
           )}
         </div>
       </section>
@@ -168,8 +165,9 @@ const Index = () => {
         
         <div className="grid grid-cols-2 gap-2.5 stagger-fade-in">
           {products.map((product) => {
-            const discountedPrice = getBestDiscount(product.id, product.price);
-            const hasDiscount = discountedPrice !== null;
+            const couponDiscount = getBestCouponDiscount(product.id);
+            const hasCoupon = couponDiscount > 0;
+            const estimatedPrice = getEstimatedPrice(product.price, product.id);
             const quantityInCart = getQuantityInCart(product.id);
             
             return (
@@ -193,23 +191,25 @@ const Index = () => {
                     </p>
                   </div>
                   
-                  {/* Price */}
-                  <div className="flex flex-col items-end">
-                    <div className="flex items-baseline gap-1.5">
-                      {hasDiscount && (
-                        <span className="text-white/30 text-xs line-through">
-                          ¥{product.price}
-                        </span>
-                      )}
+                  {/* Price - 原价(灰色划线靠左) + 预估到手价(紫色靠右) */}
+                  <div className="flex items-baseline gap-2">
+                    {/* 原价 - 灰色划线 */}
+                    <span className="text-white/30 text-xs line-through">
+                      ¥{product.price}
+                    </span>
+                    {/* 预估到手价 = 原价 - 券 + 配送 */}
+                    <div className="flex flex-col items-end">
                       <span className="text-primary font-bold text-base">
-                        ¥{hasDiscount ? discountedPrice : product.price}
+                        ¥{estimatedPrice}
                       </span>
+                      <div className="flex items-center gap-0.5 text-[9px] text-white/40">
+                        {hasCoupon && (
+                          <span className="text-primary/70">-{couponDiscount}</span>
+                        )}
+                        <Truck className="w-2.5 h-2.5 opacity-60" />
+                        <span>+{ESTIMATED_DELIVERY_FEE}</span>
+                      </div>
                     </div>
-                    {hasDiscount && (
-                      <span className="text-primary/60 text-[10px] mt-0.5 font-light">
-                        {t("券后到手", "After coupon")}
-                      </span>
-                    )}
                   </div>
                 </div>
                 
