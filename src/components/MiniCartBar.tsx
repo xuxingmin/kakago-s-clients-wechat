@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, Minus, Plus, CreditCard, X, Trash2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, CreditCard, X, Trash2, Coffee } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -13,7 +13,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
   const { items, totalItems, removeItem, updateQuantity, clearCart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // 购物车为空时不显示
   if (totalItems === 0) return null;
 
   const handleCheckout = () => {
@@ -34,7 +33,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
           >
             <div className="relative w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
               <ShoppingCart className="w-5 h-5 text-primary" />
-              {/* 数量角标 */}
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-purple">
                 {totalItems}
               </span>
@@ -59,21 +57,17 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
       {/* 购物车抽屉 */}
       {isCartOpen && (
         <>
-          {/* 遮罩 */}
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
             onClick={() => setIsCartOpen(false)}
           />
 
-          {/* 购物车面板 */}
           <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
             <div className="bg-gradient-to-t from-black via-[#1a1a1d] to-[#1a1a1d]/95 rounded-t-3xl border-t border-white/10 shadow-2xl max-h-[70vh] overflow-hidden">
-              {/* 顶部把手 */}
               <div className="flex justify-center pt-3 pb-2">
                 <div className="w-10 h-1 bg-white/20 rounded-full" />
               </div>
 
-              {/* 头部 */}
               <div className="flex items-center justify-between px-5 pb-4 border-b border-white/5">
                 <h3 className="text-white font-semibold text-base">
                   {t("购物车", "Cart")} ({totalItems})
@@ -98,20 +92,18 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                 </div>
               </div>
 
-              {/* 商品列表 */}
               <div className="px-5 py-4 space-y-3 overflow-y-auto max-h-[40vh]">
                 {items.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between bg-white/5 rounded-xl p-3"
                   >
-                    {/* 商品信息 */}
+                    {/* 商品信息 - 使用图标替代照片 */}
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <img
-                        src={item.image}
-                        alt={item.nameZh}
-                        className="w-12 h-12 rounded-lg object-cover"
-                      />
+                      {/* 咖啡图标 */}
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/20 flex items-center justify-center flex-shrink-0 border border-primary/20">
+                        <Coffee className="w-5 h-5 text-primary" />
+                      </div>
                       <div className="min-w-0">
                         <h4 className="text-white font-medium text-sm truncate">
                           {t(item.nameZh, item.nameEn)}
@@ -150,7 +142,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                 ))}
               </div>
 
-              {/* 底部结算 */}
               <div className="px-5 py-4 border-t border-white/5 bg-black/30">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-white/50 text-sm">{t("预估到手", "Est. Total")}</span>
