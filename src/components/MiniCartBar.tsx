@@ -59,27 +59,33 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
 
   return (
     <>
-      {/* Mini Cart Bar */}
+      {/* Cyberpunk Mini Cart Bar */}
       <div className="fixed bottom-16 left-4 right-4 z-40 animate-in slide-in-from-bottom duration-300">
-        <div className="bg-gradient-to-r from-[#1a1a1d] via-[#1f1f23] to-[#1a1a1d] rounded-2xl border border-white/10 shadow-2xl px-4 py-3 flex items-center justify-between backdrop-blur-xl">
-          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-              <ShoppingCart className="w-4 h-4 text-primary" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+        <div className="relative bg-gradient-to-r from-black/95 via-[#0d0d10] to-black/95 rounded-2xl border border-primary/30 shadow-[0_0_30px_rgba(127,0,255,0.2)] px-4 py-3 flex items-center justify-between backdrop-blur-xl overflow-hidden">
+          {/* 赛博光晕背景 */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-violet-600/5 pointer-events-none" />
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          
+          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-3 group relative z-10">
+            <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/10 flex items-center justify-center group-hover:from-primary/30 group-hover:to-violet-600/20 transition-all duration-300 border border-primary/20">
+              <ShoppingCart className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gradient-to-br from-primary to-violet-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(127,0,255,0.5)] animate-pulse">
                 {totalItems}
               </span>
             </div>
             <div className="text-left">
-              <p className="text-[9px] text-white/40">{t("预估", "Est.")}</p>
-              <p className="text-white font-bold text-base">¥{estimatedTotal}</p>
+              <p className="text-[9px] text-primary/60 font-medium tracking-wider uppercase">{t("预估到手", "Est. Total")}</p>
+              <p className="text-white font-bold text-lg tracking-tight">¥{estimatedTotal}</p>
             </div>
           </button>
 
           <button
             onClick={handleCheckout}
-            className="h-10 px-5 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center gap-2 text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="relative h-11 px-6 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center gap-2 text-white font-bold text-sm shadow-[0_0_25px_rgba(127,0,255,0.4)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_35px_rgba(127,0,255,0.6)] active:scale-[0.97] overflow-hidden z-10"
           >
-            {t("结算", "Pay")}
+            <span className="absolute inset-0 bg-gradient-to-t from-white/0 to-white/20 pointer-events-none" />
+            <span className="relative">{t("立即结算", "Checkout")}</span>
+            <ChevronRight className="w-4 h-4 relative" />
           </button>
         </div>
       </div>
