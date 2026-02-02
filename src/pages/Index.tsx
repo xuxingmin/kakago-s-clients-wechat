@@ -154,18 +154,18 @@ const Index = () => {
   const totalCoupons = userCoupons.length;
 
   return (
-    <div className="min-h-screen pb-16 page-enter bg-background">
+    <div className="min-h-screen pb-16 page-enter">
       <Header />
 
-      {/* Brand Header - Enhanced hierarchy */}
-      <section className="px-4 pt-4 pb-3 hero-reveal">
+      {/* Brand Header */}
+      <section className="px-4 pt-3 pb-2 hero-reveal">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-black text-foreground tracking-tight">KAKAGO</h1>
-              <Sparkles className="w-4 h-4 text-primary float-subtle" />
+              <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+              <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
             </div>
-            <p className="text-xs text-muted-foreground mt-1 font-medium tracking-wide">
+            <p className="text-sm text-white/45 mt-0.5 font-light">
               {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
             </p>
           </div>
@@ -173,26 +173,20 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="fog-divider mx-4 opacity-50" />
+      <div className="fog-divider mx-4" />
 
-      {/* Section Header - Clear hierarchy */}
-      <section className="px-4 pt-3 pb-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-1 h-4 bg-primary rounded-full" />
-            <h2 className="text-sm font-semibold text-foreground tracking-tight">
-              {t("灵感燃料库", "Inspiration Fuel")}
-            </h2>
-          </div>
-          <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
+      {/* Product Grid */}
+      <section className="px-4 py-2">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-sm font-medium text-white/60">
+            {t("灵感燃料库", "Inspiration Fuel")}
+          </h2>
+          <span className="text-[11px] text-white/30">
             {t("硬核咖啡因", "Hardcore Caffeine")}
           </span>
         </div>
-      </section>
-
-      {/* Product Grid - Enhanced cards */}
-      <section className="px-4 py-1">
-        <div className="grid grid-cols-2 gap-2 stagger-fade-in">
+        
+        <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
           {products.map((product) => {
             const couponDiscount = getBestCouponDiscount(product.id);
             const hasCoupon = couponDiscount > 0;
@@ -202,78 +196,86 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group relative flex flex-col justify-between min-h-[88px] p-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300"
+                className="group card-md text-left relative flex flex-col justify-between min-h-[82px] py-2"
               >
-                {/* Primary Row: Name + Price - Strong hierarchy */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                    <h3 className="font-bold text-foreground text-sm leading-tight tracking-tight">
+                {/* 顶部：商品名 + 价格 - 基线对齐 */}
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-sm leading-tight">
                       {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
-                      <Flame className="w-3 h-3 text-primary flex-shrink-0" />
+                      <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex flex-col items-end flex-shrink-0">
-                    <span className="text-primary font-black text-lg leading-none">
-                      ¥{estimatedPrice}
-                    </span>
-                    <span className="text-muted-foreground text-[10px] line-through opacity-60">
+                  <div className="flex items-baseline gap-1.5 flex-shrink-0">
+                    <span className="text-white/30 text-[11px] line-through">
                       ¥{product.price}
+                    </span>
+                    <span className="text-primary font-bold text-lg">
+                      ¥{estimatedPrice}
                     </span>
                   </div>
                 </div>
                 
-                {/* Secondary Row: Tags - Clear visual distinction */}
-                <div className="mt-2 space-y-1">
-                  {/* Negative tags */}
-                  <div className="flex items-center gap-2 text-[10px]">
-                    {(product as any).tagLine1Negative?.map((tag: string, idx: number) => (
-                      <span key={idx} className="flex items-center gap-0.5 text-destructive/70 font-medium">
-                        <span className="text-[8px]">✕</span>{tag}
-                      </span>
-                    ))}
+                {/* 中间：标签 */}
+                <div className="mt-1 space-y-0.5">
+                  {/* 第一行标签 - 支持正面/负面两种样式 */}
+                  <div className="flex items-center gap-1.5 text-[10px]">
+                    {(product as any).tagLine1Negative ? (
+                      // 冰美式的负面标签（红色叉号）
+                      (product as any).tagLine1Negative.map((tag: string, idx: number) => (
+                        <span key={idx} className="flex items-center gap-0.5 text-red-400/70">
+                          <span className="text-[8px]">✕</span>{tag}
+                        </span>
+                      ))
+                    ) : (product as any).tagLine1 ? (
+                      // 其他产品的正面标签
+                      (product as any).tagLine1.map((tag: string, idx: number) => (
+                        <span key={idx} className="text-white/35">{tag}</span>
+                      ))
+                    ) : null}
                   </div>
-                  {/* Positive tag */}
+                  {/* 第二行标签 - 带对号 */}
                   {(product as any).tagLine2 && (
-                    <div className="flex items-center gap-1 text-[10px]">
-                      <span className="text-muted-foreground font-medium">
-                        {t((product as any).tagLine2, (product as any).tagLine2En)}
-                      </span>
-                      <Check className="w-3 h-3 text-emerald-500" />
+                    <div className="flex items-center gap-1 text-[10px] text-white/50">
+                      <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
+                      <Check className="w-3 h-3 text-green-500/70" />
                     </div>
                   )}
                 </div>
                 
-                {/* Tertiary Row: Details + Action - Subdued support info */}
-                <div className="flex items-center justify-between mt-auto pt-2 gap-2">
-                  <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground/70 flex-1 min-w-0">
-                    <span className="flex items-center gap-0.5">
-                      <CupSoda className="w-2.5 h-2.5" />360ml
+                {/* 底部：交易明细 + 按钮 */}
+                <div className="flex items-center justify-between mt-auto pt-1 gap-2">
+                  {/* 交易明细 - 超紧凑单行布局 */}
+                  <div className="flex items-center gap-1 text-[9px] text-white/50 flex-1 min-w-0">
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
+                      <CupSoda className="w-2 h-2" />360ml
                     </span>
                     {hasCoupon && (
-                      <span className="flex items-center gap-0.5 text-primary/80">
-                        <Ticket className="w-2.5 h-2.5" />-¥{couponDiscount}
+                      <span className="flex items-center gap-0.5 whitespace-nowrap">
+                        <Ticket className="w-2 h-2" />-￥{couponDiscount}
                       </span>
                     )}
-                    <span className="flex items-center gap-0.5">
-                      <Truck className="w-2.5 h-2.5" />+¥{ESTIMATED_DELIVERY_FEE}
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
+                      <Truck className="w-2 h-2" />+￥{ESTIMATED_DELIVERY_FEE}
                     </span>
                   </div>
                   
-                  {/* CTA Button - Highest interaction priority */}
+                  {/* 加号按钮 - 正圆固定尺寸 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 shrink-0 ${
+                    style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
+                    className={`rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 shrink-0 ${
                       quantityInCart > 0 
-                        ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
-                        : "bg-secondary/80 text-muted-foreground hover:bg-primary hover:text-primary-foreground border border-border/50"
+                        ? "bg-gradient-to-br from-primary to-violet-600 text-white shadow-purple" 
+                        : "bg-white/8 text-white/60 hover:bg-primary hover:text-white border border-white/10"
                     }`}
                   >
                     {quantityInCart > 0 ? (
                       <span className="text-xs font-bold">{quantityInCart}</span>
                     ) : (
-                      <Plus className="w-4 h-4" strokeWidth={2} />
+                      <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
                     )}
                   </button>
                 </div>
@@ -283,24 +285,34 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Certification Footer - Subtle trust signals */}
-      <section className="px-4 pt-4 pb-16">
-        <div className="flex items-center justify-between gap-2 py-2 border-t border-border/30">
-          {/* Trust badges */}
-          <div className="flex items-center gap-3 text-muted-foreground/40">
-            <Coffee className="w-3.5 h-3.5" />
-            <Award className="w-3.5 h-3.5" />
-            <div className="flex items-center justify-center w-3.5 h-3.5 border border-muted-foreground/30 rounded text-[6px] font-bold">
-              4.0
+      {/* Certification Footer */}
+      <section className="px-4 pt-2 pb-16">
+        <div className="flex items-center justify-between gap-2">
+          {/* 左侧认证图标 */}
+          <div className="flex items-center gap-2 text-white/25">
+            <div className="flex items-center gap-0.5" title="La Marzocco">
+              <Coffee className="w-3 h-3" />
             </div>
-            <Leaf className="w-3.5 h-3.5" />
-            <span className="text-[9px]">🌱</span>
+            <div className="flex items-center gap-0.5" title="SCA Certified">
+              <Award className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-0.5" title="4.0 Milk">
+              <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">
+                4.0
+              </div>
+            </div>
+            <div className="flex items-center gap-0.5" title="Eco-Friendly">
+              <Leaf className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-0.5" title="Organic">
+              <span className="text-[8px]">🌱</span>
+            </div>
           </div>
           
-          {/* Service status */}
+          {/* 右侧服务状态 */}
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[9px] text-muted-foreground/50 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[10px] text-white/25">
               {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
             </span>
           </div>

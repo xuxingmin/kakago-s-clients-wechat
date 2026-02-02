@@ -16,98 +16,85 @@
 
     /* ─────────────────────────────────────────────────────────────
        🟣 PURPLE SPECTRUM - The Soul of KAKAGO
-       Primary: #8B5CF6 | Accent: #A855F7 | Auxiliary: #6B46C1
+       Energy, Premium, Action
        ───────────────────────────────────────────────────────────── */
-    --purple-50: 250 100% 98%;
-    --purple-100: 251 91% 95%;
-    --purple-200: 251 95% 90%;
-    --purple-300: 252 95% 82%;
-    --purple-400: 255 92% 76%;
-    --purple-500: 258 90% 66%;   /* ★ Primary #8B5CF6 */
-    --purple-600: 271 91% 65%;   /* ★ Accent #A855F7 */
-    --purple-700: 263 70% 52%;   /* ★ Auxiliary #6B46C1 */
-    --purple-800: 263 65% 42%;
-    --purple-900: 264 60% 28%;
+    --purple-50: 270 100% 98%;
+    --purple-100: 269 100% 95%;
+    --purple-200: 269 100% 90%;
+    --purple-300: 269 97% 82%;
+    --purple-400: 270 91% 72%;
+    --purple-500: 271 81% 56%;   /* ★ Primary Action */
+    --purple-600: 271 81% 46%;
+    --purple-700: 272 72% 38%;
+    --purple-800: 273 67% 31%;
+    --purple-900: 274 66% 20%;
 
     /* ─────────────────────────────────────────────────────────────
        🔘 FOG GREY SPECTRUM - Structure & Depth
        Cool neutrals with subtle purple undertones
        ───────────────────────────────────────────────────────────── */
-    --fog-50: 220 14% 96%;
-    --fog-100: 220 13% 91%;
-    --fog-200: 220 13% 84%;
-    --fog-300: 216 12% 65%;
-    --fog-400: 218 11% 46%;
-    --fog-500: 220 9% 34%;
-    --fog-600: 215 14% 26%;
-    --fog-700: 217 19% 17%;       /* ★ Card Background */
-    --fog-800: 215 28% 11%;
-    --fog-900: 221 39% 7%;
+    --fog-50: 240 5% 96%;
+    --fog-100: 240 6% 90%;
+    --fog-200: 240 5% 84%;
+    --fog-300: 240 5% 65%;
+    --fog-400: 240 4% 46%;
+    --fog-500: 240 5% 34%;
+    --fog-600: 240 4% 26%;
+    --fog-700: 240 5% 20%;       /* ★ Card Background */
+    --fog-800: 249 6% 14%;
+    --fog-900: 250 7% 10%;
 
     /* ─────────────────────────────────────────────────────────────
        ⚫ BLACK SPECTRUM - Foundation & Luxury
        Deep blacks with elegant purple undertones
        ───────────────────────────────────────────────────────────── */
-    --obsidian: 222 47% 5%;      /* ★ Primary Background */
-    --void: 224 71% 3%;          /* Deepest black */
-    --charcoal: 220 25% 8%;
-    --onyx: 222 35% 6%;
+    --obsidian: 270 25% 5%;      /* ★ Primary Background */
+    --void: 270 30% 3%;          /* Deepest black */
+    --charcoal: 270 15% 8%;
+    --onyx: 270 20% 6%;
 
     /* ─────────────────────────────────────────────────────────────
-       ⚪ TEXT HIERARCHY - Optimized Contrast
-       Primary: #F8FAFC | Secondary: #9CA3AF | Auxiliary: #64748B
+       ⚪ WHITE HIERARCHY - Clarity & Readability
+       Precise opacity scale for text and borders
        ───────────────────────────────────────────────────────────── */
-    --text-primary: 210 40% 98%;     /* #F8FAFC */
-    --text-secondary: 220 9% 65%;    /* #9CA3AF */
-    --text-auxiliary: 215 16% 47%;   /* #64748B */
-    
-    /* Legacy white opacity scale */
-    --white-100: 210 40% 98%;
-    --white-90: 210 20% 90%;
-    --white-70: 215 14% 70%;
-    --white-50: 218 11% 50%;
-    --white-30: 220 9% 30%;
-    --white-15: 222 10% 15%;
-    --white-08: 224 15% 8%;
-    --white-04: 226 20% 4%;
-
-    /* ─────────────────────────────────────────────────────────────
-       🎯 STATUS COLORS - Semantic Feedback
-       Success: #10B981 | Warning: #F59E0B | Error: #EF4444
-       ───────────────────────────────────────────────────────────── */
-    --status-success: 160 84% 39%;   /* #10B981 */
-    --status-warning: 38 92% 50%;    /* #F59E0B */
-    --status-error: 0 84% 60%;       /* #EF4444 */
+    --white-100: 0 0% 100%;
+    --white-90: 0 0% 90%;
+    --white-70: 0 0% 70%;
+    --white-50: 0 0% 50%;
+    --white-30: 0 0% 30%;
+    --white-15: 0 0% 15%;
+    --white-08: 0 0% 8%;
+    --white-04: 0 0% 4%;
 
     /* ─────────────────────────────────────────────────────────────
        SEMANTIC TOKENS - Design System Mapping
        ───────────────────────────────────────────────────────────── */
     --background: var(--obsidian);
-    --foreground: var(--text-primary);
+    --foreground: var(--white-100);
 
     --card: var(--fog-700);
-    --card-foreground: var(--text-primary);
+    --card-foreground: var(--white-100);
 
     --popover: var(--fog-800);
-    --popover-foreground: var(--text-primary);
+    --popover-foreground: var(--white-100);
 
     --primary: var(--purple-500);
-    --primary-foreground: var(--text-primary);
+    --primary-foreground: var(--white-100);
 
     --secondary: var(--fog-600);
-    --secondary-foreground: var(--text-primary);
+    --secondary-foreground: var(--white-100);
 
     --muted: var(--fog-700);
-    --muted-foreground: var(--text-secondary);
+    --muted-foreground: 0 0% 65%;
 
-    --accent: var(--purple-600);
-    --accent-foreground: var(--text-primary);
+    --accent: var(--purple-500);
+    --accent-foreground: var(--white-100);
 
-    --destructive: var(--status-error);
-    --destructive-foreground: var(--text-primary);
+    --destructive: 0 72% 51%;
+    --destructive-foreground: var(--white-100);
 
-    --border: 220 13% 91% / 0.08;
-    --input: 220 13% 91% / 0.10;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.10;
     --ring: var(--purple-500);
 
     --radius: 1rem;
@@ -115,32 +102,32 @@
     /* ─────────────────────────────────────────────────────────────
        ELEVATION SHADOWS - Depth & Dimension
        ───────────────────────────────────────────────────────────── */
-    --shadow-xs: 0 1px 2px hsla(222, 47%, 5%, 0.5);
-    --shadow-sm: 0 2px 8px -2px hsla(222, 47%, 5%, 0.6);
-    --shadow-md: 0 4px 16px -4px hsla(222, 47%, 5%, 0.65);
-    --shadow-lg: 0 8px 24px -6px hsla(222, 47%, 5%, 0.7);
-    --shadow-xl: 0 16px 48px -12px hsla(222, 47%, 5%, 0.8);
+    --shadow-xs: 0 1px 2px hsla(270, 25%, 5%, 0.5);
+    --shadow-sm: 0 2px 8px -2px hsla(270, 25%, 5%, 0.6);
+    --shadow-md: 0 4px 16px -4px hsla(270, 25%, 5%, 0.65);
+    --shadow-lg: 0 8px 24px -6px hsla(270, 25%, 5%, 0.7);
+    --shadow-xl: 0 16px 48px -12px hsla(270, 25%, 5%, 0.8);
     
-    /* Purple Glow Shadows - Based on Primary #8B5CF6 */
-    --shadow-purple-sm: 0 2px 12px -2px hsla(258, 90%, 66%, 0.25);
-    --shadow-purple: 0 4px 20px -4px hsla(258, 90%, 66%, 0.35);
-    --shadow-purple-lg: 0 8px 32px -8px hsla(258, 90%, 66%, 0.45);
-    --shadow-glow: 0 0 40px hsla(258, 90%, 66%, 0.25);
+    /* Purple Glow Shadows */
+    --shadow-purple-sm: 0 2px 12px -2px hsla(271, 81%, 56%, 0.25);
+    --shadow-purple: 0 4px 20px -4px hsla(271, 81%, 56%, 0.35);
+    --shadow-purple-lg: 0 8px 32px -8px hsla(271, 81%, 56%, 0.45);
+    --shadow-glow: 0 0 40px hsla(271, 81%, 56%, 0.25);
     
     /* Inset & Special */
-    --shadow-inner: inset 0 1px 0 hsla(210, 40%, 98%, 0.06);
-    --shadow-inner-strong: inset 0 2px 4px hsla(222, 47%, 5%, 0.4);
+    --shadow-inner: inset 0 1px 0 hsla(0, 0%, 100%, 0.06);
+    --shadow-inner-strong: inset 0 2px 4px hsla(270, 25%, 5%, 0.4);
 
     /* ─────────────────────────────────────────────────────────────
        SIDEBAR TOKENS
        ───────────────────────────────────────────────────────────── */
     --sidebar-background: var(--obsidian);
-    --sidebar-foreground: var(--text-primary);
+    --sidebar-foreground: var(--white-100);
     --sidebar-primary: var(--purple-500);
-    --sidebar-primary-foreground: var(--text-primary);
+    --sidebar-primary-foreground: var(--white-100);
     --sidebar-accent: var(--fog-600);
-    --sidebar-accent-foreground: var(--text-primary);
-    --sidebar-border: 220 13% 91% / 0.08;
+    --sidebar-accent-foreground: var(--white-100);
+    --sidebar-border: 0 0% 100% / 0.08;
     --sidebar-ring: var(--purple-500);
   }
 }
@@ -192,7 +179,7 @@
   
   .btn-gold {
     @apply text-white font-semibold rounded-2xl relative overflow-hidden;
-    background: linear-gradient(135deg, hsl(258 90% 66%), hsl(263 70% 52%));
+    background: linear-gradient(135deg, hsl(263 70% 55%), hsl(263 70% 45%));
     box-shadow: 
       var(--shadow-purple),
       var(--shadow-inner);
@@ -205,7 +192,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, hsla(210, 40%, 98%, 0.15), transparent 60%);
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.15), transparent 60%);
     opacity: 1;
     transition: opacity 0.3s ease;
   }
@@ -213,7 +200,7 @@
   .btn-gold:hover {
     transform: translateY(-2px) scale(1.02);
     box-shadow: 
-      0 8px 32px -4px hsla(258, 90%, 66%, 0.5),
+      0 8px 32px -4px hsla(263, 70%, 50%, 0.5),
       var(--shadow-inner);
   }
   
@@ -228,10 +215,10 @@
 
   .card-premium {
     @apply rounded-2xl relative;
-    background: hsla(217, 19%, 17%, 0.65);
+    background: hsla(270, 15%, 12%, 0.65);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid hsla(210, 40%, 98%, 0.06);
+    border: 1px solid hsla(0, 0%, 100%, 0.06);
     box-shadow: 
       var(--shadow-card),
       var(--shadow-inner);
@@ -244,14 +231,14 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(135deg, hsla(210, 40%, 98%, 0.04), transparent 50%);
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.04), transparent 50%);
     pointer-events: none;
   }
 
   .card-premium:hover {
-    border-color: hsla(258, 90%, 66%, 0.15);
+    border-color: hsla(263, 70%, 50%, 0.15);
     box-shadow: 
-      0 8px 24px -6px hsla(258, 90%, 66%, 0.12),
+      0 8px 24px -6px hsla(263, 70%, 50%, 0.12),
       var(--shadow-card),
       var(--shadow-inner);
   }
@@ -263,7 +250,7 @@
 
   .card-interactive:hover {
     transform: translateY(-3px) scale(1.015);
-    border-color: hsla(258, 90%, 66%, 0.2);
+    border-color: hsla(263, 70%, 50%, 0.2);
   }
 
   .card-interactive:active {
@@ -304,11 +291,11 @@
   }
 
   .card-menu-item:hover {
-    background-color: hsla(210, 40%, 98%, 0.04);
+    background-color: hsla(0, 0%, 100%, 0.04);
   }
 
   .card-menu-item:active {
-    background-color: hsla(210, 40%, 98%, 0.08);
+    background-color: hsla(0, 0%, 100%, 0.08);
     transform: scale(0.99);
   }
 
@@ -317,14 +304,14 @@
      ======================================== */
 
   .glass {
-    background: hsla(217, 19%, 8%, 0.85);
+    background: hsla(270, 15%, 8%, 0.85);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid hsla(210, 40%, 98%, 0.06);
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.06);
   }
 
   .glass-light {
-    background: hsla(217, 19%, 15%, 0.6);
+    background: hsla(270, 15%, 15%, 0.6);
     backdrop-filter: blur(16px) saturate(150%);
     -webkit-backdrop-filter: blur(16px) saturate(150%);
   }
@@ -334,7 +321,7 @@
      ======================================== */
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(271 91% 65%), hsl(258 90% 66%), hsl(263 70% 52%));
+    background: linear-gradient(135deg, hsl(263 70% 70%), hsl(263 70% 50%), hsl(280 70% 60%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -343,9 +330,9 @@
   .text-shimmer {
     background: linear-gradient(
       90deg,
-      hsl(210 40% 98%) 0%,
-      hsl(258 90% 76%) 50%,
-      hsl(210 40% 98%) 100%
+      hsl(0 0% 100%) 0%,
+      hsl(263 70% 80%) 50%,
+      hsl(0 0% 100%) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -365,7 +352,7 @@
 
   .fog-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsla(210, 40%, 98%, 0.08), transparent);
+    background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.08), transparent);
   }
 
   /* ========================================
@@ -378,8 +365,8 @@
   }
 
   @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px hsla(258, 90%, 66%, 0.3); }
-    50% { box-shadow: 0 0 32px hsla(258, 90%, 66%, 0.45); }
+    0%, 100% { box-shadow: 0 0 20px hsla(263, 70%, 50%, 0.3); }
+    50% { box-shadow: 0 0 32px hsla(263, 70%, 50%, 0.45); }
   }
 
   /* Shimmer effect */
@@ -395,7 +382,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      hsla(258, 90%, 66%, 0.1) 50%,
+      hsla(263, 70%, 50%, 0.1) 50%,
       transparent 100%
     );
     animation: shimmer 2.5s ease-in-out infinite;
@@ -504,12 +491,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsla(210, 40%, 98%, 0.15);
+    background: hsla(0, 0%, 100%, 0.15);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsla(210, 40%, 98%, 0.25);
+    background: hsla(0, 0%, 100%, 0.25);
   }
 
   /* ========================================
@@ -548,7 +535,7 @@
     top: 0;
     left: 0;
     pointer-events: none;
-    background-image: radial-gradient(circle, hsla(258, 90%, 66%, 0.3) 10%, transparent 10.01%);
+    background-image: radial-gradient(circle, hsla(263, 70%, 50%, 0.3) 10%, transparent 10.01%);
     background-repeat: no-repeat;
     background-position: 50%;
     transform: scale(10, 10);
@@ -568,11 +555,11 @@
    ======================================== */
 
 ::selection {
-  background: hsla(258, 90%, 66%, 0.3);
-  color: hsl(210 40% 98%);
+  background: hsla(263, 70%, 50%, 0.3);
+  color: white;
 }
 
 ::-moz-selection {
-  background: hsla(258, 90%, 66%, 0.3);
-  color: hsl(210 40% 98%);
+  background: hsla(263, 70%, 50%, 0.3);
+  color: white;
 }
