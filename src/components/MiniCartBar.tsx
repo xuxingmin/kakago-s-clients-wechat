@@ -139,50 +139,64 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
               </div>
 
               <div className="px-5 py-4 space-y-3 overflow-y-auto max-h-[40vh]">
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between bg-white/5 rounded-xl p-3"
-                  >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/20 flex items-center justify-center flex-shrink-0 border border-primary/20">
-                        <Coffee className="w-5 h-5 text-primary" />
+                {items.map((item) => {
+                  // 获取英文名首字母缩写
+                  const initials = item.nameEn
+                    .split(" ")
+                    .map(word => word[0])
+                    .join("")
+                    .toUpperCase()
+                    .slice(0, 2);
+                  
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between bg-white/5 rounded-xl p-3"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        {/* 咖啡杯图标 + 首字母 */}
+                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/10 flex items-center justify-center flex-shrink-0 border border-primary/20 relative">
+                          <Coffee className="w-6 h-6 text-primary/40 absolute" />
+                          <span className="text-[10px] font-bold text-primary relative z-10 mt-0.5">
+                            {initials}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <h4 className="text-white font-medium text-sm truncate">
+                            {t(item.nameZh, item.nameEn)}
+                          </h4>
+                          <p className="text-primary text-sm font-semibold mt-0.5">
+                            ¥{item.price}
+                          </p>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <h4 className="text-white font-medium text-sm truncate">
-                          {t(item.nameZh, item.nameEn)}
-                        </h4>
-                        <p className="text-primary text-sm font-semibold mt-0.5">
-                          ¥{item.price}
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          if (item.quantity === 1) {
-                            removeItem(item.id);
-                          } else {
-                            updateQuantity(item.id, item.quantity - 1);
-                          }
-                        }}
-                        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all active:scale-95"
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="text-white font-semibold w-6 text-center">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-all active:scale-95"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            if (item.quantity === 1) {
+                              removeItem(item.id);
+                            } else {
+                              updateQuantity(item.id, item.quantity - 1);
+                            }
+                          }}
+                          className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all active:scale-95"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="text-white font-semibold w-6 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-all active:scale-95"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="px-5 py-4 border-t border-white/5 bg-black/30">
