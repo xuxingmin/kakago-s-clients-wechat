@@ -186,62 +186,70 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group card-md text-left relative flex flex-col justify-between min-h-[88px] py-2.5 px-3"
+                className="group card-md text-left relative flex flex-col justify-between min-h-[82px] py-2"
               >
-                {/* 顶部：商品名 + 价格 */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-1 min-w-0">
-                    <h3 className="font-bold text-white text-[15px] leading-tight">
+                {/* 顶部：商品名 + 价格 - 基线对齐 */}
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-sm leading-tight">
                       {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
-                      <Flame className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex flex-col items-end flex-shrink-0">
-                    <span className="text-[8px] text-primary leading-none mb-0.5">{t("预估到手", "Est.")}</span>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-white/35 text-[11px] line-through">¥{product.price}</span>
-                      <span className="text-primary font-bold text-lg leading-none">¥{estimatedPrice}</span>
-                    </div>
+                  <div className="flex items-baseline gap-1.5 flex-shrink-0">
+                    <span className="text-white/30 text-[11px] line-through">
+                      ¥{product.price}
+                    </span>
+                    <span className="text-primary font-bold text-lg">
+                      ¥{estimatedPrice}
+                    </span>
                   </div>
                 </div>
                 
                 {/* 中间：标签 */}
-                <div className="mt-1.5">
+                <div className="mt-1 space-y-0.5">
                   {(product as any).tagZh2 ? (
-                    <div className="flex items-center gap-1.5 text-[11px] text-white/50">
-                      <span>无烟蒂味</span>
-                      <span className="text-white/30">·</span>
-                      <span>非刷锅水</span>
-                      <span className="text-white/30">·</span>
-                      <span>{t((product as any).tagZh2, (product as any).tagEn2)}</span>
-                    </div>
+                    <>
+                      <div className="flex items-center gap-1.5 text-[10px] text-white/35">
+                        <span>无烟蒂味</span>
+                        <span>非刷锅水</span>
+                        <span>无纸杯味</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-[10px] text-white/50">
+                        <span>{t((product as any).tagZh2, (product as any).tagEn2)}</span>
+                        <Check className="w-3 h-3 text-green-500/70" />
+                      </div>
+                    </>
                   ) : (
-                    <p className="text-[11px] text-white/50">
+                    <p className="text-[10px] text-white/40 truncate">
                       {t(product.tagZh, product.tagEn)}
                     </p>
                   )}
                 </div>
                 
                 {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between mt-auto pt-1.5">
-                  <div className="flex items-center gap-1.5 text-[11px] text-white/50">
-                    <CupSoda className="w-3 h-3" />
-                    <span>360ml</span>
+                <div className="flex items-center justify-between mt-auto pt-1">
+                  {/* 交易明细 - 紧凑布局 */}
+                  <div className="flex items-center gap-1.5 text-[10px] text-white/60">
+                    <span className="flex items-center gap-0.5">
+                      <CupSoda className="w-2.5 h-2.5" />360ml
+                    </span>
                     {hasCoupon && (
-                      <>
-                        <Ticket className="w-3 h-3" />
-                        <span>-￥{couponDiscount}</span>
-                      </>
+                      <span className="flex items-center gap-0.5">
+                        <Ticket className="w-2.5 h-2.5" />-￥{couponDiscount}
+                      </span>
                     )}
-                    <Truck className="w-3 h-3" />
-                    <span>+￥{ESTIMATED_DELIVERY_FEE}</span>
+                    <span className="flex items-center gap-0.5">
+                      <Truck className="w-2.5 h-2.5" />+￥{ESTIMATED_DELIVERY_FEE}
+                    </span>
                   </div>
                   
+                  {/* 加号按钮 - 正圆 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    className={`w-8 h-8 min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 flex-shrink-0 ${
+                    className={`w-8 h-8 min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 flex-shrink-0 aspect-square ${
                       quantityInCart > 0 
                         ? "bg-gradient-to-br from-primary to-violet-600 text-white shadow-purple" 
                         : "bg-white/8 text-white/60 hover:bg-primary hover:text-white border border-white/10"
