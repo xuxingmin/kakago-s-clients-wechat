@@ -210,11 +210,11 @@ const Index = () => {
                 
                 {/* 中间：标签 */}
                 <div className="mt-1 space-y-0.5">
-                  <p className="text-[10px] text-white/40 leading-tight">
+                  <p className="text-[9px] text-white/40 leading-tight">
                     {t(product.tagZh, product.tagEn)}
                   </p>
                   {(product as any).tagZh2 && (
-                    <p className="text-[10px] text-white/40 leading-tight">
+                    <p className="text-[10px] text-white/50 leading-tight">
                       {t((product as any).tagZh2, (product as any).tagEn2)}
                     </p>
                   )}
