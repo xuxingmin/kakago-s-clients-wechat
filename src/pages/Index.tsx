@@ -54,9 +54,9 @@ const products = [
     nameEn: "Hot Latte",
     price: 15,
     image: coffeeLatte,
-    tagLine1: ["4.0高蛋白奶", "丝滑绑定", "零乳糖"],
-    tagLine2: "奶咖平衡，温润如玉",
-    tagLine2En: "Balanced latte, smooth as jade",
+    tagLine1Negative: ["粗糙奶泡", "焦苦杂味"],
+    tagLine2: "奶泡绵密，丝滑平衡",
+    tagLine2En: "Silky foam, perfectly balanced",
     tagType: "positive",
     isHot: true,
   },
@@ -66,9 +66,9 @@ const products = [
     nameEn: "Iced Latte",
     price: 15,
     image: coffeeLatte,
-    tagLine1: ["4.0高蛋白奶", "冰镇锁鲜", "零乳糖"],
-    tagLine2: "清凉顺滑，一口入夏",
-    tagLine2En: "Cool & smooth, summer in a cup",
+    tagLine1Negative: ["奶腻齁甜", "水乳分离"],
+    tagLine2: "坚果韵律，清晰透亮",
+    tagLine2En: "Nutty notes, crystal clear",
     tagType: "positive",
   },
   {
@@ -77,9 +77,9 @@ const products = [
     nameEn: "Cappuccino",
     price: 15,
     image: coffeeCappuccino,
-    tagLine1: ["绵密奶泡", "经典配比", "意式风味"],
-    tagLine2: "奶泡轻盈，层次分明",
-    tagLine2En: "Light foam, layered flavor",
+    tagLine1Negative: ["空气口感", "咖味寡淡"],
+    tagLine2: "结构蓬松，啡味穿透",
+    tagLine2En: "Fluffy structure, bold flavor",
     tagType: "positive",
   },
   {
@@ -88,9 +88,9 @@ const products = [
     nameEn: "Flat White",
     price: 15,
     image: coffeeFlatWhite,
-    tagLine1: ["Ristretto萃取", "澳洲配方", "薄奶泡"],
-    tagLine2: "浓郁醇厚，奶香交融",
-    tagLine2En: "Intense espresso, creamy blend",
+    tagLine1Negative: ["非拿铁", "厚奶盖", "单浓缩"],
+    tagLine2: "极薄奶沫，致密醇厚",
+    tagLine2En: "Thin microfoam, rich & dense",
     tagType: "positive",
   },
 ];
@@ -205,7 +205,7 @@ const Index = () => {
                       {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
-                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0" />
+                      <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
                     )}
                   </div>
                   <div className="flex items-baseline gap-1.5 flex-shrink-0">
