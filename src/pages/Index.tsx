@@ -1,4 +1,4 @@
-import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Check } from "lucide-react";
+import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -233,6 +233,9 @@ const Index = () => {
                 <div className="flex items-center justify-between mt-auto pt-1">
                   {/* 交易明细 - 白色可见 */}
                   <div className="flex items-center gap-2 text-[11px] text-white/60">
+                    <span className="flex items-center gap-0.5">
+                      <CupSoda className="w-3 h-3" />360ml
+                    </span>
                     {hasCoupon && (
                       <span className="flex items-center gap-0.5">
                         <Ticket className="w-3 h-3" />-{couponDiscount}
