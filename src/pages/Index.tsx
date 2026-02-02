@@ -220,27 +220,25 @@ const Index = () => {
                 
                 {/* 中间：标签 */}
                 <div className="mt-1 space-y-0.5">
-                  {/* 第一行标签 - 支持正面/负面两种样式 */}
+                  {/* 第一行标签 - 雾灰色 */}
                   <div className="flex items-center gap-1.5 text-[10px]">
                     {(product as any).tagLine1Negative ? (
-                      // 冰美式的负面标签（红色叉号）
                       (product as any).tagLine1Negative.map((tag: string, idx: number) => (
-                        <span key={idx} className="flex items-center gap-0.5 text-red-400/70">
+                        <span key={idx} className="flex items-center gap-0.5 text-muted-foreground/70">
                           <span className="text-[8px]">✕</span>{tag}
                         </span>
                       ))
                     ) : (product as any).tagLine1 ? (
-                      // 其他产品的正面标签
                       (product as any).tagLine1.map((tag: string, idx: number) => (
-                        <span key={idx} className="text-white/35">{tag}</span>
+                        <span key={idx} className="text-muted-foreground/70">{tag}</span>
                       ))
                     ) : null}
                   </div>
-                  {/* 第二行标签 - 带对号 */}
+                  {/* 第二行标签 - 紫色 */}
                   {(product as any).tagLine2 && (
-                    <div className="flex items-center gap-1 text-[10px] text-white/50">
+                    <div className="flex items-center gap-1 text-[10px] text-primary/80">
                       <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                      <Check className="w-3 h-3 text-green-500/70" />
+                      <Check className="w-3 h-3 text-primary/70" />
                     </div>
                   )}
                 </div>
