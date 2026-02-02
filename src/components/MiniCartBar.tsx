@@ -150,7 +150,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
               </div>
 
               {/* 底部：价格明细 + 结算按钮 */}
-              <div className="px-4 py-3 border-t border-white/5 bg-black/30">
+              <div className="px-4 py-3 pb-6 border-t border-white/5 bg-black/50 sticky bottom-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-[11px]">
                     <span className="text-white/40">¥{totalPrice}</span>
@@ -161,7 +161,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
                   </div>
                   <button
                     onClick={handleCheckout}
-                    className="h-9 px-5 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="h-10 px-6 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {t("结算", "Pay")}
                   </button>
