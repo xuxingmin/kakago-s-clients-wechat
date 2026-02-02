@@ -179,17 +179,17 @@ const Index = () => {
                 key={product.id}
                 className="group card-md text-left relative flex flex-col justify-between min-h-[90px]"
               >
-                {/* 顶部：商品名 + 价格对齐 */}
-                <div className="flex items-baseline justify-between">
-                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
-                    <h3 className="font-semibold text-white text-sm truncate">
+                {/* 顶部：商品名 + 价格 */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-start gap-1 flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-[13px] leading-tight">
                       {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
-                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0" />
+                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0 mt-0.5" />
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1.5 flex-shrink-0 ml-2">
+                  <div className="flex items-baseline gap-1.5 flex-shrink-0">
                     <span className="text-white/30 text-[11px] line-through">
                       ¥{product.price}
                     </span>
