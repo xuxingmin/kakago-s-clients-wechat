@@ -13,45 +13,6 @@ export default {
       },
     },
     extend: {
-      /* ─────────────────────────────────────────────────────────────
-         SPACING SYSTEM - 8px Base Unit
-         ───────────────────────────────────────────────────────────── */
-      spacing: {
-        'px': '1px',
-        '0.5': '2px',
-        '1': '4px',
-        '1.5': '6px',
-        '2': '8px',      /* Base unit */
-        '2.5': '10px',
-        '3': '12px',
-        '3.5': '14px',
-        '4': '16px',     /* Card gap */
-        '5': '20px',
-        '6': '24px',
-        '7': '28px',
-        '8': '32px',
-        '9': '36px',
-        '10': '40px',
-        '11': '44px',
-        '12': '48px',
-        '14': '56px',
-        '16': '64px',
-        '18': '72px',
-        '20': '80px',
-      },
-      /* ─────────────────────────────────────────────────────────────
-         TYPOGRAPHY SCALE - Optimized Hierarchy
-         ───────────────────────────────────────────────────────────── */
-      fontSize: {
-        'xs': ['12px', { lineHeight: '16px', letterSpacing: '0.01em' }],
-        'sm': ['14px', { lineHeight: '20px', letterSpacing: '0' }],
-        'base': ['16px', { lineHeight: '24px', letterSpacing: '-0.01em' }],
-        'lg': ['18px', { lineHeight: '28px', letterSpacing: '-0.01em' }],
-        'xl': ['20px', { lineHeight: '28px', letterSpacing: '-0.02em' }],
-        '2xl': ['24px', { lineHeight: '32px', letterSpacing: '-0.02em' }],
-        '3xl': ['30px', { lineHeight: '36px', letterSpacing: '-0.02em' }],
-        '4xl': ['36px', { lineHeight: '40px', letterSpacing: '-0.02em' }],
-      },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
       },
@@ -160,20 +121,6 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-      },
-      /* ─────────────────────────────────────────────────────────────
-         12-COLUMN GRID SYSTEM
-         ───────────────────────────────────────────────────────────── */
-      gridTemplateColumns: {
-        '12': 'repeat(12, minmax(0, 1fr))',
-        'products': 'repeat(2, minmax(0, 1fr))',
-      },
-      gap: {
-        'card': '16px',
-        'element-sm': '8px',
-        'element-md': '12px',
-        'element-lg': '16px',
-        'section': '24px',
       },
       borderRadius: {
         lg: "var(--radius)",
