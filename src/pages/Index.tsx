@@ -196,11 +196,11 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group card-md text-left relative flex flex-col justify-between min-h-[88px] py-2.5 px-3"
+                className="group card-md text-left relative flex flex-col justify-between min-h-[100px] py-2.5 px-3"
               >
-                {/* 顶部：商品名 + 价格 - 基线对齐 */}
-                <div className="flex items-baseline justify-between gap-2">
-                  <div className="flex items-baseline gap-1.5 flex-1 min-w-0">
+                {/* 第一行：商品名 + 价格区 */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-1.5 flex-1 min-w-0">
                     <h3 className="font-semibold text-foreground text-sm leading-tight">
                       {t(product.nameZh, product.nameEn)}
                     </h3>
@@ -208,60 +208,59 @@ const Index = () => {
                       <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1.5 flex-shrink-0">
-                    <span className="text-muted-foreground/50 text-[11px] line-through">
+                  <div className="flex flex-col items-end flex-shrink-0">
+                    <span className="text-muted-foreground/40 text-[10px] line-through">
                       ¥{product.price}
                     </span>
-                    <span className="text-primary font-bold text-lg">
+                    <span className="text-primary font-bold text-xl leading-tight">
                       ¥{estimatedPrice}
                     </span>
                   </div>
                 </div>
                 
-                {/* 中间：标签 */}
-                <div className="mt-1.5 space-y-1">
-                  {/* 第一行标签 - 负面标签统一样式 */}
-                  <div className="flex items-center gap-2 text-[10px]">
-                    {(product as any).tagLine1Negative ? (
-                      (product as any).tagLine1Negative.map((tag: string, idx: number) => (
-                        <span key={idx} className="flex items-center gap-0.5 text-white/40">
-                          <span className="text-destructive/70 text-[9px] font-medium">✕</span>
-                          <span className="text-white/35">{tag}</span>
-                        </span>
-                      ))
-                    ) : (product as any).tagLine1 ? (
-                      (product as any).tagLine1.map((tag: string, idx: number) => (
-                        <span key={idx} className="text-white/35">{tag}</span>
-                      ))
-                    ) : null}
-                  </div>
-                  {/* 第二行标签 - 正面标签 */}
-                  {(product as any).tagLine2 && (
-                    <div className="flex items-center gap-1 text-[10px]">
-                      <Check className="w-3 h-3 text-primary/70" />
-                      <span className="text-white/50">{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                    </div>
+                {/* 第二行：完整价格公式 */}
+                <div className="flex items-center gap-1 text-[9px] mt-1">
+                  <span className="text-muted-foreground/40">原价¥{product.price}</span>
+                  <span className="text-muted-foreground/30">-</span>
+                  {hasCoupon && (
+                    <>
+                      <span className="flex items-center gap-0.5 text-primary/80">
+                        <Ticket className="w-2.5 h-2.5" />¥{couponDiscount}
+                      </span>
+                      <span className="text-muted-foreground/30">+</span>
+                    </>
                   )}
+                  <span className="flex items-center gap-0.5 text-muted-foreground/40">
+                    <Truck className="w-2.5 h-2.5" />¥{ESTIMATED_DELIVERY_FEE}
+                  </span>
+                  <span className="text-muted-foreground/30">=</span>
+                  <span className="text-muted-foreground/50">{t("到手价", "Final")}</span>
                 </div>
                 
-                {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between mt-auto pt-1.5 gap-2">
-                  {/* 交易明细 - 超紧凑单行布局 */}
-                  <div className="flex items-center gap-1 text-[8px] text-muted-foreground/50 flex-1 min-w-0">
-                    <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <CupSoda className="w-2 h-2" />360ml
+                {/* 第三行：负面标签 */}
+                <div className="flex items-center gap-2 text-[10px] mt-1.5">
+                  {(product as any).tagLine1Negative?.map((tag: string, idx: number) => (
+                    <span key={idx} className="flex items-center gap-0.5">
+                      <span className="text-destructive/70 text-[9px] font-medium">✕</span>
+                      <span className="text-muted-foreground/40">{tag}</span>
                     </span>
-                    {hasCoupon && (
-                      <span className="flex items-center gap-0.5 whitespace-nowrap text-primary/50">
-                        <Ticket className="w-2 h-2" />-￥{couponDiscount}
-                      </span>
-                    )}
-                    <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <Truck className="w-2 h-2" />+￥{ESTIMATED_DELIVERY_FEE}
-                    </span>
+                  ))}
+                </div>
+                
+                {/* 第四行：正面标签 */}
+                {(product as any).tagLine2 && (
+                  <div className="flex items-center gap-1 text-[10px] mt-0.5">
+                    <Check className="w-3 h-3 text-primary/70" />
+                    <span className="text-muted-foreground/50">{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
                   </div>
+                )}
+                
+                {/* 第五行：容量 + 加号按钮 */}
+                <div className="flex items-center justify-between mt-auto pt-1">
+                  <span className="flex items-center gap-0.5 text-[9px] text-muted-foreground/40">
+                    <CupSoda className="w-2.5 h-2.5" />360ml
+                  </span>
                   
-                  {/* 加号按钮 - 正圆固定尺寸 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
                     style={{ width: '32px', height: '32px', minWidth: '32px', minHeight: '32px' }}
