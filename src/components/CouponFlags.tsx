@@ -1,4 +1,3 @@
-import { Ticket } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface Coupon {
@@ -12,27 +11,23 @@ interface CouponFlagsProps {
   coupons: Coupon[];
 }
 
-// 旗帜配色方案
-const flagColors: Record<string, { bg: string; border: string; text: string }> = {
+// 旗帜配色方案 - 更鲜艳的渐变
+const flagColors: Record<string, { bg: string; accent: string }> = {
   universal: {
-    bg: "bg-gradient-to-b from-amber-400/90 to-amber-500/80",
-    border: "border-amber-300/50",
-    text: "text-amber-900",
+    bg: "from-amber-400 via-amber-500 to-orange-500",
+    accent: "bg-amber-300/50",
   },
   americano: {
-    bg: "bg-gradient-to-b from-slate-400/90 to-slate-500/80",
-    border: "border-slate-300/50",
-    text: "text-slate-900",
+    bg: "from-slate-400 via-slate-500 to-slate-600",
+    accent: "bg-slate-300/50",
   },
   latte: {
-    bg: "bg-gradient-to-b from-primary/90 to-purple-600/80",
-    border: "border-primary/50",
-    text: "text-white",
+    bg: "from-primary via-purple-500 to-violet-600",
+    accent: "bg-purple-300/50",
   },
   cappuccino: {
-    bg: "bg-gradient-to-b from-orange-400/90 to-orange-500/80",
-    border: "border-orange-300/50",
-    text: "text-orange-900",
+    bg: "from-orange-400 via-orange-500 to-red-500",
+    accent: "bg-orange-300/50",
   },
 };
 
@@ -42,38 +37,64 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
   if (coupons.length === 0) return null;
 
   return (
-    <div className="flex items-end gap-1">
-      {coupons.slice(0, 4).map((coupon, index) => {
-        const colors = flagColors[coupon.type] || flagColors.universal;
-        // 旗帜高度递减，营造层叠感
-        const heights = ["h-10", "h-9", "h-8", "h-7"];
-        const zIndexes = ["z-40", "z-30", "z-20", "z-10"];
-        
-        return (
-          <div
-            key={coupon.id}
-            className={`relative ${heights[index]} w-6 ${colors.bg} ${colors.border} border rounded-t-sm shadow-sm transition-transform hover:scale-105 hover:-translate-y-0.5 ${zIndexes[index]}`}
-            style={{ 
-              marginLeft: index > 0 ? "-4px" : "0",
-              clipPath: "polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)"
-            }}
-          >
-            {/* 旗帜内容 */}
-            <div className={`flex flex-col items-center justify-center h-full pt-0.5 ${colors.text}`}>
-              <span className="text-[8px] font-bold leading-none">¥{coupon.value}</span>
-              <Ticket className="w-2.5 h-2.5 mt-0.5 opacity-80" />
+    <div className="flex items-center">
+      {/* 旗帜组 - 向右飘扬的冲锋感 */}
+      <div className="flex items-end" style={{ transform: "perspective(200px) rotateY(-5deg)" }}>
+        {coupons.slice(0, 4).map((coupon, index) => {
+          const colors = flagColors[coupon.type] || flagColors.universal;
+          // 旗帜高度递增，营造向右冲锋的感觉
+          const heights = ["h-7", "h-8", "h-9", "h-10"];
+          const delays = ["0ms", "50ms", "100ms", "150ms"];
+          
+          return (
+            <div
+              key={coupon.id}
+              className="relative flex"
+              style={{ 
+                marginLeft: index > 0 ? "-2px" : "0",
+                animationDelay: delays[index],
+              }}
+            >
+              {/* 旗杆 */}
+              <div className="w-0.5 bg-gradient-to-b from-white/60 to-white/20 rounded-full" 
+                   style={{ height: index === 0 ? "28px" : index === 1 ? "32px" : index === 2 ? "36px" : "40px" }} />
+              
+              {/* 旗帜本体 - 向右飘扬 */}
+              <div
+                className={`relative ${heights[index]} w-8 bg-gradient-to-r ${colors.bg} rounded-r-sm shadow-lg overflow-hidden`}
+                style={{ 
+                  clipPath: "polygon(0 0, 85% 5%, 100% 15%, 95% 50%, 100% 85%, 85% 95%, 0 100%)",
+                  transform: `skewX(-3deg) translateX(${index * 0.5}px)`,
+                }}
+              >
+                {/* 旗帜内容 */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-white font-bold text-[10px] drop-shadow-sm" style={{ transform: "skewX(3deg)" }}>
+                    ¥{coupon.value}
+                  </span>
+                </div>
+                
+                {/* 飘扬的波纹效果 */}
+                <div className={`absolute top-0 right-0 w-2 h-full ${colors.accent} opacity-60`}
+                     style={{ clipPath: "polygon(0 10%, 100% 0, 100% 100%, 0 90%)" }} />
+                
+                {/* 顶部高光 */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-white/30" />
+              </div>
             </div>
-            
-            {/* 顶部装饰线 */}
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-white/30 rounded-t-sm" />
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
       
-      {/* 券数量标签 */}
-      <span className="text-[10px] text-white/40 ml-1.5 font-light">
-        {coupons.length}{t("券", " coupons")}
-      </span>
+      {/* GO! 标识 */}
+      <div className="ml-2 flex flex-col items-start">
+        <span className="text-[10px] font-bold text-primary tracking-wider animate-pulse">
+          GO!
+        </span>
+        <span className="text-[8px] text-white/40">
+          {coupons.length}{t("券可用", " available")}
+        </span>
+      </div>
     </div>
   );
 };

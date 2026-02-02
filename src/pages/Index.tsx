@@ -1,4 +1,4 @@
-import { Plus, Flame, Sparkles, Truck } from "lucide-react";
+import { Plus, Flame, Sparkles, Truck, Ticket } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { FloatingCart } from "@/components/FloatingCart";
@@ -192,24 +192,35 @@ const Index = () => {
                   </div>
                   
                   {/* Price - 原价(灰色划线靠左) + 预估到手价(紫色靠右) */}
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-end gap-3">
                     {/* 原价 - 灰色划线 */}
-                    <span className="text-white/30 text-xs line-through">
-                      ¥{product.price}
-                    </span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-[9px] text-white/30 mb-0.5">原价</span>
+                      <span className="text-white/35 text-xs line-through">
+                        ¥{product.price}
+                      </span>
+                    </div>
                     {/* 预估到手价 = 原价 - 券 + 配送 */}
-                    <div className="flex flex-col items-end">
+                    <div className="flex flex-col items-center">
+                      <span className="text-[9px] text-primary/60 mb-0.5">预估到手</span>
                       <span className="text-primary font-bold text-base">
                         ¥{estimatedPrice}
                       </span>
-                      <div className="flex items-center gap-0.5 text-[9px] text-white/40">
-                        {hasCoupon && (
-                          <span className="text-primary/70">-{couponDiscount}</span>
-                        )}
-                        <Truck className="w-2.5 h-2.5 opacity-60" />
-                        <span>+{ESTIMATED_DELIVERY_FEE}</span>
-                      </div>
                     </div>
+                  </div>
+                </div>
+                
+                {/* 价格明细 - 券减免 + 配送费 */}
+                <div className="flex items-center justify-end gap-1.5 mt-1.5 text-[9px] text-white/40">
+                  {hasCoupon && (
+                    <div className="flex items-center gap-0.5">
+                      <Ticket className="w-2.5 h-2.5 text-primary/70" />
+                      <span className="text-primary/70">-{couponDiscount}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-0.5">
+                    <Truck className="w-2.5 h-2.5 opacity-60" />
+                    <span>+{ESTIMATED_DELIVERY_FEE}元</span>
                   </div>
                 </div>
                 
