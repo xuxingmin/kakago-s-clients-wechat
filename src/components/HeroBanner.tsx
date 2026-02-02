@@ -19,10 +19,10 @@ export const HeroBanner = () => {
           KAKAGO
         </h1>
         <p className="text-sm text-white/80 mt-1 tracking-wide">
-          可负担的精品咖啡
+          不贵精品，即刻上瘾！
         </p>
         <p className="text-xs text-white/60 mt-0.5 tracking-widest">
-          发现城市中的精品咖啡馆
+          霸都精品店，全听你调遣
         </p>
       </div>
     </section>

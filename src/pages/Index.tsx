@@ -31,8 +31,8 @@ const products = [
     nameEn: "Hot Americano",
     price: 12,
     image: coffeeAmericano,
-    tagZh: "单一产地精品豆",
-    tagEn: "Single Origin Beans",
+    tagZh: "无烟蒂味·非刷锅水·油脂完整",
+    tagEn: "No burnt taste · Rich crema",
     isHot: true,
   },
   {
@@ -153,9 +153,9 @@ const Index = () => {
               <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
               <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
             </div>
-            <p className="text-sm text-white/45 mt-1 font-light">
-              {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
-            </p>
+          <p className="text-sm text-white/45 mt-1 font-light">
+            {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
+          </p>
           </div>
           {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
         </div>
@@ -167,10 +167,10 @@ const Index = () => {
       <section className="px-4 py-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-medium text-white/60">
-            {t("每天都要喝", "Daily Must-Have")}
+            {t("灵感燃料库", "Inspiration Fuel")}
           </h2>
           <span className="text-[11px] text-white/30">
-            {t("专业咖啡师出品", "Pro Baristas")}
+            {t("硬核咖啡因", "Hardcore Caffeine")}
           </span>
         </div>
         
@@ -272,10 +272,10 @@ const Index = () => {
           </div>
           
           {/* 右侧服务状态 */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
             <span className="text-[10px] text-white/25">
-              {t("KAKA认证精品咖啡馆提供服务", "KAKA Cafés Serving")}
+              {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
             </span>
           </div>
         </div>
