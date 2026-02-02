@@ -123,13 +123,20 @@ const Index = () => {
     return item?.quantity || 0;
   };
 
+  const getCartSubtotal = () => {
+    return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  };
+
+  const getCartCouponDiscount = () => {
+    if (items.length === 0) return 0;
+    return userCoupons.length > 0 ? Math.max(...userCoupons.map(c => c.value)) : 0;
+  };
+
   const getCartEstimatedTotal = () => {
     if (items.length === 0) return 0;
-    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const maxDiscount = userCoupons.length > 0 
-      ? Math.max(...userCoupons.map(c => c.value)) 
-      : 0;
-    return Math.max(0, subtotal - maxDiscount) + ESTIMATED_DELIVERY_FEE;
+    const subtotal = getCartSubtotal();
+    const discount = getCartCouponDiscount();
+    return Math.max(0, subtotal - discount) + ESTIMATED_DELIVERY_FEE;
   };
 
   const totalCoupons = userCoupons.length;
@@ -274,7 +281,11 @@ const Index = () => {
         </div>
       </section>
 
-      <MiniCartBar estimatedTotal={getCartEstimatedTotal()} />
+      <MiniCartBar 
+        estimatedTotal={getCartEstimatedTotal()} 
+        couponDiscount={getCartCouponDiscount()}
+        deliveryFee={ESTIMATED_DELIVERY_FEE}
+      />
       <BottomNav />
     </div>
   );
