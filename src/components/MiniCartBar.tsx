@@ -6,6 +6,8 @@ import { toast } from "sonner";
 
 interface MiniCartBarProps {
   estimatedTotal: number;
+  couponDiscount?: number;
+  deliveryFee?: number;
 }
 
 // 模拟默认地址
@@ -15,9 +17,9 @@ const defaultAddress = {
   address: "朝阳区建国路88号SOHO现代城A座",
 };
 
-export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
+export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 2 }: MiniCartBarProps) => {
   const { t } = useLanguage();
-  const { items, totalItems, removeItem, updateQuantity, clearCart } = useCart();
+  const { items, totalItems, totalPrice, removeItem, updateQuantity, clearCart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
@@ -41,7 +43,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
     toast.success(t(`正在跳转${method}...`, `Redirecting to ${method}...`), {
       duration: 1500,
     });
-    // 这里可以跳转到订单确认页或直接创建订单
   };
 
   return (
@@ -74,7 +75,7 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
         </div>
       </div>
 
-      {/* 支付确认弹窗 - 含地址和支付方式 */}
+      {/* 支付确认弹窗 */}
       {isPaymentOpen && (
         <>
           <div
@@ -130,7 +131,7 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
         </>
       )}
 
-      {/* 购物车抽屉 - 紧凑版 */}
+      {/* 购物车抽屉 */}
       {isCartOpen && (
         <>
           <div
@@ -168,8 +169,8 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                 </div>
               </div>
 
-              {/* 紧凑卡片列表 */}
-              <div className="px-4 py-2 space-y-1.5 overflow-y-auto max-h-[35vh]">
+              {/* 商品列表 */}
+              <div className="px-4 py-2 space-y-1.5 overflow-y-auto max-h-[30vh]">
                 {items.map((item) => {
                   const initials = item.nameEn
                     .split(" ")
@@ -184,7 +185,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                       className="flex items-center justify-between bg-white/5 rounded-lg px-2.5 py-2"
                     >
                       <div className="flex items-center gap-2 flex-1 min-w-0">
-                        {/* 紧凑图标 */}
                         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-violet-600/10 flex items-center justify-center flex-shrink-0 border border-primary/20 relative">
                           <Coffee className="w-4 h-4 text-primary/40 absolute" />
                           <span className="text-[8px] font-bold text-primary relative z-10">
@@ -201,7 +201,6 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                         </div>
                       </div>
 
-                      {/* 数量控制 */}
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => {
@@ -230,16 +229,22 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                 })}
               </div>
 
-              {/* 底部结算栏 */}
+              {/* 底部：价格明细 + 结算按钮 */}
               <div className="px-4 py-3 border-t border-white/5 bg-black/30">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-[10px] text-white/40">{t("预估到手", "Est.")}</p>
-                    <p className="text-white font-bold text-lg">¥{estimatedTotal}</p>
+                  {/* 左侧：价格计算公式 */}
+                  <div className="flex items-center gap-1 text-[11px]">
+                    <span className="text-white/40">¥{totalPrice}</span>
+                    <span className="text-green-400">-{couponDiscount}</span>
+                    <span className="text-white/40">+{deliveryFee}</span>
+                    <span className="text-white/30">=</span>
+                    <span className="text-white font-bold text-base">¥{estimatedTotal}</span>
                   </div>
+                  
+                  {/* 右侧：结算按钮 */}
                   <button
                     onClick={handleCheckout}
-                    className="h-10 px-6 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="h-9 px-5 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {t("结算", "Pay")}
                   </button>
