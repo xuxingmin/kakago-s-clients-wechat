@@ -31,10 +31,10 @@ const products = [
     nameEn: "Hot Americano",
     price: 12,
     image: coffeeAmericano,
-    tagLine1: ["无烟蒂味", "非刷锅水", "无纸杯味"],
+    tagLine1Negative: ["烟蒂味", "刷锅水", "纸杯味"], // 红色叉号
     tagLine2: "油脂完整，醇厚回甘",
     tagLine2En: "Rich crema, smooth finish",
-    tagType: "positive", // 绿色对号
+    tagType: "positive",
     isHot: true,
   },
   {
