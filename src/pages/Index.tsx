@@ -234,11 +234,11 @@ const Index = () => {
                       ))
                     ) : null}
                   </div>
-                  {/* 第二行标签 - 紫色 */}
+                  {/* 第二行标签 - 白色文字 */}
                   {(product as any).tagLine2 && (
-                    <div className="flex items-center gap-1 text-[10px] text-primary">
+                    <div className="flex items-center gap-1 text-[10px] text-white/80">
                       <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                      <Check className="w-3 h-3" />
+                      <Check className="w-3 h-3 text-primary" />
                     </div>
                   )}
                 </div>
@@ -260,20 +260,20 @@ const Index = () => {
                     </span>
                   </div>
                   
-                  {/* 加号按钮 - 正圆固定尺寸 */}
+                  {/* 加号按钮 - 紫色渐变圆形 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
-                    className={`rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 shrink-0 ${
+                    style={{ width: '32px', height: '32px', minWidth: '32px', minHeight: '32px' }}
+                    className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
                       quantityInCart > 0 
-                        ? "bg-gradient-to-br from-primary to-violet-600 text-white shadow-purple" 
-                        : "bg-white/8 text-white/60 hover:bg-primary hover:text-white border border-white/10"
+                        ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
+                        : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
                     }`}
                   >
                     {quantityInCart > 0 ? (
                       <span className="text-xs font-bold">{quantityInCart}</span>
                     ) : (
-                      <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      <Plus className="w-4 h-4" strokeWidth={2} />
                     )}
                   </button>
                 </div>
