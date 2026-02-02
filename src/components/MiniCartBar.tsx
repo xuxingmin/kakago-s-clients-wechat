@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ShoppingCart, Minus, Plus, X, Trash2, Coffee, Coins } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
@@ -13,6 +13,14 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
   const { items, totalItems, removeItem, updateQuantity, clearCart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+
+  // 当购物车被清空时，关闭所有弹窗
+  useEffect(() => {
+    if (totalItems === 0) {
+      setIsCartOpen(false);
+      setIsPaymentOpen(false);
+    }
+  }, [totalItems]);
 
   if (totalItems === 0) return null;
 
@@ -199,10 +207,7 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
                   <span className="text-white font-bold text-xl">¥{estimatedTotal}</span>
                 </div>
                 <button
-                  onClick={() => {
-                    setIsCartOpen(false);
-                    handleCheckout();
-                  }}
+                  onClick={handleCheckout}
                   className="w-full h-12 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center gap-2 text-white font-semibold shadow-purple transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
                   {t("去结算", "Pay")}
