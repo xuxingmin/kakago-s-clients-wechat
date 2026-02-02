@@ -1,4 +1,4 @@
-import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Milk } from "lucide-react";
+import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Check } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -210,12 +210,21 @@ const Index = () => {
                 
                 {/* 中间：标签 */}
                 <div className="mt-1 space-y-0.5">
-                  <p className="text-[9px] text-white/40 leading-tight">
-                    {t(product.tagZh, product.tagEn)}
-                  </p>
-                  {(product as any).tagZh2 && (
-                    <p className="text-[10px] text-white/50 leading-tight">
-                      {t((product as any).tagZh2, (product as any).tagEn2)}
+                  {(product as any).tagZh2 ? (
+                    <>
+                      <div className="flex items-center gap-1.5 text-[10px] text-white/35">
+                        <span>无烟蒂味</span>
+                        <span>非刷锅水</span>
+                        <span>无纸杯味</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-[10px] text-white/50">
+                        <span>{t((product as any).tagZh2, (product as any).tagEn2)}</span>
+                        <Check className="w-3 h-3 text-green-500/70" />
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-[10px] text-white/40 truncate">
+                      {t(product.tagZh, product.tagEn)}
                     </p>
                   )}
                 </div>
