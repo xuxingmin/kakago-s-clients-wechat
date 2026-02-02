@@ -230,35 +230,36 @@ const Index = () => {
                 </div>
                 
                 {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between mt-auto pt-1">
-                  {/* 交易明细 - 紧凑布局 */}
-                  <div className="flex items-center gap-1.5 text-[10px] text-white/60">
-                    <span className="flex items-center gap-0.5">
-                      <CupSoda className="w-2.5 h-2.5" />360ml
+                <div className="flex items-center justify-between mt-auto pt-1 gap-2">
+                  {/* 交易明细 - 超紧凑单行布局 */}
+                  <div className="flex items-center gap-1 text-[9px] text-white/50 flex-1 min-w-0">
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
+                      <CupSoda className="w-2 h-2" />360ml
                     </span>
                     {hasCoupon && (
-                      <span className="flex items-center gap-0.5">
-                        <Ticket className="w-2.5 h-2.5" />-￥{couponDiscount}
+                      <span className="flex items-center gap-0.5 whitespace-nowrap">
+                        <Ticket className="w-2 h-2" />-￥{couponDiscount}
                       </span>
                     )}
-                    <span className="flex items-center gap-0.5">
-                      <Truck className="w-2.5 h-2.5" />+￥{ESTIMATED_DELIVERY_FEE}
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
+                      <Truck className="w-2 h-2" />+￥{ESTIMATED_DELIVERY_FEE}
                     </span>
                   </div>
                   
-                  {/* 加号按钮 - 正圆 */}
+                  {/* 加号按钮 - 正圆固定尺寸 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    className={`w-8 h-8 min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 flex-shrink-0 aspect-square ${
+                    style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
+                    className={`rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 shrink-0 ${
                       quantityInCart > 0 
                         ? "bg-gradient-to-br from-primary to-violet-600 text-white shadow-purple" 
                         : "bg-white/8 text-white/60 hover:bg-primary hover:text-white border border-white/10"
                     }`}
                   >
                     {quantityInCart > 0 ? (
-                      <span className="text-sm font-bold">{quantityInCart}</span>
+                      <span className="text-xs font-bold">{quantityInCart}</span>
                     ) : (
-                      <Plus className="w-4 h-4" strokeWidth={1.5} />
+                      <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
                     )}
                   </button>
                 </div>
