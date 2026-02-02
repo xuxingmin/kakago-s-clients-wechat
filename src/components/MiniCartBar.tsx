@@ -58,41 +58,35 @@ export const MiniCartBar = ({ estimatedTotal }: MiniCartBarProps) => {
         </div>
       </div>
 
-      {/* 支付方式选择 - 极简 */}
+      {/* 支付方式选择 - 极简双选 */}
       {isPaymentOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]"
             onClick={() => setIsPaymentOpen(false)}
           />
-          <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-200">
-            <div className="bg-[#1a1a1d] rounded-t-2xl border-t border-white/10 px-5 py-4">
-              <div className="flex justify-center mb-3">
+          <div className="fixed bottom-0 left-0 right-0 z-[60] animate-in slide-in-from-bottom duration-200">
+            <div className="bg-[#1a1a1d] rounded-t-2xl border-t border-white/10 px-5 py-5">
+              <div className="flex justify-center mb-4">
                 <div className="w-8 h-1 bg-white/20 rounded-full" />
               </div>
-              <p className="text-white/50 text-xs text-center mb-4">{t("选择支付方式", "Payment")}</p>
               
               <div className="flex gap-3">
+                {/* KAKA豆 - 左边 */}
+                <button
+                  onClick={() => handlePayment("KAKA豆")}
+                  className="flex-1 h-14 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center gap-2 text-primary font-semibold text-sm hover:bg-primary/20 transition-colors active:scale-95"
+                >
+                  <Coins className="w-5 h-5" />
+                  {t("KAKA豆", "Beans")}
+                </button>
+                {/* 微信 - 右边 */}
                 <button
                   onClick={() => handlePayment("微信支付")}
-                  className="flex-1 h-12 rounded-xl bg-[#07C160]/10 border border-[#07C160]/30 flex items-center justify-center gap-2 text-[#07C160] font-medium text-sm hover:bg-[#07C160]/20 transition-colors active:scale-95"
+                  className="flex-1 h-14 rounded-xl bg-[#07C160]/10 border border-[#07C160]/30 flex items-center justify-center gap-2 text-[#07C160] font-semibold text-sm hover:bg-[#07C160]/20 transition-colors active:scale-95"
                 >
                   <span className="text-lg">💬</span>
                   {t("微信", "WeChat")}
-                </button>
-                <button
-                  onClick={() => handlePayment("支付宝")}
-                  className="flex-1 h-12 rounded-xl bg-[#1677FF]/10 border border-[#1677FF]/30 flex items-center justify-center gap-2 text-[#1677FF] font-medium text-sm hover:bg-[#1677FF]/20 transition-colors active:scale-95"
-                >
-                  <span className="text-lg">🔵</span>
-                  {t("支付宝", "Alipay")}
-                </button>
-                <button
-                  onClick={() => handlePayment("KAKA豆")}
-                  className="flex-1 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center gap-2 text-primary font-medium text-sm hover:bg-primary/20 transition-colors active:scale-95"
-                >
-                  <Coins className="w-4 h-4" />
-                  {t("KAKA豆", "Beans")}
                 </button>
               </div>
             </div>
