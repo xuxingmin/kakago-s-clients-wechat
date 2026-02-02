@@ -179,14 +179,14 @@ const Index = () => {
                 key={product.id}
                 className="group card-md text-left relative flex flex-col justify-between min-h-[90px]"
               >
-                {/* 顶部：商品名 + 价格 */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-start gap-1 flex-1 min-w-0">
+                {/* 顶部：商品名 + 价格 - 基线对齐 */}
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
                     <h3 className="font-semibold text-white text-sm leading-tight">
                       {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
-                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0 mt-0.5" />
+                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0" />
                     )}
                   </div>
                   <div className="flex items-baseline gap-1.5 flex-shrink-0">
@@ -218,7 +218,7 @@ const Index = () => {
                     </span>
                   </div>
                   
-                  {/* 加号按钮 - 圆形简约 */}
+                  {/* 加号按钮 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
                     className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 ${
