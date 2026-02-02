@@ -31,9 +31,9 @@ const products = [
     nameEn: "Hot Americano",
     price: 12,
     image: coffeeAmericano,
-    tagLine1Negative: ["烟蒂味", "刷锅水", "纸杯味"], // 红色叉号
-    tagLine2: "油脂完整，醇厚回甘",
-    tagLine2En: "Rich crema, smooth finish",
+    tagLine1Negative: ["烟蒂味", "刷锅水", "纸杯味"],
+    tagLine2: "油脂完整 醇厚回甘",
+    tagLine2En: "Rich crema smooth finish",
     tagType: "positive",
     isHot: true,
   },
@@ -43,10 +43,10 @@ const products = [
     nameEn: "Iced Americano",
     price: 12,
     image: coffeeAmericano,
-    tagLine1Negative: ["氧化宿味", "淡如寡水"], // 红色叉号
-    tagLine2: "酸质明亮，清脆鲜爽",
-    tagLine2En: "Bright acidity, crisp & fresh",
-    tagType: "positive", // 绿色对号
+    tagLine1Negative: ["氧化宿味", "淡如寡水"],
+    tagLine2: "酸质明亮 清脆鲜爽",
+    tagLine2En: "Bright acidity crisp fresh",
+    tagType: "positive",
   },
   {
     id: "hot-latte",
@@ -55,8 +55,8 @@ const products = [
     price: 15,
     image: coffeeLatte,
     tagLine1Negative: ["粗糙奶泡", "焦苦杂味"],
-    tagLine2: "奶泡绵密，丝滑平衡",
-    tagLine2En: "Silky foam, perfectly balanced",
+    tagLine2: "奶泡绵密 丝滑平衡",
+    tagLine2En: "Silky foam perfectly balanced",
     tagType: "positive",
     isHot: true,
   },
@@ -67,8 +67,8 @@ const products = [
     price: 15,
     image: coffeeLatte,
     tagLine1Negative: ["奶腻齁甜", "水乳分离"],
-    tagLine2: "坚果韵律，清晰透亮",
-    tagLine2En: "Nutty notes, crystal clear",
+    tagLine2: "坚果韵律 清晰透亮",
+    tagLine2En: "Nutty notes crystal clear",
     tagType: "positive",
   },
   {
@@ -78,8 +78,8 @@ const products = [
     price: 15,
     image: coffeeCappuccino,
     tagLine1Negative: ["空气口感", "咖味寡淡"],
-    tagLine2: "结构蓬松，啡味穿透",
-    tagLine2En: "Fluffy structure, bold flavor",
+    tagLine2: "结构蓬松 啡味穿透",
+    tagLine2En: "Fluffy structure bold flavor",
     tagType: "positive",
   },
   {
@@ -89,8 +89,8 @@ const products = [
     price: 15,
     image: coffeeFlatWhite,
     tagLine1Negative: ["非拿铁", "厚奶盖", "单浓缩"],
-    tagLine2: "极薄奶沫，致密醇厚",
-    tagLine2En: "Thin microfoam, rich & dense",
+    tagLine2: "极薄奶沫 致密醇厚",
+    tagLine2En: "Thin microfoam rich dense",
     tagType: "positive",
   },
 ];
@@ -245,19 +245,19 @@ const Index = () => {
                 </div>
                 
                 {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between mt-auto pt-1.5 gap-3">
+                <div className="flex items-center justify-between mt-auto pt-1.5 gap-2">
                   {/* 交易明细 - 超紧凑单行布局 */}
-                  <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground/60 flex-1 min-w-0">
+                  <div className="flex items-center gap-1 text-[8px] text-muted-foreground/50 flex-1 min-w-0">
                     <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <CupSoda className="w-2.5 h-2.5" />360ml
+                      <CupSoda className="w-2 h-2" />360ml
                     </span>
                     {hasCoupon && (
-                      <span className="flex items-center gap-0.5 whitespace-nowrap text-primary/60">
-                        <Ticket className="w-2.5 h-2.5" />-￥{couponDiscount}
+                      <span className="flex items-center gap-0.5 whitespace-nowrap text-primary/50">
+                        <Ticket className="w-2 h-2" />-￥{couponDiscount}
                       </span>
                     )}
                     <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <Truck className="w-2.5 h-2.5" />+￥{ESTIMATED_DELIVERY_FEE}
+                      <Truck className="w-2 h-2" />+￥{ESTIMATED_DELIVERY_FEE}
                     </span>
                   </div>
                   
