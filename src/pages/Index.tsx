@@ -31,10 +31,10 @@ const products = [
     nameEn: "Hot Americano",
     price: 12,
     image: coffeeAmericano,
-    tagZh: "无烟蒂味·非刷锅水·无纸杯味",
-    tagZh2: "油脂完整，醇厚回甘",
-    tagEn: "No burnt · No paper taste",
-    tagEn2: "Rich crema, smooth finish",
+    tagLine1: ["无烟蒂味", "非刷锅水", "无纸杯味"],
+    tagLine2: "油脂完整，醇厚回甘",
+    tagLine2En: "Rich crema, smooth finish",
+    tagType: "positive", // 绿色对号
     isHot: true,
   },
   {
@@ -43,8 +43,10 @@ const products = [
     nameEn: "Iced Americano",
     price: 12,
     image: coffeeAmericano,
-    tagZh: "清爽冰饮",
-    tagEn: "Refreshing & Cool",
+    tagLine1Negative: ["氧化宿味", "淡如寡水"], // 红色叉号
+    tagLine2: "酸质明亮，清脆鲜爽",
+    tagLine2En: "Bright acidity, crisp & fresh",
+    tagType: "positive", // 绿色对号
   },
   {
     id: "hot-latte",
@@ -52,8 +54,10 @@ const products = [
     nameEn: "Hot Latte",
     price: 15,
     image: coffeeLatte,
-    tagZh: "丝滑醇厚",
-    tagEn: "Silky & Rich",
+    tagLine1: ["4.0高蛋白奶", "丝滑绑定", "零乳糖"],
+    tagLine2: "奶咖平衡，温润如玉",
+    tagLine2En: "Balanced latte, smooth as jade",
+    tagType: "positive",
     isHot: true,
   },
   {
@@ -62,8 +66,10 @@ const products = [
     nameEn: "Iced Latte",
     price: 15,
     image: coffeeLatte,
-    tagZh: "4.0高蛋白牛奶",
-    tagEn: "4.0 High-Protein Milk",
+    tagLine1: ["4.0高蛋白奶", "冰镇锁鲜", "零乳糖"],
+    tagLine2: "清凉顺滑，一口入夏",
+    tagLine2En: "Cool & smooth, summer in a cup",
+    tagType: "positive",
   },
   {
     id: "cappuccino",
@@ -71,8 +77,10 @@ const products = [
     nameEn: "Cappuccino",
     price: 15,
     image: coffeeCappuccino,
-    tagZh: "绵密奶泡",
-    tagEn: "Creamy Foam",
+    tagLine1: ["绵密奶泡", "经典配比", "意式风味"],
+    tagLine2: "奶泡轻盈，层次分明",
+    tagLine2En: "Light foam, layered flavor",
+    tagType: "positive",
   },
   {
     id: "flat-white",
@@ -80,8 +88,10 @@ const products = [
     nameEn: "Flat White",
     price: 15,
     image: coffeeFlatWhite,
-    tagZh: "浓缩精萃",
-    tagEn: "Intense Espresso",
+    tagLine1: ["Ristretto萃取", "澳洲配方", "薄奶泡"],
+    tagLine2: "浓郁醇厚，奶香交融",
+    tagLine2En: "Intense espresso, creamy blend",
+    tagType: "positive",
   },
 ];
 
@@ -210,22 +220,28 @@ const Index = () => {
                 
                 {/* 中间：标签 */}
                 <div className="mt-1 space-y-0.5">
-                  {(product as any).tagZh2 ? (
-                    <>
-                      <div className="flex items-center gap-1.5 text-[10px] text-white/35">
-                        <span>无烟蒂味</span>
-                        <span>非刷锅水</span>
-                        <span>无纸杯味</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-[10px] text-white/50">
-                        <span>{t((product as any).tagZh2, (product as any).tagEn2)}</span>
-                        <Check className="w-3 h-3 text-green-500/70" />
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-[10px] text-white/40 truncate">
-                      {t(product.tagZh, product.tagEn)}
-                    </p>
+                  {/* 第一行标签 - 支持正面/负面两种样式 */}
+                  <div className="flex items-center gap-1.5 text-[10px]">
+                    {(product as any).tagLine1Negative ? (
+                      // 冰美式的负面标签（红色叉号）
+                      (product as any).tagLine1Negative.map((tag: string, idx: number) => (
+                        <span key={idx} className="flex items-center gap-0.5 text-red-400/70">
+                          <span className="text-[8px]">✕</span>{tag}
+                        </span>
+                      ))
+                    ) : (product as any).tagLine1 ? (
+                      // 其他产品的正面标签
+                      (product as any).tagLine1.map((tag: string, idx: number) => (
+                        <span key={idx} className="text-white/35">{tag}</span>
+                      ))
+                    ) : null}
+                  </div>
+                  {/* 第二行标签 - 带对号 */}
+                  {(product as any).tagLine2 && (
+                    <div className="flex items-center gap-1 text-[10px] text-white/50">
+                      <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
+                      <Check className="w-3 h-3 text-green-500/70" />
+                    </div>
                   )}
                 </div>
                 
