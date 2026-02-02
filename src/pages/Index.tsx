@@ -199,12 +199,15 @@ const Index = () => {
                     )}
                   </div>
                   <div className="flex items-baseline gap-1.5 flex-shrink-0">
-                    <span className="text-white/30 text-[11px] line-through">
+                    <span className="text-white/30 text-[10px] line-through">
                       ¥{product.price}
                     </span>
-                    <span className="text-primary font-bold text-lg">
-                      ¥{estimatedPrice}
-                    </span>
+                    <div className="flex flex-col items-end leading-none">
+                      <span className="text-primary/70 text-[8px]">预估到手</span>
+                      <span className="text-primary font-bold text-base">
+                        ¥{estimatedPrice}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 
