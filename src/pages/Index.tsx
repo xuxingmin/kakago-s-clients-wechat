@@ -177,62 +177,61 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group card-md text-left relative"
+                className="group card-md text-left relative flex flex-col justify-between min-h-[90px]"
               >
-                {/* 商品信息 */}
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1 min-w-0 pr-2">
-                    <div className="flex items-center gap-1">
-                      <h3 className="font-semibold text-white text-sm">
-                        {t(product.nameZh, product.nameEn)}
-                      </h3>
-                      {product.isHot && (
-                        <Flame className="w-3 h-3 text-orange-400" />
-                      )}
-                    </div>
-                    <p className="text-[10px] text-white/35 mt-0.5 truncate">
-                      {t(product.tagZh, product.tagEn)}
-                    </p>
+                {/* 顶部：商品名 + 价格对齐 */}
+                <div className="flex items-baseline justify-between">
+                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-sm truncate">
+                      {t(product.nameZh, product.nameEn)}
+                    </h3>
+                    {product.isHot && (
+                      <Flame className="w-3 h-3 text-orange-400 flex-shrink-0" />
+                    )}
                   </div>
-                  
-                  {/* 价格 */}
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-white/25 text-[11px] line-through">
+                  <div className="flex items-baseline gap-1.5 flex-shrink-0 ml-2">
+                    <span className="text-white/30 text-[11px] line-through">
                       ¥{product.price}
                     </span>
-                    <span className="text-primary font-bold text-base">
+                    <span className="text-primary font-bold text-lg">
                       ¥{estimatedPrice}
                     </span>
                   </div>
                 </div>
                 
-                {/* 底部 */}
-                <div className="flex items-center justify-between">
-                  {/* 计算明细 */}
-                  <div className="flex items-center gap-1.5 text-[9px] text-white/25">
+                {/* 中间：标签 */}
+                <p className="text-[10px] text-white/40 truncate mt-1">
+                  {t(product.tagZh, product.tagEn)}
+                </p>
+                
+                {/* 底部：交易明细 + 按钮 */}
+                <div className="flex items-center justify-between mt-auto pt-2">
+                  {/* 交易明细 - 白色可见 */}
+                  <div className="flex items-center gap-2 text-[11px] text-white/60">
                     {hasCoupon && (
                       <span className="flex items-center gap-0.5">
-                        <Ticket className="w-2.5 h-2.5" />-{couponDiscount}
+                        <Ticket className="w-3 h-3" />-{couponDiscount}
                       </span>
                     )}
                     <span className="flex items-center gap-0.5">
-                      <Truck className="w-2.5 h-2.5" />+{ESTIMATED_DELIVERY_FEE}
+                      <Truck className="w-3 h-3" />+{ESTIMATED_DELIVERY_FEE}
                     </span>
                   </div>
                   
-                  {/* 加号按钮 - 数量融入按钮 */}
+                  {/* 加号按钮 - 圆形简约 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    className={`min-w-[36px] h-8 rounded-full flex items-center justify-center gap-1 px-2 transition-all duration-200 active:scale-90 ${
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 ${
                       quantityInCart > 0 
-                        ? "bg-primary text-white shadow-purple" 
-                        : "bg-primary/15 text-primary hover:bg-primary hover:text-white"
+                        ? "bg-gradient-to-br from-primary to-violet-600 text-white shadow-purple" 
+                        : "bg-white/8 text-white/60 hover:bg-primary hover:text-white border border-white/10"
                     }`}
                   >
-                    {quantityInCart > 0 && (
-                      <span className="text-xs font-semibold">{quantityInCart}</span>
+                    {quantityInCart > 0 ? (
+                      <span className="text-sm font-bold">{quantityInCart}</span>
+                    ) : (
+                      <Plus className="w-5 h-5" strokeWidth={1.5} />
                     )}
-                    <Plus className="w-4 h-4" strokeWidth={2.5} />
                   </button>
                 </div>
               </div>
