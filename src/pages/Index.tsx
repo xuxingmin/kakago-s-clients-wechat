@@ -148,16 +148,16 @@ const Index = () => {
       <Header />
 
       {/* Brand Header */}
-      <section className="px-4 pt-5 pb-4 hero-reveal">
+      <section className="px-4 pt-3 pb-2 hero-reveal">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
               <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
             </div>
-          <p className="text-sm text-white/45 mt-1 font-light">
-            {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
-          </p>
+            <p className="text-sm text-white/45 mt-0.5 font-light">
+              {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
+            </p>
           </div>
           {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
         </div>
@@ -166,8 +166,8 @@ const Index = () => {
       <div className="fog-divider mx-4" />
 
       {/* Product Grid */}
-      <section className="px-4 py-4">
-        <div className="flex items-center justify-between mb-3">
+      <section className="px-4 py-2">
+        <div className="flex items-center justify-between mb-2">
           <h2 className="text-sm font-medium text-white/60">
             {t("灵感燃料库", "Inspiration Fuel")}
           </h2>
@@ -176,7 +176,7 @@ const Index = () => {
           </span>
         </div>
         
-        <div className="grid grid-cols-2 gap-2 stagger-fade-in">
+        <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
           {products.map((product) => {
             const couponDiscount = getBestCouponDiscount(product.id);
             const hasCoupon = couponDiscount > 0;
@@ -186,7 +186,7 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group card-md text-left relative flex flex-col justify-between min-h-[90px]"
+                className="group card-md text-left relative flex flex-col justify-between min-h-[82px] py-2"
               >
                 {/* 顶部：商品名 + 价格 - 基线对齐 */}
                 <div className="flex items-baseline justify-between gap-2">
@@ -230,7 +230,7 @@ const Index = () => {
                 </div>
                 
                 {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between mt-auto pt-2">
+                <div className="flex items-center justify-between mt-auto pt-1">
                   {/* 交易明细 - 白色可见 */}
                   <div className="flex items-center gap-2 text-[11px] text-white/60">
                     {hasCoupon && (
@@ -266,7 +266,7 @@ const Index = () => {
       </section>
 
       {/* Certification Footer */}
-      <section className="px-4 pt-3 pb-20">
+      <section className="px-4 pt-2 pb-16">
         <div className="flex items-center justify-between gap-2">
           {/* 左侧认证图标 */}
           <div className="flex items-center gap-2 text-white/25">
