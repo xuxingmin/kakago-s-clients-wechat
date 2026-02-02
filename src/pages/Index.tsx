@@ -21,7 +21,7 @@ const userCoupons: Coupon[] = [
 ];
 
 // 预估配送费（基于LBS）
-const ESTIMATED_DELIVERY_FEE = 5;
+const ESTIMATED_DELIVERY_FEE = 2;
 
 // 产品数据 - 6款精选咖啡 (bilingual)
 const products = [
@@ -182,7 +182,7 @@ const Index = () => {
                 {/* 顶部：商品名 + 价格 */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-1 flex-1 min-w-0">
-                    <h3 className="font-semibold text-white text-[13px] leading-tight">
+                    <h3 className="font-semibold text-white text-sm leading-tight">
                       {t(product.nameZh, product.nameEn)}
                     </h3>
                     {product.isHot && (
