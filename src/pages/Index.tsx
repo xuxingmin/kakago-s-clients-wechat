@@ -1,4 +1,4 @@
-import { Plus, Flame, Sparkles, Truck, Ticket } from "lucide-react";
+import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Milk } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -240,11 +240,38 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <section className="px-4 pt-2 pb-20">
-        <p className="text-center text-[10px] text-white/20">
-          {t("☕ KAKA认证精品咖啡馆", "☕ KAKA Certified Cafés")}
-        </p>
+      {/* Certification Footer */}
+      <section className="px-4 pt-3 pb-20">
+        <div className="flex items-center justify-between gap-2">
+          {/* 左侧认证图标 */}
+          <div className="flex items-center gap-2 text-white/25">
+            <div className="flex items-center gap-0.5" title="La Marzocco">
+              <Coffee className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-0.5" title="SCA Certified">
+              <Award className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-0.5" title="4.0 Milk">
+              <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">
+                4.0
+              </div>
+            </div>
+            <div className="flex items-center gap-0.5" title="Eco-Friendly">
+              <Leaf className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-0.5" title="Organic">
+              <span className="text-[8px]">🌱</span>
+            </div>
+          </div>
+          
+          {/* 右侧服务状态 */}
+          <div className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[10px] text-white/25">
+              {t("KAKA认证精品咖啡馆提供服务", "KAKA Cafés Serving")}
+            </span>
+          </div>
+        </div>
       </section>
 
       <MiniCartBar estimatedTotal={getCartEstimatedTotal()} />
