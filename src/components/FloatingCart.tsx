@@ -26,7 +26,7 @@ const AlipayIcon = () => (
 );
 
 const BeansIcon = () => (
-  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary/80 to-violet-600 flex items-center justify-center">
     <span className="text-[10px] font-bold text-white">K</span>
   </div>
 );
