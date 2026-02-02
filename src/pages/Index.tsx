@@ -236,9 +236,9 @@ const Index = () => {
                   </div>
                   {/* 第二行标签 - 紫色 */}
                   {(product as any).tagLine2 && (
-                    <div className="flex items-center gap-1 text-[10px] text-primary/80">
+                    <div className="flex items-center gap-1 text-[10px] text-primary">
                       <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                      <Check className="w-3 h-3 text-primary/70" />
+                      <Check className="w-3 h-3" />
                     </div>
                   )}
                 </div>
