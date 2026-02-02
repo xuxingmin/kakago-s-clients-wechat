@@ -1,7 +1,6 @@
 import { Plus, Flame, Sparkles, Truck, Ticket } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
-import { BrandStandardsGrid } from "@/components/BrandStandardsGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { CouponFlags, Coupon } from "@/components/CouponFlags";
@@ -84,19 +83,18 @@ const products = [
   },
 ];
 
-// 计算产品的最佳优惠（自动选择最高面额的可用券）
+// 计算产品的最佳优惠
 const getBestCouponDiscount = (productId: string): number => {
   const applicableCoupons = userCoupons.filter((coupon) => {
     if (coupon.type === "universal") return true;
     if (coupon.applicableProducts?.includes(productId)) return true;
     return false;
   });
-
   if (applicableCoupons.length === 0) return 0;
   return Math.max(...applicableCoupons.map(c => c.value));
 };
 
-// 计算预估到手价：原价 - 券 + 配送费
+// 计算预估到手价
 const getEstimatedPrice = (originalPrice: number, productId: string): number => {
   const couponDiscount = getBestCouponDiscount(productId);
   return Math.max(0, originalPrice - couponDiscount) + ESTIMATED_DELIVERY_FEE;
@@ -106,7 +104,6 @@ const Index = () => {
   const { t } = useLanguage();
   const { items, addItem } = useCart();
 
-  // 点击加号直接添加商品
   const handleAddToCart = (product: typeof products[0], e: React.MouseEvent) => {
     e.stopPropagation();
     addItem({
@@ -117,7 +114,7 @@ const Index = () => {
       image: product.image,
     });
     toast.success(t(`+1 ${product.nameZh}`, `+1 ${product.nameEn}`), {
-      duration: 1000,
+      duration: 800,
     });
   };
 
@@ -126,62 +123,51 @@ const Index = () => {
     return item?.quantity || 0;
   };
 
-  // 计算购物车预估总价
   const getCartEstimatedTotal = () => {
     if (items.length === 0) return 0;
-    
-    // 所有商品原价总和
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    
-    // 取最大可用券（简化逻辑：用通用券）
     const maxDiscount = userCoupons.length > 0 
       ? Math.max(...userCoupons.map(c => c.value)) 
       : 0;
-    
-    // 预估到手 = 原价 - 券 + 配送费
     return Math.max(0, subtotal - maxDiscount) + ESTIMATED_DELIVERY_FEE;
   };
 
   const totalCoupons = userCoupons.length;
 
   return (
-    <div className="min-h-screen pb-20 page-enter">
+    <div className="min-h-screen pb-16 page-enter">
       <Header />
 
-      {/* Minimal Brand Header - Hero Reveal */}
-      <section className="px-4 pt-6 pb-5 hero-reveal">
+      {/* Brand Header */}
+      <section className="px-4 pt-5 pb-4 hero-reveal">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
               <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
             </div>
-            <p className="text-sm text-white/45 mt-1 font-light tracking-wide">
+            <p className="text-sm text-white/45 mt-1 font-light">
               {t("可负担的精品咖啡", "Affordable Specialty Coffee")}
             </p>
           </div>
-          {/* Coupon Flags - 旗帜式优惠券展示 */}
-          {totalCoupons > 0 && (
-            <CouponFlags coupons={userCoupons} />
-          )}
+          {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
         </div>
       </section>
 
-      {/* Elegant Divider */}
       <div className="fog-divider mx-4" />
 
-      {/* Product List with Stagger Animation */}
-      <section className="px-4 py-5">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-medium text-white/60 tracking-wide">
+      {/* Product Grid */}
+      <section className="px-4 py-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-medium text-white/60">
             {t("每天都要喝", "Daily Must-Have")}
           </h2>
-          <span className="text-xs text-white/35 font-light">
-            {t("专业咖啡师出品", "Crafted by Pro Baristas")}
+          <span className="text-[11px] text-white/30">
+            {t("专业咖啡师出品", "Pro Baristas")}
           </span>
         </div>
         
-        <div className="grid grid-cols-2 gap-2.5 stagger-fade-in">
+        <div className="grid grid-cols-2 gap-2 stagger-fade-in">
           {products.map((product) => {
             const couponDiscount = getBestCouponDiscount(product.id);
             const hasCoupon = couponDiscount > 0;
@@ -191,94 +177,78 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group card-md text-left relative min-h-[88px]"
+                className="group card-md text-left relative"
               >
-                {/* 主要信息行 */}
-                <div className="flex items-start justify-between">
-                  {/* 左侧：商品名 + 标签 */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="font-semibold text-white text-[15px]">
+                {/* 商品信息 */}
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1 min-w-0 pr-2">
+                    <div className="flex items-center gap-1">
+                      <h3 className="font-semibold text-white text-sm">
                         {t(product.nameZh, product.nameEn)}
                       </h3>
                       {product.isHot && (
-                        <Flame className="w-3.5 h-3.5 text-orange-400" />
+                        <Flame className="w-3 h-3 text-orange-400" />
                       )}
                     </div>
-                    <p className="text-[11px] text-white/40 mt-1 truncate">
+                    <p className="text-[10px] text-white/35 mt-0.5 truncate">
                       {t(product.tagZh, product.tagEn)}
                     </p>
                   </div>
                   
-                  {/* 右侧：价格区 - 极简双列 */}
-                  <div className="flex items-baseline gap-2 ml-2">
-                    <span className="text-white/30 text-xs line-through">
+                  {/* 价格 */}
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-white/25 text-[11px] line-through">
                       ¥{product.price}
                     </span>
-                    <span className="text-primary font-bold text-lg">
+                    <span className="text-primary font-bold text-base">
                       ¥{estimatedPrice}
                     </span>
                   </div>
                 </div>
                 
-                {/* 底部：计算明细 + 加号按钮 */}
-                <div className="flex items-center justify-between mt-3">
-                  {/* 计算明细 - 雾灰色 */}
-                  <div className="flex items-center gap-2 text-[10px] text-white/30">
+                {/* 底部 */}
+                <div className="flex items-center justify-between">
+                  {/* 计算明细 */}
+                  <div className="flex items-center gap-1.5 text-[9px] text-white/25">
                     {hasCoupon && (
-                      <div className="flex items-center gap-0.5">
-                        <Ticket className="w-3 h-3" />
-                        <span>-{couponDiscount}</span>
-                      </div>
+                      <span className="flex items-center gap-0.5">
+                        <Ticket className="w-2.5 h-2.5" />-{couponDiscount}
+                      </span>
                     )}
-                    <div className="flex items-center gap-0.5">
-                      <Truck className="w-3 h-3" />
-                      <span>+{ESTIMATED_DELIVERY_FEE}</span>
-                    </div>
+                    <span className="flex items-center gap-0.5">
+                      <Truck className="w-2.5 h-2.5" />+{ESTIMATED_DELIVERY_FEE}
+                    </span>
                   </div>
                   
-                  {/* 加号按钮 - 紫色，点击直接加购 */}
+                  {/* 加号按钮 - 数量融入按钮 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 ${
+                    className={`min-w-[36px] h-8 rounded-full flex items-center justify-center gap-1 px-2 transition-all duration-200 active:scale-90 ${
                       quantityInCart > 0 
                         ? "bg-primary text-white shadow-purple" 
-                        : "bg-primary/20 text-primary hover:bg-primary hover:text-white"
+                        : "bg-primary/15 text-primary hover:bg-primary hover:text-white"
                     }`}
                   >
+                    {quantityInCart > 0 && (
+                      <span className="text-xs font-semibold">{quantityInCart}</span>
+                    )}
                     <Plus className="w-4 h-4" strokeWidth={2.5} />
                   </button>
                 </div>
-                
-                {/* 购物车数量角标 */}
-                {quantityInCart > 0 && (
-                  <span className="absolute top-2 right-2 w-5 h-5 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center shadow-md">
-                    {quantityInCart}
-                  </span>
-                )}
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* Elegant Divider */}
-      <div className="fog-divider mx-4" />
-
-      {/* Brand Standards Grid */}
-      <BrandStandardsGrid onCartClick={() => (window as any).__openCart?.()} />
-
-      {/* Footer Info */}
-      <section className="px-4 py-5 pb-24">
-        <div className="flex items-center justify-between text-[11px] text-white/25 font-light">
-          <span>{t("☕ KAKA认证精品咖啡馆出品", "☕ KAKA Certified Specialty Cafés")}</span>
-          <span>{t("配送约15-30分钟", "Delivery 15-30 min")}</span>
-        </div>
+      {/* Footer */}
+      <section className="px-4 pt-2 pb-20">
+        <p className="text-center text-[10px] text-white/20">
+          {t("☕ KAKA认证精品咖啡馆", "☕ KAKA Certified Cafés")}
+        </p>
       </section>
 
-      {/* Mini Cart Bar - 底部购物车条 */}
       <MiniCartBar estimatedTotal={getCartEstimatedTotal()} />
-
       <BottomNav />
     </div>
   );
