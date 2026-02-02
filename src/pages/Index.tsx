@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Plus, Flame, Sparkles, Truck, Ticket } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
@@ -6,7 +5,8 @@ import { BrandStandardsGrid } from "@/components/BrandStandardsGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { CouponFlags, Coupon } from "@/components/CouponFlags";
-import { QuickCheckout } from "@/components/QuickCheckout";
+import { MiniCartBar } from "@/components/MiniCartBar";
+import { toast } from "sonner";
 
 // Import coffee images
 import coffeeLatte from "@/assets/coffee-latte.jpg";
@@ -104,18 +104,42 @@ const getEstimatedPrice = (originalPrice: number, productId: string): number => 
 
 const Index = () => {
   const { t } = useLanguage();
-  const { items } = useCart();
-  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
-  const [isQuickCheckoutOpen, setIsQuickCheckoutOpen] = useState(false);
+  const { items, addItem } = useCart();
 
-  const handleProductSelect = (product: typeof products[0]) => {
-    setSelectedProduct(product);
-    setIsQuickCheckoutOpen(true);
+  // 点击加号直接添加商品
+  const handleAddToCart = (product: typeof products[0], e: React.MouseEvent) => {
+    e.stopPropagation();
+    addItem({
+      id: product.id,
+      nameZh: product.nameZh,
+      nameEn: product.nameEn,
+      price: product.price,
+      image: product.image,
+    });
+    toast.success(t(`+1 ${product.nameZh}`, `+1 ${product.nameEn}`), {
+      duration: 1000,
+    });
   };
 
   const getQuantityInCart = (productId: string) => {
     const item = items.find((i) => i.id === productId);
     return item?.quantity || 0;
+  };
+
+  // 计算购物车预估总价
+  const getCartEstimatedTotal = () => {
+    if (items.length === 0) return 0;
+    
+    // 所有商品原价总和
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    
+    // 取最大可用券（简化逻辑：用通用券）
+    const maxDiscount = userCoupons.length > 0 
+      ? Math.max(...userCoupons.map(c => c.value)) 
+      : 0;
+    
+    // 预估到手 = 原价 - 券 + 配送费
+    return Math.max(0, subtotal - maxDiscount) + ESTIMATED_DELIVERY_FEE;
   };
 
   const totalCoupons = userCoupons.length;
@@ -165,17 +189,16 @@ const Index = () => {
             const quantityInCart = getQuantityInCart(product.id);
             
             return (
-              <button
+              <div
                 key={product.id}
-                onClick={() => handleProductSelect(product)}
-                className="group card-md text-left relative ripple min-h-[88px]"
+                className="group card-md text-left relative min-h-[88px]"
               >
                 {/* 主要信息行 */}
                 <div className="flex items-start justify-between">
                   {/* 左侧：商品名 + 标签 */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h3 className="font-semibold text-white text-[15px] group-hover:text-primary transition-colors duration-300">
+                      <h3 className="font-semibold text-white text-[15px]">
                         {t(product.nameZh, product.nameEn)}
                       </h3>
                       {product.isHot && (
@@ -192,11 +215,9 @@ const Index = () => {
                     <span className="text-white/30 text-xs line-through">
                       ¥{product.price}
                     </span>
-                    <div className="text-right">
-                      <span className="text-primary font-bold text-lg">
-                        ¥{estimatedPrice}
-                      </span>
-                    </div>
+                    <span className="text-primary font-bold text-lg">
+                      ¥{estimatedPrice}
+                    </span>
                   </div>
                 </div>
                 
@@ -216,21 +237,26 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* 加号按钮 - 紫色 */}
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    quantityInCart > 0 
-                      ? "bg-primary text-white shadow-purple" 
-                      : "bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white"
-                  }`}>
+                  {/* 加号按钮 - 紫色，点击直接加购 */}
+                  <button
+                    onClick={(e) => handleAddToCart(product, e)}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 ${
+                      quantityInCart > 0 
+                        ? "bg-primary text-white shadow-purple" 
+                        : "bg-primary/20 text-primary hover:bg-primary hover:text-white"
+                    }`}
+                  >
                     <Plus className="w-4 h-4" strokeWidth={2.5} />
-                    {quantityInCart > 0 && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center shadow-md">
-                        {quantityInCart}
-                      </span>
-                    )}
-                  </div>
+                  </button>
                 </div>
-              </button>
+                
+                {/* 购物车数量角标 */}
+                {quantityInCart > 0 && (
+                  <span className="absolute top-2 right-2 w-5 h-5 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center shadow-md">
+                    {quantityInCart}
+                  </span>
+                )}
+              </div>
             );
           })}
         </div>
@@ -243,22 +269,15 @@ const Index = () => {
       <BrandStandardsGrid onCartClick={() => (window as any).__openCart?.()} />
 
       {/* Footer Info */}
-      <section className="px-4 py-5">
+      <section className="px-4 py-5 pb-24">
         <div className="flex items-center justify-between text-[11px] text-white/25 font-light">
           <span>{t("☕ KAKA认证精品咖啡馆出品", "☕ KAKA Certified Specialty Cafés")}</span>
           <span>{t("配送约15-30分钟", "Delivery 15-30 min")}</span>
         </div>
       </section>
 
-      {/* Quick Checkout - 一键支付面板 */}
-      <QuickCheckout
-        isOpen={isQuickCheckoutOpen}
-        onClose={() => setIsQuickCheckoutOpen(false)}
-        product={selectedProduct}
-        estimatedPrice={selectedProduct ? getEstimatedPrice(selectedProduct.price, selectedProduct.id) : 0}
-        couponDiscount={selectedProduct ? getBestCouponDiscount(selectedProduct.id) : 0}
-        deliveryFee={ESTIMATED_DELIVERY_FEE}
-      />
+      {/* Mini Cart Bar - 底部购物车条 */}
+      <MiniCartBar estimatedTotal={getCartEstimatedTotal()} />
 
       <BottomNav />
     </div>
