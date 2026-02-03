@@ -52,164 +52,135 @@ const KakaBeans = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20">
-      {/* Header */}
-      <header className="sticky top-0 z-40 glass safe-top">
-        <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
-          <button 
-            onClick={() => navigate("/profile")}
-            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
-          >
-            <ChevronLeft className="w-5 h-5 text-white" />
-          </button>
-          <h1 className="text-base font-semibold text-white">KAKA豆</h1>
-          <div className="w-9" />
-        </div>
-      </header>
-
-      {/* Brand Header - Same as Index */}
-      <section className="px-4 pt-6 pb-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">KAKA豆</h1>
-            <p className="text-sm text-white/50 mt-0.5">
-              {t("积分奖励中心", "Rewards Center")}
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5 bg-primary/20 border border-primary/30 px-3 py-1.5 rounded-full">
-            <Coins className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs text-primary font-medium">
-              100豆=¥1
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* Fog Divider */}
-      <div className="fog-divider mx-4" />
-
-      {/* Balance Card - Following homepage card-lg style with purple theme */}
-      <section className="px-4 py-4">
-        <div className="card-lg">
-          {/* Main Balance Row */}
-          <div className="flex items-center gap-4">
-            {/* Bean Icon */}
-            <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center">
-              <Coins className="w-7 h-7 text-primary" />
-            </div>
-            
-            {/* Balance */}
-            <div className="flex-1">
-              <p className="text-xs text-white/50 mb-0.5">{t("当前豆豆", "Balance")}</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-primary">{totalBeans.toLocaleString()}</span>
-                <span className="text-sm text-white/40">{t("豆", "beans")}</span>
-              </div>
-            </div>
-            
-            {/* Stats */}
-            <div className="flex flex-col gap-2 text-right">
-              <div className="flex items-center gap-1 justify-end">
-                <TrendingUp className="w-3.5 h-3.5 text-green-400" />
-                <span className="text-sm font-bold text-green-400">+{totalEarned}</span>
-              </div>
-              <div className="flex items-center gap-1 justify-end">
-                <TrendingDown className="w-3.5 h-3.5 text-red-400" />
-                <span className="text-sm font-bold text-red-400">-{totalSpent}</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* Divider */}
-          <div className="h-px bg-white/10 my-4" />
-          
-          {/* Exchange Row */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs text-white/40">{t("≈ ¥", "≈ ¥")}{beansToRMB(totalBeans)}</p>
-            </div>
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* 固定顶部区域 */}
+      <div className="flex-shrink-0">
+        {/* Header */}
+        <header className="glass safe-top">
+          <div className="flex items-center justify-between px-4 py-2 max-w-md mx-auto">
             <button 
-              onClick={handleExchange}
-              className="btn-gold px-6 py-2.5 rounded-xl text-sm font-semibold"
+              onClick={() => navigate("/profile")}
+              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
             >
-              {t("去兑换", "Redeem")}
+              <ChevronLeft className="w-4 h-4 text-white" />
             </button>
+            <h1 className="text-sm font-semibold text-white">KAKA豆</h1>
+            <div className="w-8" />
           </div>
+        </header>
+
+        {/* Balance Card */}
+        <section className="px-4 pt-3 pb-2">
+          <div className="card-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
+                <Coins className="w-6 h-6 text-primary" />
+              </div>
+              
+              <div className="flex-1">
+                <p className="text-[10px] text-white/50 mb-0.5">{t("当前豆豆", "Balance")}</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-black text-primary">{totalBeans.toLocaleString()}</span>
+                  <span className="text-xs text-white/40">{t("豆", "beans")}</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-1 text-right">
+                <div className="flex items-center gap-1 justify-end">
+                  <TrendingUp className="w-3 h-3 text-green-400" />
+                  <span className="text-xs font-bold text-green-400">+{totalEarned}</span>
+                </div>
+                <div className="flex items-center gap-1 justify-end">
+                  <TrendingDown className="w-3 h-3 text-red-400" />
+                  <span className="text-xs font-bold text-red-400">-{totalSpent}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="h-px bg-white/10 my-3" />
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <p className="text-[10px] text-white/40">≈ ¥{beansToRMB(totalBeans)}</p>
+                <span className="text-[9px] text-primary/60 bg-primary/10 px-1.5 py-0.5 rounded">100豆=¥1</span>
+              </div>
+              <button 
+                onClick={handleExchange}
+                className="btn-gold px-4 py-2 rounded-xl text-xs font-semibold"
+              >
+                {t("去兑换", "Redeem")}
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Tabs */}
+        <div className="flex px-4 gap-2 pb-2">
+          {[
+            { id: "all", labelZh: "全部", labelEn: "All" },
+            { id: "earn", labelZh: "获得", labelEn: "Earned" },
+            { id: "spend", labelZh: "消费", labelEn: "Spent" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as "all" | "earn" | "spend")}
+              className={`px-3 py-1.5 rounded-lg text-[10px] font-medium transition-all ${
+                activeTab === tab.id
+                  ? "bg-primary text-white"
+                  : "bg-secondary/50 text-white/50 hover:bg-secondary"
+              }`}
+            >
+              {t(tab.labelZh, tab.labelEn)}
+            </button>
+          ))}
         </div>
-      </section>
 
-      {/* Fog Divider */}
-      <div className="fog-divider mx-4" />
-
-      {/* Section Header */}
-      <section className="px-4 pt-4 pb-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-white/70">
-            {t("收支记录", "Transaction History")}
-          </h2>
-        </div>
-      </section>
-
-      {/* Tabs - Following homepage style */}
-      <div className="flex px-4 gap-2 pb-3">
-        {[
-          { id: "all", labelZh: "全部", labelEn: "All" },
-          { id: "earn", labelZh: "获得", labelEn: "Earned" },
-          { id: "spend", labelZh: "消费", labelEn: "Spent" },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as "all" | "earn" | "spend")}
-            className={`px-4 py-2 rounded-lg text-xs font-medium transition-all ${
-              activeTab === tab.id
-                ? "bg-primary text-white"
-                : "bg-secondary/50 text-white/50 hover:bg-secondary"
-            }`}
-          >
-            {t(tab.labelZh, tab.labelEn)}
-          </button>
-        ))}
+        <div className="fog-divider mx-4" />
       </div>
 
-      {/* Records List - Following homepage card-sm style */}
-      <section className="px-4 space-y-2">
-        {filteredRecords.map((record, index) => {
-          const IconComponent = iconMap[record.icon];
-          const isEarn = record.type === "earn";
-          
-          return (
-            <div 
-              key={record.id} 
-              className="card-sm flex items-center justify-between"
-              style={{ animationDelay: `${index * 0.03}s` }}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  isEarn ? "bg-primary/20" : "bg-secondary"
-                }`}>
-                  <IconComponent className={`w-5 h-5 ${isEarn ? "text-primary" : "text-white/50"}`} />
+      {/* 可滚动中间区域 */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <section className="px-4 py-2 space-y-2">
+          {filteredRecords.map((record, index) => {
+            const IconComponent = iconMap[record.icon];
+            const isEarn = record.type === "earn";
+            
+            return (
+              <div 
+                key={record.id} 
+                className="card-sm flex items-center justify-between"
+                style={{ animationDelay: `${index * 0.03}s` }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                    isEarn ? "bg-primary/20" : "bg-secondary"
+                  }`}>
+                    <IconComponent className={`w-4 h-4 ${isEarn ? "text-primary" : "text-white/50"}`} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-white">{t(record.titleZh, record.titleEn)}</p>
+                    <p className="text-[9px] text-white/40">{record.time}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-white">{t(record.titleZh, record.titleEn)}</p>
-                  <p className="text-[10px] text-white/40">{record.time}</p>
-                </div>
+                <span className={`text-sm font-bold ${isEarn ? "text-primary" : "text-white/50"}`}>
+                  {isEarn ? "+" : ""}{record.amount}
+                </span>
               </div>
-              <span className={`text-base font-bold ${isEarn ? "text-primary" : "text-white/50"}`}>
-                {isEarn ? "+" : ""}{record.amount}
-              </span>
-            </div>
-          );
-        })}
-      </section>
+            );
+          })}
+        </section>
 
-      {/* Quick Info Footer - Same as Index */}
-      <section className="px-4 py-4">
-        <div className="flex items-center justify-center text-xs text-white/30">
-          <span>{t("💜 KAKA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
-        </div>
-      </section>
+        <section className="px-4 py-3">
+          <div className="flex items-center justify-center text-[10px] text-white/30">
+            <span>{t("💜 KAKA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
+          </div>
+        </section>
+      </div>
 
-      <BottomNav />
+      {/* 固定底部区域 */}
+      <div className="flex-shrink-0">
+        <BottomNav />
+      </div>
     </div>
   );
 };

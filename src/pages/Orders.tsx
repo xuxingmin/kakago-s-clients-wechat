@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sparkles } from "lucide-react";
 import { OrderCard } from "@/components/OrderCard";
 import { EmptyState } from "@/components/EmptyState";
 import { BottomNav } from "@/components/BottomNav";
 import { RatingModal } from "@/components/RatingModal";
-import { BrandHeader } from "@/components/BrandHeader";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -134,23 +134,31 @@ const Orders = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-20">
-      {/* Brand Header */}
-      <BrandHeader showTagline={false} />
-
-      {/* Header */}
-      <header className="sticky top-0 z-40 glass">
-        <div className="px-4 py-3 max-w-md mx-auto">
-          <h2 className="text-lg font-bold text-white">{t("我的订单", "My Orders")}</h2>
-        </div>
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* 固定顶部区域 */}
+      <div className="flex-shrink-0">
+        {/* Brand Header */}
+        <section className="px-4 pt-3 pb-2 bg-background">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+                <Sparkles className="w-4 h-4 text-primary/60" />
+              </div>
+              <p className="text-sm text-white/45 mt-0.5 font-light">
+                {t("我的订单", "My Orders")}
+              </p>
+            </div>
+          </div>
+        </section>
         
         {/* Tabs */}
-        <div className="flex px-4 max-w-md mx-auto">
+        <div className="flex px-4 max-w-md mx-auto bg-background">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-3 min-h-[48px] text-sm font-medium border-b-2 transition-colors ${
+              className={`flex-1 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? "text-primary border-primary"
                   : "text-white/50 border-transparent hover:text-white"
@@ -160,53 +168,59 @@ const Orders = () => {
             </button>
           ))}
         </div>
-      </header>
 
-      {/* Fog Divider */}
-      <div className="fog-divider" />
+        <div className="fog-divider mx-4" />
+      </div>
 
-      {/* Orders List */}
-      <section className="px-4 py-4 space-y-3 max-w-md mx-auto">
-        {filteredOrders.length > 0 ? (
-          filteredOrders.map((order, index) => (
-            <div
-              key={order.id}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <OrderCard
-                id={order.id}
-                productName={order.productName}
-                productNameEn={order.productNameEn}
-                price={order.price}
-                status={order.status}
-                cafeName={order.cafeName}
-                cafeNameEn={order.cafeNameEn}
-                cafeRating={order.cafeRating}
-                merchantId={order.merchantId}
-                createdAt={order.createdAt}
-                createdAtEn={order.createdAtEn}
-                isRevealed={order.isRevealed}
-                userRating={order.userRating}
-                onClick={() => handleOrderClick(order.id)}
-                t={t}
-              />
-            </div>
-          ))
-        ) : (
-          <EmptyState
-            title={activeTab === "active" 
-              ? t("暂无进行中订单", "No Active Orders") 
-              : t("暂无历史订单", "No Order History")}
-            description={t(
-              "去选购一杯神秘咖啡吧，好运等着你！",
-              "Order a mystery coffee and let luck find you!"
-            )}
-            actionLabel={t("立即选购", "Order Now")}
-            actionPath="/"
-          />
-        )}
-      </section>
+      {/* 可滚动中间区域 */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <section className="px-4 py-3 space-y-2 max-w-md mx-auto">
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order, index) => (
+              <div
+                key={order.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <OrderCard
+                  id={order.id}
+                  productName={order.productName}
+                  productNameEn={order.productNameEn}
+                  price={order.price}
+                  status={order.status}
+                  cafeName={order.cafeName}
+                  cafeNameEn={order.cafeNameEn}
+                  cafeRating={order.cafeRating}
+                  merchantId={order.merchantId}
+                  createdAt={order.createdAt}
+                  createdAtEn={order.createdAtEn}
+                  isRevealed={order.isRevealed}
+                  userRating={order.userRating}
+                  onClick={() => handleOrderClick(order.id)}
+                  t={t}
+                />
+              </div>
+            ))
+          ) : (
+            <EmptyState
+              title={activeTab === "active" 
+                ? t("暂无进行中订单", "No Active Orders") 
+                : t("暂无历史订单", "No Order History")}
+              description={t(
+                "去选购一杯神秘咖啡吧，好运等着你！",
+                "Order a mystery coffee and let luck find you!"
+              )}
+              actionLabel={t("立即选购", "Order Now")}
+              actionPath="/"
+            />
+          )}
+        </section>
+      </div>
+
+      {/* 固定底部区域 */}
+      <div className="flex-shrink-0">
+        <BottomNav />
+      </div>
 
       {/* Rating Modal */}
       <RatingModal
@@ -221,8 +235,6 @@ const Orders = () => {
         )}
         onSubmit={handleRatingSubmit}
       />
-
-      <BottomNav />
     </div>
   );
 };
