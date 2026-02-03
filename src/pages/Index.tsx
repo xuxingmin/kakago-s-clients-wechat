@@ -208,11 +208,12 @@ const Index = () => {
                       <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1 flex-shrink-0">
-                    <span className="text-primary/70 text-[9px] animate-pulse">
-                      预估到手
+                  <div className="flex items-start gap-1 flex-shrink-0">
+                    <span className="text-primary text-[9px] mt-[5px] font-medium relative">
+                      <span className="relative z-10">预估到手</span>
+                      <span className="absolute inset-0 bg-primary/20 blur-sm rounded animate-[pulse_1.5s_ease-in-out_infinite]" />
                     </span>
-                    <span className="text-primary font-bold text-lg">
+                    <span className="text-primary font-bold text-lg drop-shadow-[0_0_8px_rgba(127,0,255,0.6)]">
                       ¥{estimatedPrice}
                     </span>
                   </div>
