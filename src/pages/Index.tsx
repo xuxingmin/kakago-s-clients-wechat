@@ -196,10 +196,10 @@ const Index = () => {
             return (
               <div
                 key={product.id}
-                className="group card-md text-left relative flex flex-col justify-between min-h-[82px] py-2"
+                className="group card-md text-left relative flex flex-col justify-between min-h-[72px] py-1.5 px-2.5"
               >
                 {/* 顶部：商品名 + 价格 - 基线对齐 */}
-                <div className="flex items-baseline justify-between gap-2">
+                <div className="flex items-start justify-between gap-2">
                   <div className="flex items-baseline gap-1 flex-1 min-w-0">
                     <h3 className="font-semibold text-white text-sm leading-tight">
                       {t(product.nameZh, product.nameEn)}
@@ -220,7 +220,7 @@ const Index = () => {
                 </div>
                 
                 {/* 中间：标签 */}
-                <div className="mt-1 space-y-0.5">
+                <div className="space-y-0">
                   {/* 第一行标签 - 雾灰色 */}
                   <div className="flex items-center gap-1.5 text-[10px]">
                     {(product as any).tagLine1Negative ? (
@@ -245,7 +245,7 @@ const Index = () => {
                 </div>
                 
                 {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between mt-auto pt-1 gap-2">
+                <div className="flex items-center justify-between gap-2">
                   {/* 交易明细 - 容量 + 原价划线 */}
                   <div className="flex items-center gap-1.5 text-[9px] text-white/40 flex-1 min-w-0">
                     <span className="flex items-center gap-0.5 whitespace-nowrap">
@@ -259,7 +259,7 @@ const Index = () => {
                   {/* 加号按钮 - 紫色渐变圆形 */}
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    style={{ width: '32px', height: '32px', minWidth: '32px', minHeight: '32px' }}
+                    style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
                     className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
                       quantityInCart > 0 
                         ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
