@@ -105,7 +105,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           GO!
         </span>
         <span className="text-[9px] text-white/40">
-          {coupons.length}{t("券可用", " coupons")}
+          {t("自动用券", "Auto coupon")}
         </span>
       </div>
       

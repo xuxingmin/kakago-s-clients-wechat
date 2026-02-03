@@ -252,7 +252,7 @@ const Index = () => {
                       <CupSoda className="w-2.5 h-2.5" />360ml
                     </span>
                     <span className="whitespace-nowrap">
-                      原价 <span className="line-through">¥{product.price}</span>
+                      原价 <span className="line-through">¥</span>{product.price}
                     </span>
                   </div>
                   
