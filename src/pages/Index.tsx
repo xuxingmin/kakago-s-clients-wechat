@@ -154,171 +154,179 @@ const Index = () => {
   const totalCoupons = userCoupons.length;
 
   return (
-    <div className="min-h-screen pb-16 page-enter">
-      <Header />
-
-      {/* Brand Header */}
-      <section className="px-4 pt-3 pb-2 hero-reveal">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-              <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
-            </div>
-            <p className="text-sm text-white/45 mt-0.5 font-light">
-              {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
-            </p>
-          </div>
-          {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
-        </div>
-      </section>
-
-      <div className="fog-divider mx-4" />
-
-      {/* Product Grid */}
-      <section className="px-4 py-2">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-sm font-medium text-white/60">
-            {t("灵感燃料库", "Inspiration Fuel")}
-          </h2>
-          <span className="text-[11px] text-white/30">
-            {t("硬核咖啡因", "Hardcore Caffeine")}
-          </span>
-        </div>
+    <div className="h-screen flex flex-col page-enter overflow-hidden">
+      {/* 固定顶部区域 */}
+      <div className="flex-shrink-0">
+        <Header />
         
-        <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
-          {products.map((product) => {
-            const couponDiscount = getBestCouponDiscount(product.id);
-            const hasCoupon = couponDiscount > 0;
-            const estimatedPrice = getEstimatedPrice(product.price, product.id);
-            const quantityInCart = getQuantityInCart(product.id);
-            
-            return (
-              <div
-                key={product.id}
-                className="group card-md text-left relative flex flex-col justify-between min-h-[72px] py-1.5 px-2.5"
-              >
-                {/* 顶部：商品名 + 价格 - 基线对齐 */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
-                    <h3 className="font-semibold text-white text-sm leading-tight">
-                      {t(product.nameZh, product.nameEn)}
-                    </h3>
-                    {product.isHot && (
-                      <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
-                    )}
-                  </div>
-                  <div className="flex items-start gap-1 flex-shrink-0">
-                    <span className="text-primary text-[9px] mt-[5px] font-medium relative">
-                      <span className="relative z-10">预估到手</span>
-                      <span className="absolute inset-0 bg-primary/20 blur-sm rounded animate-[pulse_1.5s_ease-in-out_infinite]" />
-                    </span>
-                    <span className="text-primary font-bold text-lg drop-shadow-[0_0_8px_rgba(127,0,255,0.6)]">
-                      ¥{estimatedPrice}
-                    </span>
-                  </div>
-                </div>
-                
-                {/* 中间：标签 */}
-                <div className="space-y-0">
-                  {/* 第一行标签 - 雾灰色 */}
-                  <div className="flex items-center gap-1.5 text-[10px]">
-                    {(product as any).tagLine1Negative ? (
-                      (product as any).tagLine1Negative.map((tag: string, idx: number) => (
-                        <span key={idx} className="flex items-center gap-0.5 text-muted-foreground/70">
-                          <span className="text-[8px]">✕</span>{tag}
-                        </span>
-                      ))
-                    ) : (product as any).tagLine1 ? (
-                      (product as any).tagLine1.map((tag: string, idx: number) => (
-                        <span key={idx} className="text-muted-foreground/70">{tag}</span>
-                      ))
-                    ) : null}
-                  </div>
-                  {/* 第二行标签 - 白色文字 */}
-                  {(product as any).tagLine2 && (
-                    <div className="flex items-center gap-1 text-[10px] text-white/80">
-                      <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                      <Check className="w-3 h-3 text-primary" />
-                    </div>
-                  )}
-                </div>
-                
-                {/* 底部：交易明细 + 按钮 */}
-                <div className="flex items-center justify-between gap-2">
-                  {/* 交易明细 - 容量 + 原价划线 */}
-                  <div className="flex items-center gap-1.5 text-[9px] text-white/40 flex-1 min-w-0">
-                    <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <CupSoda className="w-2.5 h-2.5" />360ml
-                    </span>
-                    <span className="whitespace-nowrap">
-                      原价 <span className="line-through">¥</span>{product.price}
-                    </span>
-                  </div>
-                  
-                  {/* 加号按钮 - 紫色渐变圆形 */}
-                  <button
-                    onClick={(e) => handleAddToCart(product, e)}
-                    style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
-                    className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
-                      quantityInCart > 0 
-                        ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
-                        : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
-                    }`}
-                  >
-                    {quantityInCart > 0 ? (
-                      <span className="text-xs font-bold">{quantityInCart}</span>
-                    ) : (
-                      <Plus className="w-4 h-4" strokeWidth={2} />
-                    )}
-                  </button>
-                </div>
+        {/* Brand Header */}
+        <section className="px-4 pt-3 pb-2 hero-reveal bg-background">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+                <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
               </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Certification Footer */}
-      <section className="px-4 pt-2 pb-16">
-        <div className="flex items-center justify-between gap-2">
-          {/* 左侧认证图标 */}
-          <div className="flex items-center gap-2 text-white/25">
-            <div className="flex items-center gap-0.5" title="La Marzocco">
-              <Coffee className="w-3 h-3" />
+              <p className="text-sm text-white/45 mt-0.5 font-light">
+                {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
+              </p>
             </div>
-            <div className="flex items-center gap-0.5" title="SCA Certified">
-              <Award className="w-3 h-3" />
-            </div>
-            <div className="flex items-center gap-0.5" title="4.0 Milk">
-              <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">
-                4.0
-              </div>
-            </div>
-            <div className="flex items-center gap-0.5" title="Eco-Friendly">
-              <Leaf className="w-3 h-3" />
-            </div>
-            <div className="flex items-center gap-0.5" title="Organic">
-              <span className="text-[8px]">🌱</span>
-            </div>
+            {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
           </div>
-          
-          {/* 右侧服务状态 */}
-          <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] text-white/25">
-              {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
+        </section>
+
+        <div className="fog-divider mx-4" />
+      </div>
+
+      {/* 可滚动中间区域 */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        {/* Product Grid */}
+        <section className="px-4 py-2">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-medium text-white/60">
+              {t("灵感燃料库", "Inspiration Fuel")}
+            </h2>
+            <span className="text-[11px] text-white/30">
+              {t("硬核咖啡因", "Hardcore Caffeine")}
             </span>
           </div>
-        </div>
-      </section>
+          
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
+            {products.map((product) => {
+              const couponDiscount = getBestCouponDiscount(product.id);
+              const hasCoupon = couponDiscount > 0;
+              const estimatedPrice = getEstimatedPrice(product.price, product.id);
+              const quantityInCart = getQuantityInCart(product.id);
+              
+              return (
+                <div
+                  key={product.id}
+                  className="group card-md text-left relative flex flex-col justify-between min-h-[72px] py-1.5 px-2.5"
+                >
+                  {/* 顶部：商品名 + 价格 */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-baseline gap-1 flex-1 min-w-0">
+                      <h3 className="font-semibold text-white text-sm leading-tight">
+                        {t(product.nameZh, product.nameEn)}
+                      </h3>
+                      {product.isHot && (
+                        <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
+                      )}
+                    </div>
+                    <div className="flex items-start gap-1 flex-shrink-0">
+                      <span className="text-white/60 text-[9px] mt-[5px] font-medium">
+                        预估到手
+                      </span>
+                      <span className="text-white font-bold text-lg drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+                        ¥{estimatedPrice}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* 中间：标签 */}
+                  <div className="space-y-0">
+                    {/* 第一行标签 - 雾灰色 */}
+                    <div className="flex items-center gap-1.5 text-[10px]">
+                      {(product as any).tagLine1Negative ? (
+                        (product as any).tagLine1Negative.map((tag: string, idx: number) => (
+                          <span key={idx} className="flex items-center gap-0.5 text-muted-foreground/70">
+                            <span className="text-[8px]">✕</span>{tag}
+                          </span>
+                        ))
+                      ) : (product as any).tagLine1 ? (
+                        (product as any).tagLine1.map((tag: string, idx: number) => (
+                          <span key={idx} className="text-muted-foreground/70">{tag}</span>
+                        ))
+                      ) : null}
+                    </div>
+                    {/* 第二行标签 - 白色文字 */}
+                    {(product as any).tagLine2 && (
+                      <div className="flex items-center gap-1 text-[10px] text-white/80">
+                        <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
+                        <Check className="w-3 h-3 text-primary" />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* 底部：交易明细 + 按钮 */}
+                  <div className="flex items-center justify-between gap-2">
+                    {/* 交易明细 - 容量 + 原价划线 */}
+                    <div className="flex items-center gap-1.5 text-[9px] text-white/40 flex-1 min-w-0">
+                      <span className="flex items-center gap-0.5 whitespace-nowrap">
+                        <CupSoda className="w-2.5 h-2.5" />360ml
+                      </span>
+                      <span className="whitespace-nowrap">
+                        原价 <span className="line-through">¥</span>{product.price}
+                      </span>
+                    </div>
+                    
+                    {/* 加号按钮 - 紫色渐变圆形 */}
+                    <button
+                      onClick={(e) => handleAddToCart(product, e)}
+                      style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
+                      className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
+                        quantityInCart > 0 
+                          ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
+                          : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+                      }`}
+                    >
+                      {quantityInCart > 0 ? (
+                        <span className="text-xs font-bold">{quantityInCart}</span>
+                      ) : (
+                        <Plus className="w-4 h-4" strokeWidth={2} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-      <MiniCartBar 
-        estimatedTotal={getCartEstimatedTotal()} 
-        couponDiscount={getCartCouponDiscount()}
-        deliveryFee={ESTIMATED_DELIVERY_FEE}
-      />
-      <BottomNav />
+        {/* Certification Footer */}
+        <section className="px-4 pt-2 pb-4">
+          <div className="flex items-center justify-between gap-2">
+            {/* 左侧认证图标 */}
+            <div className="flex items-center gap-2 text-white/25">
+              <div className="flex items-center gap-0.5" title="La Marzocco">
+                <Coffee className="w-3 h-3" />
+              </div>
+              <div className="flex items-center gap-0.5" title="SCA Certified">
+                <Award className="w-3 h-3" />
+              </div>
+              <div className="flex items-center gap-0.5" title="4.0 Milk">
+                <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">
+                  4.0
+                </div>
+              </div>
+              <div className="flex items-center gap-0.5" title="Eco-Friendly">
+                <Leaf className="w-3 h-3" />
+              </div>
+              <div className="flex items-center gap-0.5" title="Organic">
+                <span className="text-[8px]">🌱</span>
+              </div>
+            </div>
+            
+            {/* 右侧服务状态 */}
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[10px] text-white/25">
+                {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
+              </span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* 固定底部区域 */}
+      <div className="flex-shrink-0">
+        <MiniCartBar 
+          estimatedTotal={getCartEstimatedTotal()} 
+          couponDiscount={getCartCouponDiscount()}
+          deliveryFee={ESTIMATED_DELIVERY_FEE}
+        />
+        <BottomNav />
+      </div>
     </div>
   );
 };

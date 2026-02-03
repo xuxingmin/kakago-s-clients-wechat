@@ -563,3 +563,16 @@
   background: hsla(263, 70%, 50%, 0.3);
   color: white;
 }
+
+/* ========================================
+   SCROLLBAR UTILITIES
+   ======================================== */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
