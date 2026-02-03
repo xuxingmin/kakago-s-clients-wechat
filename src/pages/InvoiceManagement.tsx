@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Plus, FileText, Building2, Trash2, Check } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandBanner } from "@/components/BrandBanner";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -54,25 +55,24 @@ const InvoiceManagement = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
-        <header className="glass safe-top">
-          <div className="flex items-center justify-between px-4 py-2 max-w-md mx-auto">
-            <button
-              onClick={() => navigate(-1)}
-              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
-            >
-              <ChevronLeft className="w-4 h-4 text-white" />
-            </button>
-            <h1 className="text-sm font-semibold text-white">
-              {t("发票管理", "Invoice Management")}
-            </h1>
-            <button
-              onClick={() => toast({ title: t("添加发票抬头功能开发中", "Add invoice header coming soon") })}
-              className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
-            >
-              <Plus className="w-4 h-4 text-primary-foreground" />
-            </button>
-          </div>
-        </header>
+        {/* Back & Add Buttons */}
+        <div className="absolute top-3 left-4 z-50 safe-top">
+          <button
+            onClick={() => navigate(-1)}
+            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
+          >
+            <ChevronLeft className="w-4 h-4 text-white" />
+          </button>
+        </div>
+        <div className="absolute top-3 right-4 z-50 safe-top">
+          <button
+            onClick={() => toast({ title: t("添加发票抬头功能开发中", "Add invoice header coming soon") })}
+            className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
+          >
+            <Plus className="w-4 h-4 text-primary-foreground" />
+          </button>
+        </div>
+        <BrandBanner />
 
         {/* Stats Bar */}
         <section className="px-4 pt-3 pb-2">

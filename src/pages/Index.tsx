@@ -1,9 +1,10 @@
-import { Plus, Flame, Sparkles, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
+import { Plus, Flame, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandBanner } from "@/components/BrandBanner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
-import { CouponFlags, Coupon } from "@/components/CouponFlags";
+import { Coupon } from "@/components/CouponFlags";
 import { MiniCartBar } from "@/components/MiniCartBar";
 import { toast } from "sonner";
 
@@ -151,30 +152,12 @@ const Index = () => {
     return Math.max(0, subtotal - discount) + ESTIMATED_DELIVERY_FEE;
   };
 
-  const totalCoupons = userCoupons.length;
-
   return (
     <div className="h-screen flex flex-col page-enter overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         <Header />
-        
-        {/* Brand Header */}
-        <section className="px-4 pt-3 pb-2 hero-reveal bg-background">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-                <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
-              </div>
-              <p className="text-sm text-white/45 mt-0.5 font-light">
-                {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
-              </p>
-            </div>
-            {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
-          </div>
-        </section>
-
+        <BrandBanner />
         <div className="fog-divider mx-4" />
       </div>
 

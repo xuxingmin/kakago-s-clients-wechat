@@ -15,6 +15,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandBanner } from "@/components/BrandBanner";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -72,19 +73,16 @@ const MySquad = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
-        {/* Header */}
-        <header className="glass safe-top">
-          <div className="flex items-center justify-between px-4 py-2 max-w-md mx-auto">
-            <button 
-              onClick={() => navigate("/profile")}
-              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
-            >
-              <ChevronLeft className="w-4 h-4 text-white" />
-            </button>
-            <h1 className="text-sm font-semibold text-white">{t("拉帮结派", "My Squad")}</h1>
-            <div className="w-8" />
-          </div>
-        </header>
+        {/* Back Button */}
+        <div className="absolute top-3 left-4 z-50 safe-top">
+          <button 
+            onClick={() => navigate("/profile")}
+            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
+          >
+            <ChevronLeft className="w-4 h-4 text-white" />
+          </button>
+        </div>
+        <BrandBanner />
 
         {/* Stats Card */}
         <section className="px-4 pt-3 pb-2">
