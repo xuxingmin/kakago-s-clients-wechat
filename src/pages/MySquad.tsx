@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { Header } from "@/components/Header";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -82,6 +83,7 @@ const MySquad = () => {
             <ChevronLeft className="w-4 h-4 text-white" />
           </button>
         </div>
+        <Header />
         <BrandBanner />
 
         {/* Stats Card */}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Plus, FileText, Building2, Trash2, Check } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { Header } from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -72,6 +73,7 @@ const InvoiceManagement = () => {
             <Plus className="w-4 h-4 text-primary-foreground" />
           </button>
         </div>
+        <Header />
         <BrandBanner />
 
         {/* Stats Bar */}

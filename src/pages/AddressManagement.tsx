@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Plus, MapPin, Phone, Edit2, Trash2, Check } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { Header } from "@/components/Header";
 import { AddressForm } from "@/components/AddressForm";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -150,6 +151,7 @@ const AddressManagement = () => {
             <Plus className="w-4 h-4 text-primary-foreground" />
           </button>
         </div>
+        <Header />
         <BrandBanner />
         <div className="fog-divider mx-4" />
       </div>
