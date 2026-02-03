@@ -1,11 +1,10 @@
-import { Sparkles, Coffee, Leaf, Award } from "lucide-react";
+import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { CouponFlags, Coupon } from "@/components/CouponFlags";
 import { MiniCartBar } from "@/components/MiniCartBar";
-import { ProductItemCard } from "@/components/ProductItemCard";
 import { toast } from "sonner";
 
 // Import coffee images
@@ -187,7 +186,7 @@ const Index = () => {
           </span>
         </div>
         
-        <div className="grid grid-cols-2 gap-2 stagger-fade-in">
+        <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
           {products.map((product) => {
             const couponDiscount = getBestCouponDiscount(product.id);
             const hasCoupon = couponDiscount > 0;
@@ -195,22 +194,90 @@ const Index = () => {
             const quantityInCart = getQuantityInCart(product.id);
             
             return (
-              <ProductItemCard
+              <div
                 key={product.id}
-                id={product.id}
-                nameZh={product.nameZh}
-                nameEn={product.nameEn}
-                price={product.price}
-                estimatedPrice={estimatedPrice}
-                isHot={product.isHot}
-                tagLine1Negative={product.tagLine1Negative}
-                tagLine2={product.tagLine2}
-                tagLine2En={product.tagLine2En}
-                quantityInCart={quantityInCart}
-                hasCoupon={hasCoupon}
-                couponDiscount={couponDiscount}
-                onAddToCart={(e) => handleAddToCart(product, e)}
-              />
+                className="group card-md text-left relative flex flex-col justify-between min-h-[82px] py-2"
+              >
+                {/* 顶部：商品名 + 价格 - 基线对齐 */}
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-1 flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-sm leading-tight">
+                      {t(product.nameZh, product.nameEn)}
+                    </h3>
+                    {product.isHot && (
+                      <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
+                    )}
+                  </div>
+                  <div className="flex items-baseline gap-1.5 flex-shrink-0">
+                    <span className="text-white/30 text-[11px] line-through">
+                      ¥{product.price}
+                    </span>
+                    <span className="text-primary font-bold text-lg">
+                      ¥{estimatedPrice}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* 中间：标签 */}
+                <div className="mt-1 space-y-0.5">
+                  {/* 第一行标签 - 雾灰色 */}
+                  <div className="flex items-center gap-1.5 text-[10px]">
+                    {(product as any).tagLine1Negative ? (
+                      (product as any).tagLine1Negative.map((tag: string, idx: number) => (
+                        <span key={idx} className="flex items-center gap-0.5 text-muted-foreground/70">
+                          <span className="text-[8px]">✕</span>{tag}
+                        </span>
+                      ))
+                    ) : (product as any).tagLine1 ? (
+                      (product as any).tagLine1.map((tag: string, idx: number) => (
+                        <span key={idx} className="text-muted-foreground/70">{tag}</span>
+                      ))
+                    ) : null}
+                  </div>
+                  {/* 第二行标签 - 白色文字 */}
+                  {(product as any).tagLine2 && (
+                    <div className="flex items-center gap-1 text-[10px] text-white/80">
+                      <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
+                      <Check className="w-3 h-3 text-primary" />
+                    </div>
+                  )}
+                </div>
+                
+                {/* 底部：交易明细 + 按钮 */}
+                <div className="flex items-center justify-between mt-auto pt-1 gap-2">
+                  {/* 交易明细 - 超紧凑单行布局 */}
+                  <div className="flex items-center gap-1 text-[9px] text-white/50 flex-1 min-w-0">
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
+                      <CupSoda className="w-2 h-2" />360ml
+                    </span>
+                    {hasCoupon && (
+                      <span className="flex items-center gap-0.5 whitespace-nowrap">
+                        <Ticket className="w-2 h-2" />-￥{couponDiscount}
+                      </span>
+                    )}
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
+                      <Truck className="w-2 h-2" />+￥{ESTIMATED_DELIVERY_FEE}
+                    </span>
+                  </div>
+                  
+                  {/* 加号按钮 - 紫色渐变圆形 */}
+                  <button
+                    onClick={(e) => handleAddToCart(product, e)}
+                    style={{ width: '32px', height: '32px', minWidth: '32px', minHeight: '32px' }}
+                    className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
+                      quantityInCart > 0 
+                        ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
+                        : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+                    }`}
+                  >
+                    {quantityInCart > 0 ? (
+                      <span className="text-xs font-bold">{quantityInCart}</span>
+                    ) : (
+                      <Plus className="w-4 h-4" strokeWidth={2} />
+                    )}
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>
