@@ -1,4 +1,4 @@
-import { Plus, Flame, Sparkles, Truck, Ticket, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
+import { Plus, Flame, Sparkles, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -245,18 +245,16 @@ const Index = () => {
                 
                 {/* 底部：交易明细 + 按钮 */}
                 <div className="flex items-center justify-between mt-auto pt-1 gap-2">
-                  {/* 交易明细 - 超紧凑单行布局 */}
-                  <div className="flex items-center gap-1 text-[9px] text-white/50 flex-1 min-w-0">
-                    <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <CupSoda className="w-2 h-2" />360ml
+                  {/* 交易明细 - 容量 + 原价划线 + 预估到手价 */}
+                  <div className="flex items-center gap-1.5 text-[9px] flex-1 min-w-0">
+                    <span className="flex items-center gap-0.5 text-white/50 whitespace-nowrap">
+                      <CupSoda className="w-2.5 h-2.5" />360ml
                     </span>
-                    {hasCoupon && (
-                      <span className="flex items-center gap-0.5 whitespace-nowrap">
-                        <Ticket className="w-2 h-2" />-￥{couponDiscount}
-                      </span>
-                    )}
-                    <span className="flex items-center gap-0.5 whitespace-nowrap">
-                      <Truck className="w-2 h-2" />+￥{ESTIMATED_DELIVERY_FEE}
+                    <span className="text-white/30 line-through whitespace-nowrap">
+                      ¥{product.price}
+                    </span>
+                    <span className="flex items-center gap-0.5 text-primary font-medium whitespace-nowrap animate-pulse">
+                      预估到手 ¥{estimatedPrice}
                     </span>
                   </div>
                   
