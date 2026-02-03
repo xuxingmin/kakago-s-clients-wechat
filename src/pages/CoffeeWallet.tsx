@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Wallet, Gift, Ticket } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { Header } from "@/components/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Coupon {
@@ -104,6 +105,7 @@ const CoffeeWallet = () => {
             <ChevronLeft className="w-4 h-4 text-white" />
           </button>
         </div>
+        <Header />
         <BrandBanner />
 
         {/* Compact Summary */}

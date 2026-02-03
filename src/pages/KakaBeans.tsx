@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Coins, TrendingUp, TrendingDown, Gift, Coffee, Users, ShoppingCart } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { Header } from "@/components/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BeanRecord {
@@ -65,6 +66,7 @@ const KakaBeans = () => {
             <ChevronLeft className="w-4 h-4 text-white" />
           </button>
         </div>
+        <Header />
         <BrandBanner />
 
         {/* Balance Card */}

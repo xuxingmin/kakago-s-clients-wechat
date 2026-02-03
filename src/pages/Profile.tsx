@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { Header } from "@/components/Header";
 import { 
   IdentityVerificationModal, 
   getIdentityBadge,
@@ -121,6 +122,7 @@ const Profile = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
+        <Header />
         <BrandBanner />
         <div className="fog-divider mx-4" />
       </div>
