@@ -12,10 +12,10 @@ import {
   LucideIcon,
   Coins,
   MapPin,
-  FileText
+  FileText,
+  Sparkles
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
-import { BrandHeader } from "@/components/BrandHeader";
 import { 
   IdentityVerificationModal, 
   getIdentityBadge,
@@ -118,149 +118,172 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-20">
-      {/* Brand Header */}
-      <BrandHeader showTagline={false} />
-
-      {/* Top Row - Two Column Layout */}
-      <section className="px-4 pt-4 max-w-md mx-auto">
-        <div className="grid grid-cols-2 gap-3">
-          {/* Left Card - User Profile */}
-          <button
-            onClick={() => setIdentityModalOpen(true)}
-            className="card-md text-left"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <Coffee className="w-5 h-5 text-primary" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="text-sm font-semibold text-white truncate">{userName}</h2>
-                <div className="text-[10px] text-white/50 flex items-center gap-1">
-                  <span>{t("点击认证", "Tap to verify")}</span>
-                  <ChevronRight className="w-2.5 h-2.5" />
-                </div>
-              </div>
-            </div>
-            
-            {/* Identity Badges */}
-            <div className="flex flex-wrap gap-1">
-              {allBadges.length > 0 ? (
-                allBadges.map((badge, index) => {
-                  const IconComponent = badge.icon;
-                  return (
-                    <span 
-                      key={index}
-                      className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-secondary/50 ${badge.color}`}
-                    >
-                      <IconComponent className="w-2.5 h-2.5" />
-                      {badge.label}
-                    </span>
-                  );
-                })
-              ) : (
-                <span className="text-[10px] text-white/40 px-2 py-0.5 rounded-full bg-secondary/50">
-                  {t("未认证", "Not verified")}
-                </span>
-              )}
-            </div>
-          </button>
-
-          {/* Right Card - My Squad */}
-          <button
-            onClick={() => navigate("/my-squad")}
-            className="card-md text-left"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <Users className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-white">{t("拉帮结派", "My Squad")}</h3>
-                <p className="text-[10px] text-white/50">{t("邀请返佣", "Invite & Earn")}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[10px] text-white/40">{t("累计收益", "Earnings")}</p>
-                <span className="text-lg font-black text-primary">¥1,240</span>
-              </div>
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* 固定顶部区域 */}
+      <div className="flex-shrink-0">
+        {/* Brand Header */}
+        <section className="px-4 pt-3 pb-2 bg-background">
+          <div className="flex items-center justify-between">
+            <div>
               <div className="flex items-center gap-2">
-                <div className="text-right">
-                  <p className="text-sm font-bold text-white">348</p>
-                  <p className="text-[10px] text-white/40">{t("队员", "Members")}</p>
+                <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+                <Sparkles className="w-4 h-4 text-primary/60" />
+              </div>
+              <p className="text-sm text-white/45 mt-0.5 font-light">
+                {t("个人中心", "Profile")}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="fog-divider mx-4" />
+      </div>
+
+      {/* 可滚动中间区域 */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        {/* Top Row - Two Column Layout */}
+        <section className="px-4 pt-3 max-w-md mx-auto">
+          <div className="grid grid-cols-2 gap-2">
+            {/* Left Card - User Profile */}
+            <button
+              onClick={() => setIdentityModalOpen(true)}
+              className="card-md text-left"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Coffee className="w-4 h-4 text-primary" />
                 </div>
-                <div className="flex items-center gap-0.5 text-green-400">
-                  <TrendingUp className="w-3 h-3" />
-                  <span className="text-xs font-bold">+12</span>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xs font-semibold text-white truncate">{userName}</h2>
+                  <div className="text-[9px] text-white/50 flex items-center gap-0.5">
+                    <span>{t("点击认证", "Tap to verify")}</span>
+                    <ChevronRight className="w-2 h-2" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </button>
-        </div>
-      </section>
+              
+              {/* Identity Badges */}
+              <div className="flex flex-wrap gap-1">
+                {allBadges.length > 0 ? (
+                  allBadges.slice(0, 2).map((badge, index) => {
+                    const IconComponent = badge.icon;
+                    return (
+                      <span 
+                        key={index}
+                        className={`inline-flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full bg-secondary/50 ${badge.color}`}
+                      >
+                        <IconComponent className="w-2 h-2" />
+                        {badge.label}
+                      </span>
+                    );
+                  })
+                ) : (
+                  <span className="text-[9px] text-white/40 px-1.5 py-0.5 rounded-full bg-secondary/50">
+                    {t("未认证", "Not verified")}
+                  </span>
+                )}
+              </div>
+            </button>
 
-      {/* Asset Bar - Two Column */}
-      <section className="px-4 mt-3 max-w-md mx-auto">
-        <div className="grid grid-cols-2 gap-3">
-          {assetItems.map((item) => {
-            const IconComponent = item.Icon;
-            return (
-              <button
-                key={item.labelZh}
-                onClick={item.onClick}
-                className="card-sm flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center">
+            {/* Right Card - My Squad */}
+            <button
+              onClick={() => navigate("/my-squad")}
+              className="card-md text-left"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <Users className="w-3.5 h-3.5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-semibold text-white">{t("拉帮结派", "My Squad")}</h3>
+                  <p className="text-[9px] text-white/50">{t("邀请返佣", "Invite & Earn")}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[9px] text-white/40">{t("累计收益", "Earnings")}</p>
+                  <span className="text-base font-black text-primary">¥1,240</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-white">348</p>
+                    <p className="text-[9px] text-white/40">{t("队员", "Members")}</p>
+                  </div>
+                  <div className="flex items-center gap-0.5 text-green-400">
+                    <TrendingUp className="w-2.5 h-2.5" />
+                    <span className="text-[10px] font-bold">+12</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        </section>
+
+        {/* Asset Bar - Two Column */}
+        <section className="px-4 mt-2 max-w-md mx-auto">
+          <div className="grid grid-cols-2 gap-2">
+            {assetItems.map((item) => {
+              const IconComponent = item.Icon;
+              return (
+                <button
+                  key={item.labelZh}
+                  onClick={item.onClick}
+                  className="card-sm flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center">
+                      <IconComponent className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="text-xs font-medium text-white">{t(item.labelZh, item.labelEn)}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-base font-bold text-primary">{item.value}</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-white/30" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Menu List */}
+        <section className="px-4 mt-3 max-w-md mx-auto">
+          <div className="card-lg !p-0 overflow-hidden">
+            {menuItems.map((item, index) => {
+              const IconComponent = item.Icon;
+              return (
+                <button
+                  key={item.labelZh}
+                  onClick={item.onClick}
+                  className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-white/5 transition-colors ${
+                    index !== menuItems.length - 1 ? "border-b border-white/10" : ""
+                  }`}
+                >
+                  <div className="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center">
                     <IconComponent className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-white">{t(item.labelZh, item.labelEn)}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="text-lg font-bold text-primary">{item.value}</span>
-                  <ChevronRight className="w-4 h-4 text-white/30" />
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </section>
+                  <div className="flex-1 text-left">
+                    <p className="font-medium text-white text-xs">{t(item.labelZh, item.labelEn)}</p>
+                    <p className="text-[10px] text-white/50">{t(item.descZh, item.descEn)}</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-white/40" />
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
-      {/* Menu List - LG Card */}
-      <section className="px-4 mt-4 max-w-md mx-auto">
-        <div className="card-lg !p-0 overflow-hidden">
-          {menuItems.map((item, index) => {
-            const IconComponent = item.Icon;
-            return (
-              <button
-                key={item.labelZh}
-                onClick={item.onClick}
-                className={`w-full flex items-center gap-4 px-4 card-menu-item hover:bg-white/5 transition-colors ${
-                  index !== menuItems.length - 1 ? "border-b border-white/10" : ""
-                }`}
-              >
-                <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
-                  <IconComponent className="w-4 h-4 text-primary" />
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="font-medium text-white text-sm">{t(item.labelZh, item.labelEn)}</p>
-                  <p className="text-xs text-white/50">{t(item.descZh, item.descEn)}</p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-white/40" />
-              </button>
-            );
-          })}
-        </div>
-      </section>
+        {/* Version Footer */}
+        <p className="text-center text-[10px] text-white/30 mt-4 pb-4">
+          KAKAGO v1.0.0
+        </p>
+      </div>
 
-      {/* Version Footer */}
-      <p className="text-center text-xs text-white/40 mt-8">
-        KAKAGO v1.0.0
-      </p>
-
-      <BottomNav />
+      {/* 固定底部区域 */}
+      <div className="flex-shrink-0">
+        <BottomNav />
+      </div>
 
       {/* Identity Verification Modal */}
       <IdentityVerificationModal

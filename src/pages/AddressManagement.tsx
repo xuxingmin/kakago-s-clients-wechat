@@ -67,7 +67,6 @@ const AddressManagement = () => {
       id: `addr-${Date.now()}`,
     };
 
-    // If new address is default, update other addresses
     if (address.isDefault) {
       setAddresses((prev) =>
         prev.map((addr) => ({ ...addr, isDefault: false }))
@@ -81,7 +80,6 @@ const AddressManagement = () => {
   const handleEditAddress = (updatedAddress: Omit<Address, "id">) => {
     if (!editingAddress) return;
 
-    // If updated address is default, update other addresses
     if (updatedAddress.isDefault) {
       setAddresses((prev) =>
         prev.map((addr) =>
@@ -131,126 +129,131 @@ const AddressManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="sticky top-0 z-40 glass border-b border-border safe-top">
-        <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
-          <button
-            onClick={() => navigate(-1)}
-            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
-          >
-            <ChevronLeft className="w-5 h-5 text-foreground" />
-          </button>
-          <h1 className="text-base font-semibold text-foreground">
-            {t("地址管理", "Address Management")}
-          </h1>
-          <button
-            onClick={() => setShowAddForm(true)}
-            className="w-9 h-9 rounded-full bg-primary flex items-center justify-center"
-          >
-            <Plus className="w-5 h-5 text-primary-foreground" />
-          </button>
-        </div>
-      </header>
-
-      {/* Address List */}
-      <section className="px-4 py-4 space-y-3">
-        {addresses.length > 0 ? (
-          addresses.map((address, index) => (
-            <div
-              key={address.id}
-              className="card-premium p-4 animate-fade-in"
-              style={{ animationDelay: `${index * 0.05}s` }}
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* 固定顶部区域 */}
+      <div className="flex-shrink-0">
+        <header className="glass safe-top">
+          <div className="flex items-center justify-between px-4 py-2 max-w-md mx-auto">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
             >
-              {/* Default Badge */}
-              {address.isDefault && (
-                <div className="flex items-center gap-1 mb-2">
-                  <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    {t("默认地址", "Default")}
-                  </span>
-                </div>
-              )}
-
-              {/* Contact Info */}
-              <div className="flex items-center gap-3 mb-2">
-                <span className="font-semibold text-foreground">{address.name}</span>
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <Phone className="w-3 h-3" />
-                  <span className="text-sm">{maskPhone(address.phone)}</span>
-                </div>
-              </div>
-
-              {/* Address */}
-              <div className="flex items-start gap-2 mb-3">
-                <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {getFullAddress(address)}
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center justify-between pt-3 border-t border-border">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setEditingAddress(address)}
-                    className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                    <span>{t("编辑", "Edit")}</span>
-                  </button>
-                  <button
-                    onClick={() => handleDeleteAddress(address.id)}
-                    className="flex items-center gap-1 text-sm text-muted-foreground hover:text-destructive transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    <span>{t("删除", "Delete")}</span>
-                  </button>
-                </div>
-
-                {!address.isDefault && (
-                  <button
-                    onClick={() => handleSetDefault(address.id)}
-                    className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <Check className="w-4 h-4" />
-                    <span>{t("设为默认", "Set Default")}</span>
-                  </button>
-                )}
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-4">
-              <MapPin className="w-8 h-8 text-muted-foreground" />
-            </div>
-            <p className="text-muted-foreground text-sm mb-4">
-              {t("暂无收货地址", "No delivery addresses")}
-            </p>
+              <ChevronLeft className="w-4 h-4 text-white" />
+            </button>
+            <h1 className="text-sm font-semibold text-white">
+              {t("地址管理", "Address Management")}
+            </h1>
             <button
               onClick={() => setShowAddForm(true)}
-              className="btn-gold px-6 py-3 rounded-xl text-sm font-medium"
+              className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
             >
-              {t("添加新地址", "Add New Address")}
+              <Plus className="w-4 h-4 text-primary-foreground" />
+            </button>
+          </div>
+        </header>
+
+        <div className="fog-divider mx-4" />
+      </div>
+
+      {/* 可滚动中间区域 */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <section className="px-4 py-3 space-y-2">
+          {addresses.length > 0 ? (
+            addresses.map((address, index) => (
+              <div
+                key={address.id}
+                className="card-md animate-fade-in"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                {address.isDefault && (
+                  <div className="flex items-center gap-1 mb-2">
+                    <span className="text-[9px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
+                      {t("默认地址", "Default")}
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="font-semibold text-white text-sm">{address.name}</span>
+                  <div className="flex items-center gap-1 text-white/50">
+                    <Phone className="w-2.5 h-2.5" />
+                    <span className="text-[10px]">{maskPhone(address.phone)}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-1.5 mb-2">
+                  <MapPin className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                  <p className="text-[10px] text-white/60 leading-relaxed">
+                    {getFullAddress(address)}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setEditingAddress(address)}
+                      className="flex items-center gap-1 text-[10px] text-white/50 hover:text-white transition-colors"
+                    >
+                      <Edit2 className="w-3 h-3" />
+                      <span>{t("编辑", "Edit")}</span>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAddress(address.id)}
+                      className="flex items-center gap-1 text-[10px] text-white/50 hover:text-red-400 transition-colors"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>{t("删除", "Delete")}</span>
+                    </button>
+                  </div>
+
+                  {!address.isDefault && (
+                    <button
+                      onClick={() => handleSetDefault(address.id)}
+                      className="flex items-center gap-1 text-[10px] text-primary hover:text-primary/80 transition-colors"
+                    >
+                      <Check className="w-3 h-3" />
+                      <span>{t("设为默认", "Set Default")}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center mb-3">
+                <MapPin className="w-7 h-7 text-white/30" />
+              </div>
+              <p className="text-white/40 text-xs mb-4">
+                {t("暂无收货地址", "No delivery addresses")}
+              </p>
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="btn-gold px-5 py-2.5 rounded-xl text-xs font-medium"
+              >
+                {t("添加新地址", "Add New Address")}
+              </button>
+            </div>
+          )}
+        </section>
+
+        {addresses.length > 0 && (
+          <div className="px-4 pb-4">
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="w-full py-3 rounded-xl border-2 border-dashed border-primary/50 text-primary font-medium flex items-center justify-center gap-2 bg-card hover:bg-primary/5 transition-colors text-xs"
+            >
+              <Plus className="w-4 h-4" />
+              <span>{t("添加新地址", "Add New Address")}</span>
             </button>
           </div>
         )}
-      </section>
+      </div>
 
-      {/* Add Address Button (Fixed at bottom when has addresses) */}
-      {addresses.length > 0 && (
-        <div className="fixed bottom-20 left-0 right-0 px-4 pb-4 max-w-md mx-auto">
-          <button
-            onClick={() => setShowAddForm(true)}
-            className="w-full py-4 rounded-2xl border-2 border-dashed border-primary/50 text-primary font-medium flex items-center justify-center gap-2 bg-card hover:bg-primary/5 transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            <span>{t("添加新地址", "Add New Address")}</span>
-          </button>
-        </div>
-      )}
+      {/* 固定底部区域 */}
+      <div className="flex-shrink-0">
+        <BottomNav />
+      </div>
 
-      {/* Add Address Form */}
       <AddressForm
         isOpen={showAddForm}
         onClose={() => setShowAddForm(false)}
@@ -258,7 +261,6 @@ const AddressManagement = () => {
         mode="add"
       />
 
-      {/* Edit Address Form */}
       {editingAddress && (
         <AddressForm
           isOpen={!!editingAddress}
@@ -268,8 +270,6 @@ const AddressManagement = () => {
           mode="edit"
         />
       )}
-
-      <BottomNav />
     </div>
   );
 };
