@@ -12,10 +12,10 @@ import {
   LucideIcon,
   Coins,
   MapPin,
-  FileText,
-  Sparkles
+  FileText
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandBanner } from "@/components/BrandBanner";
 import { 
   IdentityVerificationModal, 
   getIdentityBadge,
@@ -121,21 +121,7 @@ const Profile = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
-        {/* Brand Header */}
-        <section className="px-4 pt-3 pb-2 bg-background">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-                <Sparkles className="w-4 h-4 text-primary/60" />
-              </div>
-              <p className="text-sm text-white/45 mt-0.5 font-light">
-                {t("个人中心", "Profile")}
-              </p>
-            </div>
-          </div>
-        </section>
-
+        <BrandBanner />
         <div className="fog-divider mx-4" />
       </div>
 

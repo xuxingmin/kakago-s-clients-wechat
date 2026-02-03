@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 import { OrderCard } from "@/components/OrderCard";
 import { EmptyState } from "@/components/EmptyState";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandBanner } from "@/components/BrandBanner";
 import { RatingModal } from "@/components/RatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -137,20 +137,7 @@ const Orders = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
-        {/* Brand Header */}
-        <section className="px-4 pt-3 pb-2 bg-background">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
-                <Sparkles className="w-4 h-4 text-primary/60" />
-              </div>
-              <p className="text-sm text-white/45 mt-0.5 font-light">
-                {t("我的订单", "My Orders")}
-              </p>
-            </div>
-          </div>
-        </section>
+        <BrandBanner />
         
         {/* Tabs */}
         <div className="flex px-4 max-w-md mx-auto bg-background">
