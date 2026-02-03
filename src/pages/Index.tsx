@@ -208,9 +208,9 @@ const Index = () => {
                       <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1.5 flex-shrink-0">
-                    <span className="text-white/30 text-[11px] line-through">
-                      ¥{product.price}
+                  <div className="flex items-baseline gap-1 flex-shrink-0">
+                    <span className="text-primary/70 text-[9px] animate-pulse">
+                      预估到手
                     </span>
                     <span className="text-primary font-bold text-lg">
                       ¥{estimatedPrice}
@@ -245,16 +245,13 @@ const Index = () => {
                 
                 {/* 底部：交易明细 + 按钮 */}
                 <div className="flex items-center justify-between mt-auto pt-1 gap-2">
-                  {/* 交易明细 - 容量 + 原价划线 + 预估到手价 */}
-                  <div className="flex items-center gap-1.5 text-[9px] flex-1 min-w-0">
-                    <span className="flex items-center gap-0.5 text-white/50 whitespace-nowrap">
+                  {/* 交易明细 - 容量 + 原价划线 */}
+                  <div className="flex items-center gap-1.5 text-[9px] text-white/40 flex-1 min-w-0">
+                    <span className="flex items-center gap-0.5 whitespace-nowrap">
                       <CupSoda className="w-2.5 h-2.5" />360ml
                     </span>
-                    <span className="text-white/30 line-through whitespace-nowrap">
-                      ¥{product.price}
-                    </span>
-                    <span className="flex items-center gap-0.5 text-primary font-medium whitespace-nowrap animate-pulse">
-                      预估到手 ¥{estimatedPrice}
+                    <span className="whitespace-nowrap">
+                      原价 <span className="line-through">¥{product.price}</span>
                     </span>
                   </div>
                   
