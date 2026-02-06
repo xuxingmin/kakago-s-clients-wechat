@@ -287,27 +287,27 @@
   }
 
   .card-menu-item:hover {
-    background-color: hsla(0, 0%, 100%, 0.04);
+    background-color: hsl(var(--fog-100));
   }
 
   .card-menu-item:active {
-    background-color: hsla(0, 0%, 100%, 0.08);
+    background-color: hsl(var(--fog-200));
     transform: scale(0.99);
   }
 
   /* ========================================
-     GLASS EFFECTS - Premium Blur
+     GLASS EFFECTS - Premium Blur (Light mode)
      ======================================== */
 
   .glass {
-    background: hsla(270, 15%, 8%, 0.85);
+    background: hsla(0, 0%, 100%, 0.85);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid hsla(0, 0%, 100%, 0.06);
+    border-bottom: 1px solid hsl(var(--fog-200));
   }
 
   .glass-light {
-    background: hsla(270, 15%, 15%, 0.6);
+    background: hsla(0, 0%, 100%, 0.6);
     backdrop-filter: blur(16px) saturate(150%);
     -webkit-backdrop-filter: blur(16px) saturate(150%);
   }
@@ -317,7 +317,7 @@
      ======================================== */
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(263 70% 70%), hsl(263 70% 50%), hsl(280 70% 60%));
+    background: linear-gradient(135deg, hsl(271 81% 56%), hsl(271 81% 46%), hsl(280 70% 50%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -326,9 +326,9 @@
   .text-shimmer {
     background: linear-gradient(
       90deg,
-      hsl(0 0% 100%) 0%,
-      hsl(263 70% 80%) 50%,
-      hsl(0 0% 100%) 100%
+      hsl(var(--fog-900)) 0%,
+      hsl(271 81% 56%) 50%,
+      hsl(var(--fog-900)) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -348,7 +348,7 @@
 
   .fog-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.08), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--fog-200)), transparent);
   }
 
   /* ========================================
