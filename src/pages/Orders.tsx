@@ -135,7 +135,7 @@ const Orders = () => {
   ];
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden bg-background">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         <Header />
@@ -150,7 +150,7 @@ const Orders = () => {
               className={`flex-1 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? "text-primary border-primary"
-                  : "text-white/50 border-transparent hover:text-white"
+                  : "text-muted-foreground border-transparent hover:text-foreground"
               }`}
             >
               {tab.label}
@@ -158,7 +158,7 @@ const Orders = () => {
           ))}
         </div>
 
-        <div className="fog-divider mx-4" />
+        <div className="h-px bg-border mx-4" />
       </div>
 
       {/* 可滚动中间区域 */}
