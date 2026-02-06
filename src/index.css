@@ -68,66 +68,67 @@
 
     /* ─────────────────────────────────────────────────────────────
        SEMANTIC TOKENS - Design System Mapping
+       主色：紫色 | 辅助色：雾灰 | 背景色：白色
        ───────────────────────────────────────────────────────────── */
-    --background: var(--obsidian);
-    --foreground: var(--white-100);
+    --background: 0 0% 100%;
+    --foreground: var(--fog-900);
 
-    --card: var(--fog-700);
-    --card-foreground: var(--white-100);
+    --card: var(--fog-50);
+    --card-foreground: var(--fog-900);
 
-    --popover: var(--fog-800);
-    --popover-foreground: var(--white-100);
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--fog-900);
 
     --primary: var(--purple-500);
     --primary-foreground: var(--white-100);
 
-    --secondary: var(--fog-600);
-    --secondary-foreground: var(--white-100);
+    --secondary: var(--fog-100);
+    --secondary-foreground: var(--fog-800);
 
-    --muted: var(--fog-700);
-    --muted-foreground: 0 0% 65%;
+    --muted: var(--fog-100);
+    --muted-foreground: var(--fog-500);
 
-    --accent: var(--purple-500);
-    --accent-foreground: var(--white-100);
+    --accent: var(--purple-100);
+    --accent-foreground: var(--purple-700);
 
     --destructive: 0 72% 51%;
     --destructive-foreground: var(--white-100);
 
-    --border: 0 0% 100% / 0.08;
-    --input: 0 0% 100% / 0.10;
+    --border: var(--fog-200);
+    --input: var(--fog-200);
     --ring: var(--purple-500);
 
     --radius: 1rem;
 
     /* ─────────────────────────────────────────────────────────────
-       ELEVATION SHADOWS - Depth & Dimension
+       ELEVATION SHADOWS - Depth & Dimension (Light mode)
        ───────────────────────────────────────────────────────────── */
-    --shadow-xs: 0 1px 2px hsla(270, 25%, 5%, 0.5);
-    --shadow-sm: 0 2px 8px -2px hsla(270, 25%, 5%, 0.6);
-    --shadow-md: 0 4px 16px -4px hsla(270, 25%, 5%, 0.65);
-    --shadow-lg: 0 8px 24px -6px hsla(270, 25%, 5%, 0.7);
-    --shadow-xl: 0 16px 48px -12px hsla(270, 25%, 5%, 0.8);
+    --shadow-xs: 0 1px 2px hsla(240, 5%, 20%, 0.05);
+    --shadow-sm: 0 2px 8px -2px hsla(240, 5%, 20%, 0.08);
+    --shadow-md: 0 4px 16px -4px hsla(240, 5%, 20%, 0.1);
+    --shadow-lg: 0 8px 24px -6px hsla(240, 5%, 20%, 0.12);
+    --shadow-xl: 0 16px 48px -12px hsla(240, 5%, 20%, 0.15);
     
     /* Purple Glow Shadows */
-    --shadow-purple-sm: 0 2px 12px -2px hsla(271, 81%, 56%, 0.25);
-    --shadow-purple: 0 4px 20px -4px hsla(271, 81%, 56%, 0.35);
-    --shadow-purple-lg: 0 8px 32px -8px hsla(271, 81%, 56%, 0.45);
-    --shadow-glow: 0 0 40px hsla(271, 81%, 56%, 0.25);
+    --shadow-purple-sm: 0 2px 12px -2px hsla(271, 81%, 56%, 0.15);
+    --shadow-purple: 0 4px 20px -4px hsla(271, 81%, 56%, 0.2);
+    --shadow-purple-lg: 0 8px 32px -8px hsla(271, 81%, 56%, 0.25);
+    --shadow-glow: 0 0 40px hsla(271, 81%, 56%, 0.15);
     
     /* Inset & Special */
-    --shadow-inner: inset 0 1px 0 hsla(0, 0%, 100%, 0.06);
-    --shadow-inner-strong: inset 0 2px 4px hsla(270, 25%, 5%, 0.4);
+    --shadow-inner: inset 0 1px 0 hsla(0, 0%, 100%, 0.8);
+    --shadow-inner-strong: inset 0 2px 4px hsla(240, 5%, 20%, 0.1);
 
     /* ─────────────────────────────────────────────────────────────
        SIDEBAR TOKENS
        ───────────────────────────────────────────────────────────── */
-    --sidebar-background: var(--obsidian);
-    --sidebar-foreground: var(--white-100);
+    --sidebar-background: var(--fog-50);
+    --sidebar-foreground: var(--fog-900);
     --sidebar-primary: var(--purple-500);
     --sidebar-primary-foreground: var(--white-100);
-    --sidebar-accent: var(--fog-600);
-    --sidebar-accent-foreground: var(--white-100);
-    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-accent: var(--fog-100);
+    --sidebar-accent-foreground: var(--fog-800);
+    --sidebar-border: var(--fog-200);
     --sidebar-ring: var(--purple-500);
   }
 }
@@ -147,14 +148,9 @@
   }
 
   body {
-    @apply text-foreground;
+    @apply text-foreground bg-background;
     min-height: 100vh;
     min-height: 100dvh;
-    /* Premium gradient background with subtle noise */
-    background: 
-      radial-gradient(ellipse at top, hsla(263, 50%, 15%, 0.15) 0%, transparent 50%),
-      linear-gradient(180deg, hsl(270 30% 6%) 0%, hsl(280 60% 6%) 100%);
-    background-attachment: fixed;
     /* Prevent overscroll bounce color flash */
     overscroll-behavior: none;
   }
@@ -210,37 +206,21 @@
   }
 
   /* ========================================
-     PREMIUM CARD SYSTEM - Apple-like Glass
+     PREMIUM CARD SYSTEM - Light Mode
      ======================================== */
 
   .card-premium {
     @apply rounded-2xl relative;
-    background: hsla(270, 15%, 12%, 0.65);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid hsla(0, 0%, 100%, 0.06);
-    box-shadow: 
-      var(--shadow-card),
-      var(--shadow-inner);
+    background: hsl(var(--fog-50));
+    border: 1px solid hsl(var(--fog-200));
+    box-shadow: var(--shadow-sm);
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
-  .card-premium::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.04), transparent 50%);
-    pointer-events: none;
-  }
-
   .card-premium:hover {
-    border-color: hsla(263, 70%, 50%, 0.15);
-    box-shadow: 
-      0 8px 24px -6px hsla(263, 70%, 50%, 0.12),
-      var(--shadow-card),
-      var(--shadow-inner);
+    border-color: hsl(var(--purple-200));
+    box-shadow: var(--shadow-md), var(--shadow-purple-sm);
   }
 
   /* Interactive card with spring animation */
@@ -250,7 +230,7 @@
 
   .card-interactive:hover {
     transform: translateY(-3px) scale(1.015);
-    border-color: hsla(263, 70%, 50%, 0.2);
+    border-color: hsl(var(--purple-300));
   }
 
   .card-interactive:active {
@@ -291,27 +271,27 @@
   }
 
   .card-menu-item:hover {
-    background-color: hsla(0, 0%, 100%, 0.04);
+    background-color: hsl(var(--fog-100));
   }
 
   .card-menu-item:active {
-    background-color: hsla(0, 0%, 100%, 0.08);
+    background-color: hsl(var(--fog-200));
     transform: scale(0.99);
   }
 
   /* ========================================
-     GLASS EFFECTS - Premium Blur
+     GLASS EFFECTS - Premium Blur (Light mode)
      ======================================== */
 
   .glass {
-    background: hsla(270, 15%, 8%, 0.85);
+    background: hsla(0, 0%, 100%, 0.85);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid hsla(0, 0%, 100%, 0.06);
+    border-bottom: 1px solid hsl(var(--fog-200));
   }
 
   .glass-light {
-    background: hsla(270, 15%, 15%, 0.6);
+    background: hsla(0, 0%, 100%, 0.6);
     backdrop-filter: blur(16px) saturate(150%);
     -webkit-backdrop-filter: blur(16px) saturate(150%);
   }
@@ -321,7 +301,7 @@
      ======================================== */
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(263 70% 70%), hsl(263 70% 50%), hsl(280 70% 60%));
+    background: linear-gradient(135deg, hsl(271 81% 56%), hsl(271 81% 46%), hsl(280 70% 50%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -330,9 +310,9 @@
   .text-shimmer {
     background: linear-gradient(
       90deg,
-      hsl(0 0% 100%) 0%,
-      hsl(263 70% 80%) 50%,
-      hsl(0 0% 100%) 100%
+      hsl(var(--fog-900)) 0%,
+      hsl(271 81% 56%) 50%,
+      hsl(var(--fog-900)) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -352,7 +332,7 @@
 
   .fog-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.08), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--fog-200)), transparent);
   }
 
   /* ========================================
