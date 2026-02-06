@@ -148,14 +148,9 @@
   }
 
   body {
-    @apply text-foreground;
+    @apply text-foreground bg-background;
     min-height: 100vh;
     min-height: 100dvh;
-    /* Premium gradient background with subtle noise */
-    background: 
-      radial-gradient(ellipse at top, hsla(263, 50%, 15%, 0.15) 0%, transparent 50%),
-      linear-gradient(180deg, hsl(270 30% 6%) 0%, hsl(280 60% 6%) 100%);
-    background-attachment: fixed;
     /* Prevent overscroll bounce color flash */
     overscroll-behavior: none;
   }
