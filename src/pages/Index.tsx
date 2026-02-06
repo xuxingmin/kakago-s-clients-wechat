@@ -153,28 +153,28 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col page-enter overflow-hidden">
+    <div className="h-screen flex flex-col page-enter overflow-hidden bg-background">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <div className="fog-divider mx-4" />
+        <div className="h-px bg-border mx-4" />
       </div>
 
       {/* 可滚动中间区域 */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         {/* Product Grid */}
-        <section className="px-4 py-2">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-sm font-medium text-white/60">
+        <section className="px-4 py-3">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-medium text-foreground">
               {t("灵感燃料库", "Inspiration Fuel")}
             </h2>
-            <span className="text-[11px] text-white/30">
+            <span className="text-[11px] text-muted-foreground">
               {t("硬核咖啡因", "Hardcore Caffeine")}
             </span>
           </div>
           
-          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
+          <div className="grid grid-cols-2 gap-2.5">
             {products.map((product) => {
               const couponDiscount = getBestCouponDiscount(product.id);
               const hasCoupon = couponDiscount > 0;
@@ -184,49 +184,49 @@ const Index = () => {
               return (
                 <div
                   key={product.id}
-                  className="group card-md text-left relative flex flex-col justify-between min-h-[72px] py-1.5 px-2.5"
+                  className="group bg-card rounded-2xl border border-border p-3 text-left relative flex flex-col justify-between min-h-[100px] hover:border-primary/30 hover:shadow-sm transition-all duration-200"
                 >
                   {/* 顶部：商品名 + 价格 */}
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-baseline gap-1 flex-1 min-w-0">
-                      <h3 className="font-semibold text-white text-sm leading-tight">
+                      <h3 className="font-semibold text-foreground text-sm leading-tight">
                         {t(product.nameZh, product.nameEn)}
                       </h3>
                       {product.isHot && (
-                        <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
+                        <Flame className="w-3 h-3 text-orange-500 flex-shrink-0" />
                       )}
                     </div>
                     <div className="flex items-start gap-1 flex-shrink-0">
-                      <span className="text-white/60 text-[9px] mt-[5px] font-medium">
+                      <span className="text-muted-foreground text-[9px] mt-[5px] font-medium">
                         预估到手
                       </span>
-                      <span className="text-white font-bold text-lg drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+                      <span className="text-primary font-bold text-lg">
                         ¥{estimatedPrice}
                       </span>
                     </div>
                   </div>
                   
                   {/* 中间：标签 */}
-                  <div className="space-y-0">
+                  <div className="space-y-0.5 my-2">
                     {/* 第一行标签 - 雾灰色 */}
                     <div className="flex items-center gap-1.5 text-[10px]">
                       {(product as any).tagLine1Negative ? (
                         (product as any).tagLine1Negative.map((tag: string, idx: number) => (
-                          <span key={idx} className="flex items-center gap-0.5 text-muted-foreground/70">
-                            <span className="text-[8px]">✕</span>{tag}
+                          <span key={idx} className="flex items-center gap-0.5 text-muted-foreground">
+                            <span className="text-[8px] text-destructive/70">✕</span>{tag}
                           </span>
                         ))
                       ) : (product as any).tagLine1 ? (
                         (product as any).tagLine1.map((tag: string, idx: number) => (
-                          <span key={idx} className="text-muted-foreground/70">{tag}</span>
+                          <span key={idx} className="text-muted-foreground">{tag}</span>
                         ))
                       ) : null}
                     </div>
-                    {/* 第二行标签 - 白色文字 */}
+                    {/* 第二行标签 - 深色文字 + 绿色勾 */}
                     {(product as any).tagLine2 && (
-                      <div className="flex items-center gap-1 text-[10px] text-white/80">
+                      <div className="flex items-center gap-1 text-[10px] text-foreground font-medium">
                         <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                        <Check className="w-3 h-3 text-primary" />
+                        <Check className="w-3 h-3 text-green-600" />
                       </div>
                     )}
                   </div>
@@ -234,7 +234,7 @@ const Index = () => {
                   {/* 底部：交易明细 + 按钮 */}
                   <div className="flex items-center justify-between gap-2">
                     {/* 交易明细 - 容量 + 原价划线 */}
-                    <div className="flex items-center gap-1.5 text-[9px] text-white/40 flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground flex-1 min-w-0">
                       <span className="flex items-center gap-0.5 whitespace-nowrap">
                         <CupSoda className="w-2.5 h-2.5" />360ml
                       </span>
@@ -243,14 +243,14 @@ const Index = () => {
                       </span>
                     </div>
                     
-                    {/* 加号按钮 - 紫色渐变圆形 */}
+                    {/* 加号按钮 - 紫色圆形 */}
                     <button
                       onClick={(e) => handleAddToCart(product, e)}
                       style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
                       className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
                         quantityInCart > 0 
-                          ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
-                          : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+                          ? "bg-primary text-white shadow-sm" 
+                          : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
                       }`}
                     >
                       {quantityInCart > 0 ? (
@@ -270,7 +270,7 @@ const Index = () => {
         <section className="px-4 pt-2 pb-4">
           <div className="flex items-center justify-between gap-2">
             {/* 左侧认证图标 */}
-            <div className="flex items-center gap-2 text-white/25">
+            <div className="flex items-center gap-2 text-muted-foreground/60">
               <div className="flex items-center gap-0.5" title="La Marzocco">
                 <Coffee className="w-3 h-3" />
               </div>
@@ -278,7 +278,7 @@ const Index = () => {
                 <Award className="w-3 h-3" />
               </div>
               <div className="flex items-center gap-0.5" title="4.0 Milk">
-                <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">
+                <div className="flex items-center justify-center w-3 h-3 border border-muted-foreground/30 rounded-sm text-[5px] font-bold">
                   4.0
                 </div>
               </div>
@@ -293,7 +293,7 @@ const Index = () => {
             {/* 右侧服务状态 */}
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[10px] text-white/25">
+              <span className="text-[10px] text-muted-foreground">
                 {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
               </span>
             </div>

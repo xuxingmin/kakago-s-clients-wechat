@@ -93,16 +93,16 @@ const CoffeeWallet = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden bg-background">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         {/* Back Button */}
         <div className="absolute top-3 left-4 z-50 safe-top">
           <button 
             onClick={() => navigate("/profile")}
-            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-secondary backdrop-blur flex items-center justify-center"
           >
-            <ChevronLeft className="w-4 h-4 text-white" />
+            <ChevronLeft className="w-4 h-4 text-foreground" />
           </button>
         </div>
         <Header />
@@ -110,25 +110,25 @@ const CoffeeWallet = () => {
 
         {/* Compact Summary */}
         <section className="px-4 pt-3 pb-2">
-          <div className="card-lg bg-gradient-to-br from-primary/20 to-purple-dark/20 border-primary/20">
+          <div className="bg-primary/10 rounded-2xl border border-primary/20 p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
                   <Wallet className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-black text-white">{availableCoupons.length}</span>
-                    <span className="text-xs text-white/50">{t("张券", "coupons")}</span>
+                    <span className="text-2xl font-black text-foreground">{availableCoupons.length}</span>
+                    <span className="text-xs text-muted-foreground">{t("张券", "coupons")}</span>
                   </div>
-                  <p className="text-[10px] text-white/40">
+                  <p className="text-[10px] text-muted-foreground">
                     {t(`价值 ¥${totalValue}`, `Worth ¥${totalValue}`)}
                   </p>
                 </div>
               </div>
               
               <div className="text-right">
-                <p className="text-[10px] text-white/40">{t("已省", "Saved")}</p>
+                <p className="text-[10px] text-muted-foreground">{t("已省", "Saved")}</p>
                 <p className="text-base font-bold text-primary">¥{savedValue}</p>
               </div>
             </div>
@@ -142,7 +142,7 @@ const CoffeeWallet = () => {
             className={`flex-1 py-2 text-xs font-medium border-b-2 transition-colors ${
               activeTab === "available"
                 ? "text-primary border-primary"
-                : "text-white/40 border-transparent"
+                : "text-muted-foreground border-transparent"
             }`}
           >
             {t(`可用 (${availableCoupons.length})`, `Available (${availableCoupons.length})`)}
@@ -152,14 +152,14 @@ const CoffeeWallet = () => {
             className={`flex-1 py-2 text-xs font-medium border-b-2 transition-colors ${
               activeTab === "history"
                 ? "text-primary border-primary"
-                : "text-white/40 border-transparent"
+                : "text-muted-foreground border-transparent"
             }`}
           >
             {t("历史", "History")}
           </button>
         </div>
 
-        <div className="fog-divider mx-4" />
+        <div className="h-px bg-border mx-4" />
       </div>
 
       {/* 可滚动中间区域 */}
@@ -172,24 +172,24 @@ const CoffeeWallet = () => {
                 return (
                   <div
                     key={coupon.id}
-                    className={`card-sm flex items-center justify-between ${isDisabled ? "opacity-50" : ""}`}
+                    className={`bg-card rounded-2xl border border-border p-3 flex items-center justify-between ${isDisabled ? "opacity-50" : ""}`}
                   >
                     <div className="flex items-center gap-2">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDisabled ? "bg-secondary" : "bg-primary/20"}`}>
-                        <Ticket className={`w-4 h-4 ${isDisabled ? "text-white/40" : "text-primary"}`} />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDisabled ? "bg-secondary" : "bg-primary/10"}`}>
+                        <Ticket className={`w-4 h-4 ${isDisabled ? "text-muted-foreground" : "text-primary"}`} />
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-white">
+                        <p className="text-xs font-medium text-foreground">
                           {t(coupon.title, coupon.titleEn)}
                         </p>
-                        <p className="text-[9px] text-white/40">
+                        <p className="text-[9px] text-muted-foreground">
                           {coupon.minSpend ? t(`满¥${coupon.minSpend}可用 · `, `Min. ¥${coupon.minSpend} · `) : ""}
                           {getCouponStatus(coupon)}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className={`text-lg font-black ${isDisabled ? "text-white/30" : "text-primary"}`}>
+                      <span className={`text-lg font-black ${isDisabled ? "text-muted-foreground" : "text-primary"}`}>
                         ¥{coupon.value}
                       </span>
                     </div>
@@ -200,9 +200,9 @@ const CoffeeWallet = () => {
           ) : (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mb-3">
-                <Gift className="w-6 h-6 text-white/30" />
+                <Gift className="w-6 h-6 text-muted-foreground" />
               </div>
-              <p className="text-white/40 text-xs">
+              <p className="text-muted-foreground text-xs">
                 {activeTab === "available" 
                   ? t("暂无可用券", "No available coupons") 
                   : t("暂无记录", "No history")}

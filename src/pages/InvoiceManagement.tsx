@@ -53,16 +53,16 @@ const InvoiceManagement = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden bg-background">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         {/* Back & Add Buttons */}
         <div className="absolute top-3 left-4 z-50 safe-top">
           <button
             onClick={() => navigate(-1)}
-            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-secondary backdrop-blur flex items-center justify-center"
           >
-            <ChevronLeft className="w-4 h-4 text-white" />
+            <ChevronLeft className="w-4 h-4 text-foreground" />
           </button>
         </div>
         <div className="absolute top-3 right-4 z-50 safe-top">
@@ -78,19 +78,19 @@ const InvoiceManagement = () => {
 
         {/* Stats Bar */}
         <section className="px-4 pt-3 pb-2">
-          <div className="card-md flex items-center justify-between">
+          <div className="bg-card rounded-2xl border border-border p-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                 <FileText className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <p className="text-[10px] text-white/50">{t("已保存抬头", "Saved Headers")}</p>
-                <p className="text-lg font-bold text-white">{invoices.length}</p>
+                <p className="text-[10px] text-muted-foreground">{t("已保存抬头", "Saved Headers")}</p>
+                <p className="text-lg font-bold text-foreground">{invoices.length}</p>
               </div>
             </div>
-            <div className="h-8 w-px bg-white/10" />
+            <div className="h-8 w-px bg-border" />
             <div className="text-right">
-              <p className="text-[10px] text-white/50">{t("默认抬头", "Default")}</p>
+              <p className="text-[10px] text-muted-foreground">{t("默认抬头", "Default")}</p>
               <p className="text-xs font-medium text-primary">
                 {invoices.find(inv => inv.isDefault)?.title || "-"}
               </p>
@@ -98,7 +98,7 @@ const InvoiceManagement = () => {
           </div>
         </section>
 
-        <div className="fog-divider mx-4" />
+        <div className="h-px bg-border mx-4" />
       </div>
 
       {/* 可滚动中间区域 */}

@@ -17,18 +17,18 @@ export const EmptyState = ({
   const navigate = useNavigate();
 
   return (
-    <div className="card-xl flex flex-col items-center justify-center py-8 text-center">
+    <div className="bg-card rounded-2xl border border-border flex flex-col items-center justify-center py-8 text-center p-6">
       <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-4">
-        <Coffee className="w-8 h-8 text-white/40" />
+        <Coffee className="w-8 h-8 text-muted-foreground" />
       </div>
-      <h3 className="text-base font-semibold text-white mb-1.5">{title}</h3>
-      <p className="text-white/60 text-sm mb-4 max-w-[200px]">
+      <h3 className="text-base font-semibold text-foreground mb-1.5">{title}</h3>
+      <p className="text-muted-foreground text-sm mb-4 max-w-[200px]">
         {description}
       </p>
       {actionLabel && actionPath && (
         <button
           onClick={() => navigate(actionPath)}
-          className="btn-gold px-6 py-3 rounded-full text-sm font-semibold min-h-[48px]"
+          className="bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold min-h-[48px] hover:bg-primary/90 transition-colors"
         >
           {actionLabel}
         </button>
