@@ -6,12 +6,12 @@ export const Header = () => {
   const { language, toggleLanguage, t } = useLanguage();
 
   return (
-    <header className="sticky top-0 z-40 glass safe-top bg-background/80 backdrop-blur-xl border-b border-border">
+    <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border safe-top">
       <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
         {/* Location */}
-        <div className="flex items-center gap-1.5 text-foreground">
+        <div className="flex items-center gap-1.5">
           <MapPin className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium">
+          <span className="text-sm font-medium text-foreground">
             {t("天鹅湖CBD", "Swan Lake CBD")}
           </span>
         </div>
