@@ -18,10 +18,10 @@ export const BrandBanner = () => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+            <h1 className="text-2xl font-bold text-primary tracking-tight">KAKAGO</h1>
             <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
           </div>
-          <p className="text-sm text-white/80 mt-0.5 font-light">
+          <p className="text-sm text-muted-foreground mt-0.5 font-light">
             {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
           </p>
         </div>
