@@ -54,16 +54,16 @@ const KakaBeans = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-background">
+    <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         {/* Back Button */}
         <div className="absolute top-3 left-4 z-50 safe-top">
           <button 
             onClick={() => navigate("/profile")}
-            className="w-8 h-8 rounded-full bg-secondary backdrop-blur flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
           >
-            <ChevronLeft className="w-4 h-4 text-foreground" />
+            <ChevronLeft className="w-4 h-4 text-white" />
           </button>
         </div>
         <Header />
@@ -71,42 +71,42 @@ const KakaBeans = () => {
 
         {/* Balance Card */}
         <section className="px-4 pt-3 pb-2">
-          <div className="bg-card rounded-2xl border border-border p-4">
+          <div className="card-lg">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
                 <Coins className="w-6 h-6 text-primary" />
               </div>
               
               <div className="flex-1">
-                <p className="text-[10px] text-muted-foreground mb-0.5">{t("当前豆豆", "Balance")}</p>
+                <p className="text-[10px] text-white/50 mb-0.5">{t("当前豆豆", "Balance")}</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-primary">{totalBeans.toLocaleString()}</span>
-                  <span className="text-xs text-muted-foreground">{t("豆", "beans")}</span>
+                  <span className="text-xs text-white/40">{t("豆", "beans")}</span>
                 </div>
               </div>
               
               <div className="flex flex-col gap-1 text-right">
                 <div className="flex items-center gap-1 justify-end">
-                  <TrendingUp className="w-3 h-3 text-green-600" />
-                  <span className="text-xs font-bold text-green-600">+{totalEarned}</span>
+                  <TrendingUp className="w-3 h-3 text-green-400" />
+                  <span className="text-xs font-bold text-green-400">+{totalEarned}</span>
                 </div>
                 <div className="flex items-center gap-1 justify-end">
-                  <TrendingDown className="w-3 h-3 text-destructive" />
-                  <span className="text-xs font-bold text-destructive">-{totalSpent}</span>
+                  <TrendingDown className="w-3 h-3 text-red-400" />
+                  <span className="text-xs font-bold text-red-400">-{totalSpent}</span>
                 </div>
               </div>
             </div>
             
-            <div className="h-px bg-border my-3" />
+            <div className="h-px bg-white/10 my-3" />
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <p className="text-[10px] text-muted-foreground">≈ ¥{beansToRMB(totalBeans)}</p>
-                <span className="text-[9px] text-primary bg-primary/10 px-1.5 py-0.5 rounded">100豆=¥1</span>
+                <p className="text-[10px] text-white/40">≈ ¥{beansToRMB(totalBeans)}</p>
+                <span className="text-[9px] text-primary/60 bg-primary/10 px-1.5 py-0.5 rounded">100豆=¥1</span>
               </div>
               <button 
                 onClick={handleExchange}
-                className="bg-primary text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-primary/90 transition-colors"
+                className="btn-gold px-4 py-2 rounded-xl text-xs font-semibold"
               >
                 {t("去兑换", "Redeem")}
               </button>
@@ -127,7 +127,7 @@ const KakaBeans = () => {
               className={`px-3 py-1.5 rounded-lg text-[10px] font-medium transition-all ${
                 activeTab === tab.id
                   ? "bg-primary text-white"
-                  : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+                  : "bg-secondary/50 text-white/50 hover:bg-secondary"
               }`}
             >
               {t(tab.labelZh, tab.labelEn)}
@@ -135,7 +135,7 @@ const KakaBeans = () => {
           ))}
         </div>
 
-        <div className="h-px bg-border mx-4" />
+        <div className="fog-divider mx-4" />
       </div>
 
       {/* 可滚动中间区域 */}
@@ -148,21 +148,21 @@ const KakaBeans = () => {
             return (
               <div 
                 key={record.id} 
-                className="bg-card rounded-2xl border border-border p-3 flex items-center justify-between"
+                className="card-sm flex items-center justify-between"
                 style={{ animationDelay: `${index * 0.03}s` }}
               >
                 <div className="flex items-center gap-2">
                   <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                    isEarn ? "bg-primary/10" : "bg-secondary"
+                    isEarn ? "bg-primary/20" : "bg-secondary"
                   }`}>
-                    <IconComponent className={`w-4 h-4 ${isEarn ? "text-primary" : "text-muted-foreground"}`} />
+                    <IconComponent className={`w-4 h-4 ${isEarn ? "text-primary" : "text-white/50"}`} />
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-foreground">{t(record.titleZh, record.titleEn)}</p>
-                    <p className="text-[9px] text-muted-foreground">{record.time}</p>
+                    <p className="text-xs font-medium text-white">{t(record.titleZh, record.titleEn)}</p>
+                    <p className="text-[9px] text-white/40">{record.time}</p>
                   </div>
                 </div>
-                <span className={`text-sm font-bold ${isEarn ? "text-primary" : "text-muted-foreground"}`}>
+                <span className={`text-sm font-bold ${isEarn ? "text-primary" : "text-white/50"}`}>
                   {isEarn ? "+" : ""}{record.amount}
                 </span>
               </div>
@@ -171,7 +171,7 @@ const KakaBeans = () => {
         </section>
 
         <section className="px-4 py-3">
-          <div className="flex items-center justify-center text-[10px] text-muted-foreground">
+          <div className="flex items-center justify-center text-[10px] text-white/30">
             <span>{t("💜 KAKA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
           </div>
         </section>

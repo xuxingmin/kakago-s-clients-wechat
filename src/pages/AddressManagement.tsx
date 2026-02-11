@@ -138,9 +138,9 @@ const AddressManagement = () => {
         <div className="absolute top-3 left-4 z-50 safe-top">
           <button
             onClick={() => navigate(-1)}
-            className="w-8 h-8 rounded-full bg-secondary backdrop-blur flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
           >
-            <ChevronLeft className="w-4 h-4 text-foreground" />
+            <ChevronLeft className="w-4 h-4 text-white" />
           </button>
         </div>
         <div className="absolute top-3 right-4 z-50 safe-top">

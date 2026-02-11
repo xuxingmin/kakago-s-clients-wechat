@@ -83,7 +83,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
               <div 
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                 style={{
-                  animation: "shimmerFlag 2s ease-in-out infinite",
+                  animation: "shimmer 2s ease-in-out infinite",
                   animationDelay: `${index * 0.3}s`,
                 }}
               />
@@ -91,7 +91,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
             
             {/* 旗杆 */}
             <div 
-              className={`w-0.5 bg-gradient-to-b from-muted-foreground/50 to-muted-foreground/20 rounded-b-full ${
+              className={`w-0.5 bg-gradient-to-b from-white/50 to-white/20 rounded-b-full ${
                 isLarge ? "h-3" : "h-2"
               }`}
             />
@@ -104,7 +104,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
         <span className="text-[10px] font-bold text-primary animate-pulse">
           GO!
         </span>
-        <span className="text-[9px] text-muted-foreground">
+        <span className="text-[9px] text-white/40">
           {t("自动用券", "Auto coupon")}
         </span>
       </div>
@@ -123,7 +123,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           }
         }
         
-        @keyframes shimmerFlag {
+        @keyframes shimmer {
           0%, 100% {
             opacity: 0;
             transform: translateX(-100%);

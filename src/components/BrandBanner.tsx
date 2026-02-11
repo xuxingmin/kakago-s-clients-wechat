@@ -14,14 +14,14 @@ export const BrandBanner = () => {
   const totalCoupons = userCoupons.length;
 
   return (
-    <section className="px-4 pt-4 pb-3 bg-background">
+    <section className="px-4 pt-3 pb-2 hero-reveal bg-background">
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">KAKAGO</h1>
-            <Sparkles className="w-4 h-4 text-primary" />
+            <h1 className="text-2xl font-bold text-white tracking-tight">KAKAGO</h1>
+            <Sparkles className="w-4 h-4 text-primary/60 float-subtle" />
           </div>
-          <p className="text-sm text-muted-foreground mt-0.5 font-light">
+          <p className="text-sm text-white/80 mt-0.5 font-light">
             {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
           </p>
         </div>

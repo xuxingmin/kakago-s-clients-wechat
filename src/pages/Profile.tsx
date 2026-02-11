@@ -119,12 +119,12 @@ const Profile = () => {
   ];
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-background">
+    <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <div className="h-px bg-border mx-4" />
+        <div className="fog-divider mx-4" />
       </div>
 
       {/* 可滚动中间区域 */}
@@ -135,15 +135,15 @@ const Profile = () => {
             {/* Left Card - User Profile */}
             <button
               onClick={() => setIdentityModalOpen(true)}
-              className="bg-card rounded-2xl border border-border p-3 text-left hover:border-primary/30 transition-all"
+              className="card-md text-left"
             >
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
                   <Coffee className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xs font-semibold text-foreground truncate">{userName}</h2>
-                  <div className="text-[9px] text-muted-foreground flex items-center gap-0.5">
+                  <h2 className="text-xs font-semibold text-white truncate">{userName}</h2>
+                  <div className="text-[9px] text-white/50 flex items-center gap-0.5">
                     <span>{t("点击认证", "Tap to verify")}</span>
                     <ChevronRight className="w-2 h-2" />
                   </div>
@@ -158,7 +158,7 @@ const Profile = () => {
                     return (
                       <span 
                         key={index}
-                        className={`inline-flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full bg-secondary ${badge.color}`}
+                        className={`inline-flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full bg-secondary/50 ${badge.color}`}
                       >
                         <IconComponent className="w-2 h-2" />
                         {badge.label}
@@ -166,7 +166,7 @@ const Profile = () => {
                     );
                   })
                 ) : (
-                  <span className="text-[9px] text-muted-foreground px-1.5 py-0.5 rounded-full bg-secondary">
+                  <span className="text-[9px] text-white/40 px-1.5 py-0.5 rounded-full bg-secondary/50">
                     {t("未认证", "Not verified")}
                   </span>
                 )}
@@ -176,29 +176,29 @@ const Profile = () => {
             {/* Right Card - My Squad */}
             <button
               onClick={() => navigate("/my-squad")}
-              className="bg-card rounded-2xl border border-border p-3 text-left hover:border-primary/30 transition-all"
+              className="card-md text-left"
             >
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
                   <Users className="w-3.5 h-3.5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xs font-semibold text-foreground">{t("拉帮结派", "My Squad")}</h3>
-                  <p className="text-[9px] text-muted-foreground">{t("邀请返佣", "Invite & Earn")}</p>
+                  <h3 className="text-xs font-semibold text-white">{t("拉帮结派", "My Squad")}</h3>
+                  <p className="text-[9px] text-white/50">{t("邀请返佣", "Invite & Earn")}</p>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[9px] text-muted-foreground">{t("累计收益", "Earnings")}</p>
+                  <p className="text-[9px] text-white/40">{t("累计收益", "Earnings")}</p>
                   <span className="text-base font-black text-primary">¥1,240</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="text-right">
-                    <p className="text-xs font-bold text-foreground">348</p>
-                    <p className="text-[9px] text-muted-foreground">{t("队员", "Members")}</p>
+                    <p className="text-xs font-bold text-white">348</p>
+                    <p className="text-[9px] text-white/40">{t("队员", "Members")}</p>
                   </div>
-                  <div className="flex items-center gap-0.5 text-green-600">
+                  <div className="flex items-center gap-0.5 text-green-400">
                     <TrendingUp className="w-2.5 h-2.5" />
                     <span className="text-[10px] font-bold">+12</span>
                   </div>
@@ -217,17 +217,17 @@ const Profile = () => {
                 <button
                   key={item.labelZh}
                   onClick={item.onClick}
-                  className="bg-card rounded-2xl border border-border p-3 flex items-center justify-between hover:border-primary/30 transition-all"
+                  className="card-sm flex items-center justify-between"
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center">
                       <IconComponent className="w-4 h-4 text-primary" />
                     </div>
-                    <span className="text-xs font-medium text-foreground">{t(item.labelZh, item.labelEn)}</span>
+                    <span className="text-xs font-medium text-white">{t(item.labelZh, item.labelEn)}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-base font-bold text-primary">{item.value}</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+                    <ChevronRight className="w-3.5 h-3.5 text-white/30" />
                   </div>
                 </button>
               );
@@ -237,25 +237,25 @@ const Profile = () => {
 
         {/* Menu List */}
         <section className="px-4 mt-3 max-w-md mx-auto">
-          <div className="bg-card rounded-2xl border border-border overflow-hidden">
+          <div className="card-lg !p-0 overflow-hidden">
             {menuItems.map((item, index) => {
               const IconComponent = item.Icon;
               return (
                 <button
                   key={item.labelZh}
                   onClick={item.onClick}
-                  className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-secondary/50 transition-colors ${
-                    index !== menuItems.length - 1 ? "border-b border-border" : ""
+                  className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-white/5 transition-colors ${
+                    index !== menuItems.length - 1 ? "border-b border-white/10" : ""
                   }`}
                 >
                   <div className="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center">
                     <IconComponent className="w-4 h-4 text-primary" />
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-medium text-foreground text-xs">{t(item.labelZh, item.labelEn)}</p>
-                    <p className="text-[10px] text-muted-foreground">{t(item.descZh, item.descEn)}</p>
+                    <p className="font-medium text-white text-xs">{t(item.labelZh, item.labelEn)}</p>
+                    <p className="text-[10px] text-white/50">{t(item.descZh, item.descEn)}</p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                  <ChevronRight className="w-4 h-4 text-white/40" />
                 </button>
               );
             })}
@@ -263,7 +263,7 @@ const Profile = () => {
         </section>
 
         {/* Version Footer */}
-        <p className="text-center text-[10px] text-muted-foreground mt-4 pb-4">
+        <p className="text-center text-[10px] text-white/30 mt-4 pb-4">
           KAKAGO v1.0.0
         </p>
       </div>
