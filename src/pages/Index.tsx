@@ -1,4 +1,4 @@
-import { Plus, Flame, Coffee, Leaf, Award, Check, CupSoda } from "lucide-react";
+import { Coffee, Leaf, Award } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -6,6 +6,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Coupon } from "@/components/CouponFlags";
 import { MiniCartBar } from "@/components/MiniCartBar";
+import { CompactProductCard } from "@/components/CompactProductCard";
+import { CreativeProductCard } from "@/components/CreativeProductCard";
 import { toast } from "sonner";
 
 // Import coffee images
@@ -13,6 +15,10 @@ import coffeeLatte from "@/assets/coffee-latte.jpg";
 import coffeeAmericano from "@/assets/coffee-americano.jpg";
 import coffeeCappuccino from "@/assets/coffee-cappuccino.jpg";
 import coffeeFlatWhite from "@/assets/coffee-flatwhite.jpg";
+import coffeeDirty from "@/assets/coffee-dirty.jpg";
+import coffeeMatcha from "@/assets/coffee-matcha.jpg";
+import coffeeCoconut from "@/assets/coffee-coconut.jpg";
+import coffeeRose from "@/assets/coffee-rose.jpg";
 
 // 用户可用优惠券（测试数据）
 const userCoupons: Coupon[] = [
@@ -21,11 +27,10 @@ const userCoupons: Coupon[] = [
   { id: "c3", type: "americano", value: 2, applicableProducts: ["hot-americano", "iced-americano"] },
 ];
 
-// 预估配送费（基于LBS）
 const ESTIMATED_DELIVERY_FEE = 2;
 
-// 产品数据 - 6款精选咖啡 (bilingual)
-const products = [
+// 经典咖啡 - 紧凑卡片
+const classicProducts = [
   {
     id: "hot-americano",
     nameZh: "热美式",
@@ -35,7 +40,6 @@ const products = [
     tagLine1Negative: ["烟蒂味", "刷锅水", "纸杯味"],
     tagLine2: "油脂完整 醇厚回甘",
     tagLine2En: "Rich crema, smooth finish",
-    tagType: "positive",
     isHot: true,
   },
   {
@@ -47,7 +51,6 @@ const products = [
     tagLine1Negative: ["氧化宿味", "淡如寡水"],
     tagLine2: "酸质明亮 清脆鲜爽",
     tagLine2En: "Bright acidity, crisp & fresh",
-    tagType: "positive",
   },
   {
     id: "hot-latte",
@@ -58,7 +61,6 @@ const products = [
     tagLine1Negative: ["粗糙奶泡", "焦苦杂味"],
     tagLine2: "奶泡绵密 丝滑平衡",
     tagLine2En: "Silky foam, perfectly balanced",
-    tagType: "positive",
     isHot: true,
   },
   {
@@ -70,7 +72,6 @@ const products = [
     tagLine1Negative: ["奶腻齁甜", "水乳分离"],
     tagLine2: "坚果韵律 清晰透亮",
     tagLine2En: "Nutty notes, crystal clear",
-    tagType: "positive",
   },
   {
     id: "cappuccino",
@@ -81,7 +82,6 @@ const products = [
     tagLine1Negative: ["空气口感", "咖味寡淡"],
     tagLine2: "结构蓬松 啡味穿透",
     tagLine2En: "Fluffy structure, bold flavor",
-    tagType: "positive",
   },
   {
     id: "flat-white",
@@ -92,11 +92,55 @@ const products = [
     tagLine1Negative: ["非拿铁", "厚奶盖", "单浓缩"],
     tagLine2: "极薄奶沫 致密醇厚",
     tagLine2En: "Thin microfoam, rich & dense",
-    tagType: "positive",
   },
 ];
 
-// 计算产品的最佳优惠
+// 创意特调 - 大图卡片
+const creativeProducts = [
+  {
+    id: "dirty-coffee",
+    nameZh: "脏脏咖啡",
+    nameEn: "Dirty Coffee",
+    price: 18,
+    image: coffeeDirty,
+    descZh: "巧克力瀑布 · 浓缩碰撞冰牛乳",
+    descEn: "Chocolate cascade · espresso meets iced milk",
+  },
+  {
+    id: "matcha-latte",
+    nameZh: "抹茶拿铁",
+    nameEn: "Matcha Latte",
+    price: 18,
+    image: coffeeMatcha,
+    descZh: "宇治抹茶 · 丝滑牛乳交融",
+    descEn: "Uji matcha · silky milk fusion",
+  },
+  {
+    id: "coconut-latte",
+    nameZh: "生椰拿铁",
+    nameEn: "Coconut Latte",
+    price: 16,
+    image: coffeeCoconut,
+    descZh: "鲜榨椰浆 · 热带风味咖啡",
+    descEn: "Fresh coconut milk · tropical coffee",
+  },
+  {
+    id: "rose-latte",
+    nameZh: "玫瑰拿铁",
+    nameEn: "Rose Latte",
+    price: 18,
+    image: coffeeRose,
+    descZh: "重瓣玫瑰 · 花香萦绕奶咖",
+    descEn: "Damask rose · floral milk coffee",
+  },
+];
+
+// All products combined for cart logic
+const allProducts = [
+  ...classicProducts.map(p => ({ id: p.id, nameZh: p.nameZh, nameEn: p.nameEn, price: p.price, image: p.image })),
+  ...creativeProducts.map(p => ({ id: p.id, nameZh: p.nameZh, nameEn: p.nameEn, price: p.price, image: p.image })),
+];
+
 const getBestCouponDiscount = (productId: string): number => {
   const applicableCoupons = userCoupons.filter((coupon) => {
     if (coupon.type === "universal") return true;
@@ -107,7 +151,6 @@ const getBestCouponDiscount = (productId: string): number => {
   return Math.max(...applicableCoupons.map(c => c.value));
 };
 
-// 计算预估到手价
 const getEstimatedPrice = (originalPrice: number, productId: string): number => {
   const couponDiscount = getBestCouponDiscount(productId);
   return Math.max(0, originalPrice - couponDiscount) + ESTIMATED_DELIVERY_FEE;
@@ -117,7 +160,7 @@ const Index = () => {
   const { t } = useLanguage();
   const { items, addItem } = useCart();
 
-  const handleAddToCart = (product: typeof products[0], e: React.MouseEvent) => {
+  const handleAddToCart = (product: { id: string; nameZh: string; nameEn: string; price: number; image: string }, e: React.MouseEvent) => {
     e.stopPropagation();
     addItem({
       id: product.id,
@@ -163,7 +206,7 @@ const Index = () => {
 
       {/* 可滚动中间区域 */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        {/* Product Grid */}
+        {/* Classic Product Grid - 紧凑卡片 */}
         <section className="px-4 py-2">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-sm font-medium text-white/60">
@@ -173,103 +216,78 @@ const Index = () => {
               {t("硬核咖啡因", "Hardcore Caffeine")}
             </span>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
-            {products.map((product) => {
-              const couponDiscount = getBestCouponDiscount(product.id);
-              const hasCoupon = couponDiscount > 0;
-              const estimatedPrice = getEstimatedPrice(product.price, product.id);
-              const quantityInCart = getQuantityInCart(product.id);
-              
-              return (
-                <div
-                  key={product.id}
-                  className="group card-md text-left relative flex flex-col justify-between min-h-[72px] py-1.5 px-2.5"
-                >
-                  {/* 顶部：商品名 + 价格 */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-baseline gap-1 flex-1 min-w-0">
-                      <h3 className="font-semibold text-white text-sm leading-tight">
-                        {t(product.nameZh, product.nameEn)}
-                      </h3>
-                      {product.isHot && (
-                        <Flame className="w-3 h-3 text-primary/60 flex-shrink-0" />
-                      )}
-                    </div>
-                    <div className="flex items-start gap-1 flex-shrink-0">
-                      <span className="text-white/60 text-[9px] mt-[5px] font-medium">
-                        预估到手
-                      </span>
-                      <span className="text-white font-bold text-lg drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
-                        ¥{estimatedPrice}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* 中间：标签 */}
-                  <div className="space-y-0">
-                    {/* 第一行标签 - 雾灰色 */}
-                    <div className="flex items-center gap-1.5 text-[10px]">
-                      {(product as any).tagLine1Negative ? (
-                        (product as any).tagLine1Negative.map((tag: string, idx: number) => (
-                          <span key={idx} className="flex items-center gap-0.5 text-muted-foreground/70">
-                            <span className="text-[8px]">✕</span>{tag}
-                          </span>
-                        ))
-                      ) : (product as any).tagLine1 ? (
-                        (product as any).tagLine1.map((tag: string, idx: number) => (
-                          <span key={idx} className="text-muted-foreground/70">{tag}</span>
-                        ))
-                      ) : null}
-                    </div>
-                    {/* 第二行标签 - 白色文字 */}
-                    {(product as any).tagLine2 && (
-                      <div className="flex items-center gap-1 text-[10px] text-white/80">
-                        <span>{t((product as any).tagLine2, (product as any).tagLine2En)}</span>
-                        <Check className="w-3 h-3 text-primary" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* 底部：交易明细 + 按钮 */}
-                  <div className="flex items-center justify-between gap-2">
-                    {/* 交易明细 - 容量 + 原价划线 */}
-                    <div className="flex items-center gap-1.5 text-[9px] text-white/40 flex-1 min-w-0">
-                      <span className="flex items-center gap-0.5 whitespace-nowrap">
-                        <CupSoda className="w-2.5 h-2.5" />360ml
-                      </span>
-                      <span className="whitespace-nowrap">
-                        原价 <span className="line-through">¥</span>{product.price}
-                      </span>
-                    </div>
-                    
-                    {/* 加号按钮 - 紫色渐变圆形 */}
-                    <button
-                      onClick={(e) => handleAddToCart(product, e)}
-                      style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
-                      className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
-                        quantityInCart > 0 
-                          ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30" 
-                          : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
-                      }`}
-                    >
-                      {quantityInCart > 0 ? (
-                        <span className="text-xs font-bold">{quantityInCart}</span>
-                      ) : (
-                        <Plus className="w-4 h-4" strokeWidth={2} />
-                      )}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+            {classicProducts.map((product) => (
+              <CompactProductCard
+                key={product.id}
+                product={product}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                quantityInCart={getQuantityInCart(product.id)}
+                onAddToCart={(e) => handleAddToCart(product, e)}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Creative Products - 大图卡片 */}
+        <section className="px-4 pt-1 pb-2">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-medium text-white/60">
+              {t("创意特调", "Creative Specials")}
+            </h2>
+            <span className="text-[11px] text-white/30">
+              {t("灵感碰撞", "Inspired Blends")}
+            </span>
+          </div>
+
+          {/* Masonry-like layout: 1 large + 1 medium, then 2 small */}
+          <div className="grid grid-cols-5 gap-1.5">
+            {/* Row 1: Large card (3/5) + Medium card (2/5) */}
+            <div className="col-span-3">
+              <CreativeProductCard
+                product={creativeProducts[0]}
+                estimatedPrice={getEstimatedPrice(creativeProducts[0].price, creativeProducts[0].id)}
+                quantityInCart={getQuantityInCart(creativeProducts[0].id)}
+                onAddToCart={(e) => handleAddToCart(creativeProducts[0], e)}
+                size="large"
+              />
+            </div>
+            <div className="col-span-2">
+              <CreativeProductCard
+                product={creativeProducts[1]}
+                estimatedPrice={getEstimatedPrice(creativeProducts[1].price, creativeProducts[1].id)}
+                quantityInCart={getQuantityInCart(creativeProducts[1].id)}
+                onAddToCart={(e) => handleAddToCart(creativeProducts[1], e)}
+                size="large"
+              />
+            </div>
+
+            {/* Row 2: Two equal cards */}
+            <div className="col-span-2">
+              <CreativeProductCard
+                product={creativeProducts[2]}
+                estimatedPrice={getEstimatedPrice(creativeProducts[2].price, creativeProducts[2].id)}
+                quantityInCart={getQuantityInCart(creativeProducts[2].id)}
+                onAddToCart={(e) => handleAddToCart(creativeProducts[2], e)}
+                size="medium"
+              />
+            </div>
+            <div className="col-span-3">
+              <CreativeProductCard
+                product={creativeProducts[3]}
+                estimatedPrice={getEstimatedPrice(creativeProducts[3].price, creativeProducts[3].id)}
+                quantityInCart={getQuantityInCart(creativeProducts[3].id)}
+                onAddToCart={(e) => handleAddToCart(creativeProducts[3], e)}
+                size="medium"
+              />
+            </div>
           </div>
         </section>
 
         {/* Certification Footer */}
         <section className="px-4 pt-2 pb-4">
           <div className="flex items-center justify-between gap-2">
-            {/* 左侧认证图标 */}
             <div className="flex items-center gap-2 text-white/25">
               <div className="flex items-center gap-0.5" title="La Marzocco">
                 <Coffee className="w-3 h-3" />
@@ -289,8 +307,7 @@ const Index = () => {
                 <span className="text-[8px]">🌱</span>
               </div>
             </div>
-            
-            {/* 右侧服务状态 */}
+
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               <span className="text-[10px] text-white/25">
@@ -303,8 +320,8 @@ const Index = () => {
 
       {/* 固定底部区域 */}
       <div className="flex-shrink-0">
-        <MiniCartBar 
-          estimatedTotal={getCartEstimatedTotal()} 
+        <MiniCartBar
+          estimatedTotal={getCartEstimatedTotal()}
           couponDiscount={getCartCouponDiscount()}
           deliveryFee={ESTIMATED_DELIVERY_FEE}
         />
