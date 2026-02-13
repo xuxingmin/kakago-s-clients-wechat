@@ -1,4 +1,4 @@
-import { Coffee, Leaf, Award } from "lucide-react";
+import { Coffee, Leaf, Award, Flame, Snowflake, CloudRain, Sun, Sparkles, TreePalm, Flower2, CupSoda } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -27,16 +27,16 @@ const userCoupons: Coupon[] = [
 const ESTIMATED_DELIVERY_FEE = 2;
 
 const allProducts: ProductTileData[] = [
-  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
-  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
-  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced" },
-  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
-  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
-  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
-  { id: "dirty-coffee", nameZh: "脏脏咖啡", nameEn: "Dirty Coffee", price: 18, image: coffeeDirty, descZh: "巧克力瀑布 · 浓缩碰撞冰牛乳", descEn: "Chocolate cascade meets iced milk" },
-  { id: "matcha-latte", nameZh: "抹茶拿铁", nameEn: "Matcha Latte", price: 18, image: coffeeMatcha, descZh: "宇治抹茶 · 丝滑牛乳交融", descEn: "Uji matcha · silky milk fusion" },
-  { id: "coconut-latte", nameZh: "生椰拿铁", nameEn: "Coconut Latte", price: 16, image: coffeeCoconut, descZh: "鲜榨椰浆 · 热带风味咖啡", descEn: "Fresh coconut · tropical coffee" },
-  { id: "rose-latte", nameZh: "玫瑰拿铁", nameEn: "Rose Latte", price: 18, image: coffeeRose, descZh: "重瓣玫瑰 · 花香萦绕奶咖", descEn: "Damask rose · floral milk coffee" },
+  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Flame, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
+  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
+  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced" },
+  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: CloudRain, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
+  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: Sun, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
+  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: CupSoda, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
+  { id: "dirty-coffee", nameZh: "脏脏咖啡", nameEn: "Dirty Coffee", price: 18, image: coffeeDirty, icon: Sparkles, descZh: "巧克力瀑布 · 浓缩碰撞冰牛乳", descEn: "Chocolate cascade meets iced milk" },
+  { id: "matcha-latte", nameZh: "抹茶拿铁", nameEn: "Matcha Latte", price: 18, image: coffeeMatcha, icon: Leaf, descZh: "宇治抹茶 · 丝滑牛乳交融", descEn: "Uji matcha · silky milk fusion" },
+  { id: "coconut-latte", nameZh: "生椰拿铁", nameEn: "Coconut Latte", price: 16, image: coffeeCoconut, icon: TreePalm, descZh: "鲜榨椰浆 · 热带风味咖啡", descEn: "Fresh coconut · tropical coffee" },
+  { id: "rose-latte", nameZh: "玫瑰拿铁", nameEn: "Rose Latte", price: 18, image: coffeeRose, icon: Flower2, descZh: "重瓣玫瑰 · 花香萦绕奶咖", descEn: "Damask rose · floral milk coffee" },
 ];
 
 const getBestCouponDiscount = (productId: string): number => {
@@ -90,7 +90,6 @@ const Index = () => {
                 estimatedPrice={getEstimatedPrice(product.price, product.id)}
                 quantityInCart={qty(product.id)}
                 onAddToCart={(e) => add(product, e)}
-                variant={product.descZh ? "image-square" : "compact"}
               />
             ))}
           </div>
