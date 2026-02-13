@@ -26,7 +26,6 @@ const userCoupons: Coupon[] = [
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
-// ═══════ ALL 10 PRODUCTS ═══════
 const allProducts: ProductTileData[] = [
   { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
   { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
@@ -41,14 +40,12 @@ const allProducts: ProductTileData[] = [
 ];
 
 const getBestCouponDiscount = (productId: string): number => {
-  const applicableCoupons = userCoupons.filter((c) => c.type === "universal" || c.applicableProducts?.includes(productId));
-  return applicableCoupons.length === 0 ? 0 : Math.max(...applicableCoupons.map(c => c.value));
+  const applicable = userCoupons.filter((c) => c.type === "universal" || c.applicableProducts?.includes(productId));
+  return applicable.length === 0 ? 0 : Math.max(...applicable.map(c => c.value));
 };
 
 const getEstimatedPrice = (price: number, id: string): number =>
   Math.max(0, price - getBestCouponDiscount(id)) + ESTIMATED_DELIVERY_FEE;
-
-const p = (id: string) => allProducts.find(x => x.id === id)!;
 
 const Index = () => {
   const { t } = useLanguage();
@@ -61,25 +58,10 @@ const Index = () => {
   };
 
   const qty = (id: string) => items.find(i => i.id === id)?.quantity || 0;
-  const est = (product: ProductTileData) => getEstimatedPrice(product.price, product.id);
 
   const cartSubtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const cartDiscount = items.length === 0 ? 0 : (userCoupons.length > 0 ? Math.max(...userCoupons.map(c => c.value)) : 0);
   const cartTotal = items.length === 0 ? 0 : Math.max(0, cartSubtotal - cartDiscount) + ESTIMATED_DELIVERY_FEE;
-
-  // Helper to render a tile
-  const tile = (id: string, variant: "image-tall" | "image-wide" | "image-square" | "compact" | "compact-highlight") => {
-    const product = p(id);
-    return (
-      <ProductTile
-        product={product}
-        estimatedPrice={est(product)}
-        quantityInCart={qty(id)}
-        onAddToCart={(e) => add(product, e)}
-        variant={variant}
-      />
-    );
-  };
 
   return (
     <div className="h-screen flex flex-col page-enter overflow-hidden">
@@ -90,8 +72,8 @@ const Index = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <section className="px-3 py-2">
-          <div className="flex items-center justify-between mb-2 px-1">
+        <section className="px-4 py-2">
+          <div className="flex items-center justify-between mb-2">
             <h2 className="text-sm font-medium text-white/60">
               {t("灵感燃料库", "Inspiration Fuel")}
             </h2>
@@ -100,58 +82,20 @@ const Index = () => {
             </span>
           </div>
 
-          {/* ═══════ DYNAMIC MIXED GRID ═══════
-              A rhythm of image + compact tiles that feels alive.
-              Grid: 6 columns for maximum flexibility
-          */}
-          <div className="grid grid-cols-6 gap-1.5 stagger-fade-in">
-
-            {/* Row 1: Hot Americano (compact 3col) + Dirty Coffee image (3col tall) */}
-            <div className="col-span-3">
-              {tile("hot-americano", "compact-highlight")}
-            </div>
-            <div className="col-span-3 row-span-2">
-              {tile("dirty-coffee", "image-tall")}
-            </div>
-
-            {/* Row 2: Iced Americano (compact 3col, beside dirty-coffee) */}
-            <div className="col-span-3">
-              {tile("iced-americano", "compact")}
-            </div>
-
-            {/* Row 3: Matcha wide image (4col) + Hot Latte compact (2col) */}
-            <div className="col-span-4">
-              {tile("matcha-latte", "image-wide")}
-            </div>
-            <div className="col-span-2">
-              {tile("hot-latte", "compact")}
-            </div>
-
-            {/* Row 4: Iced Latte compact (2col) + Coconut image (4col) */}
-            <div className="col-span-2">
-              {tile("iced-latte", "compact")}
-            </div>
-            <div className="col-span-4">
-              {tile("coconut-latte", "image-wide")}
-            </div>
-
-            {/* Row 5: Rose image (3col) + Cappuccino image (3col) */}
-            <div className="col-span-3">
-              {tile("rose-latte", "image-square")}
-            </div>
-            <div className="col-span-3">
-              {tile("cappuccino", "image-square")}
-            </div>
-
-            {/* Row 6: Flat White wide image (full width) */}
-            <div className="col-span-6">
-              {tile("flat-white", "image-wide")}
-            </div>
-
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
+            {allProducts.map((product) => (
+              <ProductTile
+                key={product.id}
+                product={product}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                quantityInCart={qty(product.id)}
+                onAddToCart={(e) => add(product, e)}
+                variant={product.descZh ? "image-square" : "compact"}
+              />
+            ))}
           </div>
         </section>
 
-        {/* Certification Footer */}
         <section className="px-4 pt-2 pb-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-white/25">
