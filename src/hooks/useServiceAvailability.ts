@@ -15,7 +15,39 @@ interface ServiceStatus {
     latitude: number;
     longitude: number;
   };
+  locationName: string;
+  locationLoading: boolean;
 }
+
+const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=zh&zoom=16`,
+      { headers: { "User-Agent": "KAKAGO-App/1.0" } }
+    );
+    if (!res.ok) return "";
+    const data = await res.json();
+    const addr = data.address;
+    // Try to build a short, meaningful name
+    const parts = [
+      addr?.neighbourhood,
+      addr?.commercial,
+      addr?.suburb,
+      addr?.city_district,
+      addr?.town,
+      addr?.city,
+    ].filter(Boolean);
+    // Return first meaningful part, or display_name truncated
+    if (parts.length > 0) {
+      // Prefer neighbourhood/commercial + suburb combo
+      const short = parts.slice(0, 2).join(" · ");
+      return short;
+    }
+    return data.display_name?.split(",").slice(0, 2).join(" ") || "";
+  } catch {
+    return "";
+  }
+};
 
 export const useServiceAvailability = () => {
   const [status, setStatus] = useState<ServiceStatus>({
@@ -23,41 +55,51 @@ export const useServiceAvailability = () => {
     isLoading: true,
     error: null,
     nearbyMerchantCount: 0,
+    locationName: "",
+    locationLoading: true,
   });
 
   const checkAvailability = useCallback(async (lat: number, lng: number) => {
-    setStatus((prev) => ({ ...prev, isLoading: true, error: null }));
+    setStatus((prev) => ({ ...prev, isLoading: true, error: null, locationLoading: true }));
 
-    try {
-      const { data, error } = await supabase.functions.invoke("check-service", {
+    // Run service check and reverse geocoding in parallel
+    const [serviceResult, locationName] = await Promise.all([
+      supabase.functions.invoke("check-service", {
         body: { latitude: lat, longitude: lng, radius: 2000 },
-      });
+      }).then(({ data, error }) => {
+        if (error) throw error;
+        return data;
+      }).catch((err) => {
+        console.error("Failed to check service availability:", err);
+        return null;
+      }),
+      reverseGeocode(lat, lng),
+    ]);
 
-      if (error) {
-        throw error;
-      }
-
+    if (serviceResult) {
       setStatus({
-        isAvailable: data.isAvailable,
+        isAvailable: serviceResult.isAvailable,
         isLoading: false,
         error: null,
-        nearbyMerchantCount: data.nearbyMerchantCount,
-        nearestMerchant: data.nearestMerchant,
+        nearbyMerchantCount: serviceResult.nearbyMerchantCount,
+        nearestMerchant: serviceResult.nearestMerchant,
         userLocation: { latitude: lat, longitude: lng },
+        locationName: locationName || "当前位置",
+        locationLoading: false,
       });
-    } catch (err) {
-      console.error("Failed to check service availability:", err);
+    } else {
       setStatus((prev) => ({
         ...prev,
         isLoading: false,
-        error: err instanceof Error ? err.message : "Failed to check service",
+        error: "Failed to check service",
+        locationName: locationName || "当前位置",
+        locationLoading: false,
       }));
     }
   }, []);
 
   const getUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
-      // Fallback to default location (Swan Lake CBD, Hefei)
       checkAvailability(31.8206, 117.2272);
       return;
     }
@@ -68,13 +110,12 @@ export const useServiceAvailability = () => {
       },
       (error) => {
         console.warn("Geolocation error:", error.message);
-        // Fallback to default location
         checkAvailability(31.8206, 117.2272);
       },
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 300000, // Cache for 5 minutes
+        maximumAge: 300000,
       }
     );
   }, [checkAvailability]);

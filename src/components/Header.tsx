@@ -1,10 +1,12 @@
 import { MapPin, MoreHorizontal, ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ServiceStatusBadge } from "@/components/ServiceStatusBadge";
+import { useServiceAvailability } from "@/hooks/useServiceAvailability";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const { language, toggleLanguage, t } = useLanguage();
+  const { locationName, locationLoading } = useServiceAvailability();
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
@@ -47,7 +49,7 @@ export const Header = () => {
           <div className="flex items-center gap-1 text-white/90 truncate">
             <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
             <span className="text-[13px] font-medium truncate">
-              {t("天鹅湖CBD", "Swan Lake CBD")}
+              {locationLoading ? t("定位中…", "Locating…") : (locationName || t("当前位置", "Current Location"))}
             </span>
           </div>
         </div>
