@@ -16,19 +16,19 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     return (
       <nav
         ref={ref}
-        className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-xl border-t border-white/5 safe-bottom z-50"
+        className="fixed bottom-0 left-0 right-0 bg-white border-t border-border safe-bottom z-50"
         {...props}
       >
-        <div className="flex justify-around items-center h-16 max-w-md mx-auto">
+        <div className="flex justify-around items-center h-14 max-w-md mx-auto">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center gap-1 px-8 py-2 min-h-[52px] transition-all duration-200 active:scale-95 ${
+                `flex flex-col items-center justify-center gap-0.5 px-8 py-1.5 min-h-[48px] transition-colors ${
                   isActive
                     ? "text-primary"
-                    : "text-white/40 hover:text-white/60"
+                    : "text-muted-foreground"
                 }`
               }
             >
@@ -37,12 +37,9 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
                   <item.icon
                     size={22}
                     strokeWidth={isActive ? 2 : 1.5}
-                    className={`transition-all duration-200 ${
-                      isActive ? "drop-shadow-[0_0_8px_rgba(127,0,255,0.5)]" : ""
-                    }`}
                   />
-                  <span className={`text-[10px] transition-all duration-200 ${
-                    isActive ? "font-medium" : "font-normal"
+                  <span className={`text-[10px] ${
+                    isActive ? "font-semibold" : "font-normal"
                   }`}>
                     {t(item.labelZh, item.labelEn)}
                   </span>
