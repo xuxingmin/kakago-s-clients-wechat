@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, MapPin, Navigation, Loader2, Building2, ChevronRight } from "lucide-react";
+import { X, MapPin, Navigation, Loader2, Building2 } from "lucide-react";
 import { Address } from "@/contexts/AddressContext";
 import { useLocationDetect, NearbyPOI } from "@/hooks/useLocationDetect";
 
@@ -40,7 +40,6 @@ export const AddressForm = ({
   const [gender, setGender] = useState<"mr" | "ms">("mr");
   const [tag, setTag] = useState<string>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showPOIPicker, setShowPOIPicker] = useState(false);
   const { loading, pois, showList, setShowList, error: locationError, detect } = useLocationDetect();
 
   const validateForm = () => {
@@ -64,7 +63,6 @@ export const AddressForm = ({
   };
 
   const handleAddressRowClick = () => {
-    setShowPOIPicker(true);
     if (pois.length === 0) {
       detect();
     } else {
@@ -92,12 +90,9 @@ export const AddressForm = ({
       return next;
     });
     setShowList(false);
-    setShowPOIPicker(false);
   };
 
-  const addressDisplay = formData.detail
-    ? formData.detail
-    : "";
+  const addressDisplay = formData.detail || "";
   const addressSubline = formData.detail
     ? [formData.province, formData.city, formData.district].filter(Boolean).join("")
     : "";
@@ -119,7 +114,7 @@ export const AddressForm = ({
         }`}
         style={{ height: "92vh" }}
       >
-        <div className="bg-background rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden">
+        <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden">
           {/* Handle */}
           <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
             <div className="w-10 h-1 bg-border rounded-full" />
@@ -138,44 +133,45 @@ export const AddressForm = ({
             </button>
           </div>
 
-          {/* Map placeholder area */}
-          <div className="flex-shrink-0 relative h-40 bg-secondary/50 overflow-hidden mx-5 rounded-2xl mb-3">
-            <div className="absolute inset-0 flex items-center justify-center">
-              {loading ? (
-                <div className="flex flex-col items-center gap-2">
-                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                  <span className="text-xs text-muted-foreground">正在定位...</span>
-                </div>
-              ) : formData.latitude && formData.longitude ? (
-                <div className="flex flex-col items-center gap-1">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-primary" />
+          {/* Scrollable content — everything in one flat scroll */}
+          <div className="flex-1 overflow-y-auto px-5 pb-4">
+            {/* Map / Location area */}
+            <div className="relative h-36 bg-secondary/50 rounded-2xl mb-3 overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                {loading ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                    <span className="text-xs text-muted-foreground">正在定位...</span>
                   </div>
-                  <span className="text-xs text-muted-foreground mt-1">
-                    {formData.district || "已定位"}
-                  </span>
-                </div>
-              ) : (
-                <button
-                  onClick={handleAddressRowClick}
-                  className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
-                >
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Navigation className="w-5 h-5 text-primary" />
+                ) : formData.latitude && formData.longitude ? (
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs text-muted-foreground mt-1">
+                      {formData.district || "已定位"}
+                    </span>
                   </div>
-                  <span className="text-xs text-muted-foreground">点击定位当前位置</span>
-                </button>
+                ) : (
+                  <button
+                    onClick={handleAddressRowClick}
+                    className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Navigation className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs text-muted-foreground">点击定位当前位置</span>
+                  </button>
+                )}
+              </div>
+              {locationError && (
+                <div className="absolute bottom-2 left-2 right-2">
+                  <p className="text-xs text-destructive text-center bg-background/80 rounded-lg py-1 px-2">{locationError}</p>
+                </div>
               )}
             </div>
-            {locationError && (
-              <div className="absolute bottom-2 left-2 right-2">
-                <p className="text-xs text-destructive text-center bg-background/80 rounded-lg py-1 px-2">{locationError}</p>
-              </div>
-            )}
-          </div>
 
-          {/* Form Card */}
-          <div className="flex-1 overflow-y-auto px-5">
+            {/* Form Card */}
             <div className="bg-card rounded-2xl border border-border overflow-hidden divide-y divide-border">
               {/* Address Row - tappable */}
               <button
@@ -230,18 +226,18 @@ export const AddressForm = ({
                 />
                 <div className="flex items-center gap-3 shrink-0">
                   <label className="flex items-center gap-1 cursor-pointer" onClick={() => setGender("mr")}>
-                    <div className={`w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center ${
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
                       gender === "mr" ? "border-primary bg-primary" : "border-muted-foreground/30"
                     }`}>
-                      {gender === "mr" && <div className="w-2 h-2 rounded-full bg-primary-foreground" />}
+                      {gender === "mr" && <div className="w-1.5 h-1.5 rounded-full bg-primary-foreground" />}
                     </div>
                     <span className={`text-sm ${gender === "mr" ? "text-primary font-medium" : "text-muted-foreground"}`}>先生</span>
                   </label>
                   <label className="flex items-center gap-1 cursor-pointer" onClick={() => setGender("ms")}>
-                    <div className={`w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center ${
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
                       gender === "ms" ? "border-primary bg-primary" : "border-muted-foreground/30"
                     }`}>
-                      {gender === "ms" && <div className="w-2 h-2 rounded-full bg-primary-foreground" />}
+                      {gender === "ms" && <div className="w-1.5 h-1.5 rounded-full bg-primary-foreground" />}
                     </div>
                     <span className={`text-sm ${gender === "ms" ? "text-primary font-medium" : "text-muted-foreground"}`}>女士</span>
                   </label>
@@ -305,6 +301,65 @@ export const AddressForm = ({
               </div>
             </div>
 
+            {/* Inline POI list — appears below form card, no separate overlay */}
+            {(showList || loading) && (
+              <div className="mt-3 rounded-2xl border border-border bg-card overflow-hidden">
+                <div className="flex items-center justify-between px-4 pt-3 pb-2">
+                  <span className="text-sm font-semibold text-foreground">选择地点</span>
+                  {showList && (
+                    <button
+                      onClick={() => setShowList(false)}
+                      className="text-xs text-muted-foreground"
+                    >
+                      收起
+                    </button>
+                  )}
+                </div>
+
+                {/* Search hint */}
+                <div className="px-4 pb-2">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-secondary rounded-xl">
+                    <Building2 className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">搜索地点</span>
+                  </div>
+                </div>
+
+                {loading && (
+                  <div className="flex items-center justify-center py-6">
+                    <Loader2 className="w-4 h-4 animate-spin text-primary mr-2" />
+                    <span className="text-sm text-muted-foreground">正在搜索附近地点...</span>
+                  </div>
+                )}
+
+                {!loading && pois.length > 0 && (
+                  <div className="max-h-56 overflow-y-auto divide-y divide-border">
+                    {pois.map((poi, i) => (
+                      <button
+                        key={`${poi.name}-${i}`}
+                        type="button"
+                        onClick={() => handlePOISelect(poi)}
+                        className="w-full flex items-start gap-3 px-4 py-3 hover:bg-secondary/50 active:bg-secondary transition-colors text-left"
+                      >
+                        <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-foreground">{poi.name}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {poi.district} {poi.address}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {!loading && showList && pois.length === 0 && (
+                  <div className="flex items-center justify-center py-6">
+                    <span className="text-sm text-muted-foreground">未找到附近地点</span>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Error messages */}
             {(errors.name || errors.phone || errors.detail) && (
               <div className="mt-2 px-1 space-y-1">
@@ -326,86 +381,6 @@ export const AddressForm = ({
           </div>
         </div>
       </div>
-
-      {/* POI Picker Overlay */}
-      {showPOIPicker && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/40 z-[90]"
-            onClick={() => { setShowPOIPicker(false); setShowList(false); }}
-          />
-          <div className="fixed bottom-0 left-0 right-0 z-[90] max-w-md mx-auto">
-            <div className="bg-card rounded-t-3xl max-h-[60vh] flex flex-col">
-              {/* POI Picker Header */}
-              <div className="flex items-center justify-between px-5 pt-5 pb-3 flex-shrink-0">
-                <button
-                  onClick={() => { setShowPOIPicker(false); setShowList(false); }}
-                  className="text-sm text-muted-foreground"
-                >
-                  取消
-                </button>
-                <span className="text-sm font-semibold text-foreground">选择地点</span>
-                <div className="w-10" />
-              </div>
-
-              {/* Search hint */}
-              <div className="px-5 pb-3 flex-shrink-0">
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-secondary rounded-xl">
-                  <Building2 className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">搜索地点</span>
-                </div>
-              </div>
-
-              {/* Loading */}
-              {loading && (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="w-5 h-5 animate-spin text-primary mr-2" />
-                  <span className="text-sm text-muted-foreground">正在搜索附近地点...</span>
-                </div>
-              )}
-
-              {/* POI List */}
-              {!loading && pois.length > 0 && (
-                <div className="flex-1 overflow-y-auto divide-y divide-border">
-                  {pois.map((poi, i) => (
-                    <button
-                      key={`${poi.name}-${i}`}
-                      type="button"
-                      onClick={() => handlePOISelect(poi)}
-                      className="w-full flex items-start gap-3 px-5 py-3.5 hover:bg-secondary/50 active:bg-secondary transition-colors text-left"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-foreground">{poi.name}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {poi.district} {poi.address}
-                        </p>
-                      </div>
-                      {i === 0 && formData.detail === "" && (
-                        <ChevronRight className="w-4 h-4 text-primary mt-1 shrink-0" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* No results */}
-              {!loading && showList && pois.length === 0 && (
-                <div className="flex items-center justify-center py-8">
-                  <span className="text-sm text-muted-foreground">未找到附近地点</span>
-                </div>
-              )}
-
-              {locationError && (
-                <div className="px-5 pb-4">
-                  <p className="text-xs text-destructive text-center">{locationError}</p>
-                </div>
-              )}
-
-              <div className="safe-bottom" />
-            </div>
-          </div>
-        </>
-      )}
     </>
   );
 };
