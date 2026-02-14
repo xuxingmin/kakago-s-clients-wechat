@@ -94,40 +94,35 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
         </div>
       </div>
 
-      {/* Unified Cart Drawer */}
+      {/* Cart Drawer */}
       {isCartOpen && (
         <>
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" onClick={closeDrawer} />
           <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
-            <div className="bg-gradient-to-t from-black via-[#1a1a1d] to-[#1a1a1d]/95 rounded-t-2xl border-t border-white/10 shadow-2xl max-h-[75vh] overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-t from-black via-[#1a1a1d] to-[#1a1a1d]/95 rounded-t-2xl border-t border-white/10 shadow-2xl max-h-[60vh] overflow-hidden flex flex-col">
+              {/* Drag handle */}
               <div className="flex justify-center pt-2 pb-1">
                 <div className="w-8 h-1 bg-white/20 rounded-full" />
               </div>
 
-              {/* Header */}
+              {/* Header: "已选购商品 (X件)" + 清空购物车 */}
               <div className="flex items-center justify-between px-4 pb-2 border-b border-white/5">
                 <div className="flex items-center gap-2">
-                  {checkoutStep === "payment" && (
-                    <button onClick={() => setCheckoutStep("cart")} className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all">
-                      <ChevronLeft className="w-3.5 h-3.5" />
-                    </button>
-                  )}
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                    <ShoppingCart className="w-3 h-3 text-primary" />
+                  </div>
                   <h3 className="text-white font-medium text-sm">
-                    {checkoutStep === "cart" 
-                      ? `${t("购物车", "Cart")} (${totalItems})`
-                      : t("确认订单", "Confirm Order")}
+                    {t(`已选购商品（${totalItems}件）`, `Selected Items (${totalItems})`)}
                   </h3>
                 </div>
-                <div className="flex items-center gap-2">
-                  {checkoutStep === "cart" && (
-                    <button
-                      onClick={() => { clearCart(); closeDrawer(); }}
-                      className="text-white/40 text-[11px] hover:text-red-400 transition-colors flex items-center gap-1"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                      {t("清空", "Clear")}
-                    </button>
-                  )}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => { clearCart(); closeDrawer(); }}
+                    className="text-white/40 text-[11px] hover:text-red-400 transition-colors flex items-center gap-1"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    {t("清空购物车", "Clear Cart")}
+                  </button>
                   <button
                     onClick={closeDrawer}
                     className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/20 transition-all"
@@ -137,121 +132,145 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
                 </div>
               </div>
 
-              {/* Content Area */}
-              <div className="flex-1 overflow-y-auto">
-                {/* Cart items - always visible */}
-                <div className="px-4 py-2 space-y-1.5">
-                  {items.map((item) => {
-                    const initials = item.nameEn.split(" ").map(word => word[0]).join("").toUpperCase().slice(0, 2);
-                    return (
-                      <div key={item.id} className="flex items-center justify-between bg-white/5 rounded-lg px-2.5 py-2">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-violet-600/10 flex items-center justify-center flex-shrink-0 border border-primary/20 relative">
-                            <Coffee className="w-4 h-4 text-primary/40 absolute" />
-                            <span className="text-[8px] font-bold text-primary relative z-10">{initials}</span>
-                          </div>
-                          <div className="min-w-0">
-                            <h4 className="text-white font-medium text-xs truncate">{t(item.nameZh, item.nameEn)}</h4>
-                            <p className="text-primary text-xs font-semibold">¥{item.price}</p>
-                          </div>
+              {/* Cart Items List */}
+              <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1.5">
+                {items.map((item) => {
+                  const initials = item.nameEn.split(" ").map(word => word[0]).join("").toUpperCase().slice(0, 2);
+                  return (
+                    <div key={item.id} className="flex items-center justify-between bg-white/5 rounded-lg px-2.5 py-2.5">
+                      <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-violet-600/10 flex items-center justify-center flex-shrink-0 border border-primary/20 relative">
+                          <Coffee className="w-5 h-5 text-primary/40 absolute" />
+                          <span className="text-[9px] font-bold text-primary relative z-10">{initials}</span>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={() => item.quantity === 1 ? removeItem(item.id) : updateQuantity(item.id, item.quantity - 1)}
-                            className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all active:scale-95"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="text-white font-semibold w-5 text-center text-xs">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-all active:scale-95"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
+                        <div className="min-w-0">
+                          <h4 className="text-white font-medium text-sm truncate">{t(item.nameZh, item.nameEn)}</h4>
+                          <p className="text-primary text-sm font-bold mt-0.5">¥{item.price}</p>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-
-                {/* Payment section - shown in payment step */}
-                {checkoutStep === "payment" && (
-                  <div className="px-4 py-2 space-y-3">
-                    {/* Delivery address */}
-                    <button className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 text-left">
-                      <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 text-white text-sm">
-                          <span className="font-medium">{defaultAddress.name}</span>
-                          <span className="text-white/50">{defaultAddress.phone}</span>
-                        </div>
-                        <p className="text-[11px] text-white/40 truncate mt-0.5">{defaultAddress.address}</p>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
-                    </button>
-
-                    {/* Price breakdown */}
-                    <div className="bg-white/5 rounded-xl p-3 space-y-1.5">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-white/50">{t("商品金额", "Subtotal")}</span>
-                        <span className="text-white">¥{totalPrice}</span>
-                      </div>
-                      <div className="flex justify-between text-xs">
-                        <span className="text-white/50">{t("优惠券", "Coupon")}</span>
-                        <span className="text-green-400">-¥{couponDiscount}</span>
-                      </div>
-                      <div className="flex justify-between text-xs">
-                        <span className="text-white/50">{t("配送费", "Delivery")}</span>
-                        <span className="text-white">¥{deliveryFee}</span>
-                      </div>
-                      <div className="flex justify-between pt-1.5 border-t border-white/10">
-                        <span className="text-white font-medium text-sm">{t("实付", "Total")}</span>
-                        <span className="text-primary font-bold text-lg">¥{estimatedTotal}</span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => item.quantity === 1 ? removeItem(item.id) : updateQuantity(item.id, item.quantity - 1)}
+                          className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:bg-white/10 transition-all active:scale-95"
+                        >
+                          <Minus className="w-3.5 h-3.5" />
+                        </button>
+                        <span className="text-white font-bold w-5 text-center text-sm">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white hover:bg-primary/80 transition-all active:scale-95"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                        </button>
                       </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })}
               </div>
 
-              {/* Sticky Footer */}
-              <div className="px-4 py-3 pb-6 border-t border-white/5 bg-black/50">
-                {checkoutStep === "cart" ? (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-[11px]">
-                      <span className="text-white/40">¥{totalPrice}</span>
-                      <span className="text-green-400">-{couponDiscount}</span>
-                      <span className="text-white/40">+{deliveryFee}</span>
-                      <span className="text-white/30">=</span>
-                      <span className="text-white font-bold text-base">¥{estimatedTotal}</span>
+              {/* ★ Sticky Bottom Bar - Luckin style: price left + 去结算 button right */}
+              <div className="px-4 py-3 pb-6 border-t border-white/10 bg-black/80">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center">
+                        <ShoppingCart className="w-5 h-5 text-white" />
+                      </div>
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                        {totalItems}
+                      </span>
                     </div>
-                    <button
-                      onClick={handleCheckout}
-                      className="h-10 px-6 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      {t("立即结算", "Checkout")}
-                    </button>
+                    <div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-white/50 text-xs">{t("预计到手", "Est.")}</span>
+                        <span className="text-primary font-black text-xl">¥{estimatedTotal}</span>
+                      </div>
+                      <p className="text-white/30 text-[10px]">
+                        {t(`已享优惠，共减免¥${couponDiscount}`, `Saved ¥${couponDiscount} with coupons`)}
+                      </p>
+                    </div>
                   </div>
-                ) : (
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => handlePayment("KAKA豆")}
-                      disabled={isProcessing}
-                      className="flex-1 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center gap-2 text-primary font-semibold text-sm hover:bg-primary/20 transition-colors active:scale-95 disabled:opacity-50"
-                    >
-                      {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Coins className="w-4 h-4" />}
-                      {t("KAKA豆支付", "Pay with Beans")}
-                    </button>
-                    <button
-                      onClick={() => handlePayment("微信支付")}
-                      disabled={isProcessing}
-                      className="flex-1 h-12 rounded-xl bg-[#07C160]/10 border border-[#07C160]/30 flex items-center justify-center gap-2 text-[#07C160] font-semibold text-sm hover:bg-[#07C160]/20 transition-colors active:scale-95 disabled:opacity-50"
-                    >
-                      {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="text-base">💬</span>}
-                      {t("微信支付", "WeChat Pay")}
-                    </button>
+                  <button
+                    onClick={handleCheckout}
+                    className="h-11 px-8 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-full flex items-center justify-center text-white font-bold text-base shadow-[0_0_25px_rgba(127,0,255,0.4)] transition-all hover:scale-[1.03] active:scale-[0.97]"
+                  >
+                    {t("去结算", "Checkout")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Payment Confirmation Drawer */}
+      {checkoutStep === "payment" && (
+        <>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]" onClick={() => !isProcessing && setCheckoutStep("cart")} />
+          <div className="fixed bottom-0 left-0 right-0 z-[60] animate-in slide-in-from-bottom duration-200">
+            <div className="bg-[#1a1a1d] rounded-t-2xl border-t border-white/10 px-4 py-4 pb-8">
+              <div className="flex justify-center mb-3">
+                <div className="w-8 h-1 bg-white/20 rounded-full" />
+              </div>
+
+              <div className="flex items-center gap-2 mb-3">
+                <button onClick={() => setCheckoutStep("cart")} className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-white/60">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <h3 className="text-white font-medium">{t("确认订单", "Confirm Order")}</h3>
+              </div>
+              
+              {/* Delivery address */}
+              <button className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 mb-3 text-left">
+                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-white text-sm">
+                    <span className="font-medium">{defaultAddress.name}</span>
+                    <span className="text-white/50">{defaultAddress.phone}</span>
                   </div>
-                )}
+                  <p className="text-[11px] text-white/40 truncate mt-0.5">{defaultAddress.address}</p>
+                </div>
+                <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+              </button>
+
+              {/* Price breakdown */}
+              <div className="bg-white/5 rounded-xl p-3 mb-4 space-y-1.5">
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">{t("商品金额", "Subtotal")}</span>
+                  <span className="text-white">¥{totalPrice}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">{t("优惠券", "Coupon")}</span>
+                  <span className="text-green-400">-¥{couponDiscount}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/50">{t("配送费", "Delivery")}</span>
+                  <span className="text-white">¥{deliveryFee}</span>
+                </div>
+                <div className="flex justify-between pt-1.5 border-t border-white/10">
+                  <span className="text-white font-medium text-sm">{t("实付", "Total")}</span>
+                  <span className="text-primary font-bold text-lg">¥{estimatedTotal}</span>
+                </div>
+              </div>
+              
+              {/* Payment buttons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handlePayment("KAKA豆")}
+                  disabled={isProcessing}
+                  className="flex-1 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center gap-2 text-primary font-semibold text-sm hover:bg-primary/20 transition-colors active:scale-95 disabled:opacity-50"
+                >
+                  {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Coins className="w-4 h-4" />}
+                  {t("KAKA豆支付", "Beans")}
+                </button>
+                <button
+                  onClick={() => handlePayment("微信支付")}
+                  disabled={isProcessing}
+                  className="flex-1 h-12 rounded-xl bg-[#07C160]/10 border border-[#07C160]/30 flex items-center justify-center gap-2 text-[#07C160] font-semibold text-sm hover:bg-[#07C160]/20 transition-colors active:scale-95 disabled:opacity-50"
+                >
+                  {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="text-base">💬</span>}
+                  {t("微信支付", "WeChat")}
+                </button>
               </div>
             </div>
           </div>
