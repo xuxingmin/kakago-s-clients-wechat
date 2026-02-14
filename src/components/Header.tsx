@@ -4,7 +4,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAddress } from "@/contexts/AddressContext";
 import { ServiceStatusBadge } from "@/components/ServiceStatusBadge";
 import { useServiceAvailability } from "@/hooks/useServiceAvailability";
-import { AddressPicker } from "@/components/AddressPicker";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Header = () => {
@@ -14,7 +13,7 @@ export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
-  const [showPicker, setShowPicker] = useState(false);
+  
 
   useEffect(() => {
     if (selectedAddress?.latitude && selectedAddress?.longitude) {
@@ -58,7 +57,7 @@ export const Header = () => {
         <div className="h-11 bg-background flex items-center justify-between px-3">
           {/* Left: Location + Status */}
           <button
-            onClick={() => setShowPicker(true)}
+            onClick={() => navigate("/address")}
             className="flex items-center gap-1.5 text-white/90 truncate group min-w-0 flex-1"
           >
             <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
@@ -109,7 +108,6 @@ export const Header = () => {
         </div>
       </header>
 
-      <AddressPicker isOpen={showPicker} onClose={() => setShowPicker(false)} />
     </>
   );
 };
