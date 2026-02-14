@@ -89,7 +89,7 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
                           : "bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08]"
                       }`}
                     >
-                      {/* Row 1: icon + landmark */}
+                      {/* Row 1: icon + landmark + district */}
                       <div className="flex items-center gap-1.5 min-w-0 w-full">
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
                           isSelected ? "bg-primary" : "bg-white/10"
@@ -105,7 +105,7 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
                         </span>
                       </div>
 
-                      {/* Row 2: district + name */}
+                      {/* Row 2: recipient name · phone */}
                       <div className="flex items-center gap-1.5 ml-[26px] min-w-0 w-full mt-0.5">
                         <span className="text-white/30 text-[10px] truncate">{district}</span>
                         <span className="text-white/20 text-[10px]">·</span>
