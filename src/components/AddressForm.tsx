@@ -66,7 +66,7 @@ export const AddressForm = ({
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[80] transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
@@ -74,7 +74,7 @@ export const AddressForm = ({
 
       {/* Sheet */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 z-[80] transition-transform duration-300 ease-out ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ height: "85vh" }}

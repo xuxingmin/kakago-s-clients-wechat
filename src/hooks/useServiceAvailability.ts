@@ -128,5 +128,5 @@ export const useServiceAvailability = () => {
     getUserLocation();
   }, [getUserLocation]);
 
-  return { ...status, refresh };
+  return { ...status, refresh, checkAvailability };
 };
