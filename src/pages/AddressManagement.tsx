@@ -5,11 +5,12 @@ import { BrandBanner } from "@/components/BrandBanner";
 import { BottomNav } from "@/components/BottomNav";
 import { useAddress, Address } from "@/contexts/AddressContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { CheckCircle2 } from "lucide-react";
 
 const AddressManagement = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const { addresses } = useAddress();
+  const { addresses, selectedAddress, setSelectedAddress } = useAddress();
 
   const maskPhone = (phone: string) =>
     phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
@@ -45,43 +46,58 @@ const AddressManagement = () => {
       <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pb-40">
         {addresses.length > 0 ? (
           <div className="space-y-2 stagger-fade-in">
-            {addresses.map((address) => (
-              <div
-                key={address.id}
-                className="card-md relative"
-              >
-                {/* Top row: Tag + Address + Default badge */}
-                <div className="flex items-start gap-2 pr-8">
-                  {address.tag && (
-                    <span className="text-[10px] font-medium text-primary bg-primary/15 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
-                      {address.tag}
-                    </span>
-                  )}
-                  <p className="text-sm text-white/90 font-medium leading-snug flex-1">
-                    {getShortAddress(address)}
-                  </p>
-                  {address.isDefault && (
-                    <span className="absolute top-0 right-0 text-[9px] font-semibold text-white bg-primary/80 px-2 py-0.5 rounded-bl-xl rounded-tr-2xl">
-                      {t("默认", "Default")}
-                    </span>
-                  )}
-                </div>
-
-                {/* Bottom row: Name + Phone + Edit */}
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
-                  <div className="flex items-center gap-3 text-white/40">
-                    <span className="text-xs">{address.name}</span>
-                    <span className="text-xs">{maskPhone(address.phone)}</span>
+            {addresses.map((address) => {
+              const isSelected = selectedAddress?.id === address.id;
+              return (
+                <div
+                  key={address.id}
+                  onClick={() => {
+                    setSelectedAddress(address);
+                    navigate("/");
+                  }}
+                  className={`card-md relative cursor-pointer transition-all ${
+                    isSelected ? "ring-1 ring-primary/60 bg-primary/5" : "hover:bg-white/5"
+                  }`}
+                >
+                  {/* Top row: Tag + Address + Selected indicator */}
+                  <div className="flex items-start gap-2 pr-8">
+                    {address.tag && (
+                      <span className="text-[10px] font-medium text-primary bg-primary/15 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
+                        {address.tag}
+                      </span>
+                    )}
+                    <p className="text-sm text-white/90 font-medium leading-snug flex-1">
+                      {getShortAddress(address)}
+                    </p>
+                    {isSelected && (
+                      <CheckCircle2 className="absolute top-3 right-3 w-4 h-4 text-primary shrink-0" />
+                    )}
+                    {!isSelected && address.isDefault && (
+                      <span className="absolute top-0 right-0 text-[9px] font-semibold text-white bg-primary/80 px-2 py-0.5 rounded-bl-xl rounded-tr-2xl">
+                        {t("默认", "Default")}
+                      </span>
+                    )}
                   </div>
-                  <button
-                    onClick={() => navigate(`/address/edit/${address.id}`)}
-                    className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
-                  >
-                    <Edit2 className="w-3.5 h-3.5" />
-                  </button>
+
+                  {/* Bottom row: Name + Phone + Edit */}
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
+                    <div className="flex items-center gap-3 text-white/40">
+                      <span className="text-xs">{address.name}</span>
+                      <span className="text-xs">{maskPhone(address.phone)}</span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/address/edit/${address.id}`);
+                      }}
+                      className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
