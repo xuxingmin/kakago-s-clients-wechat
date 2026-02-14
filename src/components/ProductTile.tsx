@@ -33,21 +33,16 @@ export const ProductTile = ({
   const Icon = product.icon;
 
   return (
-    <div className="group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px]">
-      {/* Top: Icon + Name + Price */}
-      <div className="flex items-start gap-2">
-        <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>
-          <Icon className={`w-5 h-5 ${product.iconColor}`} strokeWidth={2} />
+    <div className="bg-card rounded-xl p-3 flex flex-col justify-between min-h-[90px] shadow-sm active:scale-[0.98] transition-transform">
+      {/* Top: Icon + Name + Desc */}
+      <div className="flex items-start gap-2.5">
+        <div className={`w-11 h-11 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>
+          <Icon className={`w-5.5 h-5.5 ${product.iconColor}`} strokeWidth={2} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-1">
-            <h3 className="font-semibold text-white text-sm leading-tight">
-              {t(product.nameZh, product.nameEn)}
-            </h3>
-            <span className="text-white font-bold text-base shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
-              ¥{estimatedPrice}
-            </span>
-          </div>
+          <h3 className="font-semibold text-foreground text-sm leading-tight">
+            {t(product.nameZh, product.nameEn)}
+          </h3>
           {product.tagZh && (
             <p className="text-muted-foreground text-[10px] mt-0.5 line-clamp-1">
               {t(product.tagZh, product.tagEn || "")}
@@ -61,17 +56,18 @@ export const ProductTile = ({
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between gap-2 mt-auto pt-1">
-        <span className="text-white/30 text-[9px]">
-          原价 <span className="line-through">¥{product.price}</span>
-        </span>
+      {/* Footer: Price + Add */}
+      <div className="flex items-center justify-between gap-2 mt-2">
+        <div className="flex items-baseline gap-1">
+          <span className="text-primary font-bold text-base">¥{estimatedPrice}</span>
+          <span className="text-muted-foreground text-[10px] line-through">¥{product.price}</span>
+        </div>
         <button
           onClick={onAddToCart}
-          className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
+          className={`rounded-full flex items-center justify-center transition-all active:scale-90 shrink-0 ${
             quantityInCart > 0
-              ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30"
-              : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+              ? "bg-primary text-white shadow-sm"
+              : "bg-primary text-white hover:opacity-90"
           }`}
           style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
         >
