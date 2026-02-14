@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { AddressProvider } from "@/contexts/AddressContext";
 import Index from "./pages/Index";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
@@ -27,32 +28,34 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <AuthProvider>
-        <CartProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <div className="w-[393px] mx-auto min-h-screen bg-background relative overflow-hidden">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/orders" element={<Orders />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/order-confirm" element={<OrderConfirm />} />
-                  <Route path="/order-tracking" element={<OrderTracking />} />
-                  <Route path="/wallet" element={<CoffeeWallet />} />
-                  <Route path="/kaka-beans" element={<KakaBeans />} />
-                  <Route path="/address" element={<AddressManagement />} />
-                  <Route path="/invoice" element={<InvoiceManagement />} />
-                  <Route path="/my-squad" element={<MySquad />} />
-                  <Route path="/merchant-auth" element={<MerchantAuth />} />
-                  <Route path="/merchant" element={<MerchantDashboard />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-            </BrowserRouter>
-          </TooltipProvider>
-        </CartProvider>
+        <AddressProvider>
+          <CartProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <div className="w-[393px] mx-auto min-h-screen bg-background relative overflow-hidden">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/orders" element={<Orders />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/order-confirm" element={<OrderConfirm />} />
+                    <Route path="/order-tracking" element={<OrderTracking />} />
+                    <Route path="/wallet" element={<CoffeeWallet />} />
+                    <Route path="/kaka-beans" element={<KakaBeans />} />
+                    <Route path="/address" element={<AddressManagement />} />
+                    <Route path="/invoice" element={<InvoiceManagement />} />
+                    <Route path="/my-squad" element={<MySquad />} />
+                    <Route path="/merchant-auth" element={<MerchantAuth />} />
+                    <Route path="/merchant" element={<MerchantDashboard />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
+              </BrowserRouter>
+            </TooltipProvider>
+          </CartProvider>
+        </AddressProvider>
       </AuthProvider>
     </LanguageProvider>
   </QueryClientProvider>

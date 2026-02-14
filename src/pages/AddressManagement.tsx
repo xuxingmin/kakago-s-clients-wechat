@@ -7,115 +7,35 @@ import { Header } from "@/components/Header";
 import { AddressForm } from "@/components/AddressForm";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-export interface Address {
-  id: string;
-  name: string;
-  phone: string;
-  province: string;
-  provinceEn: string;
-  city: string;
-  cityEn: string;
-  district: string;
-  districtEn: string;
-  detail: string;
-  detailEn: string;
-  isDefault: boolean;
-}
-
-// Demo addresses
-const initialAddresses: Address[] = [
-  {
-    id: "addr-001",
-    name: "张三",
-    phone: "13888888888",
-    province: "安徽省",
-    provinceEn: "Anhui Province",
-    city: "合肥市",
-    cityEn: "Hefei City",
-    district: "蜀山区",
-    districtEn: "Shushan District",
-    detail: "天鹅湖CBD · 万达广场3号楼15层1502室",
-    detailEn: "Swan Lake CBD · Wanda Plaza Building 3, 15F, Unit 1502",
-    isDefault: true,
-  },
-  {
-    id: "addr-002",
-    name: "张三",
-    phone: "13888888888",
-    province: "安徽省",
-    provinceEn: "Anhui Province",
-    city: "合肥市",
-    cityEn: "Hefei City",
-    district: "包河区",
-    districtEn: "Baohe District",
-    detail: "滨湖新区·银泰城B座2201",
-    detailEn: "Binhu New District · Yintai City Tower B, Unit 2201",
-    isDefault: false,
-  },
-];
+import { useAddress, Address } from "@/contexts/AddressContext";
 
 const AddressManagement = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
+  const { addresses, addAddress, updateAddress, deleteAddress, setDefault } = useAddress();
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
 
   const handleAddAddress = (newAddress: Omit<Address, "id">) => {
-    const address: Address = {
-      ...newAddress,
-      id: `addr-${Date.now()}`,
-    };
-
-    if (address.isDefault) {
-      setAddresses((prev) =>
-        prev.map((addr) => ({ ...addr, isDefault: false }))
-      );
-    }
-
-    setAddresses((prev) => [...prev, address]);
+    addAddress(newAddress);
     toast({ title: t("地址添加成功", "Address added successfully") });
   };
 
   const handleEditAddress = (updatedAddress: Omit<Address, "id">) => {
     if (!editingAddress) return;
-
-    if (updatedAddress.isDefault) {
-      setAddresses((prev) =>
-        prev.map((addr) =>
-          addr.id === editingAddress.id
-            ? { ...updatedAddress, id: addr.id }
-            : { ...addr, isDefault: false }
-        )
-      );
-    } else {
-      setAddresses((prev) =>
-        prev.map((addr) =>
-          addr.id === editingAddress.id
-            ? { ...updatedAddress, id: addr.id }
-            : addr
-        )
-      );
-    }
-
+    updateAddress(editingAddress.id, updatedAddress);
     setEditingAddress(null);
     toast({ title: t("地址更新成功", "Address updated successfully") });
   };
 
   const handleDeleteAddress = (id: string) => {
-    setAddresses((prev) => prev.filter((addr) => addr.id !== id));
+    deleteAddress(id);
     toast({ title: t("地址已删除", "Address deleted") });
   };
 
   const handleSetDefault = (id: string) => {
-    setAddresses((prev) =>
-      prev.map((addr) => ({
-        ...addr,
-        isDefault: addr.id === id,
-      }))
-    );
+    setDefault(id);
     toast({ title: t("已设为默认地址", "Set as default address") });
   };
 
@@ -132,9 +52,7 @@ const AddressManagement = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
-        {/* Back & Add Buttons */}
         <div className="absolute top-3 left-4 z-50 safe-top">
           <button
             onClick={() => navigate(-1)}
@@ -156,7 +74,6 @@ const AddressManagement = () => {
         <div className="fog-divider mx-4" />
       </div>
 
-      {/* 可滚动中间区域 */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <section className="px-4 py-3 space-y-2">
           {addresses.length > 0 ? (
@@ -250,7 +167,6 @@ const AddressManagement = () => {
         )}
       </div>
 
-      {/* 固定底部区域 */}
       <div className="flex-shrink-0">
         <BottomNav />
       </div>

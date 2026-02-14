@@ -1,16 +1,6 @@
 import { useState } from "react";
 import { X, MapPin } from "lucide-react";
-
-interface Address {
-  id: string;
-  name: string;
-  phone: string;
-  province: string;
-  city: string;
-  district: string;
-  detail: string;
-  isDefault: boolean;
-}
+import { Address } from "@/contexts/AddressContext";
 
 interface AddressFormProps {
   isOpen: boolean;
@@ -31,9 +21,13 @@ export const AddressForm = ({
     name: initialData?.name || "",
     phone: initialData?.phone || "",
     province: initialData?.province || "",
+    provinceEn: initialData?.provinceEn || "",
     city: initialData?.city || "",
+    cityEn: initialData?.cityEn || "",
     district: initialData?.district || "",
+    districtEn: initialData?.districtEn || "",
     detail: initialData?.detail || "",
+    detailEn: initialData?.detailEn || "",
     isDefault: initialData?.isDefault || false,
   });
 
