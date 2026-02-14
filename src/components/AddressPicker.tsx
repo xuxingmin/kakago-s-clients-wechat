@@ -9,18 +9,17 @@ interface AddressPickerProps {
   onClose: () => void;
 }
 
-/** Extract a short keyword from the address detail, e.g. "万达广场3号楼" → "万达广场301" */
-const extractKeyword = (detail: string): string => {
-  // Remove separator chars and extra whitespace
-  const cleaned = detail.replace(/[·．・\s]+/g, ' ').trim();
-  // Try to grab the first landmark-like phrase (up to 8 chars)
-  const match = cleaned.match(/[\u4e00-\u9fa5A-Za-z0-9]{2,8}/);
-  return match ? match[0] : cleaned.slice(0, 6);
+/** Extract landmark keyword from detail, e.g. "天鹅湖CBD · 万达广场3号楼15层1502室" → "天鹅湖CBD" */
+const extractLandmark = (detail: string): string => {
+  // Split by common separators and take first meaningful part
+  const parts = detail.split(/[·．・\s]+/).filter(Boolean);
+  const first = parts[0] || detail;
+  return first.slice(0, 6);
 };
 
-const extractKeywordEn = (detail: string): string => {
+const extractLandmarkEn = (detail: string): string => {
   const parts = detail.split(/[,·．・]+/).map(s => s.trim()).filter(Boolean);
-  return parts[0]?.slice(0, 16) || detail.slice(0, 16);
+  return parts[0]?.slice(0, 14) || detail.slice(0, 14);
 };
 
 export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
@@ -44,7 +43,7 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
     <>
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70]" onClick={onClose} />
       <div className="fixed bottom-0 left-0 right-0 z-[70] animate-in slide-in-from-bottom duration-300">
-        <div className="bg-card rounded-t-2xl border-t border-white/10 max-h-[70vh] flex flex-col">
+        <div className="bg-card rounded-t-2xl border-t border-white/10 max-h-[65vh] flex flex-col">
           {/* Handle */}
           <div className="flex justify-center pt-2 pb-1">
             <div className="w-8 h-1 bg-white/20 rounded-full" />
@@ -66,62 +65,63 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
             </button>
           </div>
 
-          {/* Address list - compact rows for 10+ addresses */}
-          <div className="flex-1 overflow-y-auto px-3 py-2 space-y-1 scrollbar-hide">
+          {/* Address cards - compact grid */}
+          <div className="flex-1 overflow-y-auto px-3 py-2 scrollbar-hide">
             {addresses.length === 0 ? (
               <div className="py-8 text-center">
                 <MapPin className="w-8 h-8 text-white/20 mx-auto mb-2" />
                 <p className="text-white/40 text-xs">{t("暂无保存的地址", "No saved addresses")}</p>
               </div>
             ) : (
-              addresses.map((addr) => {
-                const isSelected = selectedAddress?.id === addr.id;
-                const keyword = t(extractKeyword(addr.detail), extractKeywordEn(addr.detailEn));
-                const area = t(addr.district, addr.districtEn);
+              <div className="grid grid-cols-2 gap-1.5">
+                {addresses.map((addr) => {
+                  const isSelected = selectedAddress?.id === addr.id;
+                  const landmark = t(extractLandmark(addr.detail), extractLandmarkEn(addr.detailEn));
+                  const district = t(addr.district, addr.districtEn);
 
-                return (
-                  <button
-                    key={addr.id}
-                    onClick={() => handleSelect(addr)}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all ${
-                      isSelected
-                        ? "bg-primary/10 border border-primary/30"
-                        : "bg-white/[0.03] border border-transparent hover:bg-white/[0.06]"
-                    }`}
-                  >
-                    {/* Check / Pin icon */}
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
-                      isSelected ? "bg-primary" : "bg-white/10"
-                    }`}>
-                      {isSelected ? (
-                        <Check className="w-3 h-3 text-white" />
-                      ) : (
-                        <MapPin className="w-3 h-3 text-white/40" />
-                      )}
-                    </div>
+                  return (
+                    <button
+                      key={addr.id}
+                      onClick={() => handleSelect(addr)}
+                      className={`relative flex flex-col items-start gap-0.5 px-3 py-2.5 rounded-xl text-left transition-all ${
+                        isSelected
+                          ? "bg-primary/10 border border-primary/30"
+                          : "bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08]"
+                      }`}
+                    >
+                      {/* Row 1: icon + landmark */}
+                      <div className="flex items-center gap-1.5 w-full">
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                          isSelected ? "bg-primary" : "bg-white/10"
+                        }`}>
+                          {isSelected ? (
+                            <Check className="w-2.5 h-2.5 text-white" />
+                          ) : (
+                            <MapPin className="w-2.5 h-2.5 text-white/40" />
+                          )}
+                        </div>
+                        <span className="text-white text-[13px] font-semibold truncate">
+                          {landmark}
+                        </span>
+                      </div>
 
-                    {/* Compact info */}
-                    <div className="flex-1 min-w-0 flex items-center gap-2">
-                      <span className="text-white text-[13px] font-medium truncate max-w-[120px]">
-                        {keyword}
-                      </span>
-                      <span className="text-white/30 text-[10px] truncate">
-                        {area}
-                      </span>
-                    </div>
+                      {/* Row 2: district + name */}
+                      <div className="flex items-center gap-1.5 pl-[26px] w-full">
+                        <span className="text-white/30 text-[10px] truncate">{district}</span>
+                        <span className="text-white/20 text-[10px]">·</span>
+                        <span className="text-white/25 text-[10px] truncate">{addr.name}</span>
+                      </div>
 
-                    {/* Tags */}
-                    <div className="flex items-center gap-1.5 shrink-0">
+                      {/* Default badge */}
                       {addr.isDefault && (
-                        <span className="text-[9px] text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
+                        <span className="absolute top-1.5 right-2 text-[8px] text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
                           {t("默认", "Default")}
                         </span>
                       )}
-                      <span className="text-white/20 text-[10px]">{addr.name}</span>
-                    </div>
-                  </button>
-                );
-              })
+                    </button>
+                  );
+                })}
+              </div>
             )}
           </div>
 
