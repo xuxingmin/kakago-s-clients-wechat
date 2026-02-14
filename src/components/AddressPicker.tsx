@@ -73,7 +73,7 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
                 <p className="text-white/40 text-xs">{t("暂无保存的地址", "No saved addresses")}</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 gap-2">
                 {addresses.map((addr) => {
                   const isSelected = selectedAddress?.id === addr.id;
                   const landmark = t(extractLandmark(addr.detail), extractLandmarkEn(addr.detailEn));
@@ -83,14 +83,14 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
                     <button
                       key={addr.id}
                       onClick={() => handleSelect(addr)}
-                      className={`relative flex flex-col items-start gap-0.5 px-3 py-2.5 rounded-xl text-left transition-all ${
+                      className={`relative flex flex-col justify-center min-h-[56px] px-3 py-2 rounded-xl text-left transition-all ${
                         isSelected
                           ? "bg-primary/10 border border-primary/30"
                           : "bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08]"
                       }`}
                     >
                       {/* Row 1: icon + landmark */}
-                      <div className="flex items-center gap-1.5 w-full">
+                      <div className="flex items-center gap-1.5 min-w-0 w-full">
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
                           isSelected ? "bg-primary" : "bg-white/10"
                         }`}>
@@ -100,13 +100,13 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
                             <MapPin className="w-2.5 h-2.5 text-white/40" />
                           )}
                         </div>
-                        <span className="text-white text-[13px] font-semibold truncate">
+                        <span className="flex-1 min-w-0 text-white text-[13px] font-semibold truncate">
                           {landmark}
                         </span>
                       </div>
 
                       {/* Row 2: district + name */}
-                      <div className="flex items-center gap-1.5 pl-[26px] w-full">
+                      <div className="flex items-center gap-1.5 ml-[26px] min-w-0 w-full mt-0.5">
                         <span className="text-white/30 text-[10px] truncate">{district}</span>
                         <span className="text-white/20 text-[10px]">·</span>
                         <span className="text-white/25 text-[10px] truncate">{addr.name}</span>
@@ -114,7 +114,7 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
 
                       {/* Default badge */}
                       {addr.isDefault && (
-                        <span className="absolute top-1.5 right-2 text-[8px] text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
+                        <span className="absolute top-1 right-1.5 text-[8px] text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
                           {t("默认", "Default")}
                         </span>
                       )}
