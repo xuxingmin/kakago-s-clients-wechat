@@ -15,6 +15,7 @@ export interface Address {
   latitude?: number;
   longitude?: number;
   isDefault: boolean;
+  tag?: string;
 }
 
 interface AddressContextType {
