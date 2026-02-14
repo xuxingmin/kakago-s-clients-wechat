@@ -12,6 +12,8 @@ export interface Address {
   districtEn: string;
   detail: string;
   detailEn: string;
+  latitude?: number;
+  longitude?: number;
   isDefault: boolean;
 }
 
@@ -38,6 +40,8 @@ const initialAddresses: Address[] = [
     districtEn: "Shushan District",
     detail: "天鹅湖CBD · 万达广场3号楼15层1502室",
     detailEn: "Swan Lake CBD · Wanda Plaza Building 3, 15F, Unit 1502",
+    latitude: 31.8206,
+    longitude: 117.2272,
     isDefault: true,
   },
   {
@@ -52,6 +56,8 @@ const initialAddresses: Address[] = [
     districtEn: "Baohe District",
     detail: "滨湖新区·银泰城B座2201",
     detailEn: "Binhu New District · Yintai City Tower B, Unit 2201",
+    latitude: 31.7456,
+    longitude: 117.2920,
     isDefault: false,
   },
 ];
@@ -70,20 +76,19 @@ export const AddressProvider = ({ children }: { children: ReactNode }) => {
       setAddresses((prev) => prev.map((a) => ({ ...a, isDefault: false })));
     }
     setAddresses((prev) => [...prev, address]);
-    if (address.isDefault) setSelectedAddress(address);
+    if (address.isDefault || addresses.length === 0) setSelectedAddress(address);
   };
 
   const updateAddress = (id: string, updated: Omit<Address, "id">) => {
-    setAddresses((prev) => {
-      const next = prev.map((a) =>
+    setAddresses((prev) =>
+      prev.map((a) =>
         a.id === id
           ? { ...updated, id }
           : updated.isDefault
           ? { ...a, isDefault: false }
           : a
-      );
-      return next;
-    });
+      )
+    );
     if (selectedAddress?.id === id) {
       setSelectedAddress({ ...updated, id });
     }

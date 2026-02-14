@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapPin, MoreHorizontal, ChevronLeft, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAddress } from "@/contexts/AddressContext";
@@ -9,12 +9,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const { language, toggleLanguage, t } = useLanguage();
-  const { locationLoading } = useServiceAvailability();
+  const { locationLoading, checkAvailability } = useServiceAvailability();
   const { selectedAddress } = useAddress();
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const [showPicker, setShowPicker] = useState(false);
+
+  // When selected address changes, re-check service availability
+  useEffect(() => {
+    if (selectedAddress?.latitude && selectedAddress?.longitude) {
+      checkAvailability(selectedAddress.latitude, selectedAddress.longitude);
+    }
+  }, [selectedAddress?.id]);
 
   const displayLocation = selectedAddress
     ? t(
@@ -49,7 +56,6 @@ export const Header = () => {
 
         {/* WeChat Navigation Bar */}
         <div className="h-11 bg-background flex items-center justify-between px-3">
-          {/* Left: Back or Location */}
           <div className="flex items-center gap-1.5 min-w-0 flex-1">
             {!isHome && (
               <button
@@ -64,7 +70,7 @@ export const Header = () => {
               className="flex items-center gap-1 text-white/90 truncate group"
             >
               <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
-              <span className="text-[13px] font-medium truncate">
+              <span className="text-[13px] font-medium truncate max-w-[160px]">
                 {locationLoading
                   ? t("定位中…", "Locating…")
                   : displayLocation || t("选择地址", "Select Address")}
@@ -73,7 +79,6 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Right: WeChat-style capsule button */}
           <div className="flex items-center h-8 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm overflow-hidden shrink-0">
             <ServiceStatusBadge variant="capsule" />
             <div className="w-px h-4 bg-white/15" />
