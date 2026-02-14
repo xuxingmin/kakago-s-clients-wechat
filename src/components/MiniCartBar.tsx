@@ -97,8 +97,8 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
       {/* Cart Drawer */}
       {isCartOpen && (
         <>
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" onClick={closeDrawer} />
-          <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]" onClick={closeDrawer} />
+          <div className="fixed bottom-0 left-0 right-0 z-[60] animate-in slide-in-from-bottom duration-300">
             <div className="bg-gradient-to-t from-black via-[#1a1a1d] to-[#1a1a1d]/95 rounded-t-2xl border-t border-white/10 shadow-2xl max-h-[60vh] overflow-hidden flex flex-col">
               {/* Drag handle */}
               <div className="flex justify-center pt-2 pb-1">
@@ -169,7 +169,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
               </div>
 
               {/* ★ Sticky Bottom Bar - Luckin style: price left + 去结算 button right */}
-              <div className="px-4 py-3 pb-6 border-t border-white/10 bg-black/80">
+              <div className="px-4 py-3 pb-20 border-t border-white/10 bg-black/80">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="relative">
