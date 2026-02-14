@@ -105,11 +105,13 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
                         </span>
                       </div>
 
-                      {/* Row 2: recipient name · phone */}
-                      <div className="flex items-center gap-1.5 ml-[26px] min-w-0 w-full mt-0.5">
+                      {/* Row 2: district · recipient name · phone */}
+                      <div className="flex items-center gap-1 ml-[26px] min-w-0 w-full mt-0.5">
                         <span className="text-white/30 text-[10px] truncate">{district}</span>
                         <span className="text-white/20 text-[10px]">·</span>
-                        <span className="text-white/25 text-[10px] truncate">{addr.name}</span>
+                        <span className="text-white/25 text-[10px] shrink-0">{addr.name}</span>
+                        <span className="text-white/20 text-[10px]">·</span>
+                        <span className="text-white/20 text-[10px] truncate">{addr.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span>
                       </div>
 
                       {/* Default badge */}
