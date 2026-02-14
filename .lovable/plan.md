@@ -1,31 +1,43 @@
 
 
-# Pixel-Perfect Address Card Grid Alignment
+# Address Card Layout Reorganization
 
-## Current Issue
-The address cards in the picker are close to the reference design but need pixel-level alignment tweaks to ensure uniform sizing, consistent spacing, and crisp text positioning across all 13+ cards.
+## Goal
+Match the reference screenshot layout where each card shows:
+- **Row 1**: Building/landmark name (bold, prominent)
+- **Row 2**: District + Recipient name
+
+Currently the layout already has this structure but the landmark extraction needs improvement to show cleaner building names, and the second row should show district + recipient name (matching the screenshot like "蜀山区 · 张三").
 
 ## Changes (single file: `src/components/AddressPicker.tsx`)
 
-### 1. Uniform Card Height
-- Add `min-h-[56px]` to each card button so all cards share the same height regardless of content length
-- Use `justify-center` for vertical centering within the fixed-height card
+### Row 1: Landmark (Building/Complex Name)
+- Extract a more meaningful landmark from the detail string -- take the part after the separator (the actual building name like "万达广场", "万达茂", "华润万象城") instead of the prefix
+- Keep the check/pin icon + landmark text layout
 
-### 2. Grid Gap and Padding
-- Adjust grid gap from `gap-1.5` to `gap-2` for cleaner visual separation matching the reference
-- Standardize card internal padding to `px-3 py-2` for consistent whitespace
+### Row 2: District + Recipient Name
+- Show `district` (e.g., 蜀山区) followed by a dot separator and `addr.name` (e.g., 张三)
+- This matches the screenshot exactly
 
-### 3. Icon + Text Row Alignment
-- Keep the 20px icon (`w-5 h-5`) + `gap-1.5` pattern but add `min-w-0` on the text span to ensure `truncate` works correctly on both columns
-- Ensure the landmark text uses `flex-1 min-w-0 truncate` to prevent overflow pushing the "默认" badge off-screen
+### Landmark Extraction Logic Update
+- Current: takes the first part before separator (e.g., "天鹅湖CBD" from "天鹅湖CBD·万达广场3号楼...")
+- New: smarter extraction that picks the most recognizable building/complex keyword, limited to ~6 characters for Chinese, ~14 for English
+- For addresses with separators, prefer the building/place name portion
 
-### 4. Second Row (District + Name) Alignment
-- Change `pl-[26px]` to `ml-[26px]` for more predictable alignment relative to the icon
-- Add `min-w-0` to the row container so truncation works properly in narrow columns
+### Technical Details
 
-### 5. Default Badge Positioning
-- Adjust badge from `absolute top-1.5 right-2` to `absolute top-1 right-1.5` for tighter placement matching the reference image
+**Updated `extractLandmark` function:**
+```
+// Split by separators, pick the part that looks like a building/place name
+// e.g., "天鹅湖CBD·万达广场3号楼15层1502室" -> "天鹅湖CBD"
+// e.g., "滨湖新区·银泰城B座2201" -> "滨湖新区" 
+// Keep current logic as it already extracts the first meaningful keyword
+```
 
-## Technical Detail
-All changes are CSS-only within the existing component structure -- no logic or data changes needed.
+**Row 2 template:**
+```
+{district} · {addr.name}
+```
+
+This is a minor CSS/text adjustment in the existing card structure -- no structural changes needed.
 
