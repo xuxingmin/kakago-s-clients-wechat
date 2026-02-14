@@ -1,43 +1,47 @@
 
+# Add "Auto-Detect Nearby Buildings" Button to AddressForm
 
-# Address Card Layout Reorganization
+## Overview
+Add a location-detect button at the top of the AddressForm (in the red-boxed area from the screenshot). When tapped, it uses the browser's Geolocation API + OpenStreetMap Nominatim reverse geocoding to auto-fill the province, city, district, and detail fields. It also fetches nearby POIs (points of interest) like buildings and landmarks for the user to pick from, eliminating manual input.
 
-## Goal
-Match the reference screenshot layout where each card shows:
-- **Row 1**: Building/landmark name (bold, prominent)
-- **Row 2**: District + Recipient name
+## UI Changes (`src/components/AddressForm.tsx`)
 
-Currently the layout already has this structure but the landmark extraction needs improvement to show cleaner building names, and the second row should show district + recipient name (matching the screenshot like "蜀山区 · 张三").
+### 1. "Select Location" Button
+- Add a tappable button between the header and the "收货人" field
+- Icon: `Navigation` (or `Locate`) from lucide-react + text "自动识别当前位置" / "Auto-detect location"
+- Shows a loading spinner while detecting
 
-## Changes (single file: `src/components/AddressPicker.tsx`)
+### 2. Nearby POI List (Inline Dropdown)
+- After detection, display a scrollable list of 5-8 nearby buildings/landmarks below the button
+- Each item shows: building name + short address
+- Tapping an item auto-fills: province, city, district, detail, and stores lat/lng
+- List dismisses after selection
 
-### Row 1: Landmark (Building/Complex Name)
-- Extract a more meaningful landmark from the detail string -- take the part after the separator (the actual building name like "万达广场", "万达茂", "华润万象城") instead of the prefix
-- Keep the check/pin icon + landmark text layout
+### 3. Auto-Fill Behavior
+- On POI selection, populate:
+  - `province` / `provinceEn` from reverse geocode result
+  - `city` / `cityEn`
+  - `district` / `districtEn`
+  - `detail` / `detailEn` with the selected building name + address
+- Clear any validation errors on the filled fields
 
-### Row 2: District + Recipient Name
-- Show `district` (e.g., 蜀山区) followed by a dot separator and `addr.name` (e.g., 张三)
-- This matches the screenshot exactly
+## Technical Implementation
 
-### Landmark Extraction Logic Update
-- Current: takes the first part before separator (e.g., "天鹅湖CBD" from "天鹅湖CBD·万达广场3号楼...")
-- New: smarter extraction that picks the most recognizable building/complex keyword, limited to ~6 characters for Chinese, ~14 for English
-- For addresses with separators, prefer the building/place name portion
+### Geolocation + Nominatim Flow
+1. Call `navigator.geolocation.getCurrentPosition()` to get lat/lng
+2. In parallel, call Nominatim reverse geocode for address decomposition AND Nominatim search API for nearby POIs:
+   - Reverse: `https://nominatim.openstreetmap.org/reverse?lat=X&lon=Y&format=json&accept-language=zh`
+   - Nearby POIs: `https://nominatim.openstreetmap.org/search?q=*&format=json&accept-language=zh&viewbox={bbox}&bounded=1&limit=8&addressdetails=1`
+   - Alternative: Use Overpass API for better POI results (buildings, shops, amenities within 500m radius)
 
-### Technical Details
+### State Additions
+- `locationLoading: boolean` - shows spinner on the button
+- `nearbyPOIs: Array<{name, address, lat, lng, province, city, district}>` - detected results
+- `showPOIList: boolean` - toggles the dropdown
 
-**Updated `extractLandmark` function:**
-```
-// Split by separators, pick the part that looks like a building/place name
-// e.g., "天鹅湖CBD·万达广场3号楼15层1502室" -> "天鹅湖CBD"
-// e.g., "滨湖新区·银泰城B座2201" -> "滨湖新区" 
-// Keep current logic as it already extracts the first meaningful keyword
-```
+### Form Data Update
+- Add `latitude` and `longitude` to formData state (already supported in Address type)
+- Pass coordinates through to `onSubmit`
 
-**Row 2 template:**
-```
-{district} · {addr.name}
-```
-
-This is a minor CSS/text adjustment in the existing card structure -- no structural changes needed.
-
+## File Changes
+- `src/components/AddressForm.tsx` - add location button, POI list, auto-fill logic (single file change)
