@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { X, MapPin } from "lucide-react";
+import { X, MapPin, Navigation, Loader2, Building2 } from "lucide-react";
 import { Address } from "@/contexts/AddressContext";
+import { useLocationDetect, NearbyPOI } from "@/hooks/useLocationDetect";
 
 interface AddressFormProps {
   isOpen: boolean;
@@ -28,14 +29,16 @@ export const AddressForm = ({
     districtEn: initialData?.districtEn || "",
     detail: initialData?.detail || "",
     detailEn: initialData?.detailEn || "",
+    latitude: initialData?.latitude,
+    longitude: initialData?.longitude,
     isDefault: initialData?.isDefault || false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { loading, pois, showList, setShowList, error: locationError, detect } = useLocationDetect();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
     if (!formData.name.trim()) newErrors.name = "请输入收货人姓名";
     if (!formData.phone.trim()) newErrors.phone = "请输入手机号码";
     else if (!/^1[3-9]\d{9}$/.test(formData.phone)) newErrors.phone = "请输入正确的手机号码";
@@ -43,7 +46,6 @@ export const AddressForm = ({
     if (!formData.city.trim()) newErrors.city = "请选择城市";
     if (!formData.district.trim()) newErrors.district = "请选择区县";
     if (!formData.detail.trim()) newErrors.detail = "请输入详细地址";
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -55,11 +57,37 @@ export const AddressForm = ({
     }
   };
 
-  const updateField = (field: string, value: string | boolean) => {
+  const updateField = (field: string, value: string | boolean | number | undefined) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
+    if (typeof field === "string" && errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
+  };
+
+  const handlePOISelect = (poi: NearbyPOI) => {
+    setFormData((prev) => ({
+      ...prev,
+      province: poi.province,
+      provinceEn: poi.provinceEn,
+      city: poi.city,
+      cityEn: poi.cityEn,
+      district: poi.district,
+      districtEn: poi.districtEn,
+      detail: poi.name + (poi.address ? `（${poi.address}）` : ""),
+      detailEn: poi.name,
+      latitude: poi.lat,
+      longitude: poi.lng,
+    }));
+    // Clear related errors
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.province;
+      delete next.city;
+      delete next.district;
+      delete next.detail;
+      return next;
+    });
+    setShowList(false);
   };
 
   return (
@@ -100,6 +128,52 @@ export const AddressForm = ({
 
           {/* Form */}
           <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+            {/* Location Detect Button */}
+            <button
+              type="button"
+              onClick={detect}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-primary/10 text-primary font-medium text-sm transition-all active:scale-[0.98] disabled:opacity-60"
+            >
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Navigation className="w-4 h-4" />
+              )}
+              {loading ? "正在定位..." : "自动识别周边楼宇"}
+            </button>
+
+            {locationError && (
+              <p className="text-xs text-destructive text-center -mt-2">{locationError}</p>
+            )}
+
+            {/* Nearby POI List */}
+            {showList && pois.length > 0 && (
+              <div className="rounded-2xl bg-secondary/50 border border-border overflow-hidden">
+                <div className="px-3 py-2 border-b border-border">
+                  <span className="text-xs text-muted-foreground">选择附近地点</span>
+                </div>
+                <div className="max-h-52 overflow-y-auto divide-y divide-border">
+                  {pois.map((poi, i) => (
+                    <button
+                      key={`${poi.name}-${i}`}
+                      type="button"
+                      onClick={() => handlePOISelect(poi)}
+                      className="w-full flex items-start gap-2.5 px-3 py-3 hover:bg-secondary/80 active:bg-secondary transition-colors text-left"
+                    >
+                      <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground truncate">{poi.name}</p>
+                        <p className="text-xs text-muted-foreground truncate mt-0.5">
+                          {poi.district} {poi.address}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Name */}
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">
@@ -145,42 +219,36 @@ export const AddressForm = ({
                 所在地区 <span className="text-destructive">*</span>
               </label>
               <div className="grid grid-cols-3 gap-2">
-                <div>
-                  <input
-                    type="text"
-                    value={formData.province}
-                    onChange={(e) => updateField("province", e.target.value)}
-                    placeholder="省份"
-                    className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                      errors.province ? "ring-2 ring-destructive/50" : ""
-                    }`}
-                    maxLength={10}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    value={formData.city}
-                    onChange={(e) => updateField("city", e.target.value)}
-                    placeholder="城市"
-                    className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                      errors.city ? "ring-2 ring-destructive/50" : ""
-                    }`}
-                    maxLength={10}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    value={formData.district}
-                    onChange={(e) => updateField("district", e.target.value)}
-                    placeholder="区县"
-                    className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                      errors.district ? "ring-2 ring-destructive/50" : ""
-                    }`}
-                    maxLength={10}
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={formData.province}
+                  onChange={(e) => updateField("province", e.target.value)}
+                  placeholder="省份"
+                  className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                    errors.province ? "ring-2 ring-destructive/50" : ""
+                  }`}
+                  maxLength={10}
+                />
+                <input
+                  type="text"
+                  value={formData.city}
+                  onChange={(e) => updateField("city", e.target.value)}
+                  placeholder="城市"
+                  className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                    errors.city ? "ring-2 ring-destructive/50" : ""
+                  }`}
+                  maxLength={10}
+                />
+                <input
+                  type="text"
+                  value={formData.district}
+                  onChange={(e) => updateField("district", e.target.value)}
+                  placeholder="区县"
+                  className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                    errors.district ? "ring-2 ring-destructive/50" : ""
+                  }`}
+                  maxLength={10}
+                />
               </div>
               {(errors.province || errors.city || errors.district) && (
                 <p className="text-xs text-destructive mt-1">请填写完整的地区信息</p>
