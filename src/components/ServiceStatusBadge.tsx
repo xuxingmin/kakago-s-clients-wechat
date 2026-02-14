@@ -16,7 +16,7 @@ export const ServiceStatusBadge = ({ variant = "default" }: ServiceStatusBadgePr
     return (
       <button
         onClick={refresh}
-        className="h-8 px-2.5 flex items-center gap-1.5 text-white/70 hover:text-white transition-colors"
+        className="flex items-center gap-1 text-white/70 hover:text-white transition-colors"
       >
         {isLoading ? (
           <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
@@ -25,7 +25,7 @@ export const ServiceStatusBadge = ({ variant = "default" }: ServiceStatusBadgePr
         ) : (
           <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
         )}
-        <span className="text-[10px] font-medium">
+        <span className="text-[11px] font-medium">
           {isLoading
             ? t("定位中", "...")
             : isAvailable

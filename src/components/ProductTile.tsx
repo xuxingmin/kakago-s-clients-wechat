@@ -33,7 +33,7 @@ export const ProductTile = ({
   const Icon = product.icon;
 
   return (
-    <div className="group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px]">
+    <div className="group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px] overflow-hidden">
       {/* Top: Icon + Name + Price */}
       <div className="flex items-start gap-2">
         <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>

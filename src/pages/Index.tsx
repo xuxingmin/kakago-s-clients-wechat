@@ -82,7 +82,7 @@ const Index = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in">
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
             {allProducts.map((product) => (
               <ProductTile
                 key={product.id}

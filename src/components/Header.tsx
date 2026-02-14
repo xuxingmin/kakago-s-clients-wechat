@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, MoreHorizontal, ChevronLeft, ChevronDown } from "lucide-react";
+import { MapPin, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAddress } from "@/contexts/AddressContext";
 import { ServiceStatusBadge } from "@/components/ServiceStatusBadge";
@@ -16,24 +16,24 @@ export const Header = () => {
   const isHome = location.pathname === "/";
   const [showPicker, setShowPicker] = useState(false);
 
-  // When selected address changes, re-check service availability
   useEffect(() => {
     if (selectedAddress?.latitude && selectedAddress?.longitude) {
       checkAvailability(selectedAddress.latitude, selectedAddress.longitude);
     }
   }, [selectedAddress?.id]);
 
-  const displayLocation = selectedAddress
+  // Short location: max 6 chars
+  const shortLocation = selectedAddress
     ? t(
-        `${selectedAddress.detail} ${selectedAddress.city}`,
-        `${selectedAddress.detailEn}, ${selectedAddress.cityEn}`
+        selectedAddress.detail.replace(/[·．・]/g, '').slice(0, 6),
+        (selectedAddress.detailEn || '').split(',')[0].slice(0, 12)
       )
     : null;
 
   return (
     <>
       <header className="sticky top-0 z-40">
-        {/* WeChat Status Bar Simulation */}
+        {/* WeChat Status Bar */}
         <div className="h-11 bg-background flex items-end justify-between px-6 pb-0.5">
           <span className="text-xs font-semibold text-white/90">
             {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -54,47 +54,57 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* WeChat Navigation Bar */}
+        {/* Navigation Bar - Matching PS mockup */}
         <div className="h-11 bg-background flex items-center justify-between px-3">
-          <div className="flex items-center gap-1.5 min-w-0 flex-1">
-            {!isHome && (
-              <button
-                onClick={() => navigate(-1)}
-                className="w-8 h-8 flex items-center justify-center text-white/80 -ml-1"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-            )}
-            <button
-              onClick={() => setShowPicker(true)}
-              className="flex items-center gap-1 text-white/90 truncate group"
-            >
-              <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
-              <span className="text-[13px] font-medium truncate max-w-[160px]">
-                {locationLoading
-                  ? t("定位中…", "Locating…")
-                  : displayLocation || t("选择地址", "Select Address")}
-              </span>
-              <ChevronDown className="w-3 h-3 text-white/40 shrink-0 group-hover:text-white/60 transition-colors" />
-            </button>
-          </div>
-
-          <div className="flex items-center h-8 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm overflow-hidden shrink-0">
+          {/* Left: Location + Status */}
+          <button
+            onClick={() => setShowPicker(true)}
+            className="flex items-center gap-1.5 text-white/90 truncate group min-w-0 flex-1"
+          >
+            <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span className="text-[13px] font-medium truncate">
+              {locationLoading
+                ? t("定位中…", "Locating…")
+                : shortLocation || t("选择地址", "Select")}
+            </span>
+            <div className="w-px h-3 bg-white/20 shrink-0 mx-0.5" />
             <ServiceStatusBadge variant="capsule" />
-            <div className="w-px h-4 bg-white/15" />
+            <ChevronRight className="w-3 h-3 text-white/30 shrink-0" />
+          </button>
+
+          {/* Right: EN + WeChat capsule (dots + close) */}
+          <div className="flex items-center gap-1.5 shrink-0 ml-2">
+            {/* EN Button - Purple */}
             <button
               onClick={toggleLanguage}
-              className="h-8 w-9 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+              className="h-7 px-2.5 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center hover:bg-primary/25 transition-colors"
               aria-label={language === "zh" ? "Switch to English" : "切换中文"}
             >
-              <span className="text-[10px] font-bold">
+              <span className="text-[11px] font-bold text-primary">
                 {language === "zh" ? "EN" : "中"}
               </span>
             </button>
-            <div className="w-px h-4 bg-white/15" />
-            <button className="h-8 w-9 flex items-center justify-center text-white/70">
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
+
+            {/* WeChat capsule: dots + close */}
+            <div className="flex items-center h-7 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm overflow-hidden">
+              <button className="h-7 w-8 flex items-center justify-center text-white/60 hover:text-white/90 transition-colors">
+                {/* Three dots icon */}
+                <svg width="16" height="4" viewBox="0 0 16 4" fill="currentColor">
+                  <circle cx="2" cy="2" r="1.5" />
+                  <circle cx="8" cy="2" r="1.5" />
+                  <circle cx="14" cy="2" r="1.5" />
+                </svg>
+              </button>
+              <div className="w-px h-3.5 bg-white/20" />
+              <button className="h-7 w-8 flex items-center justify-center text-white/60 hover:text-white/90 transition-colors">
+                {/* Circle close icon */}
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
+                  <circle cx="8" cy="8" r="6.5" />
+                  <line x1="5.5" y1="5.5" x2="10.5" y2="10.5" />
+                  <line x1="10.5" y1="5.5" x2="5.5" y2="10.5" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </header>
