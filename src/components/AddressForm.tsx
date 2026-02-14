@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, MapPin, Navigation, Loader2, Building2 } from "lucide-react";
+import { X, MapPin, Navigation, Loader2, Building2, ChevronRight } from "lucide-react";
 import { Address } from "@/contexts/AddressContext";
 import { useLocationDetect, NearbyPOI } from "@/hooks/useLocationDetect";
 
@@ -10,6 +10,8 @@ interface AddressFormProps {
   initialData?: Address;
   mode: "add" | "edit";
 }
+
+const TAGS = ["家", "公司", "学校", "其他"] as const;
 
 export const AddressForm = ({
   isOpen,
@@ -34,7 +36,11 @@ export const AddressForm = ({
     isDefault: initialData?.isDefault || false,
   });
 
+  const [doorNumber, setDoorNumber] = useState("");
+  const [gender, setGender] = useState<"mr" | "ms">("mr");
+  const [tag, setTag] = useState<string>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showPOIPicker, setShowPOIPicker] = useState(false);
   const { loading, pois, showList, setShowList, error: locationError, detect } = useLocationDetect();
 
   const validateForm = () => {
@@ -42,25 +48,27 @@ export const AddressForm = ({
     if (!formData.name.trim()) newErrors.name = "请输入收货人姓名";
     if (!formData.phone.trim()) newErrors.phone = "请输入手机号码";
     else if (!/^1[3-9]\d{9}$/.test(formData.phone)) newErrors.phone = "请输入正确的手机号码";
-    if (!formData.province.trim()) newErrors.province = "请选择省份";
-    if (!formData.city.trim()) newErrors.city = "请选择城市";
-    if (!formData.district.trim()) newErrors.district = "请选择区县";
-    if (!formData.detail.trim()) newErrors.detail = "请输入详细地址";
+    if (!formData.detail.trim()) newErrors.detail = "请选择收货地址";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
     if (validateForm()) {
-      onSubmit(formData);
+      const finalDetail = doorNumber
+        ? `${formData.detail} ${doorNumber}`
+        : formData.detail;
+      onSubmit({ ...formData, detail: finalDetail });
       onClose();
     }
   };
 
-  const updateField = (field: string, value: string | boolean | number | undefined) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (typeof field === "string" && errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
+  const handleAddressRowClick = () => {
+    setShowPOIPicker(true);
+    if (pois.length === 0) {
+      detect();
+    } else {
+      setShowList(true);
     }
   };
 
@@ -78,17 +86,21 @@ export const AddressForm = ({
       latitude: poi.lat,
       longitude: poi.lng,
     }));
-    // Clear related errors
     setErrors((prev) => {
       const next = { ...prev };
-      delete next.province;
-      delete next.city;
-      delete next.district;
       delete next.detail;
       return next;
     });
     setShowList(false);
+    setShowPOIPicker(false);
   };
+
+  const addressDisplay = formData.detail
+    ? formData.detail
+    : "";
+  const addressSubline = formData.detail
+    ? [formData.province, formData.city, formData.district].filter(Boolean).join("")
+    : "";
 
   return (
     <>
@@ -105,18 +117,18 @@ export const AddressForm = ({
         className={`fixed bottom-0 left-0 right-0 z-[80] transition-transform duration-300 ease-out ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
-        style={{ height: "85vh" }}
+        style={{ height: "92vh" }}
       >
-        <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden">
+        <div className="bg-background rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden">
           {/* Handle */}
           <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
             <div className="w-10 h-1 bg-border rounded-full" />
           </div>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-5 pb-4 flex-shrink-0 border-b border-border">
+          <div className="flex items-center justify-between px-5 pb-3 flex-shrink-0">
             <h2 className="text-lg font-bold text-foreground">
-              {mode === "add" ? "新增地址" : "编辑地址"}
+              {mode === "add" ? "新增收货地址" : "编辑收货地址"}
             </h2>
             <button
               onClick={onClose}
@@ -126,186 +138,274 @@ export const AddressForm = ({
             </button>
           </div>
 
-          {/* Form */}
-          <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
-            {/* Location Detect Button */}
-            <button
-              type="button"
-              onClick={detect}
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-primary/10 text-primary font-medium text-sm transition-all active:scale-[0.98] disabled:opacity-60"
-            >
+          {/* Map placeholder area */}
+          <div className="flex-shrink-0 relative h-40 bg-secondary/50 overflow-hidden mx-5 rounded-2xl mb-3">
+            <div className="absolute inset-0 flex items-center justify-center">
               {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Navigation className="w-4 h-4" />
-              )}
-              {loading ? "正在定位..." : "自动识别周边楼宇"}
-            </button>
-
-            {locationError && (
-              <p className="text-xs text-destructive text-center -mt-2">{locationError}</p>
-            )}
-
-            {/* Nearby POI List */}
-            {showList && pois.length > 0 && (
-              <div className="rounded-2xl bg-secondary/50 border border-border overflow-hidden">
-                <div className="px-3 py-2 border-b border-border">
-                  <span className="text-xs text-muted-foreground">选择附近地点</span>
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                  <span className="text-xs text-muted-foreground">正在定位...</span>
                 </div>
-                <div className="max-h-52 overflow-y-auto divide-y divide-border">
+              ) : formData.latitude && formData.longitude ? (
+                <div className="flex flex-col items-center gap-1">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-xs text-muted-foreground mt-1">
+                    {formData.district || "已定位"}
+                  </span>
+                </div>
+              ) : (
+                <button
+                  onClick={handleAddressRowClick}
+                  className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
+                >
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Navigation className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">点击定位当前位置</span>
+                </button>
+              )}
+            </div>
+            {locationError && (
+              <div className="absolute bottom-2 left-2 right-2">
+                <p className="text-xs text-destructive text-center bg-background/80 rounded-lg py-1 px-2">{locationError}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Form Card */}
+          <div className="flex-1 overflow-y-auto px-5">
+            <div className="bg-card rounded-2xl border border-border overflow-hidden divide-y divide-border">
+              {/* Address Row - tappable */}
+              <button
+                type="button"
+                onClick={handleAddressRowClick}
+                className="w-full flex items-start gap-3 px-4 py-4 text-left active:bg-secondary/50 transition-colors"
+              >
+                <span className="text-sm text-muted-foreground shrink-0 pt-0.5 w-12">地址</span>
+                <div className="flex-1 min-w-0">
+                  {addressDisplay ? (
+                    <>
+                      <p className="text-sm font-medium text-foreground leading-snug">{addressDisplay}</p>
+                      {addressSubline && (
+                        <p className="text-xs text-muted-foreground mt-0.5">{addressSubline}</p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">请选择收货地址</p>
+                  )}
+                </div>
+                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              </button>
+
+              {/* Door Number */}
+              <div className="flex items-center gap-3 px-4 py-4">
+                <span className="text-sm text-muted-foreground shrink-0 w-12">门牌号</span>
+                <input
+                  type="text"
+                  value={doorNumber}
+                  onChange={(e) => setDoorNumber(e.target.value)}
+                  placeholder="例：5号楼508室"
+                  className="flex-1 text-sm text-foreground placeholder:text-muted-foreground/60 bg-transparent focus:outline-none"
+                  maxLength={30}
+                />
+              </div>
+
+              {/* Recipient Name + Gender */}
+              <div className="flex items-center gap-3 px-4 py-4">
+                <span className="text-sm text-muted-foreground shrink-0 w-12">收货人</span>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => {
+                    setFormData((prev) => ({ ...prev, name: e.target.value }));
+                    if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
+                  }}
+                  placeholder="请填写收货人姓名"
+                  className={`flex-1 text-sm text-foreground placeholder:text-muted-foreground/60 bg-transparent focus:outline-none ${
+                    errors.name ? "text-destructive" : ""
+                  }`}
+                  maxLength={20}
+                />
+                <div className="flex items-center gap-3 shrink-0">
+                  <label className="flex items-center gap-1 cursor-pointer" onClick={() => setGender("mr")}>
+                    <div className={`w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center ${
+                      gender === "mr" ? "border-primary bg-primary" : "border-muted-foreground/30"
+                    }`}>
+                      {gender === "mr" && <div className="w-2 h-2 rounded-full bg-primary-foreground" />}
+                    </div>
+                    <span className={`text-sm ${gender === "mr" ? "text-primary font-medium" : "text-muted-foreground"}`}>先生</span>
+                  </label>
+                  <label className="flex items-center gap-1 cursor-pointer" onClick={() => setGender("ms")}>
+                    <div className={`w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center ${
+                      gender === "ms" ? "border-primary bg-primary" : "border-muted-foreground/30"
+                    }`}>
+                      {gender === "ms" && <div className="w-2 h-2 rounded-full bg-primary-foreground" />}
+                    </div>
+                    <span className={`text-sm ${gender === "ms" ? "text-primary font-medium" : "text-muted-foreground"}`}>女士</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-center gap-3 px-4 py-4">
+                <span className="text-sm text-muted-foreground shrink-0 w-12">手机号</span>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 11);
+                    setFormData((prev) => ({ ...prev, phone: val }));
+                    if (errors.phone) setErrors((prev) => ({ ...prev, phone: "" }));
+                  }}
+                  placeholder="请输入11位手机号码"
+                  className={`flex-1 text-sm text-foreground placeholder:text-muted-foreground/60 bg-transparent focus:outline-none ${
+                    errors.phone ? "text-destructive" : ""
+                  }`}
+                />
+              </div>
+
+              {/* Tags */}
+              <div className="flex items-center gap-3 px-4 py-4">
+                <span className="text-sm text-muted-foreground shrink-0 w-12">标签</span>
+                <div className="flex items-center gap-2">
+                  {TAGS.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setTag(tag === t ? "" : t)}
+                      className={`px-3 py-1 rounded-md text-xs border transition-colors ${
+                        tag === t
+                          ? "border-primary text-primary bg-primary/5 font-medium"
+                          : "border-border text-muted-foreground hover:border-muted-foreground/50"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Default Address Toggle */}
+              <div className="flex items-center justify-between px-4 py-4">
+                <span className="text-sm text-muted-foreground">默认地址</span>
+                <button
+                  onClick={() => setFormData((prev) => ({ ...prev, isDefault: !prev.isDefault }))}
+                  className={`w-11 h-6 rounded-full transition-colors ${
+                    formData.isDefault ? "bg-primary" : "bg-secondary"
+                  }`}
+                >
+                  <div
+                    className={`w-5 h-5 rounded-full bg-white shadow transition-transform ${
+                      formData.isDefault ? "translate-x-[22px]" : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Error messages */}
+            {(errors.name || errors.phone || errors.detail) && (
+              <div className="mt-2 px-1 space-y-1">
+                {errors.detail && <p className="text-xs text-destructive">{errors.detail}</p>}
+                {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+                {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
+              </div>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex-shrink-0 px-5 py-4">
+            <button
+              onClick={handleSubmit}
+              className="btn-gold w-full py-4 rounded-2xl text-base font-semibold"
+            >
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* POI Picker Overlay */}
+      {showPOIPicker && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[90]"
+            onClick={() => { setShowPOIPicker(false); setShowList(false); }}
+          />
+          <div className="fixed bottom-0 left-0 right-0 z-[90] max-w-md mx-auto">
+            <div className="bg-card rounded-t-3xl max-h-[60vh] flex flex-col">
+              {/* POI Picker Header */}
+              <div className="flex items-center justify-between px-5 pt-5 pb-3 flex-shrink-0">
+                <button
+                  onClick={() => { setShowPOIPicker(false); setShowList(false); }}
+                  className="text-sm text-muted-foreground"
+                >
+                  取消
+                </button>
+                <span className="text-sm font-semibold text-foreground">选择地点</span>
+                <div className="w-10" />
+              </div>
+
+              {/* Search hint */}
+              <div className="px-5 pb-3 flex-shrink-0">
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-secondary rounded-xl">
+                  <Building2 className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">搜索地点</span>
+                </div>
+              </div>
+
+              {/* Loading */}
+              {loading && (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-5 h-5 animate-spin text-primary mr-2" />
+                  <span className="text-sm text-muted-foreground">正在搜索附近地点...</span>
+                </div>
+              )}
+
+              {/* POI List */}
+              {!loading && pois.length > 0 && (
+                <div className="flex-1 overflow-y-auto divide-y divide-border">
                   {pois.map((poi, i) => (
                     <button
                       key={`${poi.name}-${i}`}
                       type="button"
                       onClick={() => handlePOISelect(poi)}
-                      className="w-full flex items-start gap-2.5 px-3 py-3 hover:bg-secondary/80 active:bg-secondary transition-colors text-left"
+                      className="w-full flex items-start gap-3 px-5 py-3.5 hover:bg-secondary/50 active:bg-secondary transition-colors text-left"
                     >
-                      <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-foreground truncate">{poi.name}</p>
-                        <p className="text-xs text-muted-foreground truncate mt-0.5">
+                        <p className="text-sm font-medium text-foreground">{poi.name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
                           {poi.district} {poi.address}
                         </p>
                       </div>
+                      {i === 0 && formData.detail === "" && (
+                        <ChevronRight className="w-4 h-4 text-primary mt-1 shrink-0" />
+                      )}
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* Name */}
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                收货人 <span className="text-destructive">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => updateField("name", e.target.value)}
-                placeholder="请输入收货人姓名"
-                className={`w-full px-4 py-3 bg-secondary rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                  errors.name ? "ring-2 ring-destructive/50" : ""
-                }`}
-                maxLength={20}
-              />
-              {errors.name && (
-                <p className="text-xs text-destructive mt-1">{errors.name}</p>
               )}
-            </div>
 
-            {/* Phone */}
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                手机号码 <span className="text-destructive">*</span>
-              </label>
-              <input
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => updateField("phone", e.target.value.replace(/\D/g, "").slice(0, 11))}
-                placeholder="请输入手机号码"
-                className={`w-full px-4 py-3 bg-secondary rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                  errors.phone ? "ring-2 ring-destructive/50" : ""
-                }`}
-              />
-              {errors.phone && (
-                <p className="text-xs text-destructive mt-1">{errors.phone}</p>
+              {/* No results */}
+              {!loading && showList && pois.length === 0 && (
+                <div className="flex items-center justify-center py-8">
+                  <span className="text-sm text-muted-foreground">未找到附近地点</span>
+                </div>
               )}
-            </div>
 
-            {/* Region Selection */}
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                所在地区 <span className="text-destructive">*</span>
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                <input
-                  type="text"
-                  value={formData.province}
-                  onChange={(e) => updateField("province", e.target.value)}
-                  placeholder="省份"
-                  className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                    errors.province ? "ring-2 ring-destructive/50" : ""
-                  }`}
-                  maxLength={10}
-                />
-                <input
-                  type="text"
-                  value={formData.city}
-                  onChange={(e) => updateField("city", e.target.value)}
-                  placeholder="城市"
-                  className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                    errors.city ? "ring-2 ring-destructive/50" : ""
-                  }`}
-                  maxLength={10}
-                />
-                <input
-                  type="text"
-                  value={formData.district}
-                  onChange={(e) => updateField("district", e.target.value)}
-                  placeholder="区县"
-                  className={`w-full px-3 py-3 bg-secondary rounded-xl text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                    errors.district ? "ring-2 ring-destructive/50" : ""
-                  }`}
-                  maxLength={10}
-                />
-              </div>
-              {(errors.province || errors.city || errors.district) && (
-                <p className="text-xs text-destructive mt-1">请填写完整的地区信息</p>
+              {locationError && (
+                <div className="px-5 pb-4">
+                  <p className="text-xs text-destructive text-center">{locationError}</p>
+                </div>
               )}
-            </div>
 
-            {/* Detail Address */}
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                详细地址 <span className="text-destructive">*</span>
-              </label>
-              <textarea
-                value={formData.detail}
-                onChange={(e) => updateField("detail", e.target.value)}
-                placeholder="请输入详细地址，如街道、门牌号、楼层等"
-                className={`w-full px-4 py-3 bg-secondary rounded-xl text-foreground placeholder:text-muted-foreground resize-none h-24 focus:outline-none focus:ring-2 focus:ring-primary/30 ${
-                  errors.detail ? "ring-2 ring-destructive/50" : ""
-                }`}
-                maxLength={100}
-              />
-              {errors.detail && (
-                <p className="text-xs text-destructive mt-1">{errors.detail}</p>
-              )}
-            </div>
-
-            {/* Default Address Toggle */}
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span className="text-sm text-foreground">设为默认地址</span>
-              </div>
-              <button
-                onClick={() => updateField("isDefault", !formData.isDefault)}
-                className={`w-12 h-7 rounded-full transition-colors ${
-                  formData.isDefault ? "bg-primary" : "bg-secondary"
-                }`}
-              >
-                <div
-                  className={`w-5 h-5 rounded-full bg-white shadow transition-transform ${
-                    formData.isDefault ? "translate-x-6" : "translate-x-1"
-                  }`}
-                />
-              </button>
+              <div className="safe-bottom" />
             </div>
           </div>
-
-          {/* Submit Button */}
-          <div className="flex-shrink-0 px-5 py-4 border-t border-border">
-            <button
-              onClick={handleSubmit}
-              className="btn-gold w-full py-4 rounded-2xl text-base font-semibold"
-            >
-              保存地址
-            </button>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };
