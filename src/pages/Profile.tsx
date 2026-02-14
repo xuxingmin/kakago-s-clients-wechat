@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { 
   Ticket, 
   Coffee, 
-  ClipboardList, 
-  HelpCircle, 
+  HelpCircle,
   Store, 
   ChevronRight,
   Users,
@@ -77,15 +76,7 @@ const Profile = () => {
 
   const menuItems: MenuItem[] = [
     { 
-      Icon: ClipboardList, 
-      labelZh: "订单历史", 
-      labelEn: "Order History",
-      descZh: "查看订单与评价状态",
-      descEn: "View orders and ratings",
-      onClick: () => navigate("/orders"),
-    },
-    { 
-      Icon: MapPin, 
+      Icon: MapPin,
       labelZh: "地址管理", 
       labelEn: "Address Management",
       descZh: "管理收货地址",
