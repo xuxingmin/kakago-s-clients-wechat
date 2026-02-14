@@ -2,97 +2,133 @@
 @tailwind components;
 @tailwind utilities;
 
-/* KAKAGO Design System - WeChat Mini Program Style */
+/* KAKAGO Design System - World-Class UX */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
     /* ═══════════════════════════════════════════════════════════
-       KAKAGO MINI PROGRAM COLOR SYSTEM
-       Light, warm, clean - inspired by WeChat mini programs
+       KAKAGO MASTER COLOR SYSTEM
+       A world-class palette built on four pillars:
+       Purple (Energy) · Fog Grey (Structure) · White (Clarity) · Black (Foundation)
        ═══════════════════════════════════════════════════════════ */
 
-    /* Brand Blue (like Luckin/WeChat standard) */
-    --brand-50: 220 60% 97%;
-    --brand-100: 220 60% 93%;
-    --brand-200: 220 55% 85%;
-    --brand-300: 220 55% 70%;
-    --brand-400: 220 55% 55%;
-    --brand-500: 220 55% 45%;
-    --brand-600: 220 60% 38%;
-    --brand-700: 220 65% 30%;
-
-    /* Warm Neutrals */
-    --warm-50: 30 20% 98%;
-    --warm-100: 30 15% 96%;
-    --warm-200: 30 10% 92%;
-    --warm-300: 25 8% 82%;
-    --warm-400: 20 5% 60%;
-    --warm-500: 20 5% 45%;
-    --warm-600: 20 5% 30%;
-    --warm-700: 20 5% 20%;
-    --warm-800: 20 5% 12%;
-    --warm-900: 20 5% 6%;
+    /* ─────────────────────────────────────────────────────────────
+       🟣 PURPLE SPECTRUM - The Soul of KAKAGO
+       Energy, Premium, Action
+       ───────────────────────────────────────────────────────────── */
+    --purple-50: 270 100% 98%;
+    --purple-100: 269 100% 95%;
+    --purple-200: 269 100% 90%;
+    --purple-300: 269 97% 82%;
+    --purple-400: 270 91% 72%;
+    --purple-500: 271 81% 56%;   /* ★ Primary Action */
+    --purple-600: 271 81% 46%;
+    --purple-700: 272 72% 38%;
+    --purple-800: 273 67% 31%;
+    --purple-900: 274 66% 20%;
 
     /* ─────────────────────────────────────────────────────────────
-       SEMANTIC TOKENS
+       🔘 FOG GREY SPECTRUM - Structure & Depth
+       Cool neutrals with subtle purple undertones
        ───────────────────────────────────────────────────────────── */
-    --background: 30 20% 98%;
-    --foreground: 20 10% 15%;
+    --fog-50: 240 5% 96%;
+    --fog-100: 240 6% 90%;
+    --fog-200: 240 5% 84%;
+    --fog-300: 240 5% 65%;
+    --fog-400: 240 4% 46%;
+    --fog-500: 240 5% 34%;
+    --fog-600: 240 4% 26%;
+    --fog-700: 240 5% 20%;       /* ★ Card Background */
+    --fog-800: 249 6% 14%;
+    --fog-900: 250 7% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 20 10% 15%;
+    /* ─────────────────────────────────────────────────────────────
+       ⚫ BLACK SPECTRUM - Foundation & Luxury
+       Deep blacks with elegant purple undertones
+       ───────────────────────────────────────────────────────────── */
+    --obsidian: 270 25% 5%;      /* ★ Primary Background */
+    --void: 270 30% 3%;          /* Deepest black */
+    --charcoal: 270 15% 8%;
+    --onyx: 270 20% 6%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 10% 15%;
+    /* ─────────────────────────────────────────────────────────────
+       ⚪ WHITE HIERARCHY - Clarity & Readability
+       Precise opacity scale for text and borders
+       ───────────────────────────────────────────────────────────── */
+    --white-100: 0 0% 100%;
+    --white-90: 0 0% 90%;
+    --white-70: 0 0% 70%;
+    --white-50: 0 0% 50%;
+    --white-30: 0 0% 30%;
+    --white-15: 0 0% 15%;
+    --white-08: 0 0% 8%;
+    --white-04: 0 0% 4%;
 
-    --primary: 220 55% 45%;
-    --primary-foreground: 0 0% 100%;
+    /* ─────────────────────────────────────────────────────────────
+       SEMANTIC TOKENS - Design System Mapping
+       ───────────────────────────────────────────────────────────── */
+    --background: var(--obsidian);
+    --foreground: var(--white-100);
 
-    --secondary: 30 10% 94%;
-    --secondary-foreground: 20 10% 30%;
+    --card: var(--fog-700);
+    --card-foreground: var(--white-100);
 
-    --muted: 30 10% 94%;
-    --muted-foreground: 20 5% 50%;
+    --popover: var(--fog-800);
+    --popover-foreground: var(--white-100);
 
-    --accent: 220 55% 45%;
-    --accent-foreground: 0 0% 100%;
+    --primary: var(--purple-500);
+    --primary-foreground: var(--white-100);
+
+    --secondary: var(--fog-600);
+    --secondary-foreground: var(--white-100);
+
+    --muted: var(--fog-700);
+    --muted-foreground: 0 0% 65%;
+
+    --accent: var(--purple-500);
+    --accent-foreground: var(--white-100);
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: var(--white-100);
 
-    --border: 30 10% 90%;
-    --input: 30 10% 90%;
-    --ring: 220 55% 45%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.10;
+    --ring: var(--purple-500);
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* ─────────────────────────────────────────────────────────────
-       ELEVATION SHADOWS
+       ELEVATION SHADOWS - Depth & Dimension
        ───────────────────────────────────────────────────────────── */
-    --shadow-xs: 0 1px 2px hsla(0, 0%, 0%, 0.04);
-    --shadow-sm: 0 2px 6px -1px hsla(0, 0%, 0%, 0.06);
-    --shadow-md: 0 4px 12px -2px hsla(0, 0%, 0%, 0.08);
-    --shadow-lg: 0 8px 24px -4px hsla(0, 0%, 0%, 0.1);
-    --shadow-xl: 0 16px 40px -8px hsla(0, 0%, 0%, 0.12);
-    --shadow-card: 0 1px 3px hsla(0, 0%, 0%, 0.06), 0 1px 2px hsla(0, 0%, 0%, 0.04);
-
-    /* Brand shadows */
-    --shadow-brand-sm: 0 2px 8px -2px hsla(220, 55%, 45%, 0.2);
-    --shadow-brand: 0 4px 16px -4px hsla(220, 55%, 45%, 0.25);
+    --shadow-xs: 0 1px 2px hsla(270, 25%, 5%, 0.5);
+    --shadow-sm: 0 2px 8px -2px hsla(270, 25%, 5%, 0.6);
+    --shadow-md: 0 4px 16px -4px hsla(270, 25%, 5%, 0.65);
+    --shadow-lg: 0 8px 24px -6px hsla(270, 25%, 5%, 0.7);
+    --shadow-xl: 0 16px 48px -12px hsla(270, 25%, 5%, 0.8);
+    
+    /* Purple Glow Shadows */
+    --shadow-purple-sm: 0 2px 12px -2px hsla(271, 81%, 56%, 0.25);
+    --shadow-purple: 0 4px 20px -4px hsla(271, 81%, 56%, 0.35);
+    --shadow-purple-lg: 0 8px 32px -8px hsla(271, 81%, 56%, 0.45);
+    --shadow-glow: 0 0 40px hsla(271, 81%, 56%, 0.25);
+    
+    /* Inset & Special */
+    --shadow-inner: inset 0 1px 0 hsla(0, 0%, 100%, 0.06);
+    --shadow-inner-strong: inset 0 2px 4px hsla(270, 25%, 5%, 0.4);
 
     /* ─────────────────────────────────────────────────────────────
        SIDEBAR TOKENS
        ───────────────────────────────────────────────────────────── */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 20 10% 15%;
-    --sidebar-primary: 220 55% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 10% 94%;
-    --sidebar-accent-foreground: 20 10% 30%;
-    --sidebar-border: 30 10% 90%;
-    --sidebar-ring: 220 55% 45%;
+    --sidebar-background: var(--obsidian);
+    --sidebar-foreground: var(--white-100);
+    --sidebar-primary: var(--purple-500);
+    --sidebar-primary-foreground: var(--white-100);
+    --sidebar-accent: var(--fog-600);
+    --sidebar-accent-foreground: var(--white-100);
+    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-ring: var(--purple-500);
   }
 }
 
@@ -102,75 +138,127 @@
   }
 
   html {
-    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Smooth scrolling */
     scroll-behavior: smooth;
   }
 
   body {
-    @apply text-foreground bg-background;
+    @apply text-foreground;
     min-height: 100vh;
     min-height: 100dvh;
+    /* Premium gradient background with subtle noise */
+    background: 
+      radial-gradient(ellipse at top, hsla(263, 50%, 15%, 0.15) 0%, transparent 50%),
+      linear-gradient(180deg, hsl(270 30% 6%) 0%, hsl(280 60% 6%) 100%);
+    background-attachment: fixed;
+    /* Prevent overscroll bounce color flash */
     overscroll-behavior: none;
   }
 
+  /* Better focus states */
   *:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
     border-radius: 4px;
   }
+
+  /* Smooth transitions for everything */
+  *, *::before, *::after {
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
 }
 
 @layer components {
   /* ========================================
-     BUTTON SYSTEM - Mini Program Style
+     APPLE-INSPIRED BUTTON SYSTEM
      ======================================== */
   
   .btn-gold {
-    @apply text-white font-semibold rounded-xl relative overflow-hidden;
-    background: hsl(var(--primary));
-    box-shadow: var(--shadow-brand-sm);
-    transition: all 0.2s ease;
-    min-height: 48px;
+    @apply text-white font-semibold rounded-2xl relative overflow-hidden;
+    background: linear-gradient(135deg, hsl(263 70% 55%), hsl(263 70% 45%));
+    box-shadow: 
+      var(--shadow-purple),
+      var(--shadow-inner);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-height: 52px;
     -webkit-tap-highlight-color: transparent;
   }
   
+  .btn-gold::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.15), transparent 60%);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  
   .btn-gold:hover {
-    opacity: 0.9;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+      0 8px 32px -4px hsla(263, 70%, 50%, 0.5),
+      var(--shadow-inner);
   }
   
   .btn-gold:active {
-    transform: scale(0.98);
+    transform: translateY(0) scale(0.98);
     transition-duration: 0.1s;
   }
 
   /* ========================================
-     CARD SYSTEM - Clean White Cards
+     PREMIUM CARD SYSTEM - Apple-like Glass
      ======================================== */
 
   .card-premium {
-    @apply rounded-xl bg-card relative;
-    box-shadow: var(--shadow-card);
-    transition: all 0.2s ease;
+    @apply rounded-2xl relative;
+    background: hsla(270, 15%, 12%, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsla(0, 0%, 100%, 0.06);
+    box-shadow: 
+      var(--shadow-card),
+      var(--shadow-inner);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
-  .card-premium:active {
-    transform: scale(0.99);
-    transition-duration: 0.1s;
+  .card-premium::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.04), transparent 50%);
+    pointer-events: none;
   }
 
+  .card-premium:hover {
+    border-color: hsla(263, 70%, 50%, 0.15);
+    box-shadow: 
+      0 8px 24px -6px hsla(263, 70%, 50%, 0.12),
+      var(--shadow-card),
+      var(--shadow-inner);
+  }
+
+  /* Interactive card with spring animation */
   .card-interactive {
     @apply card-premium cursor-pointer;
   }
 
-  .card-interactive:active {
-    transform: scale(0.98);
-    transition-duration: 0.1s;
+  .card-interactive:hover {
+    transform: translateY(-3px) scale(1.015);
+    border-color: hsla(263, 70%, 50%, 0.2);
   }
 
+  .card-interactive:active {
+    transform: translateY(-1px) scale(0.985);
+    transition-duration: 0.15s;
+  }
+
+  /* Card sizes with consistent rhythm */
   .card-xl {
     @apply card-interactive p-5;
     min-height: 140px;
@@ -197,98 +285,175 @@
   }
 
   .card-menu-item {
-    min-height: 56px;
-    transition: all 0.15s ease;
+    min-height: 64px;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
+  .card-menu-item:hover {
+    background-color: hsla(0, 0%, 100%, 0.04);
+  }
+
   .card-menu-item:active {
-    background-color: hsl(var(--secondary));
+    background-color: hsla(0, 0%, 100%, 0.08);
+    transform: scale(0.99);
   }
 
   /* ========================================
-     GLASS EFFECTS - Light frosted
+     GLASS EFFECTS - Premium Blur
      ======================================== */
 
   .glass {
-    background: hsla(0, 0%, 100%, 0.92);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid hsl(var(--border));
+    background: hsla(270, 15%, 8%, 0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.06);
   }
 
   .glass-light {
-    background: hsla(0, 0%, 100%, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: hsla(270, 15%, 15%, 0.6);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
   }
 
   /* ========================================
-     DIVIDERS
+     TEXT EFFECTS
+     ======================================== */
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, hsl(263 70% 70%), hsl(263 70% 50%), hsl(280 70% 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(0 0% 100%) 0%,
+      hsl(263 70% 80%) 50%,
+      hsl(0 0% 100%) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes textShimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 200% center; }
+  }
+
+  /* ========================================
+     DIVIDERS & DECORATIVE
      ======================================== */
 
   .fog-divider {
     height: 1px;
-    background: hsl(var(--border));
+    background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.08), transparent);
   }
 
   /* ========================================
-     ANIMATIONS
+     MICRO-ANIMATIONS - Apple-like Delight
      ======================================== */
 
-  .stagger-fade-in > * {
-    opacity: 0;
-    animation: staggerFadeIn 0.4s ease forwards;
+  /* Subtle breathing glow for CTAs */
+  .pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
   }
 
-  .stagger-fade-in > *:nth-child(1) { animation-delay: 0.03s; }
-  .stagger-fade-in > *:nth-child(2) { animation-delay: 0.06s; }
-  .stagger-fade-in > *:nth-child(3) { animation-delay: 0.09s; }
-  .stagger-fade-in > *:nth-child(4) { animation-delay: 0.12s; }
-  .stagger-fade-in > *:nth-child(5) { animation-delay: 0.15s; }
-  .stagger-fade-in > *:nth-child(6) { animation-delay: 0.18s; }
-  .stagger-fade-in > *:nth-child(7) { animation-delay: 0.21s; }
-  .stagger-fade-in > *:nth-child(8) { animation-delay: 0.24s; }
-  .stagger-fade-in > *:nth-child(9) { animation-delay: 0.27s; }
-  .stagger-fade-in > *:nth-child(10) { animation-delay: 0.30s; }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px hsla(263, 70%, 50%, 0.3); }
+    50% { box-shadow: 0 0 32px hsla(263, 70%, 50%, 0.45); }
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsla(263, 70%, 50%, 0.1) 50%,
+      transparent 100%
+    );
+    animation: shimmer 2.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Stagger fade in for lists */
+  .stagger-fade-in > * {
+    opacity: 0;
+    animation: staggerFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .stagger-fade-in > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-fade-in > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-fade-in > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-fade-in > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-fade-in > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-fade-in > *:nth-child(6) { animation-delay: 0.3s; }
+  .stagger-fade-in > *:nth-child(7) { animation-delay: 0.35s; }
+  .stagger-fade-in > *:nth-child(8) { animation-delay: 0.4s; }
 
   @keyframes staggerFadeIn {
     from { 
       opacity: 0; 
-      transform: translateY(8px);
+      transform: translateY(12px) scale(0.96);
     }
     to { 
       opacity: 1; 
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
   }
 
+  /* Hero reveal animation */
   .hero-reveal {
-    animation: heroReveal 0.5s ease forwards;
+    animation: heroReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   @keyframes heroReveal {
     from { 
       opacity: 0; 
-      transform: translateY(-6px);
+      transform: translateY(-10px);
+      filter: blur(4px);
     }
     to { 
       opacity: 1; 
       transform: translateY(0);
+      filter: blur(0);
     }
   }
 
+  /* Floating element animation */
   .float-subtle {
-    animation: floatSubtle 4s ease-in-out infinite;
+    animation: floatSubtle 6s ease-in-out infinite;
   }
 
   @keyframes floatSubtle {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+    50% { transform: translateY(-4px); }
   }
 
+  /* Icon pop animation on interaction */
   .icon-pop {
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .icon-pop:hover {
+    transform: scale(1.15);
   }
 
   .icon-pop:active {
@@ -313,12 +478,25 @@
   }
 
   /* ========================================
-     SCROLLBAR
+     ENHANCED SCROLLBAR
      ======================================== */
 
   ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 100%, 0.15);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsla(0, 0%, 100%, 0.25);
   }
 
   /* ========================================
@@ -326,16 +504,49 @@
      ======================================== */
 
   .page-enter {
-    animation: pageEnter 0.3s ease forwards;
+    animation: pageEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   @keyframes pageEnter {
     from {
       opacity: 0;
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
+      transform: translateY(0);
     }
+  }
+
+  /* ========================================
+     RIPPLE EFFECT
+     ======================================== */
+
+  .ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, hsla(263, 70%, 50%, 0.3) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.8s;
+  }
+
+  .ripple:active::after {
+    transform: scale(0, 0);
+    opacity: 1;
+    transition: 0s;
   }
 }
 
@@ -344,13 +555,13 @@
    ======================================== */
 
 ::selection {
-  background: hsla(220, 55%, 45%, 0.2);
-  color: inherit;
+  background: hsla(263, 70%, 50%, 0.3);
+  color: white;
 }
 
 ::-moz-selection {
-  background: hsla(220, 55%, 45%, 0.2);
-  color: inherit;
+  background: hsla(263, 70%, 50%, 0.3);
+  color: white;
 }
 
 /* ========================================

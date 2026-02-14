@@ -32,7 +32,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-              <div className="max-w-md mx-auto min-h-screen bg-background relative shadow-lg">
+              <div className="max-w-md mx-auto min-h-screen bg-background relative">
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/orders" element={<Orders />} />
