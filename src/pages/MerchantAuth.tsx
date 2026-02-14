@@ -1,14 +1,10 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Coffee, Shield, TrendingUp, Users, Upload, Check, Phone, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ArrowLeft, Coffee, Shield, TrendingUp, Users, Upload, Check, Phone, Loader2, Sparkles, ChevronRight, Zap, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { BottomNav } from "@/components/BottomNav";
 
 type Step = "intro" | "verify" | "info" | "success";
 
@@ -18,14 +14,13 @@ const MerchantAuth = () => {
   const { t } = useLanguage();
   const [step, setStep] = useState<Step>("intro");
   const [loading, setLoading] = useState(false);
-  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
-  
+
   // Phone verification state
   const [phone, setPhone] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [codeSent, setCodeSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  
+
   // Merchant info state
   const [ownerName, setOwnerName] = useState("");
   const [storeFeatures, setStoreFeatures] = useState("");
@@ -35,7 +30,7 @@ const MerchantAuth = () => {
   const [businessHoursClose, setBusinessHoursClose] = useState("22:00");
   const [businessLicense, setBusinessLicense] = useState<File | null>(null);
   const [foodPermit, setFoodPermit] = useState<File | null>(null);
-  
+
   const businessLicenseRef = useRef<HTMLInputElement>(null);
   const foodPermitRef = useRef<HTMLInputElement>(null);
 
@@ -43,490 +38,493 @@ const MerchantAuth = () => {
     {
       icon: TrendingUp,
       title: t("精准流量", "Targeted Traffic"),
-      description: t(
-        "盲盒模式带来高质量咖啡爱好者，转化率远超传统平台",
-        "Mystery box model attracts quality coffee lovers with higher conversion rates"
-      ),
+      desc: t("盲盒模式带来高质量咖啡爱好者", "Mystery box attracts quality coffee lovers"),
+      stat: "85%",
+      statLabel: t("转化率", "Conversion"),
     },
     {
       icon: Shield,
       title: t("品质保障", "Quality Assurance"),
-      description: t(
-        "严选合作商户，维护高端品牌调性，拒绝价格战",
-        "Curated merchants, premium brand positioning, no price wars"
-      ),
+      desc: t("严选合作，维护高端品牌调性", "Curated partners, premium positioning"),
+      stat: "A+",
+      statLabel: t("品牌评级", "Brand Grade"),
     },
     {
       icon: Users,
       title: t("社群赋能", "Community Power"),
-      description: t(
-        "加入精品咖啡联盟，共享行业资源与用户洞察",
-        "Join specialty coffee alliance, share resources and insights"
-      ),
+      desc: t("精品咖啡联盟，共享行业资源", "Specialty coffee alliance, shared resources"),
+      stat: "10K+",
+      statLabel: t("活跃用户", "Active Users"),
     },
     {
-      icon: Coffee,
+      icon: Zap,
       title: t("智能调度", "Smart Dispatch"),
-      description: t(
-        "AI驱动订单分配，平衡产能与用户体验",
-        "AI-powered order distribution, balancing capacity and experience"
-      ),
+      desc: t("AI驱动订单分配，平衡产能", "AI-powered order distribution"),
+      stat: "< 3min",
+      statLabel: t("平均响应", "Avg Response"),
     },
+  ];
+
+  const stats = [
+    { value: "200+", label: t("合作商户", "Partners") },
+    { value: "50K+", label: t("日均订单", "Daily Orders") },
+    { value: "4.9", label: t("平均评分", "Avg Rating") },
   ];
 
   // Send verification code
   const handleSendCode = async () => {
     if (!phone || phone.length !== 11) {
-      toast({ 
-        title: t("请输入正确的手机号", "Please enter a valid phone number"), 
-        variant: "destructive" 
-      });
+      toast({ title: t("请输入正确的手机号", "Please enter a valid phone number"), variant: "destructive" });
       return;
     }
-    
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((r) => setTimeout(r, 1000));
     setCodeSent(true);
     setCountdown(60);
     setLoading(false);
-    
-    toast({ 
-      title: t("验证码已发送", "Code sent"), 
-      description: t("请查看您的短信", "Please check your SMS") 
-    });
-    
+    toast({ title: t("验证码已发送", "Code sent") });
     const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
+      setCountdown((prev) => {
+        if (prev <= 1) { clearInterval(timer); return 0; }
         return prev - 1;
       });
     }, 1000);
   };
 
-  // Verify code
   const handleVerifyCode = async () => {
     if (verificationCode.length !== 6) {
-      toast({ 
-        title: t("请输入6位验证码", "Please enter 6-digit code"), 
-        variant: "destructive" 
-      });
+      toast({ title: t("请输入6位验证码", "Please enter 6-digit code"), variant: "destructive" });
       return;
     }
-    
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((r) => setTimeout(r, 500));
     setLoading(false);
     setStep("info");
   };
 
-  // Upload file to storage
   const uploadFile = async (file: File, path: string): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${path}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-    
-    const { data, error } = await supabase.storage
-      .from('merchant-documents')
-      .upload(fileName, file);
-    
+    const { data, error } = await supabase.storage.from("merchant-documents").upload(fileName, file);
     if (error) throw error;
-    
-    const { data: urlData } = supabase.storage
-      .from('merchant-documents')
-      .getPublicUrl(data.path);
-    
+    const { data: urlData } = supabase.storage.from("merchant-documents").getPublicUrl(data.path);
     return urlData.publicUrl;
   };
 
-  // Submit application
   const handleSubmit = async () => {
     if (!ownerName || !storeFeatures || !coffeeMachine || !dailyPeakCups || !businessLicense || !foodPermit) {
-      toast({ 
-        title: t("请填写完整信息", "Please complete all fields"), 
-        variant: "destructive" 
-      });
+      toast({ title: t("请填写完整信息", "Please complete all fields"), variant: "destructive" });
       return;
     }
-    
     setLoading(true);
-    
     try {
       const [licenseUrl, permitUrl] = await Promise.all([
-        uploadFile(businessLicense, 'licenses'),
-        uploadFile(foodPermit, 'permits'),
+        uploadFile(businessLicense, "licenses"),
+        uploadFile(foodPermit, "permits"),
       ]);
-      
-      const { error } = await supabase
-        .from('merchant_applications')
-        .insert({
-          phone,
-          owner_name: ownerName,
-          store_features: storeFeatures,
-          coffee_machine_model: coffeeMachine,
-          daily_peak_cups: parseInt(dailyPeakCups),
-          business_hours: { open: businessHoursOpen, close: businessHoursClose },
-          business_license_url: licenseUrl,
-          food_permit_url: permitUrl,
-        });
-      
+      const { error } = await supabase.from("merchant_applications").insert({
+        phone,
+        owner_name: ownerName,
+        store_features: storeFeatures,
+        coffee_machine_model: coffeeMachine,
+        daily_peak_cups: parseInt(dailyPeakCups),
+        business_hours: { open: businessHoursOpen, close: businessHoursClose },
+        business_license_url: licenseUrl,
+        food_permit_url: permitUrl,
+      });
       if (error) throw error;
-      
-      setSuccessDialogOpen(true);
+      setStep("success");
     } catch (error) {
       console.error("Submit error:", error);
-      toast({ 
-        title: t("提交失败，请重试", "Submission failed, please retry"), 
-        variant: "destructive" 
-      });
+      toast({ title: t("提交失败，请重试", "Submission failed"), variant: "destructive" });
     } finally {
       setLoading(false);
     }
   };
 
-  // Intro page - Why Join KAKA
+  // ══════════════════════════════════════════
+  // STEP: INTRO — Why Join KAKAGO
+  // ══════════════════════════════════════════
   if (step === "intro") {
     return (
-      <div className="min-h-screen bg-background">
-        {/* Header */}
-        <header className="sticky top-0 z-40 glass safe-top">
-          <div className="px-4 py-4 max-w-md mx-auto flex items-center gap-3">
-            <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-secondary/50 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-white" />
+      <div className="h-screen flex flex-col overflow-hidden">
+        <div className="flex-shrink-0">
+          {/* Back button */}
+          <div className="absolute top-3 left-4 z-50 safe-top">
+            <button onClick={() => navigate(-1)} className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center">
+              <ArrowLeft className="w-4 h-4 text-white" />
             </button>
-            <h1 className="text-lg font-medium text-white">
-              {t("成为合作商家", "Become a Partner")}
+          </div>
+
+          {/* Hero */}
+          <div className="relative bg-gradient-to-b from-primary/20 via-background to-background pt-14 pb-6 px-5 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto mb-4">
+              <Coffee className="w-8 h-8 text-primary" />
+            </div>
+            <h1 className="text-xl font-bold text-white mb-1.5">
+              {t("成为 KAKAGO 合作商家", "Become a KAKAGO Partner")}
             </h1>
-          </div>
-        </header>
+            <p className="text-xs text-white/50 leading-relaxed max-w-[260px] mx-auto">
+              {t(
+                "与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味",
+                "Partner with our mystery coffee platform and reach more coffee lovers"
+              )}
+            </p>
 
-        <div className="fog-divider" />
-
-        {/* Hero Section */}
-        <section className="px-6 py-12 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6">
-            <Coffee className="w-8 h-8 text-primary" />
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-3">
-            {t("为什么加入 KAKA?", "Why Join KAKA?")}
-          </h2>
-          <p className="text-white/60 text-sm leading-relaxed max-w-xs mx-auto">
-            {t(
-              "与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味",
-              "Partner with our mystery coffee platform and let more coffee lovers discover your unique flavors"
-            )}
-          </p>
-        </section>
-
-        {/* Benefits Grid */}
-        <section className="px-4 pb-8 space-y-3">
-          {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="card-premium p-5 animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <benefit.icon className="w-5 h-5 text-primary" />
+            {/* Stats Bar */}
+            <div className="flex justify-center gap-6 mt-5">
+              {stats.map((s, i) => (
+                <div key={i} className="text-center">
+                  <p className="text-lg font-black text-primary">{s.value}</p>
+                  <p className="text-[10px] text-white/40">{s.label}</p>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-white mb-1">{benefit.title}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed">{benefit.description}</p>
+              ))}
+            </div>
+          </div>
+          <div className="fog-divider mx-4" />
+        </div>
+
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
+          {/* Benefits */}
+          <section className="px-4 py-3 space-y-2">
+            {benefits.map((b, i) => {
+              const Icon = b.icon;
+              return (
+                <div key={i} className="card-md animate-fade-in" style={{ animationDelay: `${i * 0.06}s` }}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+                      <Icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <h3 className="text-sm font-semibold text-white">{b.title}</h3>
+                        <div className="text-right">
+                          <span className="text-sm font-black text-primary">{b.stat}</span>
+                          <p className="text-[9px] text-white/40">{b.statLabel}</p>
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-white/50 leading-relaxed">{b.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+
+          {/* Testimonial */}
+          <section className="px-4 pb-3">
+            <div className="card-md border-primary/20">
+              <div className="flex items-start gap-2">
+                <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <div className="flex items-center gap-1 mb-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star key={s} className="w-3 h-3 text-primary fill-primary" />
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-white/70 leading-relaxed italic">
+                    {t(
+                      "\"加入KAKAGO三个月，日均订单增长了40%，品牌曝光度大幅提升。\"",
+                      '"3 months with KAKAGO: 40% daily order growth, massive brand exposure."'
+                    )}
+                  </p>
+                  <p className="text-[10px] text-white/40 mt-1">
+                    — {t("合肥某精品咖啡馆主理人", "Hefei specialty café owner")}
+                  </p>
                 </div>
               </div>
             </div>
-          ))}
-        </section>
+          </section>
 
-        {/* CTA Button */}
-        <section className="px-4 pb-8">
-          <Button
-            className="w-full h-14 rounded-2xl text-base font-medium"
-            onClick={() => setStep("verify")}
-          >
-            {t("立即入驻", "Apply Now")}
-          </Button>
-          <p className="text-center text-xs text-white/40 mt-4">
-            {t(
-              "提交申请后，24小时内将有工作人员与您联系",
-              "Our team will contact you within 24 hours after submission"
-            )}
-          </p>
-        </section>
+          {/* CTA */}
+          <section className="px-4 pb-6">
+            <button
+              onClick={() => setStep("verify")}
+              className="w-full py-3.5 rounded-xl btn-gold text-sm font-semibold flex items-center justify-center gap-2"
+            >
+              <Coffee className="w-4 h-4" />
+              {t("立即入驻", "Apply Now")}
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <p className="text-center text-[10px] text-white/30 mt-3">
+              {t("提交申请后，24小时内将有工作人员与您联系", "Our team will contact you within 24 hours")}
+            </p>
+          </section>
+        </div>
+
+        <div className="flex-shrink-0">
+          <BottomNav />
+        </div>
       </div>
     );
   }
 
-  // Phone verification page
+  // ══════════════════════════════════════════
+  // STEP: VERIFY — Phone Verification
+  // ══════════════════════════════════════════
   if (step === "verify") {
     return (
-      <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-40 glass safe-top">
-          <div className="px-4 py-4 max-w-md mx-auto flex items-center gap-3">
-            <button onClick={() => setStep("intro")} className="p-2 -ml-2 rounded-full hover:bg-secondary/50 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-white" />
+      <div className="h-screen flex flex-col overflow-hidden">
+        <div className="flex-shrink-0">
+          <div className="absolute top-3 left-4 z-50 safe-top">
+            <button onClick={() => setStep("intro")} className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center">
+              <ArrowLeft className="w-4 h-4 text-white" />
             </button>
-            <h1 className="text-lg font-medium text-white">
-              {t("验证手机号", "Verify Phone")}
-            </h1>
           </div>
-        </header>
 
-        <div className="fog-divider" />
+          <div className="pt-14 pb-4 px-5 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-3">
+              <Phone className="w-7 h-7 text-primary" />
+            </div>
+            <h2 className="text-lg font-bold text-white mb-1">{t("验证手机号", "Verify Phone")}</h2>
+            <p className="text-[11px] text-white/50">{t("我们将发送验证码到您的手机", "We'll send a code to your phone")}</p>
+          </div>
+          <div className="fog-divider mx-4" />
+        </div>
 
-        <section className="px-4 py-8">
-          <div className="card-premium p-6 space-y-6">
-            <div className="text-center mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-7 h-7 text-primary" />
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-4">
+          <div className="card-md space-y-4">
+            {/* Phone input */}
+            <div>
+              <label className="text-[10px] text-white/50 mb-1.5 block">{t("手机号", "Phone")}</label>
+              <div className="flex gap-2">
+                <input
+                  type="tel"
+                  placeholder={t("请输入11位手机号", "11-digit phone")}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
+                  maxLength={11}
+                  className="flex-1 px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+                />
+                <button
+                  onClick={handleSendCode}
+                  disabled={loading || countdown > 0 || phone.length !== 11}
+                  className="px-4 py-2.5 rounded-xl text-xs font-medium bg-primary/10 text-primary border border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  {countdown > 0 ? `${countdown}s` : t("发送", "Send")}
+                </button>
               </div>
-              <h2 className="text-lg font-semibold text-white mb-2">
-                {t("输入您的手机号", "Enter Your Phone")}
-              </h2>
-              <p className="text-sm text-white/60">
-                {t("我们将发送验证码到您的手机", "We'll send a verification code to your phone")}
-              </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-white/80">{t("手机号", "Phone Number")}</Label>
-                <div className="flex gap-2">
-                  <Input
-                    type="tel"
-                    placeholder={t("请输入11位手机号", "Enter 11-digit phone")}
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 11))}
-                    className="flex-1 h-12 bg-secondary border-white/10 text-white rounded-xl"
-                    maxLength={11}
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={handleSendCode}
-                    disabled={loading || countdown > 0 || phone.length !== 11}
-                    className="h-12 px-4 rounded-xl border-primary/50 text-primary hover:bg-primary/10"
-                  >
-                    {countdown > 0 ? `${countdown}s` : t("发送", "Send")}
-                  </Button>
-                </div>
+            {/* Code input */}
+            {codeSent && (
+              <div className="animate-fade-in">
+                <label className="text-[10px] text-white/50 mb-1.5 block">{t("验证码", "Code")}</label>
+                <input
+                  type="text"
+                  placeholder={t("请输入6位验证码", "6-digit code")}
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  maxLength={6}
+                  className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-sm text-center tracking-[0.3em] placeholder:text-white/30 placeholder:tracking-normal outline-none focus:ring-1 focus:ring-primary/50 font-mono"
+                />
               </div>
+            )}
 
-              {codeSent && (
-                <div className="space-y-2 animate-fade-in">
-                  <Label className="text-white/80">{t("验证码", "Verification Code")}</Label>
-                  <Input
-                    type="text"
-                    placeholder={t("请输入6位验证码", "Enter 6-digit code")}
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    className="h-12 bg-secondary border-white/10 text-white rounded-xl text-center text-lg tracking-widest"
-                    maxLength={6}
-                  />
-                </div>
-              )}
-            </div>
-
-            <Button
-              className="w-full h-12 rounded-xl"
+            <button
               onClick={handleVerifyCode}
               disabled={!codeSent || verificationCode.length !== 6 || loading}
+              className="w-full py-3 rounded-xl btn-gold text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t("下一步", "Next")}
-            </Button>
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("下一步", "Next")}
+            </button>
           </div>
-        </section>
+        </div>
+
+        <div className="flex-shrink-0">
+          <BottomNav />
+        </div>
       </div>
     );
   }
 
-  // Merchant info page
+  // ══════════════════════════════════════════
+  // STEP: INFO — Merchant Information
+  // ══════════════════════════════════════════
   if (step === "info") {
     return (
-      <div className="min-h-screen bg-background pb-8">
-        <header className="sticky top-0 z-40 glass safe-top">
-          <div className="px-4 py-4 max-w-md mx-auto flex items-center gap-3">
-            <button onClick={() => setStep("verify")} className="p-2 -ml-2 rounded-full hover:bg-secondary/50 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-white" />
+      <div className="h-screen flex flex-col overflow-hidden">
+        <div className="flex-shrink-0">
+          <div className="absolute top-3 left-4 z-50 safe-top">
+            <button onClick={() => setStep("verify")} className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center">
+              <ArrowLeft className="w-4 h-4 text-white" />
             </button>
-            <h1 className="text-lg font-medium text-white">
-              {t("填写商户信息", "Merchant Information")}
-            </h1>
           </div>
-        </header>
 
-        <div className="fog-divider" />
+          <div className="pt-14 pb-3 px-5">
+            <h2 className="text-lg font-bold text-white">{t("填写商户信息", "Merchant Info")}</h2>
+            <p className="text-[11px] text-white/50 mt-0.5">{t("完善以下信息，加速审核流程", "Complete info to expedite review")}</p>
+          </div>
+          <div className="fog-divider mx-4" />
+        </div>
 
-        <section className="px-4 py-4 space-y-3">
-          {/* Document Upload Cards */}
-          <div className="card-premium p-5">
-            <h3 className="font-medium text-white mb-4">
-              {t("证件上传", "Document Upload")}
-            </h3>
-            <div className="grid grid-cols-2 gap-3">
-              {/* Business License */}
-              <div 
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3 space-y-2">
+          {/* Document Upload */}
+          <div className="card-md">
+            <h3 className="text-xs font-semibold text-white mb-3">{t("证件上传", "Documents")}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <div
                 className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
-                  businessLicense ? 'border-primary bg-primary/10' : 'border-white/20 hover:border-white/40'
+                  businessLicense ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
                 }`}
                 onClick={() => businessLicenseRef.current?.click()}
               >
-                <input
-                  ref={businessLicenseRef}
-                  type="file"
-                  accept="image/*,.pdf"
-                  className="hidden"
-                  onChange={(e) => setBusinessLicense(e.target.files?.[0] || null)}
-                />
+                <input ref={businessLicenseRef} type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => setBusinessLicense(e.target.files?.[0] || null)} />
                 {businessLicense ? (
                   <>
-                    <Check className="w-6 h-6 text-primary mb-1" />
-                    <span className="text-xs text-primary">{t("已上传", "Uploaded")}</span>
+                    <Check className="w-5 h-5 text-primary mb-1" />
+                    <span className="text-[10px] text-primary">{t("已上传", "Uploaded")}</span>
                   </>
                 ) : (
                   <>
-                    <Upload className="w-6 h-6 text-white/40 mb-1" />
-                    <span className="text-xs text-white/40">{t("营业执照", "Business License")}</span>
+                    <Upload className="w-5 h-5 text-white/40 mb-1" />
+                    <span className="text-[10px] text-white/40">{t("营业执照", "License")}</span>
                   </>
                 )}
               </div>
-
-              {/* Food Permit */}
-              <div 
+              <div
                 className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
-                  foodPermit ? 'border-primary bg-primary/10' : 'border-white/20 hover:border-white/40'
+                  foodPermit ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
                 }`}
                 onClick={() => foodPermitRef.current?.click()}
               >
-                <input
-                  ref={foodPermitRef}
-                  type="file"
-                  accept="image/*,.pdf"
-                  className="hidden"
-                  onChange={(e) => setFoodPermit(e.target.files?.[0] || null)}
-                />
+                <input ref={foodPermitRef} type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => setFoodPermit(e.target.files?.[0] || null)} />
                 {foodPermit ? (
                   <>
-                    <Check className="w-6 h-6 text-primary mb-1" />
-                    <span className="text-xs text-primary">{t("已上传", "Uploaded")}</span>
+                    <Check className="w-5 h-5 text-primary mb-1" />
+                    <span className="text-[10px] text-primary">{t("已上传", "Uploaded")}</span>
                   </>
                 ) : (
                   <>
-                    <Upload className="w-6 h-6 text-white/40 mb-1" />
-                    <span className="text-xs text-white/40">{t("食品经营许可证", "Food Permit")}</span>
+                    <Upload className="w-5 h-5 text-white/40 mb-1" />
+                    <span className="text-[10px] text-white/40">{t("食品许可证", "Food Permit")}</span>
                   </>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Owner Info Card */}
-          <div className="card-premium p-5 space-y-4">
-            <h3 className="font-medium text-white">{t("主理人信息", "Owner Information")}</h3>
-            <div className="space-y-3">
-              <div>
-                <Label className="text-white/60 text-xs">{t("主理人名称", "Owner Name")}</Label>
-                <Input
-                  placeholder={t("您的称呼", "Your name")}
-                  value={ownerName}
-                  onChange={(e) => setOwnerName(e.target.value)}
-                  className="mt-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
-                />
-              </div>
-              <div>
-                <Label className="text-white/60 text-xs">{t("本店特色", "Store Features")}</Label>
-                <Textarea
-                  placeholder={t("介绍您的咖啡馆特色、理念...", "Describe your café's features and philosophy...")}
-                  value={storeFeatures}
-                  onChange={(e) => setStoreFeatures(e.target.value)}
-                  className="mt-1 bg-secondary border-white/10 text-white rounded-xl min-h-[80px] resize-none"
-                />
-              </div>
+          {/* Owner Info */}
+          <div className="card-md space-y-3">
+            <h3 className="text-xs font-semibold text-white">{t("主理人信息", "Owner Info")}</h3>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("主理人名称", "Name")} *</label>
+              <input
+                placeholder={t("您的称呼", "Your name")}
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("本店特色", "Features")} *</label>
+              <textarea
+                placeholder={t("介绍您的咖啡馆特色...", "Describe your café...")}
+                value={storeFeatures}
+                onChange={(e) => setStoreFeatures(e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50 resize-none"
+              />
             </div>
           </div>
 
-          {/* Equipment Card */}
-          <div className="card-premium p-5 space-y-4">
-            <h3 className="font-medium text-white">{t("设备与产能", "Equipment & Capacity")}</h3>
-            <div className="space-y-3">
-              <div>
-                <Label className="text-white/60 text-xs">{t("咖啡机型号", "Coffee Machine Model")}</Label>
-                <Input
-                  placeholder={t("如: La Marzocco Linea PB", "e.g., La Marzocco Linea PB")}
-                  value={coffeeMachine}
-                  onChange={(e) => setCoffeeMachine(e.target.value)}
-                  className="mt-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
-                />
-              </div>
-              <div>
-                <Label className="text-white/60 text-xs">{t("日峰值出品杯数", "Daily Peak Cups")}</Label>
-                <Input
-                  type="number"
-                  placeholder={t("预估每日最大产能", "Estimated daily max capacity")}
-                  value={dailyPeakCups}
-                  onChange={(e) => setDailyPeakCups(e.target.value)}
-                  className="mt-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
-                />
-              </div>
+          {/* Equipment */}
+          <div className="card-md space-y-3">
+            <h3 className="text-xs font-semibold text-white">{t("设备与产能", "Equipment")}</h3>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("咖啡机型号", "Machine")} *</label>
+              <input
+                placeholder="La Marzocco Linea PB"
+                value={coffeeMachine}
+                onChange={(e) => setCoffeeMachine(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("日峰值杯数", "Peak Cups")} *</label>
+              <input
+                type="number"
+                placeholder={t("预估每日最大产能", "Max daily capacity")}
+                value={dailyPeakCups}
+                onChange={(e) => setDailyPeakCups(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
             </div>
           </div>
 
-          {/* Business Hours Card */}
-          <div className="card-premium p-5 space-y-4">
-            <h3 className="font-medium text-white">{t("营业时间", "Business Hours")}</h3>
-            <div className="flex items-center gap-3">
-              <Input
+          {/* Hours */}
+          <div className="card-md space-y-3">
+            <h3 className="text-xs font-semibold text-white">{t("营业时间", "Hours")}</h3>
+            <div className="flex items-center gap-2">
+              <input
                 type="time"
                 value={businessHoursOpen}
                 onChange={(e) => setBusinessHoursOpen(e.target.value)}
-                className="flex-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
+                className="flex-1 px-3 py-2.5 rounded-xl bg-secondary text-white text-xs outline-none focus:ring-1 focus:ring-primary/50"
               />
-              <span className="text-white/40">{t("至", "to")}</span>
-              <Input
+              <span className="text-white/40 text-xs">{t("至", "to")}</span>
+              <input
                 type="time"
                 value={businessHoursClose}
                 onChange={(e) => setBusinessHoursClose(e.target.value)}
-                className="flex-1 h-11 bg-secondary border-white/10 text-white rounded-xl"
+                className="flex-1 px-3 py-2.5 rounded-xl bg-secondary text-white text-xs outline-none focus:ring-1 focus:ring-primary/50"
               />
             </div>
           </div>
 
-          {/* Submit Button */}
-          <Button
-            className="w-full h-14 rounded-2xl text-base font-medium mt-4"
+          {/* Submit */}
+          <button
             onClick={handleSubmit}
             disabled={loading}
+            className="w-full py-3.5 rounded-xl btn-gold text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-40 mt-2"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t("提交审核", "Submit for Review")}
-          </Button>
-        </section>
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("提交审核", "Submit for Review")}
+          </button>
 
-        {/* Success Dialog */}
-        <Dialog open={successDialogOpen} onOpenChange={setSuccessDialogOpen}>
-          <DialogContent className="bg-card border-white/10 rounded-2xl max-w-sm mx-auto">
-            <DialogHeader className="text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                <Check className="w-8 h-8 text-primary" />
-              </div>
-              <DialogTitle className="text-xl text-white">
-                {t("申请已提交", "Application Submitted")}
-              </DialogTitle>
-              <DialogDescription className="text-white/60 mt-2">
-                {t(
-                  "24小时内将有 KAKAGO 的 Fellow 伙伴与您联系，请保持手机畅通",
-                  "A KAKAGO Fellow will contact you within 24 hours. Please keep your phone available."
-                )}
-              </DialogDescription>
-            </DialogHeader>
-            <Button
-              className="w-full h-12 rounded-xl mt-4"
+          <p className="text-center text-[10px] text-white/30 pb-4">
+            {t("审核通常需要1-3个工作日", "Review typically takes 1-3 business days")}
+          </p>
+        </div>
+
+        <div className="flex-shrink-0">
+          <BottomNav />
+        </div>
+      </div>
+    );
+  }
+
+  // ══════════════════════════════════════════
+  // STEP: SUCCESS
+  // ══════════════════════════════════════════
+  if (step === "success") {
+    return (
+      <div className="h-screen flex flex-col overflow-hidden">
+        <div className="flex-1 flex items-center justify-center px-6">
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-5">
+              <Check className="w-10 h-10 text-primary" />
+            </div>
+            <h2 className="text-xl font-bold text-white mb-2">
+              {t("申请已提交", "Application Submitted")}
+            </h2>
+            <p className="text-xs text-white/50 leading-relaxed max-w-[260px] mx-auto mb-8">
+              {t(
+                "24小时内将有 KAKAGO 的 Fellow 伙伴与您联系，请保持手机畅通",
+                "A KAKAGO Fellow will contact you within 24 hours"
+              )}
+            </p>
+            <button
               onClick={() => navigate("/")}
+              className="w-full py-3 rounded-xl btn-gold text-sm font-semibold"
             >
               {t("返回首页", "Back to Home")}
-            </Button>
-          </DialogContent>
-        </Dialog>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-shrink-0">
+          <BottomNav />
+        </div>
       </div>
     );
   }
