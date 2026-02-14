@@ -1,30 +1,31 @@
 
-# Fix: Shopping Cart "Checkout" Button Not Visible
 
-## Problem
-The cart drawer's sticky bottom bar (containing the "去结算" checkout button) is hidden behind the bottom navigation bar. Both use `fixed bottom-0 z-50`, so the BottomNav covers the checkout button completely.
+# Pixel-Perfect Address Card Grid Alignment
 
-## Solution
-Restructure the cart drawer so it sits above the bottom navigation, and ensure the sticky footer with the checkout button is always visible. This matches the Luckin Coffee reference image exactly.
+## Current Issue
+The address cards in the picker are close to the reference design but need pixel-level alignment tweaks to ensure uniform sizing, consistent spacing, and crisp text positioning across all 13+ cards.
 
-## Changes (1 file only: `src/components/MiniCartBar.tsx`)
+## Changes (single file: `src/components/AddressPicker.tsx`)
 
-### 1. Fix z-index layering
-- Change the cart drawer overlay and content to `z-[60]` so it renders above the BottomNav (`z-50`)
+### 1. Uniform Card Height
+- Add `min-h-[56px]` to each card button so all cards share the same height regardless of content length
+- Use `justify-center` for vertical centering within the fixed-height card
 
-### 2. Add proper bottom padding
-- Add `pb-20` (bottom padding for BottomNav height) to the cart drawer container so the sticky footer clears the navigation bar
-- Alternatively, ensure the entire drawer (overlay + content) fully covers the BottomNav area
+### 2. Grid Gap and Padding
+- Adjust grid gap from `gap-1.5` to `gap-2` for cleaner visual separation matching the reference
+- Standardize card internal padding to `px-3 py-2` for consistent whitespace
 
-### 3. Ensure sticky footer visibility
-- The sticky bottom bar containing the cart icon, estimated price, and "去结算" button must render with sufficient clearance from the BottomNav
-- The drawer's `max-h-[60vh]` and flex layout already supports this -- the fix is purely a z-index and spacing issue
+### 3. Icon + Text Row Alignment
+- Keep the 20px icon (`w-5 h-5`) + `gap-1.5` pattern but add `min-w-0` on the text span to ensure `truncate` works correctly on both columns
+- Ensure the landmark text uses `flex-1 min-w-0 truncate` to prevent overflow pushing the "默认" badge off-screen
 
-## Technical Details
+### 4. Second Row (District + Name) Alignment
+- Change `pl-[26px]` to `ml-[26px]` for more predictable alignment relative to the icon
+- Add `min-w-0` to the row container so truncation works properly in narrow columns
 
-The specific changes:
-- Line 100: Change overlay from `z-50` to `z-[60]`
-- Line 101: Change drawer container from `z-50` to `z-[60]`
-- Line 172: Add `pb-[calc(env(safe-area-inset-bottom)+1.5rem)]` or increase `pb-6` to `pb-20` to account for the BottomNav height (64px / h-16)
+### 5. Default Badge Positioning
+- Adjust badge from `absolute top-1.5 right-2` to `absolute top-1 right-1.5` for tighter placement matching the reference image
 
-This is a minimal, targeted fix -- no restructuring needed, just z-index and padding corrections.
+## Technical Detail
+All changes are CSS-only within the existing component structure -- no logic or data changes needed.
+
