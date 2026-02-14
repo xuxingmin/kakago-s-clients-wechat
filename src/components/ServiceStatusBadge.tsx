@@ -2,11 +2,41 @@ import { RefreshCw } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useServiceAvailability } from "@/hooks/useServiceAvailability";
 
-export const ServiceStatusBadge = () => {
+interface ServiceStatusBadgeProps {
+  variant?: "default" | "capsule";
+}
+
+export const ServiceStatusBadge = ({ variant = "default" }: ServiceStatusBadgeProps) => {
   const { t } = useLanguage();
   const { isAvailable, isLoading, nearbyMerchantCount, refresh } =
     useServiceAvailability();
 
+  // Capsule variant - compact for WeChat-style header
+  if (variant === "capsule") {
+    return (
+      <button
+        onClick={refresh}
+        className="h-8 px-2.5 flex items-center gap-1.5 text-white/70 hover:text-white transition-colors"
+      >
+        {isLoading ? (
+          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
+        ) : isAvailable ? (
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+        ) : (
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+        )}
+        <span className="text-[10px] font-medium">
+          {isLoading
+            ? t("定位中", "...")
+            : isAvailable
+            ? t("可服务", "OK")
+            : t("暂停", "Off")}
+        </span>
+      </button>
+    );
+  }
+
+  // Default variant
   return (
     <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-border">
       {isLoading ? (
