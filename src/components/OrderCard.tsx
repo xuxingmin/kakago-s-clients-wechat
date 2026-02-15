@@ -39,9 +39,9 @@ interface OrderCardProps {
 }
 
 const STATUS_PROGRESS: Record<OrderStatus, number> = {
-  pending: 10,
-  preparing: 45,
-  ready: 70,
+  pending: 0,
+  preparing: 30,
+  ready: 60,
   delivering: 85,
   completed: 100,
 };
@@ -137,7 +137,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
           </div>
 
           {/* Progress bar for active orders */}
-          {!isCompleted && !isSearching && (
+          {!isCompleted && (
             <div className="flex items-center gap-2 mb-3">
               <div className="flex-1 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
                 <div
