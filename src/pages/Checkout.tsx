@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, ChevronRight, Loader2, MessageSquare, CupSoda, Thermometer, Flame, Snowflake, FlaskConical, Droplets, Minus, Plus } from "lucide-react";
+import { ArrowLeft, MapPin, ChevronRight, MessageSquare, CupSoda, Thermometer, Flame, Snowflake, FlaskConical, Droplets, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useAddress } from "@/contexts/AddressContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { toast } from "@/hooks/use-toast";
 
 // Mock user beans balance
 const userBeansBalance = 124050;
@@ -49,11 +48,9 @@ const specTagIconMap: Record<string, typeof Snowflake> = {
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { items, totalPrice, clearCart, totalItems } = useCart();
+  const { items, totalPrice, totalItems } = useCart();
   const { selectedAddress } = useAddress();
   const { t } = useLanguage();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processingStep, setProcessingStep] = useState<"idle" | "redirecting" | "processing" | "verifying">("idle");
   const [remark, setRemark] = useState("");
   const [beansToUse, setBeansToUse] = useState(0);
 
@@ -72,38 +69,17 @@ const Checkout = () => {
     return null;
   }
 
-  const handlePayment = async () => {
-    setIsProcessing(true);
-    setProcessingStep("redirecting");
-    await new Promise(r => setTimeout(r, 1200));
-    setProcessingStep("processing");
-    await new Promise(r => setTimeout(r, 2000));
-    const isSuccess = Math.random() > 0.1;
-    if (isSuccess) {
-      setProcessingStep("verifying");
-      await new Promise(r => setTimeout(r, 800));
-      const beansMsg = beansToUse > 0 ? t(`，已扣除 ${beansToUse.toLocaleString()} KAKA豆`, `, ${beansToUse.toLocaleString()} KAKA Beans deducted`) : "";
-      toast({
-        title: t("支付成功", "Payment Successful"),
-        description: t(`订单支付完成${beansMsg}`, `Payment completed${beansMsg}`),
-      });
-      clearCart();
-      navigate("/order-tracking");
-    } else {
-      setIsProcessing(false);
-      setProcessingStep("idle");
-      toast({ title: t("支付失败", "Payment Failed"), description: t("支付已取消或超时，请重试", "Payment cancelled or timed out"), variant: "destructive" });
-    }
+  const handleGoToPay = () => {
+    navigate("/payment", {
+      state: {
+        totalPrice: finalPrice,
+        beansDeduction,
+        beansUsed: beansToUse,
+        itemCount: totalItems,
+      },
+    });
   };
 
-  const getProcessingText = () => {
-    switch (processingStep) {
-      case "redirecting": return t("正在跳转微信...", "Redirecting to WeChat...");
-      case "processing": return t("正在处理支付...", "Processing payment...");
-      case "verifying": return t("验证支付结果...", "Verifying payment...");
-      default: return "";
-    }
-  };
 
   const address = selectedAddress;
 
@@ -334,18 +310,10 @@ const Checkout = () => {
             )}
           </div>
           <button
-            onClick={handlePayment}
-            disabled={isProcessing}
-            className="px-8 py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-95 disabled:opacity-60"
+            onClick={handleGoToPay}
+            className="px-8 py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-95"
           >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                {getProcessingText()}
-              </>
-            ) : (
-              t("去支付", "Pay Now")
-            )}
+            {t("去支付", "Pay Now")}
           </button>
         </div>
       </div>
