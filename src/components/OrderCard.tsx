@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Star, Coffee, Phone, RotateCcw, MoreHorizontal, ChevronRight, X, FileText, Ban } from "lucide-react";
+import { Star, Coffee, Phone, RotateCcw, ChevronRight, X, FileText, Ban } from "lucide-react";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -109,8 +109,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
     const canSelfRefund = refundSecondsLeft !== null && refundSecondsLeft > 0;
 
-    // "More" dropdown state
-    const [moreOpen, setMoreOpen] = useState(false);
+
 
     return (
       <div className={`relative rounded-xl border bg-[hsl(270,15%,10%)] overflow-hidden transition-all duration-300 ${
@@ -203,57 +202,23 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
         {/* Bottom action bar */}
         <div className="flex items-center justify-between px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
-          {/* Left: More + Rating */}
+          {/* Left side */}
           <div className="flex items-center gap-1.5">
-            {/* More button */}
-            <div className="relative">
+            {/* Cancel order button */}
+            {onCancel && (
               <button
-                onClick={(e) => { e.stopPropagation(); setMoreOpen(!moreOpen); }}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
+                onClick={(e) => { e.stopPropagation(); if (canCancel) onCancel(); }}
+                disabled={!canCancel}
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-lg border text-[10px] font-medium transition-colors ${
+                  canCancel
+                    ? "bg-white/[0.04] border-white/[0.06] text-white/50 hover:text-white/70"
+                    : "bg-white/[0.02] border-white/[0.04] text-white/20 cursor-not-allowed"
+                }`}
               >
-                <MoreHorizontal className="w-3 h-3" />
-                {t("更多", "More")}
+                <Ban className="w-3 h-3" />
+                {t("取消订单", "Cancel")}
               </button>
-              {moreOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setMoreOpen(false)} />
-                  <div className="absolute bottom-full left-0 mb-1.5 z-50 w-32 rounded-lg border border-white/[0.08] bg-[hsl(270,15%,12%)] shadow-xl overflow-hidden">
-                    {onCancel && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setMoreOpen(false); if (canCancel) onCancel(); }}
-                        disabled={!canCancel}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-[11px] transition-colors ${
-                          canCancel
-                            ? "text-white/60 hover:bg-white/[0.06] hover:text-white/90"
-                            : "text-white/20 cursor-not-allowed"
-                        }`}
-                      >
-                        <Ban className="w-3.5 h-3.5" />
-                        {t("取消订单", "Cancel Order")}
-                      </button>
-                    )}
-                    {onRefund && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setMoreOpen(false); onRefund(); }}
-                        className="w-full flex items-center gap-2 px-3 py-2.5 text-[11px] text-white/60 hover:bg-white/[0.06] hover:text-white/90 transition-colors"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                        {t("申请退款", "Request Refund")}
-                      </button>
-                    )}
-                    {onInvoice && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setMoreOpen(false); onInvoice(); }}
-                        className="w-full flex items-center gap-2 px-3 py-2.5 text-[11px] text-white/60 hover:bg-white/[0.06] hover:text-white/90 transition-colors"
-                      >
-                        <FileText className="w-3.5 h-3.5" />
-                        {t("申请发票", "Request Invoice")}
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+            )}
             {/* Rating info for completed */}
             {isCompleted && userRating ? (
               <div className="flex items-center gap-1">
