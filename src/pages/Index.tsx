@@ -1,4 +1,4 @@
-import { Coffee, Leaf, Award, Flame, Snowflake, CloudRain, Sun, Sparkles, TreePalm, Flower2, CupSoda } from "lucide-react";
+import { Coffee, Award, Flame, Snowflake, CloudRain, Sun, TreePine, Wheat, Mountain, Droplets, CupSoda } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -33,10 +33,10 @@ const allProducts: ProductTileData[] = [
   { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: CloudRain, iconColor: "text-cyan-400", iconBg: "bg-cyan-400/15", tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
   { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: Sun, iconColor: "text-yellow-400", iconBg: "bg-yellow-400/15", tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
   { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: CupSoda, iconColor: "text-stone-300", iconBg: "bg-stone-300/15", tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
-  { id: "dirty-coffee", nameZh: "脏脏咖啡", nameEn: "Dirty Coffee", price: 18, image: coffeeDirty, icon: Sparkles, iconColor: "text-violet-400", iconBg: "bg-violet-400/15", descZh: "巧克力瀑布 · 浓缩碰撞冰牛乳", descEn: "Chocolate cascade meets iced milk" },
-  { id: "matcha-latte", nameZh: "抹茶拿铁", nameEn: "Matcha Latte", price: 18, image: coffeeMatcha, icon: Leaf, iconColor: "text-emerald-400", iconBg: "bg-emerald-400/15", descZh: "宇治抹茶 · 丝滑牛乳交融", descEn: "Uji matcha · silky milk fusion" },
-  { id: "coconut-latte", nameZh: "生椰拿铁", nameEn: "Coconut Latte", price: 16, image: coffeeCoconut, icon: TreePalm, iconColor: "text-lime-400", iconBg: "bg-lime-400/15", descZh: "鲜榨椰浆 · 热带风味咖啡", descEn: "Fresh coconut · tropical coffee" },
-  { id: "rose-latte", nameZh: "玫瑰拿铁", nameEn: "Rose Latte", price: 18, image: coffeeRose, icon: Flower2, iconColor: "text-pink-400", iconBg: "bg-pink-400/15", descZh: "重瓣玫瑰 · 花香萦绕奶咖", descEn: "Damask rose · floral milk coffee" },
+  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: TreePine, iconColor: "text-amber-600", iconBg: "bg-amber-600/15", descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate" },
+  { id: "koji-latte", nameZh: "米曲\"鲜\"咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: "text-yellow-500", iconBg: "bg-yellow-500/15", descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt" },
+  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: Mountain, iconColor: "text-slate-400", iconBg: "bg-slate-400/15", descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese" },
+  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Droplets, iconColor: "text-sky-300", iconBg: "bg-sky-300/15", descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple" },
 ];
 
 const getBestCouponDiscount = (productId: string): number => {
@@ -101,7 +101,7 @@ const Index = () => {
               <Coffee className="w-3 h-3" />
               <Award className="w-3 h-3" />
               <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">4.0</div>
-              <Leaf className="w-3 h-3" />
+              <Coffee className="w-3 h-3" />
               <span className="text-[8px]">🌱</span>
             </div>
             <div className="flex items-center gap-1.5">
