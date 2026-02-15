@@ -129,7 +129,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="px-4 pt-1.5 pb-3">
+        <section className="px-4 pt-1.5 pb-20">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-violet-400/30">
               <Coffee className="w-3 h-3" strokeWidth={1.5} />
@@ -140,8 +140,8 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-              <span className="text-[10px] text-violet-300/30">
-                {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
+              <span className="text-[10px] text-white/30">
+                {t("全城精品店，全听你调遣！", "Elite cafés at your command!")}
               </span>
             </div>
           </div>
