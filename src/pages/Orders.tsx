@@ -8,6 +8,7 @@ import { RatingModal } from "@/components/RatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { BrandBanner } from "@/components/BrandBanner";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -198,10 +199,8 @@ const Orders = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       <div className="flex-shrink-0">
         <Header />
+        <BrandBanner />
         <div className="px-4 pt-2 pb-3 max-w-md mx-auto bg-background">
-          <h1 className="text-lg font-bold text-white tracking-tight mb-3 font-mono uppercase">
-            {t("我的订单", "MY ORDERS")}
-          </h1>
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab("active")}
