@@ -1,4 +1,4 @@
-import { Plus, LucideIcon, CupSoda, Thermometer, Flame } from "lucide-react";
+import { Plus, LucideIcon, CupSoda, Thermometer, Flame, Snowflake, TreePine, Milk, FlaskConical, Flower2, Droplets } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface ProductTileData {
@@ -16,6 +16,7 @@ export interface ProductTileData {
   descEn?: string;
   specZh?: string;
   specEn?: string;
+  specTags?: { icon: string; labelZh: string; labelEn: string }[];
   isCreative?: boolean;
 }
 
@@ -37,6 +38,17 @@ export const ProductTile = ({
   const { t, language } = useLanguage();
   const Icon = product.icon;
   const isEn = language === "en";
+
+  const specTagIconMap: Record<string, LucideIcon> = {
+    snowflake: Snowflake,
+    cup: CupSoda,
+    tree: TreePine,
+    milk: Milk,
+    flask: FlaskConical,
+    flower: Flower2,
+    droplets: Droplets,
+    flame: Flame,
+  };
 
   return (
     <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden ${
@@ -85,10 +97,18 @@ export const ProductTile = ({
             <span className="flex items-center gap-0.5"><Thermometer className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[1]}</span>
             <span className="flex items-center gap-0.5"><Flame className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[2]}</span>
           </div>
-        ) : product.specZh ? (
-          <span className="text-white/30 text-[9px]">
-            {t(product.specZh, product.specEn || "")}
-          </span>
+        ) : product.isCreative && product.specTags ? (
+          <div className="flex items-center gap-1.5 text-white/30 text-[9px] flex-wrap">
+            {product.specTags.map((tag, i) => {
+              const TagIcon = specTagIconMap[tag.icon];
+              return (
+                <span key={i} className="flex items-center gap-0.5">
+                  {TagIcon && <TagIcon className="w-[9px] h-[9px]" strokeWidth={1.5} />}
+                  {t(tag.labelZh, tag.labelEn)}
+                </span>
+              );
+            })}
+          </div>
         ) : <span />}
         <button
           onClick={onAddToCart}
