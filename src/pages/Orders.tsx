@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { RatingModal } from "@/components/RatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCart } from "@/contexts/CartContext";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -14,10 +15,13 @@ interface OrderItem {
   name: string;
   nameEn?: string;
   qty: number;
+  unitPrice?: number;
+  image?: string;
 }
 
 interface Order {
   id: string;
+  orderNumber: string;
   items: OrderItem[];
   price: number;
   status: OrderStatus;
@@ -38,9 +42,10 @@ interface Order {
 const demoOrders: Order[] = [
   {
     id: "order-001",
+    orderNumber: "HF001-260215-0001",
     items: [
-      { name: "拿铁 (热)", nameEn: "Latte (Hot)", qty: 2 },
-      { name: "美式 (冰)", nameEn: "Americano (Iced)", qty: 1 },
+      { name: "拿铁 (热)", nameEn: "Latte (Hot)", qty: 2, unitPrice: 15 },
+      { name: "美式 (冰)", nameEn: "Americano (Iced)", qty: 1, unitPrice: 12 },
     ],
     price: 42,
     status: "preparing",
@@ -53,25 +58,27 @@ const demoOrders: Order[] = [
     isRevealed: true,
     eta: "8 分钟",
     etaEn: "8 min",
-    orderCreatedMs: Date.now() - 20 * 1000, // 20 seconds ago → refund countdown active
+    orderCreatedMs: Date.now() - 20 * 1000,
   },
   {
     id: "order-002",
+    orderNumber: "HF001-260215-0002",
     items: [
-      { name: "美式咖啡 (冰)", nameEn: "Americano (Iced)", qty: 1 },
+      { name: "美式咖啡 (冰)", nameEn: "Americano (Iced)", qty: 1, unitPrice: 12 },
     ],
     price: 12,
     status: "pending",
     createdAt: "今天 14:28",
     createdAtEn: "Today 14:28",
     isRevealed: false,
-    orderCreatedMs: Date.now() - 10 * 1000, // 10 seconds ago
+    orderCreatedMs: Date.now() - 10 * 1000,
   },
   {
     id: "order-003",
+    orderNumber: "HF001-260214-0003",
     items: [
-      { name: "卡布奇诺", nameEn: "Cappuccino", qty: 1 },
-      { name: "澳白", nameEn: "Flat White", qty: 1 },
+      { name: "卡布奇诺", nameEn: "Cappuccino", qty: 1, unitPrice: 16 },
+      { name: "澳白", nameEn: "Flat White", qty: 1, unitPrice: 14 },
     ],
     price: 30,
     status: "completed",
@@ -86,8 +93,9 @@ const demoOrders: Order[] = [
   },
   {
     id: "order-004",
+    orderNumber: "HF001-260213-0004",
     items: [
-      { name: "澳白", nameEn: "Flat White", qty: 3 },
+      { name: "澳白", nameEn: "Flat White", qty: 3, unitPrice: 15 },
     ],
     price: 45,
     status: "completed",
@@ -105,6 +113,7 @@ const Orders = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { addItem } = useCart();
   const [activeTab, setActiveTab] = useState("active");
   const [orders, setOrders] = useState<Order[]>(demoOrders);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
@@ -135,10 +144,25 @@ const Orders = () => {
   };
 
   const handleReorder = (orderId: string) => {
-    toast({
-      title: t("再来一单", "Reorder"),
-      description: t("已将商品加入购物车", "Item added to cart"),
+    const order = orders.find((o) => o.id === orderId);
+    if (!order) return;
+    // Add all items from this order to cart
+    order.items.forEach((item) => {
+      for (let i = 0; i < item.qty; i++) {
+        addItem({
+          id: `${item.name}-${Date.now()}-${i}`,
+          nameZh: item.name,
+          nameEn: item.nameEn || item.name,
+          price: item.unitPrice || 0,
+          image: item.image || "",
+        });
+      }
     });
+    toast({
+      title: t("已加入购物车", "Added to Cart"),
+      description: t("正在前往订单确认页...", "Going to checkout..."),
+    });
+    navigate("/checkout");
   };
 
   const handleRefund = (orderId: string) => {
@@ -214,6 +238,7 @@ const Orders = () => {
               >
                 <OrderCard
                   id={order.id}
+                  orderNumber={order.orderNumber}
                   items={order.items}
                   price={order.price}
                   status={order.status}
@@ -231,7 +256,7 @@ const Orders = () => {
                   orderCreatedMs={order.orderCreatedMs}
                   onClick={() => handleOrderClick(order.id)}
                   onContact={order.status !== "completed" ? handleContact : undefined}
-                  onReorder={order.status === "completed" ? () => handleReorder(order.id) : undefined}
+                  onReorder={() => handleReorder(order.id)}
                   onRefund={order.status !== "completed" ? () => handleRefund(order.id) : undefined}
                   t={t}
                 />
