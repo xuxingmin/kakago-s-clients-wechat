@@ -53,8 +53,8 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Navigation Bar - Matching PS mockup */}
-        <div className="h-9 bg-background flex items-center justify-between px-3">
+        {/* Navigation Bar */}
+        <div className="h-9 bg-background flex items-center justify-between px-5 mb-3">
           {/* Left: Location + Status */}
           <button
             onClick={() => navigate("/address")}
