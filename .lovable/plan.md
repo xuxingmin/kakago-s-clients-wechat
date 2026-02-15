@@ -1,47 +1,53 @@
 
-# Add "Auto-Detect Nearby Buildings" Button to AddressForm
 
-## Overview
-Add a location-detect button at the top of the AddressForm (in the red-boxed area from the screenshot). When tapped, it uses the browser's Geolocation API + OpenStreetMap Nominatim reverse geocoding to auto-fill the province, city, district, and detail fields. It also fetches nearby POIs (points of interest) like buildings and landmarks for the user to pick from, eliminating manual input.
+# Reviewer Feedback Implementation Plan
 
-## UI Changes (`src/components/AddressForm.tsx`)
+## Current Issues (Screenshot vs. Brief)
 
-### 1. "Select Location" Button
-- Add a tappable button between the header and the "收货人" field
-- Icon: `Navigation` (or `Locate`) from lucide-react + text "自动识别当前位置" / "Auto-detect location"
-- Shows a loading spinner while detecting
+1. **Creative cards same size as standard** -- the reviewer specifically asks for "larger, high-impact product cards" in the Creative section, but currently both sections use identical card sizes.
+2. **Color mismatch** -- the brief calls for distinct color tones between sections (Dark Gray #222 for upper, Deep Black / Dark Metallic Silver for lower). Currently both headers use similar white/opacity values.
+3. **Serif italic styling** -- the right-side text of the lower section should use a more prominent serif italic style to convey "World Champion elegance". Currently it's applied but may be too subtle.
+4. **LAB tags visibility** -- the LAB 07/08/09/10 experiment tags exist but are very faint (white/20). They should be more visible as a key design differentiator.
 
-### 2. Nearby POI List (Inline Dropdown)
-- After detection, display a scrollable list of 5-8 nearby buildings/landmarks below the button
-- Each item shows: building name + short address
-- Tapping an item auto-fills: province, city, district, detail, and stores lat/lng
-- List dismisses after selection
+## Planned Changes
 
-### 3. Auto-Fill Behavior
-- On POI selection, populate:
-  - `province` / `provinceEn` from reverse geocode result
-  - `city` / `cityEn`
-  - `district` / `districtEn`
-  - `detail` / `detailEn` with the selected building name + address
-- Clear any validation errors on the filled fields
+### 1. Section Header Typography Refinement (`Index.tsx`)
 
-## Technical Implementation
+- **Upper Section (意式基石系列)**:
+  - Left title: slightly larger, bold, `text-white/70` -- keep current as it reads well
+  - Right description: lighter weight with wider letter-spacing for a "lab report" feel
+  
+- **Lower Section (先锋实验系列)**:
+  - Left title: bolder, `text-white/80` with a subtle warm tint
+  - Right description: increase Playfair Display font size slightly, ensure italic is clearly visible, add a subtle gold/silver shimmer color instead of plain white/40
 
-### Geolocation + Nominatim Flow
-1. Call `navigator.geolocation.getCurrentPosition()` to get lat/lng
-2. In parallel, call Nominatim reverse geocode for address decomposition AND Nominatim search API for nearby POIs:
-   - Reverse: `https://nominatim.openstreetmap.org/reverse?lat=X&lon=Y&format=json&accept-language=zh`
-   - Nearby POIs: `https://nominatim.openstreetmap.org/search?q=*&format=json&accept-language=zh&viewbox={bbox}&bounded=1&limit=8&addressdetails=1`
-   - Alternative: Use Overpass API for better POI results (buildings, shops, amenities within 500m radius)
+### 2. Creative Cards -- High-Impact Upgrade (`ProductTile.tsx`)
 
-### State Additions
-- `locationLoading: boolean` - shows spinner on the button
-- `nearbyPOIs: Array<{name, address, lat, lng, province, city, district}>` - detected results
-- `showPOIList: boolean` - toggles the dropdown
+- Increase creative card inner padding slightly (from `py-2 px-2.5` to `py-2.5 px-3`)
+- Make the icon container larger for creative products (from `w-10 h-10` to `w-11 h-11`)
+- Boost the LAB tag opacity from `white/20` to `white/35` and slightly larger font
+- Add a subtle top-border glow effect on creative cards using `border-t border-primary/25`
 
-### Form Data Update
-- Add `latitude` and `longitude` to formData state (already supported in Address type)
-- Pass coordinates through to `onSubmit`
+### 3. Divider Line Differentiation (`Index.tsx`)
 
-## File Changes
-- `src/components/AddressForm.tsx` - add location button, POI list, auto-fill logic (single file change)
+- Upper section: plain `bg-white/10` line (neutral, technical)
+- Lower section: gradient line `from-white/15 via-primary/20 to-white/15` (already in place, keep as-is)
+
+### 4. Grid Spacing Adjustment (`Index.tsx`)
+
+- Keep `gap-1.5` for standard grid (compact, uniform)
+- Use `gap-2` for creative grid to give cards more breathing room and a "premium" feel
+
+## Technical Details
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `src/pages/Index.tsx` | Adjust header typography colors, creative grid gap |
+| `src/components/ProductTile.tsx` | Creative card padding/sizing bump, LAB tag visibility |
+
+### No New Dependencies
+
+All changes are CSS/Tailwind adjustments within existing components. No new packages or fonts needed (Playfair Display already imported).
+
