@@ -22,6 +22,7 @@ interface ProductTileProps {
   estimatedPrice: number;
   quantityInCart: number;
   onAddToCart: (e: React.MouseEvent) => void;
+  labIndex?: number;
 }
 
 export const ProductTile = ({
@@ -29,6 +30,7 @@ export const ProductTile = ({
   estimatedPrice,
   quantityInCart,
   onAddToCart,
+  labIndex,
 }: ProductTileProps) => {
   const { t, language } = useLanguage();
   const Icon = product.icon;
@@ -38,6 +40,12 @@ export const ProductTile = ({
     <div className={`group card-md text-left relative flex flex-col justify-between py-2 px-2.5 min-h-0 overflow-hidden ${
       product.isCreative ? "border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20" : ""
     }`}>
+      {/* Lab tag for creative */}
+      {labIndex !== undefined && (
+        <span className="absolute top-1.5 right-1.5 text-[7px] font-mono font-bold tracking-widest text-white/20 uppercase">
+          LAB {String(labIndex).padStart(2, "0")}
+        </span>
+      )}
       {/* Top: Icon + Name + Price */}
       <div className="flex items-start gap-2">
         <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>
