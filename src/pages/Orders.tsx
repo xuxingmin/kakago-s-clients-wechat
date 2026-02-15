@@ -167,11 +167,22 @@ const Orders = () => {
   };
 
   const handleRefund = (orderId: string) => {
+    toast({
+      title: t("申请退款", "Refund Requested"),
+      description: t("您的退款申请已提交，预计1-3个工作日处理", "Your refund request has been submitted"),
+    });
+  };
+
+  const handleCancel = (orderId: string) => {
     setOrders((prev) => prev.filter((o) => o.id !== orderId));
     toast({
-      title: t("退款成功", "Refund Successful"),
+      title: t("订单已取消", "Order Cancelled"),
       description: t("款项将在1-3个工作日内退回", "Refund will be processed in 1-3 business days"),
     });
+  };
+
+  const handleInvoice = (orderId: string) => {
+    navigate("/invoice");
   };
 
   const handleRatingSubmit = (rating: number, tags: string[], note: string) => {
@@ -254,9 +265,11 @@ const Orders = () => {
                   storeLogo={order.storeLogo}
                   orderCreatedMs={order.orderCreatedMs}
                   onClick={() => handleOrderClick(order.id)}
-                  onContact={order.status !== "completed" ? handleContact : undefined}
+                  onContact={handleContact}
                   onReorder={() => handleReorder(order.id)}
-                  onRefund={order.status !== "completed" ? () => handleRefund(order.id) : undefined}
+                  onRefund={() => handleRefund(order.id)}
+                  onCancel={() => handleCancel(order.id)}
+                  onInvoice={() => handleInvoice(order.id)}
                   t={t}
                 />
               </div>
