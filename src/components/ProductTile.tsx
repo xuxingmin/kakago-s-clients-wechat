@@ -45,7 +45,7 @@ export const ProductTile = ({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-1">
-            <h3 className={`font-semibold text-white leading-tight line-clamp-1 ${isEn ? "text-xs" : "text-sm"}`}>
+            <h3 className={`font-semibold text-white leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
               {t(product.nameZh, product.nameEn)}
             </h3>
             <span className="text-white font-bold text-base shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
@@ -53,12 +53,12 @@ export const ProductTile = ({
             </span>
           </div>
           {product.tagZh && (
-            <p className={`text-muted-foreground mt-0.5 line-clamp-1 ${isEn ? "text-[9px]" : "text-[10px]"}`}>
+            <p className={`text-muted-foreground mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className={`text-muted-foreground mt-0.5 line-clamp-1 ${isEn ? "text-[9px]" : "text-[10px]"}`}>
+            <p className={`text-muted-foreground mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
