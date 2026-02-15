@@ -39,7 +39,7 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter>
-                <div className="w-[393px] max-w-full mx-auto min-h-screen bg-background relative overflow-x-hidden overflow-y-hidden">
+                <div className="w-[393px] mx-auto min-h-screen bg-background relative overflow-hidden">
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/orders" element={<Orders />} />

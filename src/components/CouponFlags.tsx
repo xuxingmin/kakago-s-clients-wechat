@@ -35,7 +35,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
   return (
     <button
       onClick={() => navigate("/wallet")}
-      className="flex items-end gap-0.5 active:scale-95 transition-transform cursor-pointer shrink-0"
+      className="flex items-end gap-0.5 active:scale-95 transition-transform cursor-pointer"
     >
       {topCoupons.map((coupon, index) => {
         const isLarge = sizes[index] === "large";
@@ -52,7 +52,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           >
             <div
               className={`relative bg-gradient-to-br from-primary via-purple-500 to-violet-600 shadow-lg overflow-hidden ${
-                isLarge ? "w-9 h-12" : "w-7 h-10"
+                isLarge ? "w-10 h-14" : "w-8 h-11"
               }`}
               style={{
                 clipPath: "polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)",
@@ -99,12 +99,12 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
         );
       })}
 
-      <div className="ml-1 flex flex-col items-start shrink-0">
-        <span className="text-[9px] font-bold text-primary animate-pulse">
+      <div className="ml-2 flex flex-col items-start">
+        <span className="text-[10px] font-bold text-primary animate-pulse">
           GO!
         </span>
-        <span className="text-[8px] text-white/40 whitespace-nowrap">
-          {t("自动用券", "Auto")}
+        <span className="text-[9px] text-white/40">
+          {t("自动用券", "Auto coupon")}
         </span>
       </div>
 
