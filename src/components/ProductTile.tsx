@@ -37,19 +37,21 @@ export const ProductTile = ({
   const isEn = language === "en";
 
   return (
-    <div className={`group card-md text-left relative flex flex-col justify-between py-2 px-2.5 min-h-0 overflow-hidden ${
-      product.isCreative ? "border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20" : ""
+    <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden ${
+      product.isCreative
+        ? "py-2.5 px-3 border-t border-primary/25 border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
+        : "py-2 px-2.5"
     }`}>
       {/* Lab tag for creative */}
       {labIndex !== undefined && (
-        <span className="absolute top-1.5 right-1.5 text-[7px] font-mono font-bold tracking-widest text-white/20 uppercase">
+        <span className="absolute top-1.5 right-1.5 text-[8px] font-mono font-bold tracking-widest text-white/35 uppercase">
           LAB {String(labIndex).padStart(2, "0")}
         </span>
       )}
       {/* Top: Icon + Name + Price */}
       <div className="flex items-start gap-2">
-        <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>
-          <Icon className={`w-5 h-5 ${product.iconColor}`} strokeWidth={2} />
+        <div className={`${product.isCreative ? "w-11 h-11" : "w-10 h-10"} rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>
+          <Icon className={`${product.isCreative ? "w-5.5 h-5.5" : "w-5 h-5"} ${product.iconColor}`} strokeWidth={2} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-1">

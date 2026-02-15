@@ -79,7 +79,7 @@ const Index = () => {
               <h2 className="text-[11px] font-bold tracking-wide text-white/70">
                 {t("意式基石系列", "FOUNDATION SERIES")}
               </h2>
-              <span className="text-[9px] font-light tracking-wider text-white/35">
+              <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
                 {t("世界级萃取标准，回归本味", "World-class extraction, pure origin")}
               </span>
             </div>
@@ -104,14 +104,14 @@ const Index = () => {
               <h2 className="text-[11px] font-bold tracking-wide text-white/80">
                 {t("先锋实验系列", "AVANT-GARDE LAB")}
               </h2>
-              <span className="text-[9px] tracking-wider text-white/40" style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
+              <span className="text-[10px] tracking-wider text-white/50" style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
                 {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
               </span>
             </div>
             <div className="mt-1 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+          <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
             {allProducts.filter(p => p.isCreative).map((product, index) => (
               <ProductTile
                 key={product.id}
