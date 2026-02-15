@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   MapPin, 
@@ -20,28 +20,184 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 type OrderState = "pending" | "accepted" | "rider_assigned" | "picked_up" | "delivered" | "rating";
 
-// Radar Scanner Component - Minimal
-const RadarScanner = () => {
+// Hefei independent coffee brands
+const hefeiBrands = [
+  "赤云咖啡", "山丘咖啡", "CUBIC³", "野兽派", "1912咖啡",
+  "鹿角巷", "拾光社", "半日闲", "无序咖啡", "对白咖啡",
+  "三分之一", "松果咖啡", "觅境", "壹杯咖啡", "沐森",
+  "时光邮局", "荒野咖啡", "旧日时光", "幸会咖啡", "云端咖啡",
+];
+
+// Cosmic Universe Scanner Component
+const CosmicScanner = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [matchedBrand, setMatchedBrand] = useState<string | null>(null);
+
+  // Starfield canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const W = 320;
+    const H = 320;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.scale(dpr, dpr);
+
+    // Generate stars
+    const stars = Array.from({ length: 80 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.3,
+      speed: Math.random() * 0.3 + 0.1,
+      opacity: Math.random() * 0.6 + 0.2,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      phase: Math.random() * Math.PI * 2,
+    }));
+
+    let frame = 0;
+    let animId: number;
+
+    const draw = () => {
+      frame++;
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw stars
+      stars.forEach((s) => {
+        const twinkle = Math.sin(frame * s.twinkleSpeed + s.phase) * 0.3 + 0.7;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity * twinkle})`;
+        ctx.fill();
+      });
+
+      // Central glow pulse
+      const cx = W / 2;
+      const cy = H / 2;
+      const pulse = Math.sin(frame * 0.03) * 0.15 + 0.85;
+
+      // Outer nebula rings
+      for (let i = 3; i > 0; i--) {
+        const radius = 40 + i * 35;
+        const ringPulse = Math.sin(frame * 0.015 + i) * 0.1 + 0.9;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius * ringPulse, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(139, 92, 246, ${0.08 + (3 - i) * 0.04})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+
+      // Scanning beam (conic sweep)
+      const angle = (frame * 0.02) % (Math.PI * 2);
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      const beamGrad = ctx.createLinearGradient(0, 0, 120, 0);
+      beamGrad.addColorStop(0, "rgba(139, 92, 246, 0.25)");
+      beamGrad.addColorStop(1, "rgba(139, 92, 246, 0)");
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, 140, -0.2, 0.2);
+      ctx.closePath();
+      ctx.fillStyle = beamGrad;
+      ctx.fill();
+      ctx.restore();
+
+      // Core glow
+      const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 20 * pulse);
+      coreGrad.addColorStop(0, "rgba(139, 92, 246, 0.8)");
+      coreGrad.addColorStop(0.5, "rgba(139, 92, 246, 0.2)");
+      coreGrad.addColorStop(1, "rgba(139, 92, 246, 0)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, 20 * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = coreGrad;
+      ctx.fill();
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      ctx.fill();
+
+      animId = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => cancelAnimationFrame(animId);
+  }, []);
+
+  // Cycle matched brand highlight
+  useEffect(() => {
+    let idx = 0;
+    const interval = setInterval(() => {
+      setMatchedBrand(hefeiBrands[idx % hefeiBrands.length]);
+      idx++;
+    }, 400);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="relative w-48 h-48">
-      {/* Outer rings */}
-      <div className="absolute inset-0 rounded-full border border-primary/20" />
-      <div className="absolute inset-6 rounded-full border border-primary/30" />
-      <div className="absolute inset-12 rounded-full border border-primary/40" />
-      
-      {/* Center dot */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-      </div>
-      
-      {/* Scanning beam */}
-      <div 
-        className="absolute inset-0 rounded-full overflow-hidden"
-        style={{
-          background: "conic-gradient(from 0deg, transparent 0deg, hsla(245, 58%, 51%, 0.3) 30deg, transparent 60deg)",
-          animation: "spin 2s linear infinite",
-        }}
+    <div className="relative w-72 h-72 flex items-center justify-center">
+      {/* Canvas starfield + rings */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ width: 320, height: 320 }}
       />
+
+      {/* Orbiting brand labels */}
+      {hefeiBrands.slice(0, 12).map((brand, i) => {
+        const total = 12;
+        const angle = (i / total) * Math.PI * 2;
+        const orbitRadius = 90 + (i % 3) * 25;
+        const isHighlighted = brand === matchedBrand;
+        
+        return (
+          <div
+            key={brand}
+            className="absolute transition-all duration-300"
+            style={{
+              left: `calc(50% + ${Math.cos(angle) * orbitRadius}px)`,
+              top: `calc(50% + ${Math.sin(angle) * orbitRadius}px)`,
+              transform: "translate(-50%, -50%)",
+              animation: `cosmic-orbit-${i % 4} ${18 + i * 2}s linear infinite`,
+            }}
+          >
+            <span
+              className={`text-[10px] whitespace-nowrap px-1.5 py-0.5 rounded-full transition-all duration-300 ${
+                isHighlighted
+                  ? "bg-primary/30 text-primary font-semibold scale-125 shadow-[0_0_12px_rgba(139,92,246,0.5)]"
+                  : "text-white/30 scale-100"
+              }`}
+            >
+              {brand}
+            </span>
+          </div>
+        );
+      })}
+
+      {/* Inject orbit keyframes */}
+      <style>{`
+        @keyframes cosmic-orbit-0 {
+          from { transform: translate(-50%, -50%) rotate(0deg) translateX(3px) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg) translateX(3px) rotate(-360deg); }
+        }
+        @keyframes cosmic-orbit-1 {
+          from { transform: translate(-50%, -50%) rotate(0deg) translateX(-2px) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(-360deg) translateX(-2px) rotate(360deg); }
+        }
+        @keyframes cosmic-orbit-2 {
+          from { transform: translate(-50%, -50%) rotate(0deg) translateY(3px) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg) translateY(3px) rotate(-360deg); }
+        }
+        @keyframes cosmic-orbit-3 {
+          from { transform: translate(-50%, -50%) rotate(0deg) translateY(-2px) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(-360deg) translateY(-2px) rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
@@ -393,7 +549,7 @@ const OrderTracking = () => {
         <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 transition-all duration-500 ${
           currentState === "pending" ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
         }`}>
-          <RadarScanner />
+          <CosmicScanner />
           <h2 className="text-lg font-bold text-white mt-8 text-center">
             {t("正在为您匹配您附近的精品咖啡店...", "Matching nearby specialty coffee shops...")}
           </h2>
