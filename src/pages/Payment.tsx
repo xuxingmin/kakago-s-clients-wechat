@@ -59,6 +59,9 @@ const Payment = () => {
     return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
   };
 
+  // Generate order number
+  const [orderNumber] = useState(() => `KKG${Date.now()}`);
+
   const handleConfirmPay = useCallback(async () => {
     setPaymentState("processing");
 
@@ -68,13 +71,11 @@ const Payment = () => {
     const isSuccess = Math.random() > 0.1;
     if (isSuccess) {
       setPaymentState("success");
-      await new Promise(r => setTimeout(r, 1500));
       clearCart();
-      navigate("/order-tracking", { replace: true });
     } else {
       setPaymentState("failed");
     }
-  }, [clearCart, navigate]);
+  }, [clearCart]);
 
   if (paymentInfo.totalPrice === 0) {
     navigate("/");
@@ -210,16 +211,34 @@ const Payment = () => {
 
         {/* Success State */}
         {paymentState === "success" && (
-          <div className="flex flex-col items-center justify-center py-24 px-8">
-            <div className="w-16 h-16 rounded-full bg-green-500/15 flex items-center justify-center mb-6">
-              <CheckCircle2 className="w-8 h-8 text-green-500" />
+          <div className="flex flex-col items-center justify-center py-20 px-8">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+              <CheckCircle2 className="w-10 h-10 text-primary" />
             </div>
-            <h2 className="text-foreground font-semibold text-base mb-2">
+            <h2 className="text-foreground font-bold text-xl mb-2">
               {t("支付成功", "Payment Successful")}
             </h2>
-            <p className="text-muted-foreground/50 text-xs text-center">
-              {t("正在跳转到订单详情...", "Redirecting to order details...")}
+            <p className="text-muted-foreground/60 text-xs mb-1">
+              {t("订单号", "Order No")}: {orderNumber}
             </p>
+            <p className="text-primary/70 text-xs mb-8">
+              {t("预计25分钟送达", "Est. delivery in 25 min")}
+            </p>
+
+            <div className="w-full max-w-xs space-y-3">
+              <button
+                onClick={() => navigate("/orders", { replace: true })}
+                className="w-full py-3.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-[0.98]"
+              >
+                {t("查看订单", "View Order")}
+              </button>
+              <button
+                onClick={() => navigate("/", { replace: true })}
+                className="w-full py-3.5 rounded-2xl text-sm font-semibold border border-white/10 text-foreground/70 hover:bg-white/5 transition-colors active:scale-[0.98]"
+              >
+                {t("继续购物", "Continue Shopping")}
+              </button>
+            </div>
           </div>
         )}
 
