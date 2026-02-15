@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, ChevronRight, Loader2, MessageSquare, CupSoda, Thermometer, Flame, Snowflake, FlaskConical, Droplets } from "lucide-react";
+import { ArrowLeft, MapPin, ChevronRight, Loader2, MessageSquare, CupSoda, Thermometer, Flame, Snowflake, FlaskConical, Droplets, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useAddress } from "@/contexts/AddressContext";
@@ -8,12 +8,6 @@ import { toast } from "@/hooks/use-toast";
 
 // Mock user beans balance
 const userBeansBalance = 124050;
-
-const WeChatIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="#07C160">
-    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89l-.002-.002-.404-.04zm-2.086 2.672c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.97.983.976.976 0 0 1-.968-.983c0-.542.433-.982.969-.982z" />
-  </svg>
-);
 
 const BeansIcon = () => (
   <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary/80 to-violet-600 flex items-center justify-center">
@@ -61,13 +55,14 @@ const Checkout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState<"idle" | "redirecting" | "processing" | "verifying">("idle");
   const [remark, setRemark] = useState("");
+  const [beansToUse, setBeansToUse] = useState(0);
 
   const deliveryFee = 2;
   const couponDiscount = 3;
-  const finalPrice = totalPrice - couponDiscount + deliveryFee;
-
-  const totalBeansNeeded = finalPrice * 100;
-  const hasEnoughBeans = userBeansBalance >= totalBeansNeeded;
+  const priceBeforeBeans = totalPrice - couponDiscount + deliveryFee;
+  const beansDeduction = beansToUse / 100; // 100 beans = 1 RMB
+  const finalPrice = Math.max(0, priceBeforeBeans - beansDeduction);
+  const maxBeansUsable = Math.min(userBeansBalance, priceBeforeBeans * 100); // can't exceed total
 
   const maskPhone = (phone: string) =>
     phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
@@ -77,46 +72,27 @@ const Checkout = () => {
     return null;
   }
 
-  const handlePayment = async (method: "wechat" | "beans") => {
+  const handlePayment = async () => {
     setIsProcessing(true);
-
-    if (method === "beans") {
-      setProcessingStep("processing");
-      await new Promise(r => setTimeout(r, 1500));
-      if (hasEnoughBeans) {
-        setProcessingStep("verifying");
-        await new Promise(r => setTimeout(r, 800));
-        toast({
-          title: t("支付成功", "Payment Successful"),
-          description: t(`已扣除 ${totalBeansNeeded.toLocaleString()} KAKA豆`, `${totalBeansNeeded.toLocaleString()} KAKA Beans deducted`),
-        });
-        clearCart();
-        navigate("/order-tracking");
-      } else {
-        setIsProcessing(false);
-        setProcessingStep("idle");
-        toast({ title: t("支付失败", "Payment Failed"), description: t("KAKA豆余额不足", "Insufficient KAKA Beans"), variant: "destructive" });
-      }
+    setProcessingStep("redirecting");
+    await new Promise(r => setTimeout(r, 1200));
+    setProcessingStep("processing");
+    await new Promise(r => setTimeout(r, 2000));
+    const isSuccess = Math.random() > 0.1;
+    if (isSuccess) {
+      setProcessingStep("verifying");
+      await new Promise(r => setTimeout(r, 800));
+      const beansMsg = beansToUse > 0 ? t(`，已扣除 ${beansToUse.toLocaleString()} KAKA豆`, `, ${beansToUse.toLocaleString()} KAKA Beans deducted`) : "";
+      toast({
+        title: t("支付成功", "Payment Successful"),
+        description: t(`订单支付完成${beansMsg}`, `Payment completed${beansMsg}`),
+      });
+      clearCart();
+      navigate("/order-tracking");
     } else {
-      setProcessingStep("redirecting");
-      await new Promise(r => setTimeout(r, 1200));
-      setProcessingStep("processing");
-      await new Promise(r => setTimeout(r, 2000));
-      const isSuccess = Math.random() > 0.1;
-      if (isSuccess) {
-        setProcessingStep("verifying");
-        await new Promise(r => setTimeout(r, 800));
-        toast({
-          title: t("支付成功", "Payment Successful"),
-          description: t("微信支付完成", "WeChat payment completed"),
-        });
-        clearCart();
-        navigate("/order-tracking");
-      } else {
-        setIsProcessing(false);
-        setProcessingStep("idle");
-        toast({ title: t("支付失败", "Payment Failed"), description: t("支付已取消或超时，请重试", "Payment cancelled or timed out"), variant: "destructive" });
-      }
+      setIsProcessing(false);
+      setProcessingStep("idle");
+      toast({ title: t("支付失败", "Payment Failed"), description: t("支付已取消或超时，请重试", "Payment cancelled or timed out"), variant: "destructive" });
     }
   };
 
@@ -259,6 +235,72 @@ const Checkout = () => {
           })}
         </section>
 
+        {/* Price Breakdown with KAKA Beans deduction */}
+        <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8 space-y-2">
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground/60">{t("商品金额", "Subtotal")}</span>
+            <span className="text-foreground/80">¥{totalPrice}</span>
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground/60">{t("优惠券", "Coupon")}</span>
+            <span className="text-primary">-¥{couponDiscount}</span>
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground/60">{t("配送费", "Delivery")}</span>
+            <span className="text-foreground/80">¥{deliveryFee}</span>
+          </div>
+
+          {/* KAKA Beans deduction row */}
+          <div className="pt-1.5 border-t border-white/5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <BeansIcon />
+                <span className="text-xs text-foreground/80">{t("KAKA豆抵扣", "KAKA Beans")}</span>
+              </div>
+              {beansToUse > 0 && (
+                <span className="text-primary text-xs">-¥{beansDeduction.toFixed(2)}</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2 mt-1.5">
+              <button
+                onClick={() => setBeansToUse(Math.max(0, beansToUse - 100))}
+                disabled={beansToUse <= 0}
+                className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-muted-foreground hover:bg-white/10 transition-colors disabled:opacity-30"
+              >
+                <Minus className="w-3 h-3" />
+              </button>
+              <div className="flex-1 relative">
+                <input
+                  type="range"
+                  min={0}
+                  max={maxBeansUsable}
+                  step={100}
+                  value={beansToUse}
+                  onChange={(e) => setBeansToUse(Number(e.target.value))}
+                  className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(127,0,255,0.5)]"
+                />
+              </div>
+              <button
+                onClick={() => setBeansToUse(Math.min(maxBeansUsable, beansToUse + 100))}
+                disabled={beansToUse >= maxBeansUsable}
+                className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-muted-foreground hover:bg-white/10 transition-colors disabled:opacity-30"
+              >
+                <Plus className="w-3 h-3" />
+              </button>
+            </div>
+            <div className="flex justify-between mt-1 text-[9px] text-muted-foreground/40">
+              <span>{t(`使用 ${beansToUse.toLocaleString()} 豆`, `Use ${beansToUse.toLocaleString()} beans`)}</span>
+              <span>{t(`余额 ${userBeansBalance.toLocaleString()} 豆`, `Balance: ${userBeansBalance.toLocaleString()}`)}</span>
+            </div>
+          </div>
+
+          <div className="h-[0.5px] bg-violet-500/15" />
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-foreground text-sm">{t("实付", "Total")}</span>
+            <span className="text-lg font-bold text-primary drop-shadow-[0_0_12px_rgba(127,0,255,0.3)]">¥{finalPrice.toFixed(2)}</span>
+          </div>
+        </section>
+
         {/* Order Remark */}
         <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8">
           <div className="flex items-center gap-1.5 mb-2">
@@ -277,56 +319,34 @@ const Checkout = () => {
             <span className="text-[9px] text-muted-foreground/30">{remark.length}/200</span>
           </div>
         </section>
-
-        {/* Price Breakdown */}
-        <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8 space-y-2">
-          <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground/60">{t("商品金额", "Subtotal")}</span>
-            <span className="text-foreground/80">¥{totalPrice}</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground/60">{t("优惠券", "Coupon")}</span>
-            <span className="text-primary">-¥{couponDiscount}</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground/60">{t("配送费", "Delivery")}</span>
-            <span className="text-foreground/80">¥{deliveryFee}</span>
-          </div>
-          <div className="h-[0.5px] bg-violet-500/15" />
-          <div className="flex justify-between items-center">
-            <span className="font-semibold text-foreground text-sm">{t("实付", "Total")}</span>
-            <span className="text-lg font-bold text-primary drop-shadow-[0_0_12px_rgba(127,0,255,0.3)]">¥{finalPrice}</span>
-          </div>
-        </section>
       </div>
 
-      {/* Fixed Bottom Payment Buttons */}
+      {/* Fixed Bottom - Single Pay Button */}
       <div className="fixed bottom-0 left-0 right-0 z-40 glass border-t border-border safe-bottom">
-        <div className="px-4 py-3 max-w-md mx-auto">
-          {isProcessing ? (
-            <button disabled className="w-full py-3 rounded-2xl text-xs font-semibold flex items-center justify-center gap-2 bg-muted text-muted-foreground">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              {getProcessingText()}
-            </button>
-          ) : (
-            <div className="flex gap-2.5">
-              <button
-                onClick={() => handlePayment("beans")}
-                disabled={!hasEnoughBeans}
-                className="flex-1 py-3 rounded-2xl text-xs font-semibold flex items-center justify-center gap-2 border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <BeansIcon />
-                {t("KAKA豆支付", "KAKA Beans")}
-              </button>
-              <button
-                onClick={() => handlePayment("wechat")}
-                className="flex-1 py-3 rounded-2xl text-xs font-semibold flex items-center justify-center gap-2 bg-[#07C160] text-white hover:bg-[#06AD56] transition-colors"
-              >
-                <WeChatIcon />
-                {t("微信支付", "WeChat Pay")}
-              </button>
+        <div className="px-4 py-3 max-w-md mx-auto flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-1">
+              <span className="text-muted-foreground/60 text-[10px]">{t("合计", "Total")}</span>
+              <span className="text-lg font-bold text-primary drop-shadow-[0_0_12px_rgba(127,0,255,0.3)]">¥{finalPrice.toFixed(2)}</span>
             </div>
-          )}
+            {beansToUse > 0 && (
+              <span className="text-[9px] text-primary/60">{t(`含KAKA豆抵扣 ¥${beansDeduction.toFixed(2)}`, `Incl. beans -¥${beansDeduction.toFixed(2)}`)}</span>
+            )}
+          </div>
+          <button
+            onClick={handlePayment}
+            disabled={isProcessing}
+            className="px-8 py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-95 disabled:opacity-60"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {getProcessingText()}
+              </>
+            ) : (
+              t("去支付", "Pay Now")
+            )}
+          </button>
         </div>
       </div>
     </div>
