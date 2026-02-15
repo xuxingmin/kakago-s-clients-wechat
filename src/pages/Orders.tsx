@@ -194,11 +194,12 @@ const Orders = () => {
           : order
       )
     );
+    const beansEarned = Math.floor(Math.random() * 10) + 1;
     toast({
       title: t("评价已提交", "Review Submitted"),
       description: t(
-        `感谢您的${rating}星评价！已获得10积分奖励`,
-        `Thanks for your ${rating}-star review! +10 points earned`
+        `感谢您的${rating}星评价！随机获得 ${beansEarned} KAKA豆`,
+        `Thanks for your ${rating}-star review! +${beansEarned} KAKA beans earned`
       ),
     });
   };

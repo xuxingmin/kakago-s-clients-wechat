@@ -204,8 +204,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
         <div className="flex items-center justify-between px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
           {/* Left side */}
           <div className="flex items-center gap-1.5">
-            {/* Cancel order button */}
-            {onCancel && (
+            {!isCompleted && onCancel && (
               <button
                 onClick={(e) => { e.stopPropagation(); if (canCancel) onCancel(); }}
                 disabled={!canCancel}
@@ -219,29 +218,25 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 {t("取消订单", "Cancel")}
               </button>
             )}
-            {/* Rating info for completed */}
-            {isCompleted && userRating ? (
-              <div className="flex items-center gap-1">
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`w-2.5 h-2.5 ${star <= userRating ? "fill-primary text-primary" : "text-white/15"}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : isCompleted && !userRating ? (
-              <button onClick={onClick} className="text-[11px] font-medium text-primary hover:text-primary/80 transition-colors">
-                {t("⭐ 评价得积分", "⭐ Rate for points")}
+            {isCompleted && !userRating && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onClick(); }}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
+              >
+                <Star className="w-3 h-3" />
+                {t("评价得KAKA豆", "Rate for beans")}
               </button>
-            ) : null}
+            )}
+            {isCompleted && userRating && (
+              <span className="text-[10px] text-white/30">
+                {t("已评价", "Rated")}
+              </span>
+            )}
           </div>
 
           {/* Right side actions */}
           <div className="flex items-center gap-1.5">
-            {/* Contact store */}
-            {onContact && (
+            {!isCompleted && onContact && (
               <button
                 onClick={(e) => { e.stopPropagation(); onContact(); }}
                 className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
@@ -251,7 +246,6 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               </button>
             )}
 
-            {/* Reorder */}
             {onReorder && (
               <button
                 onClick={(e) => { e.stopPropagation(); onReorder(); }}
@@ -262,14 +256,15 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               </button>
             )}
 
-            {/* View order */}
-            <button
-              onClick={(e) => { e.stopPropagation(); onClick(); }}
-              className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
-            >
-              <ChevronRight className="w-3 h-3" />
-              {t("查看订单", "View")}
-            </button>
+            {!isCompleted && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onClick(); }}
+                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
+              >
+                <ChevronRight className="w-3 h-3" />
+                {t("查看订单", "View")}
+              </button>
+            )}
           </div>
         </div>
       </div>
