@@ -80,11 +80,11 @@ const Index = () => {
           {/* ── Standard Series Header ── */}
           <div className="mb-1">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-violet-300/80">
+              <h2 className="text-[11px] font-bold tracking-wide text-white/75">
                 {t("意式基石系列", "FOUNDATION SERIES")}
               </h2>
-              <span className="text-[9px] font-light tracking-[0.15em] text-purple-400/40">
-                {t("世界级萃取标准，回归本味", "World-class extraction, pure origin")}
+              <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
+                {t("精品萃取标准，回归本味", "Premium extraction, pure origin")}
               </span>
             </div>
             <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
@@ -105,10 +105,10 @@ const Index = () => {
           {/* ── Creative Series Header ── */}
           <div className="mt-2 mb-1">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-purple-300/90">
+              <h2 className="text-[11px] font-bold tracking-wide text-white/75">
                 {t("先锋实验系列", "AVANT-GARDE LAB")}
               </h2>
-              <span className="text-[10px] font-light tracking-wider text-violet-400/50">
+              <span className="text-[10px] font-light tracking-wider text-white/35">
                 {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
               </span>
             </div>

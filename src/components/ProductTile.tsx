@@ -77,12 +77,12 @@ export const ProductTile = ({
             </span>
           </div>
           {product.tagZh && (
-            <p className={`text-violet-300/40 mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-violet-300/40 mt-0.5 leading-snug break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className={`text-purple-300/45 mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-purple-300/45 mt-0.5 leading-snug break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
