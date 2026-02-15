@@ -8,17 +8,17 @@ import { RatingModal } from "@/components/RatingModal";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-import coffeeLatteImg from "@/assets/coffee-latte.jpg";
-import coffeeAmericanoImg from "@/assets/coffee-americano.jpg";
-import coffeeCappuccinoImg from "@/assets/coffee-cappuccino.jpg";
-import coffeeFlatwhiteImg from "@/assets/coffee-flatwhite.jpg";
-
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
+
+interface OrderItem {
+  name: string;
+  nameEn?: string;
+  qty: number;
+}
 
 interface Order {
   id: string;
-  productName: string;
-  productNameEn: string;
+  items: OrderItem[];
   price: number;
   status: OrderStatus;
   cafeName?: string;
@@ -31,16 +31,18 @@ interface Order {
   userRating?: number;
   eta?: string;
   etaEn?: string;
-  productImage?: string;
-  itemCount?: number;
+  storeLogo?: string;
+  orderCreatedMs: number;
 }
 
 const demoOrders: Order[] = [
   {
     id: "order-001",
-    productName: "拿铁 (热)",
-    productNameEn: "Latte (Hot)",
-    price: 15,
+    items: [
+      { name: "拿铁 (热)", nameEn: "Latte (Hot)", qty: 2 },
+      { name: "美式 (冰)", nameEn: "Americano (Iced)", qty: 1 },
+    ],
+    price: 42,
     status: "preparing",
     cafeName: "静思咖啡工作室",
     cafeNameEn: "Tranquil Coffee Studio",
@@ -51,26 +53,27 @@ const demoOrders: Order[] = [
     isRevealed: true,
     eta: "8 分钟",
     etaEn: "8 min",
-    productImage: coffeeLatteImg,
-    itemCount: 1,
+    orderCreatedMs: Date.now() - 20 * 1000, // 20 seconds ago → refund countdown active
   },
   {
     id: "order-002",
-    productName: "美式咖啡 (冰)",
-    productNameEn: "Americano (Iced)",
+    items: [
+      { name: "美式咖啡 (冰)", nameEn: "Americano (Iced)", qty: 1 },
+    ],
     price: 12,
     status: "pending",
     createdAt: "今天 14:28",
     createdAtEn: "Today 14:28",
     isRevealed: false,
-    productImage: coffeeAmericanoImg,
-    itemCount: 1,
+    orderCreatedMs: Date.now() - 10 * 1000, // 10 seconds ago
   },
   {
     id: "order-003",
-    productName: "卡布奇诺",
-    productNameEn: "Cappuccino",
-    price: 15,
+    items: [
+      { name: "卡布奇诺", nameEn: "Cappuccino", qty: 1 },
+      { name: "澳白", nameEn: "Flat White", qty: 1 },
+    ],
+    price: 30,
     status: "completed",
     cafeName: "微醺咖啡",
     cafeNameEn: "Tipsy Coffee",
@@ -79,14 +82,14 @@ const demoOrders: Order[] = [
     createdAtEn: "Yesterday 10:15",
     isRevealed: true,
     userRating: 5,
-    productImage: coffeeCappuccinoImg,
-    itemCount: 2,
+    orderCreatedMs: Date.now() - 86400000,
   },
   {
     id: "order-004",
-    productName: "澳白",
-    productNameEn: "Flat White",
-    price: 15,
+    items: [
+      { name: "澳白", nameEn: "Flat White", qty: 3 },
+    ],
+    price: 45,
     status: "completed",
     cafeName: "慢时光咖啡",
     cafeNameEn: "Slow Time Coffee",
@@ -94,8 +97,7 @@ const demoOrders: Order[] = [
     createdAt: "前天 15:42",
     createdAtEn: "2 days ago 15:42",
     isRevealed: true,
-    productImage: coffeeFlatwhiteImg,
-    itemCount: 1,
+    orderCreatedMs: Date.now() - 172800000,
   },
 ];
 
@@ -139,6 +141,14 @@ const Orders = () => {
     });
   };
 
+  const handleRefund = (orderId: string) => {
+    setOrders((prev) => prev.filter((o) => o.id !== orderId));
+    toast({
+      title: t("退款成功", "Refund Successful"),
+      description: t("款项将在1-3个工作日内退回", "Refund will be processed in 1-3 business days"),
+    });
+  };
+
   const handleRatingSubmit = (rating: number, tags: string[], note: string) => {
     if (!selectedOrderForRating) return;
     setOrders((prev) =>
@@ -162,17 +172,12 @@ const Orders = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* Minimal header */}
       <div className="flex-shrink-0">
         <Header />
-
-        {/* Page title + toggle tabs */}
         <div className="px-4 pt-2 pb-3 max-w-md mx-auto bg-background">
           <h1 className="text-lg font-bold text-white tracking-tight mb-3 font-mono uppercase">
             {t("我的订单", "MY ORDERS")}
           </h1>
-
-          {/* Toggle switches */}
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab("active")}
@@ -182,7 +187,7 @@ const Orders = () => {
                   : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:text-white/60"
               }`}
             >
-              {t("执行中", "In Progress")} ({activeCount})
+              {t("当前订单", "Current")} ({activeCount})
             </button>
             <button
               onClick={() => setActiveTab("completed")}
@@ -192,13 +197,12 @@ const Orders = () => {
                   : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:text-white/60"
               }`}
             >
-              {t("历史档案", "History")} ({completedCount})
+              {t("历史订单", "History")} ({completedCount})
             </button>
           </div>
         </div>
       </div>
 
-      {/* Scrollable order list */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <section className="px-4 py-3 space-y-3 max-w-md mx-auto pb-24">
           {filteredOrders.length > 0 ? (
@@ -210,8 +214,7 @@ const Orders = () => {
               >
                 <OrderCard
                   id={order.id}
-                  productName={order.productName}
-                  productNameEn={order.productNameEn}
+                  items={order.items}
                   price={order.price}
                   status={order.status}
                   cafeName={order.cafeName}
@@ -224,11 +227,12 @@ const Orders = () => {
                   userRating={order.userRating}
                   eta={order.eta}
                   etaEn={order.etaEn}
-                  productImage={order.productImage}
-                  itemCount={order.itemCount}
+                  storeLogo={order.storeLogo}
+                  orderCreatedMs={order.orderCreatedMs}
                   onClick={() => handleOrderClick(order.id)}
                   onContact={order.status !== "completed" ? handleContact : undefined}
                   onReorder={order.status === "completed" ? () => handleReorder(order.id) : undefined}
+                  onRefund={order.status !== "completed" ? () => handleRefund(order.id) : undefined}
                   t={t}
                 />
               </div>
@@ -249,12 +253,10 @@ const Orders = () => {
         </section>
       </div>
 
-      {/* Bottom nav */}
       <div className="flex-shrink-0">
         <BottomNav />
       </div>
 
-      {/* Rating Modal */}
       <RatingModal
         isOpen={ratingModalOpen}
         onClose={() => {
