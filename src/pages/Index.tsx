@@ -72,13 +72,13 @@ const Index = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <div className="fog-divider mx-4" />
+        
       </div>
 
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <section className="px-4 py-1">
+      <div className="flex-1 overflow-hidden flex flex-col pb-16">
+        <section className="px-4 py-0.5">
           {/* ── Standard Series Header ── */}
-          <div className="mb-1">
+          <div className="mb-0.5">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/75">
                 {t("意式基石系列", "FOUNDATION SERIES")}
@@ -90,7 +90,7 @@ const Index = () => {
             <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
             {allProducts.filter(p => !p.isCreative).map((product) => (
               <ProductTile
                 key={product.id}
@@ -103,7 +103,7 @@ const Index = () => {
           </div>
 
           {/* ── Creative Series Header ── */}
-          <div className="mt-2 mb-1">
+          <div className="mt-1 mb-0.5">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/75">
                 {t("先锋实验系列", "AVANT-GARDE LAB")}
@@ -115,7 +115,7 @@ const Index = () => {
             <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
+          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
             {allProducts.filter(p => p.isCreative).map((product, index) => (
               <ProductTile
                 key={product.id}
@@ -127,20 +127,15 @@ const Index = () => {
               />
             ))}
           </div>
-        </section>
-
-        <section className="px-4 pt-1.5 pb-20">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-violet-400/30">
-              <Coffee className="w-3 h-3" strokeWidth={1.5} />
-              <Award className="w-3 h-3" strokeWidth={1.5} />
-              <div className="flex items-center justify-center w-3 h-3 border border-violet-400/25 rounded-sm text-[5px] font-bold">4.0</div>
-              <Coffee className="w-3 h-3" strokeWidth={1.5} />
-              <span className="text-[8px]">🌱</span>
+          <div className="flex items-center justify-between gap-2 mt-0.5 px-0.5">
+            <div className="flex items-center gap-1.5 text-violet-400/25">
+              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
+              <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
+              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-              <span className="text-[10px] text-white/30">
+            <div className="flex items-center gap-1">
+              <span className="w-1 h-1 rounded-full bg-violet-400 animate-pulse" />
+              <span className="text-[9px] text-white/25">
                 {t("全城精品店，全听你调遣！", "Elite cafés at your command!")}
               </span>
             </div>
@@ -148,10 +143,8 @@ const Index = () => {
         </section>
       </div>
 
-      <div className="flex-shrink-0">
-        <MiniCartBar estimatedTotal={cartTotal} couponDiscount={cartDiscount} deliveryFee={ESTIMATED_DELIVERY_FEE} />
-        <BottomNav />
-      </div>
+      <MiniCartBar estimatedTotal={cartTotal} couponDiscount={cartDiscount} deliveryFee={ESTIMATED_DELIVERY_FEE} />
+      <BottomNav />
     </div>
   );
 };

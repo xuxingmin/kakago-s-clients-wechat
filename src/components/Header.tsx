@@ -33,7 +33,7 @@ export const Header = () => {
     <>
       <header className="sticky top-0 z-40">
         {/* WeChat Status Bar */}
-        <div className="h-11 bg-background flex items-end justify-between px-6 pb-0.5">
+        <div className="h-8 bg-background flex items-end justify-between px-6 pb-0.5">
           <span className="text-xs font-semibold text-white/90">
             {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </span>
@@ -54,7 +54,7 @@ export const Header = () => {
         </div>
 
         {/* Navigation Bar - Matching PS mockup */}
-        <div className="h-11 bg-background flex items-center justify-between px-3">
+        <div className="h-9 bg-background flex items-center justify-between px-3">
           {/* Left: Location + Status */}
           <button
             onClick={() => navigate("/address")}
