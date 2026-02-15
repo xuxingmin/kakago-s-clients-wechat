@@ -26,9 +26,9 @@ const userCoupons: Coupon[] = [
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
-const ICON_COLOR = "text-white/70";
-const ICON_BG = "bg-white/[0.06]";
-const ICON_BG_LAB = "bg-white/[0.08]";
+const ICON_COLOR = "text-violet-400";
+const ICON_BG = "bg-violet-500/10";
+const ICON_BG_LAB = "bg-purple-400/15";
 
 const allProducts: ProductTileData[] = [
   { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish", specZh: "360ml 热 中深烘焙", specEn: "360ml Hot Medium-Dark" },
@@ -80,14 +80,14 @@ const Index = () => {
           {/* ── Standard Series Header ── */}
           <div className="mb-1">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-white/70">
+              <h2 className="text-[11px] font-bold tracking-wide text-violet-300/80">
                 {t("意式基石系列", "FOUNDATION SERIES")}
               </h2>
-              <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
+              <span className="text-[9px] font-light tracking-[0.15em] text-purple-400/40">
                 {t("世界级萃取标准，回归本味", "World-class extraction, pure origin")}
               </span>
             </div>
-            <div className="mt-0.5 h-[0.5px] bg-white/10" />
+            <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -105,14 +105,14 @@ const Index = () => {
           {/* ── Creative Series Header ── */}
           <div className="mt-2 mb-1">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-white/80">
+              <h2 className="text-[11px] font-bold tracking-wide text-purple-300/90">
                 {t("先锋实验系列", "AVANT-GARDE LAB")}
               </h2>
-              <span className="text-[10px] font-light tracking-wider text-white/45">
+              <span className="text-[10px] font-light tracking-wider text-violet-400/50">
                 {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
               </span>
             </div>
-            <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
+            <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
           </div>
 
           <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
@@ -131,16 +131,16 @@ const Index = () => {
 
         <section className="px-4 pt-1.5 pb-3">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-white/25">
+            <div className="flex items-center gap-2 text-violet-400/30">
               <Coffee className="w-3 h-3" strokeWidth={1.5} />
               <Award className="w-3 h-3" strokeWidth={1.5} />
-              <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">4.0</div>
+              <div className="flex items-center justify-center w-3 h-3 border border-violet-400/25 rounded-sm text-[5px] font-bold">4.0</div>
               <Coffee className="w-3 h-3" strokeWidth={1.5} />
               <span className="text-[8px]">🌱</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[10px] text-white/25">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+              <span className="text-[10px] text-violet-300/30">
                 {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
               </span>
             </div>
