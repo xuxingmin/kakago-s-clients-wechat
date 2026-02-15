@@ -4,6 +4,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { Coupon } from "@/components/CouponFlags";
 import { MiniCartBar } from "@/components/MiniCartBar";
 import { ProductTile, ProductTileData } from "@/components/ProductTile";
 import { toast } from "sonner";
@@ -16,6 +17,12 @@ import coffeeDirty from "@/assets/coffee-dirty.jpg";
 import coffeeMatcha from "@/assets/coffee-matcha.jpg";
 import coffeeCoconut from "@/assets/coffee-coconut.jpg";
 import coffeeRose from "@/assets/coffee-rose.jpg";
+
+const userCoupons: Coupon[] = [
+  { id: "c1", type: "universal", value: 3 },
+  { id: "c2", type: "latte", value: 2, applicableProducts: ["hot-latte", "iced-latte"] },
+  { id: "c3", type: "americano", value: 2, applicableProducts: ["hot-americano", "iced-americano"] },
+];
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
@@ -30,16 +37,19 @@ const allProducts: ProductTileData[] = [
   { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear", specZh: "360ml 冰 中深烘焙", specEn: "360ml Iced Medium-Dark" },
   { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor", specZh: "240ml 热 中深烘焙", specEn: "240ml Hot Medium-Dark" },
   { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense", specZh: "240ml 热 中深烘焙", specEn: "240ml Hot Medium-Dark" },
-  { id: "wood-chip-latte", nameZh: "木片拿铁", nameEn: "Wood Chip Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "真空慢煮", labelEn: "Sous-vide" }], isCreative: true },
+  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "真空慢煮", labelEn: "Sous-vide" }], isCreative: true },
   { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "恒温发酵", labelEn: "Koji Ferm." }], isCreative: true },
   { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: FlaskConical, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "乳酸发酵", labelEn: "Lacto Ferm." }], isCreative: true },
   { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "droplets", labelZh: "奶洗澄清", labelEn: "Milk Wash" }], isCreative: true },
 ];
 
-const BEST_COUPON_VALUE = 3;
+const getBestCouponDiscount = (productId: string): number => {
+  const applicable = userCoupons.filter((c) => c.type === "universal" || c.applicableProducts?.includes(productId));
+  return applicable.length === 0 ? 0 : Math.max(...applicable.map(c => c.value));
+};
 
-const getEstimatedPrice = (price: number): number =>
-  Math.max(0, price - BEST_COUPON_VALUE) + ESTIMATED_DELIVERY_FEE;
+const getEstimatedPrice = (price: number, id: string): number =>
+  Math.max(0, price - getBestCouponDiscount(id)) + ESTIMATED_DELIVERY_FEE;
 
 const Index = () => {
   const { t } = useLanguage();
@@ -54,7 +64,7 @@ const Index = () => {
   const qty = (id: string) => items.find(i => i.id === id)?.quantity || 0;
 
   const cartSubtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-  const cartDiscount = items.length === 0 ? 0 : BEST_COUPON_VALUE;
+  const cartDiscount = items.length === 0 ? 0 : (userCoupons.length > 0 ? Math.max(...userCoupons.map(c => c.value)) : 0);
   const cartTotal = items.length === 0 ? 0 : Math.max(0, cartSubtotal - cartDiscount) + ESTIMATED_DELIVERY_FEE;
 
   return (
@@ -85,7 +95,7 @@ const Index = () => {
               <ProductTile
                 key={product.id}
                 product={product}
-                estimatedPrice={getEstimatedPrice(product.price)}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
                 quantityInCart={qty(product.id)}
                 onAddToCart={(e) => add(product, e)}
               />
@@ -110,7 +120,7 @@ const Index = () => {
               <ProductTile
                 key={product.id}
                 product={product}
-                estimatedPrice={getEstimatedPrice(product.price)}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
                 quantityInCart={qty(product.id)}
                 onAddToCart={(e) => add(product, e)}
                 labIndex={index + 7}
