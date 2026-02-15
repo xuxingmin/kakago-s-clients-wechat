@@ -121,7 +121,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     const canSelfRefund = refundSecondsLeft !== null && refundSecondsLeft > 0;
 
     // Format items display
-    const itemsDisplay = items.map((item) => {
+    const itemsDisplay = (items || []).map((item) => {
       const name = t(item.name, item.nameEn || item.name);
       return `${name} ×${item.qty}`;
     }).join("、");
