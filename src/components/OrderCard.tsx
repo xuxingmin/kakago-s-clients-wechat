@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useState, useEffect, useCallback } from "react";
-import { ChevronRight, Star, Coffee, Phone, RotateCcw, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Coffee, Phone, RotateCcw, X, ChevronRight } from "lucide-react";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -8,10 +8,12 @@ interface OrderItem {
   name: string;
   nameEn?: string;
   qty: number;
+  unitPrice?: number;
 }
 
 interface OrderCardProps {
   id: string;
+  orderNumber: string;
   items: OrderItem[];
   price: number;
   status: OrderStatus;
@@ -31,7 +33,6 @@ interface OrderCardProps {
   onReorder?: () => void;
   onRefund?: () => void;
   t: (zh: string, en: string) => string;
-  /** Timestamp (ms) when order was created, used for refund countdown */
   orderCreatedMs?: number;
 }
 
@@ -51,15 +52,14 @@ const getStatusConfig = (t: (zh: string, en: string) => string) => ({
   completed: { label: t("已完成", "Done"), color: "text-white/40", borderColor: "border-white/10", bgColor: "bg-white/5", blink: false },
 });
 
-const REFUND_WINDOW_MS = 60 * 1000; // 60 seconds
+const REFUND_WINDOW_MS = 60 * 1000;
 
-/* Radar scan animation for blind-box matching — purple themed */
 const RadarScan = () => (
-  <div className="w-[60px] h-[60px] rounded-xl bg-primary/5 border border-primary/20 flex items-center justify-center relative overflow-hidden">
+  <div className="w-10 h-10 rounded-lg bg-primary/5 border border-primary/20 flex items-center justify-center relative overflow-hidden flex-shrink-0">
     <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-10 h-10 rounded-full border border-primary/15" />
-      <div className="absolute w-6 h-6 rounded-full border border-primary/20" />
-      <div className="absolute w-2 h-2 rounded-full bg-primary/60" />
+      <div className="w-6 h-6 rounded-full border border-primary/15" />
+      <div className="absolute w-3 h-3 rounded-full border border-primary/20" />
+      <div className="absolute w-1.5 h-1.5 rounded-full bg-primary/60" />
     </div>
     <div
       className="absolute inset-0"
@@ -68,13 +68,13 @@ const RadarScan = () => (
         animation: "radarSweep 2s linear infinite",
       }}
     />
-    <span className="absolute bottom-0.5 text-[7px] font-mono font-bold text-primary/80 tracking-wider">SCAN</span>
   </div>
 );
 
 export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
   (
     {
+      orderNumber,
       items,
       price,
       status,
@@ -103,7 +103,6 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     const isSearching = !isRevealed && status === "pending";
     const isCompleted = status === "completed";
 
-    // Refund countdown logic
     const [refundSecondsLeft, setRefundSecondsLeft] = useState<number | null>(null);
 
     useEffect(() => {
@@ -120,88 +119,95 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
     const canSelfRefund = refundSecondsLeft !== null && refundSecondsLeft > 0;
 
-    // Format items display
-    const itemsDisplay = (items || []).map((item) => {
-      const name = t(item.name, item.nameEn || item.name);
-      return `${name} ×${item.qty}`;
-    }).join("、");
-
     return (
       <div className={`relative rounded-xl border bg-[hsl(270,15%,10%)] overflow-hidden transition-all duration-300 ${
         isSearching ? "border-primary/25 shadow-[0_0_20px_hsla(271,81%,56%,0.08)]" : "border-white/[0.06]"
       }`}>
-        {/* Main clickable area */}
-        <button
-          ref={ref}
-          onClick={onClick}
-          className="w-full text-left p-3.5 pb-0"
-        >
-          <div className="flex gap-3">
-            {/* Left: Store logo or radar */}
-            {isSearching ? (
-              <RadarScan />
-            ) : (
-              <div className="w-[60px] h-[60px] rounded-xl bg-card overflow-hidden flex-shrink-0 flex items-center justify-center">
-                {storeLogo ? (
-                  <img src={storeLogo} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-primary/10 flex items-center justify-center">
-                    <Coffee className="w-6 h-6 text-primary/40" />
-                  </div>
-                )}
+        <button ref={ref} onClick={onClick} className="w-full text-left p-3.5 pb-0">
+          {/* Header: Order number + Status */}
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-2 min-w-0">
+              {isSearching && <RadarScan />}
+              <div className="min-w-0">
+                <span className="text-[11px] font-mono text-white/30 block">
+                  {t("订单编号", "Order No")}
+                </span>
+                <span className={`text-sm font-bold font-mono tracking-wide ${isSearching ? "text-primary animate-pulse" : "text-white"}`}>
+                  {isSearching ? t("匹配中...", "MATCHING...") : orderNumber}
+                </span>
               </div>
-            )}
-
-            {/* Middle: Info stack */}
-            <div className="flex-1 min-w-0">
-              {/* Row 1: Shop name + rating */}
-              {isSearching ? (
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-mono font-bold text-primary tracking-wider animate-pulse">
-                    📡 MATCHING...
-                  </span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="text-sm font-semibold text-white truncate">{displayCafeName}</span>
-                  {cafeRating && (
-                    <div className="flex items-center gap-0.5 flex-shrink-0">
-                      <Star className="w-3 h-3 fill-primary text-primary" />
-                      <span className="text-[11px] font-medium text-primary">{cafeRating.toFixed(1)}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Row 2: Product details with quantities */}
-              <p className="text-xs text-white/50 mt-0.5 truncate">
-                {itemsDisplay}
-              </p>
-
-              {/* Row 3: Progress bar (active orders only) */}
-              {!isCompleted && (
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="flex-1 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-700 bg-primary"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] font-mono text-white/30 flex-shrink-0">{progress}%</span>
-                </div>
-              )}
             </div>
-
-            {/* Right: Price + status + ETA */}
-            <div className="flex flex-col items-end justify-between flex-shrink-0 min-h-[60px]">
-              <span className="text-base font-bold text-primary">¥{price.toFixed(0)}</span>
+            <div className="flex flex-col items-end gap-1 flex-shrink-0">
               <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${statusInfo.color} ${statusInfo.bgColor} ${statusInfo.borderColor} ${statusInfo.blink ? "animate-pulse" : ""}`}>
                 {statusInfo.label}
               </span>
               {displayEta && !isCompleted && (
-                <span className="text-[10px] font-mono text-primary/70 mt-0.5">≈ {displayEta}</span>
+                <span className="text-[10px] font-mono text-primary/70">≈ {displayEta}</span>
               )}
             </div>
+          </div>
+
+          {/* Progress bar for active orders */}
+          {!isCompleted && !isSearching && (
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex-1 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-700 bg-primary"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <span className="text-[10px] font-mono text-white/30 flex-shrink-0">{progress}%</span>
+            </div>
+          )}
+
+          {/* Items list */}
+          <div className="space-y-1.5 mb-2.5">
+            {(items || []).map((item, idx) => {
+              const name = t(item.name, item.nameEn || item.name);
+              return (
+                <div key={idx} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Coffee className="w-3.5 h-3.5 text-primary/40 flex-shrink-0" />
+                    <span className="text-xs text-white/70 truncate">{name}</span>
+                  </div>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <span className="text-xs font-mono text-white/40">×{item.qty}</span>
+                    {item.unitPrice && (
+                      <span className="text-xs font-mono text-white/30">¥{(item.unitPrice * item.qty).toFixed(0)}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Cafe attribution + total */}
+          <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
+            <div className="flex items-center gap-1.5 min-w-0">
+              {!isSearching && storeLogo ? (
+                <img src={storeLogo} alt="" className="w-4 h-4 rounded-full object-cover" />
+              ) : !isSearching ? (
+                <div className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Coffee className="w-2.5 h-2.5 text-primary/40" />
+                </div>
+              ) : null}
+              {isSearching ? (
+                <span className="text-[10px] text-primary/60 font-mono">
+                  {t("正在为您匹配最近的精品咖啡师", "Matching nearest barista")}
+                </span>
+              ) : (
+                <span className="text-[10px] text-white/30 truncate">
+                  {displayCafeName} {t("为你呈现", "presents")}
+                  {cafeRating && (
+                    <span className="inline-flex items-center ml-1">
+                      <Star className="w-2.5 h-2.5 fill-primary text-primary inline" />
+                      <span className="text-primary/60 ml-0.5">{cafeRating.toFixed(1)}</span>
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
+            <span className="text-base font-bold text-primary flex-shrink-0">¥{price.toFixed(0)}</span>
           </div>
         </button>
 
@@ -223,17 +229,11 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
             <button onClick={onClick} className="text-[11px] font-medium text-primary hover:text-primary/80 transition-colors">
               {t("⭐ 评价得积分", "⭐ Rate for points")}
             </button>
-          ) : isSearching ? (
-            <span className="text-[10px] text-primary/60 font-mono">
-              {t("正在为您匹配最近的精品咖啡师 (3km)", "Matching nearest barista (3km)")}
-            </span>
           ) : (
             <span className="text-[10px] text-white/20" />
           )}
 
-          {/* Action buttons */}
           <div className="flex items-center gap-1.5">
-            {/* Refund button for active orders */}
             {!isCompleted && onRefund && (
               canSelfRefund ? (
                 <button
@@ -253,7 +253,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 </button>
               )
             )}
-            {isCompleted && onReorder && (
+            {onReorder && (
               <button
                 onClick={(e) => { e.stopPropagation(); onReorder(); }}
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
@@ -270,9 +270,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 <Phone className="w-3.5 h-3.5" />
               </button>
             )}
-            {!isSearching && (
-              <ChevronRight className="w-4 h-4 text-white/20 ml-0.5" />
-            )}
+            {!isSearching && <ChevronRight className="w-4 h-4 text-white/20 ml-0.5" />}
           </div>
         </div>
       </div>
