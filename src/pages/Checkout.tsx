@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, ChevronRight, Loader2, Sparkles, Clock, Gift } from "lucide-react";
+import { ArrowLeft, MapPin, ChevronRight, Loader2, Clock, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
+import { useAddress } from "@/contexts/AddressContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 
 // Mock user beans balance
 const userBeansBalance = 124050;
-const beansToRMB = (beans: number) => (beans / 100).toFixed(2);
 
 const WeChatIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5" fill="#07C160">
@@ -21,33 +21,14 @@ const BeansIcon = () => (
   </div>
 );
 
-// Mock product specs data
-const getProductSpecs = (nameZh: string) => {
-  const specsMap: Record<string, { origin: string; roast: string; process: string; flavor: string; caffeine: string }> = {
-    "热美式": { origin: "埃塞俄比亚 耶加雪菲", roast: "中度烘焙", process: "水洗处理", flavor: "柑橘 · 花香 · 明亮酸质", caffeine: "~150mg" },
-    "冰美式": { origin: "埃塞俄比亚 耶加雪菲", roast: "中度烘焙", process: "水洗处理", flavor: "酸质明亮 · 清脆鲜爽", caffeine: "~150mg" },
-    "热拿铁": { origin: "哥伦比亚 慧兰", roast: "中深烘焙", process: "水洗处理", flavor: "焦糖 · 坚果 · 巧克力", caffeine: "~120mg" },
-    "冰拿铁": { origin: "哥伦比亚 慧兰", roast: "中深烘焙", process: "水洗处理", flavor: "坚果醇厚 · 清晰透亮", caffeine: "~120mg" },
-    "卡布奇诺": { origin: "巴西 喜拉多", roast: "中度烘焙", process: "日晒处理", flavor: "坚果 · 可可 · 奶油感", caffeine: "~120mg" },
-    "澳白": { origin: "危地马拉 安提瓜", roast: "中深烘焙", process: "水洗处理", flavor: "太妃糖 · 烟草 · 饱满", caffeine: "~130mg" },
-    "椰子拿铁": { origin: "印尼 曼特宁", roast: "深度烘焙", process: "湿刨处理", flavor: "椰香 · 黑巧 · 香料", caffeine: "~120mg" },
-    "脏脏拿铁": { origin: "巴西+哥伦比亚 拼配", roast: "深度烘焙", process: "日晒拼配", flavor: "浓郁巧克力 · 烟熏 · 厚重", caffeine: "~140mg" },
-    "抹茶拿铁": { origin: "日本宇治 一番摘", roast: "—", process: "石磨研磨", flavor: "海苔 · 鲜甜 · 奶香", caffeine: "~70mg" },
-    "玫瑰拿铁": { origin: "云南 保山", roast: "浅中烘焙", process: "蜜处理", flavor: "玫瑰 · 蜂蜜 · 柔和", caffeine: "~100mg" },
-    "圣木拿铁": { origin: "秘鲁 有机认证", roast: "浅中烘焙", process: "真空慢煮", flavor: "圣木 · 松木 · 烟熏香草", caffeine: "~120mg" },
-    "米曲鲜咖": { origin: "云南 普洱", roast: "中度烘焙", process: "恒温发酵", flavor: "第五味觉 · 米味麴麦芽", caffeine: "~130mg" },
-    "岩盐酵咖": { origin: "肯尼亚 AA", roast: "中度烘焙", process: "乳酸发酵", flavor: "发酵反拨 · 海盐芝士", caffeine: "~130mg" },
-    "玻璃拿铁": { origin: "哥斯达黎加", roast: "浅度烘焙", process: "奶洗澄清", flavor: "丝滑橙花 · 玻璃澄清", caffeine: "~110mg" },
-  };
-  return specsMap[nameZh] || { origin: "精选产区", roast: "中度烘焙", process: "精细处理", flavor: "均衡 · 顺滑", caffeine: "~120mg" };
-};
-
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, totalPrice, clearCart, totalItems } = useCart();
+  const { selectedAddress } = useAddress();
   const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState<"idle" | "redirecting" | "processing" | "verifying">("idle");
+  const [remark, setRemark] = useState("");
 
   const deliveryFee = 2;
   const couponDiscount = 3;
@@ -55,6 +36,9 @@ const Checkout = () => {
 
   const totalBeansNeeded = finalPrice * 100;
   const hasEnoughBeans = userBeansBalance >= totalBeansNeeded;
+
+  const maskPhone = (phone: string) =>
+    phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
 
   if (totalItems === 0) {
     navigate("/");
@@ -113,6 +97,8 @@ const Checkout = () => {
     }
   };
 
+  const address = selectedAddress;
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
@@ -130,35 +116,42 @@ const Checkout = () => {
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-32 scrollbar-hide">
-        {/* Delivery Address */}
-        <section className="p-4 rounded-2xl bg-white/[0.04] border border-white/8">
+        {/* Delivery Address - clickable to address management */}
+        <section
+          className="p-4 rounded-2xl bg-white/[0.04] border border-white/8 cursor-pointer active:bg-white/[0.08] transition-colors"
+          onClick={() => navigate("/address")}
+        >
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
               <MapPin className="w-4 h-4 text-primary" />
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-foreground text-sm">张三</span>
-                <span className="text-muted-foreground text-sm">138****8888</span>
+            {address ? (
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-foreground text-sm">{address.name}</span>
+                  <span className="text-muted-foreground text-sm">{maskPhone(address.phone)}</span>
+                </div>
+                <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
+                  {t(
+                    `${address.district}${address.detail}`,
+                    `${address.detailEn}, ${address.districtEn}`
+                  )}
+                </p>
               </div>
-              <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
-                {t("朝阳区建国路88号SOHO现代城A座 12层1208室", "Building A, SOHO Modern City, No.88 Jianguo Rd, Floor 12, Room 1208")}
-              </p>
-            </div>
+            ) : (
+              <div className="flex-1 min-w-0">
+                <span className="text-muted-foreground text-sm">{t("请选择收货地址", "Select delivery address")}</span>
+              </div>
+            )}
             <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
           </div>
         </section>
 
-        {/* Product Cards with Full Details */}
-        {items.map((item) => {
-          const specs = getProductSpecs(item.nameZh);
-          return (
-            <section key={item.id} className="rounded-2xl bg-white/[0.04] border border-white/8 overflow-hidden">
-              {/* Product Header */}
-              <div className="p-4 flex gap-3">
-                <div className="w-20 h-20 rounded-xl overflow-hidden bg-secondary flex-shrink-0">
-                  <img src={item.image} alt={item.nameZh} className="w-full h-full object-cover" />
-                </div>
+        {/* Product Cards - compact with tags only, no image, no detailed specs */}
+        {items.map((item) => (
+          <section key={item.id} className="rounded-2xl bg-white/[0.04] border border-white/8 overflow-hidden">
+            <div className="p-4">
+              <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-foreground text-sm">{t(item.nameZh, item.nameEn)}</h3>
                   <p className="text-muted-foreground text-xs uppercase tracking-wide">{item.nameEn}</p>
@@ -174,50 +167,33 @@ const Checkout = () => {
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-col items-end justify-between flex-shrink-0">
+                <div className="flex flex-col items-end justify-between flex-shrink-0 ml-3">
                   <span className="text-primary font-bold text-sm">¥{item.price}</span>
-                  <span className="text-muted-foreground text-xs">x{item.quantity}</span>
+                  <span className="text-muted-foreground text-xs mt-2">x{item.quantity}</span>
                 </div>
               </div>
+            </div>
+          </section>
+        ))}
 
-              {/* Product Specs */}
-              <div className="px-4 pb-4">
-                <div className="bg-white/[0.03] rounded-xl p-3 space-y-2">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <div className="w-1 h-3 bg-primary rounded-full" />
-                    <span className="text-xs font-medium text-foreground">{t("产品规格", "Specifications")}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
-                    <div className="flex justify-between">
-                      <span className="text-[11px] text-muted-foreground">{t("产地", "Origin")}</span>
-                    </div>
-                    <span className="text-[11px] text-foreground text-right">{specs.origin}</span>
-
-                    <div className="flex justify-between">
-                      <span className="text-[11px] text-muted-foreground">{t("烘焙", "Roast")}</span>
-                    </div>
-                    <span className="text-[11px] text-foreground text-right">{specs.roast}</span>
-
-                    <div className="flex justify-between">
-                      <span className="text-[11px] text-muted-foreground">{t("处理法", "Process")}</span>
-                    </div>
-                    <span className="text-[11px] text-foreground text-right">{specs.process}</span>
-
-                    <div className="flex justify-between">
-                      <span className="text-[11px] text-muted-foreground">{t("风味", "Flavor")}</span>
-                    </div>
-                    <span className="text-[11px] text-foreground text-right">{specs.flavor}</span>
-
-                    <div className="flex justify-between">
-                      <span className="text-[11px] text-muted-foreground">{t("咖啡因", "Caffeine")}</span>
-                    </div>
-                    <span className="text-[11px] text-foreground text-right">{specs.caffeine}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-          );
-        })}
+        {/* Order Remark */}
+        <section className="p-4 rounded-2xl bg-white/[0.04] border border-white/8">
+          <div className="flex items-center gap-2 mb-2">
+            <MessageSquare className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-foreground">{t("订单备注", "Order Remark")}</span>
+          </div>
+          <textarea
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
+            placeholder={t("如需特殊要求请在此备注，如：少冰、加浓等", "Add special requests here, e.g. less ice, extra shot...")}
+            className="w-full bg-white/[0.03] border border-white/8 rounded-xl px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none focus:border-primary/30 transition-colors"
+            rows={2}
+            maxLength={200}
+          />
+          <div className="text-right mt-1">
+            <span className="text-[10px] text-muted-foreground">{remark.length}/200</span>
+          </div>
+        </section>
 
         {/* Price Breakdown */}
         <section className="p-4 rounded-2xl bg-white/[0.04] border border-white/8 space-y-2.5">
