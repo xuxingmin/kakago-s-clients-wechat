@@ -14,6 +14,7 @@ export interface ProductTileData {
   tagEn?: string;
   descZh?: string;
   descEn?: string;
+  isCreative?: boolean;
 }
 
 interface ProductTileProps {
@@ -33,7 +34,9 @@ export const ProductTile = ({
   const Icon = product.icon;
 
   return (
-    <div className="group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px] overflow-hidden">
+    <div className={`group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px] overflow-hidden ${
+      product.isCreative ? "border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20" : ""
+    }`}>
       {/* Top: Icon + Name + Price */}
       <div className="flex items-start gap-2">
         <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0`}>
