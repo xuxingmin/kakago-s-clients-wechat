@@ -54,22 +54,7 @@ const getStatusConfig = (t: (zh: string, en: string) => string) => ({
 
 const REFUND_WINDOW_MS = 60 * 1000;
 
-const RadarScan = () => (
-  <div className="w-10 h-10 rounded-lg bg-primary/5 border border-primary/20 flex items-center justify-center relative overflow-hidden flex-shrink-0">
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-6 h-6 rounded-full border border-primary/15" />
-      <div className="absolute w-3 h-3 rounded-full border border-primary/20" />
-      <div className="absolute w-1.5 h-1.5 rounded-full bg-primary/60" />
-    </div>
-    <div
-      className="absolute inset-0"
-      style={{
-        background: "conic-gradient(from 0deg, transparent 0deg, hsla(271, 81%, 56%, 0.25) 60deg, transparent 120deg)",
-        animation: "radarSweep 2s linear infinite",
-      }}
-    />
-  </div>
-);
+/* RadarScan removed — pending state now uses same layout as other states */
 
 export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
   (
@@ -126,16 +111,13 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
         <button ref={ref} onClick={onClick} className="w-full text-left p-3.5 pb-0">
           {/* Header: Order number + Status */}
           <div className="flex items-center justify-between mb-2.5">
-            <div className="flex items-center gap-2 min-w-0">
-              {isSearching && <RadarScan />}
-              <div className="min-w-0">
-                <span className="text-[11px] font-mono text-white/30 block">
-                  {t("订单编号", "Order No")}
-                </span>
-                <span className={`text-sm font-bold font-mono tracking-wide ${isSearching ? "text-primary animate-pulse" : "text-white"}`}>
-                  {isSearching ? t("匹配中...", "MATCHING...") : orderNumber}
-                </span>
-              </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-mono text-white/30 block">
+                {t("订单编号", "Order No")}
+              </span>
+              <span className={`text-sm font-bold font-mono tracking-wide ${isSearching ? "text-primary animate-pulse" : "text-white"}`}>
+                {isSearching ? t("匹配中 . . .", "MATCHING . . .") : orderNumber}
+              </span>
             </div>
             <div className="flex flex-col items-end gap-1 flex-shrink-0">
               <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${statusInfo.color} ${statusInfo.bgColor} ${statusInfo.borderColor} ${statusInfo.blink ? "animate-pulse" : ""}`}>
