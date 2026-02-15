@@ -71,8 +71,9 @@ const Index = () => {
     <div className="h-screen flex flex-col page-enter overflow-hidden">
       <div className="flex-shrink-0">
         <Header />
+        <BrandBanner />
+        
       </div>
-      <BrandBanner />
 
       <div className="flex-1 overflow-hidden flex flex-col pb-16">
         <section className="px-4 py-0.5">
