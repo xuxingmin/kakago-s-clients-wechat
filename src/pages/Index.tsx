@@ -74,16 +74,15 @@ const Index = () => {
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <section className="px-4 py-1.5">
           {/* ── Standard Series Header ── */}
-          <div className="mb-1.5">
+          <div className="mb-5 pb-2" style={{ borderBottom: '2px solid hsla(0,0%,100%,0.12)' }}>
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-white/70">
-                {t("意式基石系列", "FOUNDATION SERIES")}
+              <h2 className="text-2xl tracking-tight text-white" style={{ fontWeight: 900, letterSpacing: '-0.02em' }}>
+                {t("意式基石系列", "FOUNDATION")}
               </h2>
-              <span className="text-[9px] font-light tracking-wider text-white/35">
+              <span className="text-white/40" style={{ fontFamily: "'Playfair Display', serif", fontSize: '13px', fontWeight: 400 }}>
                 {t("世界级萃取标准，回归本味", "World-class extraction, pure origin")}
               </span>
             </div>
-            <div className="mt-1 h-[0.5px] bg-white/10" />
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -99,16 +98,18 @@ const Index = () => {
           </div>
 
           {/* ── Creative Series Header ── */}
-          <div className="mt-3 mb-1.5">
+          <div className="mt-6 mb-5 pb-2" style={{ borderBottom: '2px solid hsla(0,0%,100%,0.15)' }}>
+            <span className="text-[9px] font-bold tracking-[0.15em] text-primary/60 uppercase mb-0.5 block">
+              WBC Inspired Series
+            </span>
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-white/80">
-                {t("先锋实验系列", "AVANT-GARDE LAB")}
+              <h2 className="text-2xl tracking-tight text-white" style={{ fontWeight: 900, letterSpacing: '-0.02em' }}>
+                {t("先锋实验系列", "AVANT-GARDE")}
               </h2>
-              <span className="text-[9px] tracking-wider text-white/40" style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
+              <span className="text-white/40 italic" style={{ fontFamily: "'Playfair Display', serif", fontSize: '13px', fontWeight: 400 }}>
                 {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
               </span>
             </div>
-            <div className="mt-1 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
