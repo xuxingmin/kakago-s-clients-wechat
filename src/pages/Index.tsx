@@ -72,18 +72,39 @@ const Index = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <section className="px-4 py-2">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-sm font-medium text-white/60">
+        <section className="px-4 py-1.5">
+          <div className="flex items-center justify-between mb-1.5">
+            <h2 className="text-xs font-medium text-white/60">
               {t("灵感燃料库", "Inspiration Fuel")}
             </h2>
-            <span className="text-[11px] text-white/30">
-              {t("10款精选", "10 Picks")}
+            <span className="text-[10px] text-white/30">
+              {t("经典意式", "Classic Italian")}
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
-            {allProducts.map((product) => (
+            {allProducts.filter(p => !p.isCreative).map((product) => (
+              <ProductTile
+                key={product.id}
+                product={product}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                quantityInCart={qty(product.id)}
+                onAddToCart={(e) => add(product, e)}
+              />
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between mt-3 mb-1.5">
+            <h2 className="text-xs font-medium text-white/60">
+              {t("创意咖啡", "Creative Coffee")}
+            </h2>
+            <span className="text-[10px] text-white/30">
+              Inspired by WBC
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+            {allProducts.filter(p => p.isCreative).map((product) => (
               <ProductTile
                 key={product.id}
                 product={product}

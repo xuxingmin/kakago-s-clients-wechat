@@ -35,7 +35,7 @@ export const ProductTile = ({
   const isEn = language === "en";
 
   return (
-    <div className={`group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px] overflow-hidden ${
+    <div className={`group card-md text-left relative flex flex-col justify-between py-2 px-2.5 min-h-0 overflow-hidden ${
       product.isCreative ? "border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20" : ""
     }`}>
       {/* Top: Icon + Name + Price */}
@@ -66,7 +66,7 @@ export const ProductTile = ({
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between gap-2 mt-auto pt-1">
+      <div className="flex items-center justify-between gap-2 mt-auto pt-0.5">
         <span className="text-white/30 text-[9px]">
           {t("原价", "Orig.")} <span className="line-through">¥{product.price}</span>
         </span>
