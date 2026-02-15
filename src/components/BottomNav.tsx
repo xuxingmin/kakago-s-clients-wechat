@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Store, ReceiptText, BadgeCheck } from "lucide-react";
+import { Hexagon, Ticket, IdCard } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -8,9 +8,9 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     const { t } = useLanguage();
     
     const navItems = [
-      { icon: Store, labelZh: "基地", labelEn: "Base", path: "/" },
-      { icon: ReceiptText, labelZh: "进度", labelEn: "Status", path: "/orders" },
-      { icon: BadgeCheck, labelZh: "档案", labelEn: "ID", path: "/profile" },
+      { icon: Hexagon, labelZh: "基地", labelEn: "Base", path: "/" },
+      { icon: Ticket, labelZh: "进度", labelEn: "Status", path: "/orders" },
+      { icon: IdCard, labelZh: "档案", labelEn: "ID", path: "/profile" },
     ];
 
     return (
@@ -27,7 +27,7 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center gap-1.5 px-8 py-2 min-h-[52px] transition-all duration-200 active:scale-95 ${
                   isActive
-                    ? "text-primary"
+                    ? "text-white"
                     : "text-[#555555] hover:text-[#777777]"
                 }`
               }

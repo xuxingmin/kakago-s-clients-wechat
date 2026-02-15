@@ -52,7 +52,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           >
             <div
               className={`relative bg-gradient-to-br from-primary via-purple-500 to-violet-600 shadow-lg overflow-hidden ${
-                isLarge ? "w-8 h-11" : "w-7 h-9"
+                isLarge ? "w-10 h-14" : "w-8 h-11"
               }`}
               style={{
                 clipPath: "polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)",
@@ -62,7 +62,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
               <div className="absolute inset-0 flex flex-col items-center justify-center px-1">
                 <span
                   className={`text-white/90 font-bold tracking-tight ${
-                    isLarge ? "text-[7px]" : "text-[6px]"
+                    isLarge ? "text-[8px]" : "text-[6px]"
                   }`}
                   style={{ transform: "skewX(3deg)" }}
                 >
@@ -70,7 +70,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                 </span>
                 <span
                   className={`text-white font-black mt-0.5 ${
-                    isLarge ? "text-xs" : "text-[10px]"
+                    isLarge ? "text-sm" : "text-xs"
                   }`}
                   style={{ transform: "skewX(3deg)" }}
                 >
@@ -78,8 +78,8 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                 </span>
               </div>
 
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-white/30" />
-              <div className="absolute top-0 right-0 w-1 h-full bg-white/10" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-white/30" />
+              <div className="absolute top-0 right-0 w-1.5 h-full bg-white/10" />
 
               <div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
@@ -92,18 +92,18 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
 
             <div
               className={`w-0.5 bg-gradient-to-b from-white/50 to-white/20 rounded-b-full ${
-                isLarge ? "h-2" : "h-1.5"
+                isLarge ? "h-3" : "h-2"
               }`}
             />
           </div>
         );
       })}
 
-      <div className="ml-1.5 flex flex-col items-start">
-        <span className="text-[9px] font-bold text-primary animate-pulse">
+      <div className="ml-2 flex flex-col items-start">
+        <span className="text-[10px] font-bold text-primary animate-pulse">
           GO!
         </span>
-        <span className="text-[8px] text-muted-foreground">
+        <span className="text-[9px] text-white/40">
           {t("自动用券", "Auto coupon")}
         </span>
       </div>

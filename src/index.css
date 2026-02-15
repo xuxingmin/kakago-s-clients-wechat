@@ -271,8 +271,8 @@
   }
 
   .card-md {
-    @apply card-interactive p-3;
-    min-height: 68px;
+    @apply card-interactive p-3.5;
+    min-height: 76px;
   }
 
   .card-sm {
