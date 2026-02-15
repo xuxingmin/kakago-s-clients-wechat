@@ -236,6 +236,16 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
           {/* Right side actions */}
           <div className="flex items-center gap-1.5">
+            {isCompleted && onInvoice && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onInvoice(); }}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-primary/30 bg-primary/5 text-[10px] font-medium text-primary hover:bg-primary/15 transition-colors"
+              >
+                <FileText className="w-3 h-3" />
+                {t("联系店家开票", "Request Invoice")}
+              </button>
+            )}
+
             {!isCompleted && onContact && (
               <button
                 onClick={(e) => { e.stopPropagation(); onContact(); }}
