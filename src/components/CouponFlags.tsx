@@ -34,7 +34,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
 
   return (
     <button
-      onClick={() => navigate("/profile")}
+      onClick={() => navigate("/wallet")}
       className="flex items-end gap-0.5 active:scale-95 transition-transform cursor-pointer"
     >
       {topCoupons.map((coupon, index) => {
