@@ -40,6 +40,7 @@ const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("wechat");
   const [paymentState, setPaymentState] = useState<PaymentState>("selecting");
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
+  const [redirectCountdown, setRedirectCountdown] = useState(2);
 
   // Countdown timer
   useEffect(() => {
@@ -52,6 +53,17 @@ const Payment = () => {
     const timer = setInterval(() => setCountdown(prev => prev - 1), 1000);
     return () => clearInterval(timer);
   }, [countdown, paymentState, navigate, t]);
+
+  // Auto-redirect countdown after payment success
+  useEffect(() => {
+    if (paymentState !== "success") return;
+    if (redirectCountdown <= 0) {
+      navigate("/order-tracking?status=preparing", { replace: true });
+      return;
+    }
+    const timer = setInterval(() => setRedirectCountdown(prev => prev - 1), 1000);
+    return () => clearInterval(timer);
+  }, [paymentState, redirectCountdown, navigate]);
 
   const formatCountdown = (s: number) => {
     const min = Math.floor(s / 60);
@@ -72,10 +84,6 @@ const Payment = () => {
     if (isSuccess) {
       setPaymentState("success");
       clearCart();
-      // Auto-redirect to order tracking after 2 seconds
-      setTimeout(() => {
-        navigate("/order-tracking?status=preparing", { replace: true });
-      }, 2000);
     } else {
       setPaymentState("failed");
     }
@@ -231,10 +239,13 @@ const Payment = () => {
 
             <div className="w-full max-w-xs space-y-3">
               <button
-                onClick={() => navigate("/orders", { replace: true })}
+                onClick={() => navigate("/order-tracking?status=preparing", { replace: true })}
                 className="w-full py-3.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-[0.98]"
               >
                 {t("查看订单", "View Order")}
+                <span className="ml-1 text-xs font-normal opacity-70">
+                  ({t(`${redirectCountdown}秒后跳转`, `${redirectCountdown}s`)})
+                </span>
               </button>
               <button
                 onClick={() => navigate("/", { replace: true })}
