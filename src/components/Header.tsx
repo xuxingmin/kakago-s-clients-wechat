@@ -80,7 +80,7 @@ export const Header = () => {
               aria-label={language === "zh" ? "Switch to English" : "切换中文"}
             >
               <span className="text-[11px] font-bold text-primary">
-                {language === "zh" ? "EN" : "中"}
+                {language === "zh" ? "ENGLISH" : "中文"}
               </span>
             </button>
 
