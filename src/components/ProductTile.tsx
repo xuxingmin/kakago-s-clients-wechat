@@ -30,8 +30,9 @@ export const ProductTile = ({
   quantityInCart,
   onAddToCart,
 }: ProductTileProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const Icon = product.icon;
+  const isEn = language === "en";
 
   return (
     <div className={`group card-md text-left relative flex flex-col justify-between py-2.5 px-3 min-h-[72px] overflow-hidden ${
@@ -44,7 +45,7 @@ export const ProductTile = ({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-1">
-            <h3 className="font-semibold text-white text-sm leading-tight">
+            <h3 className={`font-semibold text-white leading-tight line-clamp-1 ${isEn ? "text-xs" : "text-sm"}`}>
               {t(product.nameZh, product.nameEn)}
             </h3>
             <span className="text-white font-bold text-base shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
@@ -52,12 +53,12 @@ export const ProductTile = ({
             </span>
           </div>
           {product.tagZh && (
-            <p className="text-muted-foreground text-[10px] mt-0.5 line-clamp-1">
+            <p className={`text-muted-foreground mt-0.5 line-clamp-1 ${isEn ? "text-[9px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className="text-muted-foreground text-[10px] mt-0.5 line-clamp-1">
+            <p className={`text-muted-foreground mt-0.5 line-clamp-1 ${isEn ? "text-[9px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
@@ -67,7 +68,7 @@ export const ProductTile = ({
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 mt-auto pt-1">
         <span className="text-white/30 text-[9px]">
-          原价 <span className="line-through">¥{product.price}</span>
+          {t("原价", "Orig.")} <span className="line-through">¥{product.price}</span>
         </span>
         <button
           onClick={onAddToCart}
