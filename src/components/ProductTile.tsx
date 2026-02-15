@@ -53,8 +53,8 @@ export const ProductTile = ({
   return (
     <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden ${
       product.isCreative
-        ? "py-2 px-2.5 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
-        : "py-1.5 px-2"
+        ? "py-1.5 px-2 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
+        : "py-1 px-2"
     }`}>
       {/* Lab tag for creative */}
       {labIndex !== undefined && (
@@ -64,8 +64,8 @@ export const ProductTile = ({
       )}
       {/* Top: Icon + Name + Price */}
       <div className="flex items-start gap-1.5">
-        <div className={`w-8 h-8 rounded-lg ${product.iconBg} flex items-center justify-center shrink-0`}>
-          <Icon className={`w-4 h-4 ${product.iconColor}`} strokeWidth={1.5} />
+        <div className={`w-7 h-7 rounded-md ${product.iconBg} flex items-center justify-center shrink-0`}>
+          <Icon className={`w-3.5 h-3.5 ${product.iconColor}`} strokeWidth={1.5} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-1">
