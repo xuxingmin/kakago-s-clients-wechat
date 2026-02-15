@@ -1,5 +1,6 @@
-import { Plus, LucideIcon } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 
 export interface ProductTileData {
   id: string;
@@ -7,14 +8,13 @@ export interface ProductTileData {
   nameEn: string;
   price: number;
   image: string;
-  icon: LucideIcon;
-  iconColor: string;
-  iconBg: string;
   tagZh?: string;
   tagEn?: string;
   descZh?: string;
   descEn?: string;
   isCreative?: boolean;
+  tagsZh?: string[];
+  tagsEn?: string[];
 }
 
 interface ProductTileProps {
@@ -22,7 +22,6 @@ interface ProductTileProps {
   estimatedPrice: number;
   quantityInCart: number;
   onAddToCart: (e: React.MouseEvent) => void;
-  labIndex?: number;
 }
 
 export const ProductTile = ({
@@ -30,71 +29,86 @@ export const ProductTile = ({
   estimatedPrice,
   quantityInCart,
   onAddToCart,
-  labIndex,
 }: ProductTileProps) => {
   const { t, language } = useLanguage();
-  const Icon = product.icon;
+  const [imageLoaded, setImageLoaded] = useState(false);
   const isEn = language === "en";
 
+  const tags = isEn ? (product.tagsEn || []) : (product.tagsZh || []);
+  const flavorText = product.descZh
+    ? t(product.descZh, product.descEn || "")
+    : product.tagZh
+      ? t(product.tagZh, product.tagEn || "")
+      : "";
+
   return (
-    <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden ${
-      product.isCreative
-        ? "py-2 px-2.5 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
-        : "py-1.5 px-2"
-    }`}>
-      {/* Lab tag for creative */}
-      {labIndex !== undefined && (
-        <span className="absolute top-1 right-1.5 text-[7px] font-mono font-bold tracking-widest text-white/30 uppercase">
-          LAB {String(labIndex).padStart(2, "0")}
-        </span>
-      )}
-      {/* Top: Icon + Name + Price */}
-      <div className="flex items-start gap-1.5">
-        <div className={`w-8 h-8 rounded-lg ${product.iconBg} flex items-center justify-center shrink-0`}>
-          <Icon className={`w-4 h-4 ${product.iconColor}`} strokeWidth={1.5} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-1">
-            <h3 className={`font-semibold text-white leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
-              {t(product.nameZh, product.nameEn)}
-            </h3>
-            <span className="text-white font-bold text-base shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
-              ¥{estimatedPrice}
-            </span>
-          </div>
-          {product.tagZh && (
-            <p className={`text-muted-foreground mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
-              {t(product.tagZh, product.tagEn || "")}
-            </p>
-          )}
-          {product.descZh && (
-            <p className={`text-muted-foreground mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
-              {t(product.descZh, product.descEn || "")}
-            </p>
-          )}
-        </div>
+    <div className="flex items-stretch gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden">
+      {/* Left: Square Image */}
+      <div className="relative w-[72px] shrink-0 bg-secondary">
+        <img
+          src={product.image}
+          alt={t(product.nameZh, product.nameEn)}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            imageLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          onLoad={() => setImageLoaded(true)}
+        />
+        {!imageLoaded && (
+          <div className="absolute inset-0 shimmer bg-secondary" />
+        )}
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between gap-2 mt-auto pt-0.5">
-        <span className="text-white/30 text-[9px]">
-          {t("原价", "Orig.")} <span className="line-through">¥{product.price}</span>
-        </span>
-        <button
-          onClick={onAddToCart}
-          className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
-            quantityInCart > 0
-              ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30"
-              : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
-          }`}
-          style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
-        >
-          {quantityInCart > 0 ? (
-            <span className="text-xs font-bold">{quantityInCart}</span>
-          ) : (
-            <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
+      {/* Right: Info Stack */}
+      <div className="flex-1 min-w-0 py-2 pr-2.5 flex flex-col justify-between gap-1">
+        {/* Row 1: Name + Price */}
+        <div className="flex items-baseline justify-between gap-2">
+          <h3 className={`font-semibold text-white leading-tight truncate ${isEn ? "text-xs" : "text-sm"}`}>
+            {t(product.nameZh, product.nameEn)}
+          </h3>
+          <span className={`shrink-0 text-white tabular-nums ${
+            product.isCreative ? "font-extrabold text-base" : "font-bold text-sm"
+          }`}>
+            ¥{estimatedPrice}
+          </span>
+        </div>
+
+        {/* Row 2: Pill Tags */}
+        {tags.length > 0 && (
+          <div className="flex items-center gap-1 flex-wrap">
+            {tags.map((tag, i) => (
+              <span
+                key={i}
+                className="inline-block px-1.5 py-[1px] rounded text-[9px] font-medium bg-white/[0.07] text-white/50 leading-tight"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Row 3: Flavor description + Add button */}
+        <div className="flex items-end justify-between gap-2">
+          {flavorText && (
+            <p className={`text-muted-foreground line-clamp-1 ${isEn ? "text-[9px]" : "text-[10px]"}`}>
+              {flavorText}
+            </p>
           )}
-        </button>
+          <button
+            onClick={onAddToCart}
+            className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
+              quantityInCart > 0
+                ? "bg-primary text-white shadow-[0_0_12px_hsla(271,81%,56%,0.4)] ring-1 ring-primary/30"
+                : "bg-white/[0.08] text-white/60 hover:bg-white/[0.14]"
+            }`}
+            style={{ width: '26px', height: '26px', minWidth: '26px', minHeight: '26px' }}
+          >
+            {quantityInCart > 0 ? (
+              <span className="text-[10px] font-bold">{quantityInCart}</span>
+            ) : (
+              <Plus className="w-3 h-3" strokeWidth={2} />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
