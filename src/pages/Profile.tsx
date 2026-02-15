@@ -133,8 +133,8 @@ const Profile = () => {
                   <Coffee className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xs font-semibold text-white truncate">{userName}</h2>
-                  <div className="text-[9px] text-white/50 flex items-center gap-0.5">
+                  <h2 className="text-[10px] font-semibold text-white truncate">{userName}</h2>
+137:                   <div className="text-[9px] text-muted-foreground flex items-center gap-0.5">
                     <span>{t("点击认证", "Tap to verify")}</span>
                     <ChevronRight className="w-2 h-2" />
                   </div>
@@ -174,20 +174,20 @@ const Profile = () => {
                   <Users className="w-3.5 h-3.5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xs font-semibold text-white">{t("拉帮结派", "My Squad")}</h3>
-                  <p className="text-[9px] text-white/50">{t("邀请返佣", "Invite & Earn")}</p>
+                  <h3 className="text-[10px] font-semibold text-white">{t("拉帮结派", "My Squad")}</h3>
+178:                   <p className="text-[9px] text-muted-foreground">{t("邀请返佣", "Invite & Earn")}</p>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[9px] text-white/40">{t("累计收益", "Earnings")}</p>
+                  <p className="text-[9px] text-muted-foreground">{t("累计收益", "Earnings")}</p>
                   <span className="text-base font-black text-primary">¥1,240</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="text-right">
-                    <p className="text-xs font-bold text-white">348</p>
-                    <p className="text-[9px] text-white/40">{t("队员", "Members")}</p>
+                    <p className="text-[10px] font-bold text-white">348</p>
+                    <p className="text-[9px] text-muted-foreground">{t("队员", "Members")}</p>
                   </div>
                   <div className="flex items-center gap-0.5 text-green-400">
                     <TrendingUp className="w-2.5 h-2.5" />
@@ -214,7 +214,7 @@ const Profile = () => {
                     <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center">
                       <IconComponent className="w-4 h-4 text-primary" />
                     </div>
-                    <span className="text-xs font-medium text-white">{t(item.labelZh, item.labelEn)}</span>
+                    <span className="text-[10px] font-medium text-white">{t(item.labelZh, item.labelEn)}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-base font-bold text-primary">{item.value}</span>
@@ -243,8 +243,8 @@ const Profile = () => {
                     <IconComponent className="w-4 h-4 text-primary" />
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-medium text-white text-xs">{t(item.labelZh, item.labelEn)}</p>
-                    <p className="text-[10px] text-white/50">{t(item.descZh, item.descEn)}</p>
+                  <p className="font-medium text-white text-[10px] tracking-wide">{t(item.labelZh, item.labelEn)}</p>
+                    <p className="text-[9px] text-muted-foreground">{t(item.descZh, item.descEn)}</p>
                   </div>
                   <ChevronRight className="w-4 h-4 text-white/40" />
                 </button>

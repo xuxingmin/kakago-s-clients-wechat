@@ -27,7 +27,7 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center gap-1.5 px-8 py-2 min-h-[52px] transition-all duration-200 active:scale-95 ${
                   isActive
-                    ? "text-white"
+                    ? "text-primary"
                     : "text-[#555555] hover:text-[#777777]"
                 }`
               }

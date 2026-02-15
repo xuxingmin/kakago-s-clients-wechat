@@ -72,7 +72,7 @@ const Index = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        
+        <div className="fog-divider mx-4" />
       </div>
 
       <div className="flex-1 overflow-hidden flex flex-col pb-16">
