@@ -158,7 +158,7 @@ const StatusTimeline = ({ currentStatus, timestamps, onStatusClick, isInteractiv
 
   const getStatusMessage = () => {
     switch (currentStatus) {
-      case "pending": return t("正在匹配咖啡师...", "Finding nearby barista...");
+      case "pending": return t("正在匹配咖啡店...", "Matching coffee shop...");
       case "accepted": return t("订单已接受，正在制作中", "Order accepted, brewing");
       case "rider_assigned": return t("骑手已接单，即将取货", "Rider assigned");
       case "picked_up": return t("骑手正在配送中", "On the way");
@@ -234,6 +234,14 @@ const OrderTracking = () => {
   const [showContactDialog, setShowContactDialog] = useState(false);
 
   const currentState: OrderState = order?.status as OrderState || demoState;
+
+  // Auto-transition from pending to accepted after 0.8s (demo mode only)
+  useEffect(() => {
+    if (currentState === "pending" && !orderId) {
+      const timer = setTimeout(() => setDemoState("accepted"), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [currentState, orderId]);
 
   useEffect(() => {
     if (currentState === "accepted") {
@@ -381,13 +389,13 @@ const OrderTracking = () => {
 
       {/* Main Content */}
       <div className="flex-1 relative overflow-hidden">
-        {/* State 1: Pending - Matching */}
+        {/* State 1: Pending - Matching nearby cafe */}
         <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 transition-all duration-500 ${
           currentState === "pending" ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
         }`}>
           <RadarScanner />
           <h2 className="text-lg font-bold text-white mt-8 text-center">
-            {t("正在寻找最近的咖啡师...", "Finding nearby barista...")}
+            {t("正在为您匹配您附近的精品咖啡店...", "Matching nearby specialty coffee shops...")}
           </h2>
           <p className="text-sm text-white/50 mt-2 text-center">
             {t("请稍候，通常需要 10-30 秒", "Please wait, usually 10-30 seconds")}
