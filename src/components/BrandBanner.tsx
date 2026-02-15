@@ -14,8 +14,8 @@ export const BrandBanner = () => {
   const totalCoupons = userCoupons.length;
 
   return (
-    <section className="px-4 pt-1 pb-0.5 hero-reveal bg-background">
-      <div className="flex items-center justify-between">
+    <section className="px-4 pt-1 pb-0.5 hero-reveal bg-background flex-1 flex items-end min-h-0">
+      <div className="flex items-center justify-between w-full mb-1">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-white tracking-tight">KAKAGO</h1>
