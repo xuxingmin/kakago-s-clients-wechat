@@ -76,7 +76,7 @@ const Index = () => {
       </div>
 
       <div className="flex-1 overflow-hidden flex flex-col pb-16">
-        <section className="px-4 py-0.5">
+        <section className="px-4 py-0.5 flex-1 flex flex-col">
           {/* ── Standard Series Header ── */}
           <div className="mb-0.5">
             <div className="flex items-baseline justify-between">
@@ -115,7 +115,7 @@ const Index = () => {
             <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
+          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr flex-1">
             {allProducts.filter(p => p.isCreative).map((product, index) => (
               <ProductTile
                 key={product.id}
