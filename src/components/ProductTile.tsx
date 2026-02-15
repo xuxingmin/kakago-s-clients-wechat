@@ -1,4 +1,4 @@
-import { Plus, LucideIcon } from "lucide-react";
+import { Plus, LucideIcon, CupSoda, Thermometer, Flame } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface ProductTileData {
@@ -79,12 +79,17 @@ export const ProductTile = ({
 
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 mt-auto pt-0.5">
-        {product.specZh && (
+        {product.specZh && !product.isCreative ? (
+          <div className="flex items-center gap-2 text-white/30 text-[9px]">
+            <span className="flex items-center gap-0.5"><CupSoda className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[0]}</span>
+            <span className="flex items-center gap-0.5"><Thermometer className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[1]}</span>
+            <span className="flex items-center gap-0.5"><Flame className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[2]}</span>
+          </div>
+        ) : product.specZh ? (
           <span className="text-white/30 text-[9px]">
             {t(product.specZh, product.specEn || "")}
           </span>
-        )}
-        {!product.specZh && <span />}
+        ) : <span />}
         <button
           onClick={onAddToCart}
           className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
