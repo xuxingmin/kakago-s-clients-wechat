@@ -33,10 +33,10 @@ const allProducts: ProductTileData[] = [
   { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: CloudRain, iconColor: "text-cyan-400", iconBg: "bg-cyan-400/15", tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
   { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: Sun, iconColor: "text-yellow-400", iconBg: "bg-yellow-400/15", tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
   { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: CupSoda, iconColor: "text-stone-300", iconBg: "bg-stone-300/15", tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
-  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: TreePine, iconColor: "text-amber-600", iconBg: "bg-amber-600/15", descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate" },
-  { id: "koji-latte", nameZh: "米曲\"鲜\"咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: "text-yellow-500", iconBg: "bg-yellow-500/15", descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt" },
-  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: Mountain, iconColor: "text-slate-400", iconBg: "bg-slate-400/15", descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese" },
-  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Droplets, iconColor: "text-sky-300", iconBg: "bg-sky-300/15", descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple" },
+  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: TreePine, iconColor: "text-amber-600", iconBg: "bg-amber-600/15", descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", isCreative: true },
+  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: "text-yellow-500", iconBg: "bg-yellow-500/15", descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", isCreative: true },
+  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: Mountain, iconColor: "text-slate-400", iconBg: "bg-slate-400/15", descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", isCreative: true },
+  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Droplets, iconColor: "text-sky-300", iconBg: "bg-sky-300/15", descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", isCreative: true },
 ];
 
 const getBestCouponDiscount = (productId: string): number => {
