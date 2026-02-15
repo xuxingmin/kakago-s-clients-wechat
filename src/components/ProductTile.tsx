@@ -14,6 +14,8 @@ export interface ProductTileData {
   tagEn?: string;
   descZh?: string;
   descEn?: string;
+  specZh?: string;
+  specEn?: string;
   isCreative?: boolean;
 }
 
@@ -77,9 +79,12 @@ export const ProductTile = ({
 
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 mt-auto pt-0.5">
-        <span className="text-white/30 text-[9px]">
-          {t("原价", "Orig.")} <span className="line-through">¥{product.price}</span>
-        </span>
+        {product.specZh && (
+          <span className="text-white/30 text-[9px]">
+            {t(product.specZh, product.specEn || "")}
+          </span>
+        )}
+        {!product.specZh && <span />}
         <button
           onClick={onAddToCart}
           className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
