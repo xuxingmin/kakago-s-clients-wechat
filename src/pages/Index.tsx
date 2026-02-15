@@ -1,4 +1,4 @@
-import { Coffee, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConical, Beaker, Award } from "lucide-react";
+import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConical, Beaker } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Coupon } from "@/components/CouponFlags";
 import { MiniCartBar } from "@/components/MiniCartBar";
-import { UnifiedCard, UnifiedCardData } from "@/components/UnifiedCard";
+import { ProductTile, ProductTileData } from "@/components/ProductTile";
 import { toast } from "sonner";
 
 import coffeeLatte from "@/assets/coffee-latte.jpg";
@@ -26,26 +26,36 @@ const userCoupons: Coupon[] = [
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
-const allProducts: UnifiedCardData[] = [
-  // Standard Series
-  { id: "hot-americano", nameZh: "9Bar 美式", nameEn: "9Bar Americano", price: 12, image: coffeeAmericano, icon: Coffee, volume: "360ml", tagZh: "坚果、巧克力尾韵", tagEn: "Nutty, chocolate finish" },
-  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, volume: "360ml", tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright, crisp & fresh" },
-  { id: "hot-latte", nameZh: "经典拿铁", nameEn: "Classic Latte", price: 15, image: coffeeLatte, icon: Coffee, volume: "360ml", tagZh: "丝滑香甜", tagEn: "Silky & sweet" },
-  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, volume: "360ml", tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty, crystal clear" },
-  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, volume: "360ml", tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy, bold flavor" },
-  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, volume: "360ml", tagZh: "极薄奶沫 致密醇厚", tagEn: "Dense & rich" },
-  // Creative Series
-  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo", price: 25, image: coffeeDirty, icon: Flame, volume: "360ml", tagZh: "雪松 | 檀香 | 黑巧", tagEn: "Cedar | Sandalwood | Choc", isCreative: true, labIndex: 7 },
-  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Umami", price: 25, image: coffeeMatcha, icon: Wheat, volume: "360ml", tagZh: "鲜味 | 麦芽 | 奶感", tagEn: "Savory | Malt | Creamy", isCreative: true, labIndex: 8 },
-  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt", price: 25, image: coffeeCoconut, icon: FlaskConical, volume: "360ml", tagZh: "酸奶 | 海盐 | 芝士", tagEn: "Yogurt | Salt | Cheese", isCreative: true, labIndex: 9 },
-  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 25, image: coffeeRose, icon: Beaker, volume: "360ml", tagZh: "橙花 | 菠萝 | 丝滑", tagEn: "Blossom | Pineapple | Silk", isCreative: true, labIndex: 10 },
+const ICON_COLOR = "text-white/70";
+const ICON_BG = "bg-white/[0.06]";
+const ICON_BG_LAB = "bg-white/[0.08]";
+
+const allProducts: ProductTileData[] = [
+  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
+  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
+  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced" },
+  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
+  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
+  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
+  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", isCreative: true },
+  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", isCreative: true },
+  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: FlaskConical, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", isCreative: true },
+  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", isCreative: true },
 ];
+
+const getBestCouponDiscount = (productId: string): number => {
+  const applicable = userCoupons.filter((c) => c.type === "universal" || c.applicableProducts?.includes(productId));
+  return applicable.length === 0 ? 0 : Math.max(...applicable.map(c => c.value));
+};
+
+const getEstimatedPrice = (price: number, id: string): number =>
+  Math.max(0, price - getBestCouponDiscount(id)) + ESTIMATED_DELIVERY_FEE;
 
 const Index = () => {
   const { t } = useLanguage();
   const { items, addItem } = useCart();
 
-  const add = (product: UnifiedCardData, e: React.MouseEvent) => {
+  const add = (product: ProductTileData, e: React.MouseEvent) => {
     e.stopPropagation();
     addItem({ id: product.id, nameZh: product.nameZh, nameEn: product.nameEn, price: product.price, image: product.image });
     toast.success(t(`+1 ${product.nameZh}`, `+1 ${product.nameEn}`), { duration: 800 });
@@ -57,74 +67,81 @@ const Index = () => {
   const cartDiscount = items.length === 0 ? 0 : (userCoupons.length > 0 ? Math.max(...userCoupons.map(c => c.value)) : 0);
   const cartTotal = items.length === 0 ? 0 : Math.max(0, cartSubtotal - cartDiscount) + ESTIMATED_DELIVERY_FEE;
 
-  const standard = allProducts.filter(p => !p.isCreative);
-  const creative = allProducts.filter(p => p.isCreative);
-
   return (
     <div className="h-screen flex flex-col page-enter overflow-hidden">
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
+        <div className="fog-divider mx-4" />
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <section className="px-3 pt-1 pb-0.5">
-          {/* ── Standard Series ── */}
-          <div className="flex items-baseline justify-between mb-0.5">
-            <h2 className="text-[10px] font-bold tracking-wide text-foreground/60 uppercase">
-              {t("意式基石", "Foundation")}
-            </h2>
-            <span className="text-[8px] font-light tracking-widest text-muted-foreground/40">
-              {t("世界级萃取", "World-class extraction")}
-            </span>
+        <section className="px-4 py-1">
+          {/* ── Standard Series Header ── */}
+          <div className="mb-1">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-[11px] font-bold tracking-wide text-white/70">
+                {t("意式基石系列", "FOUNDATION SERIES")}
+              </h2>
+              <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
+                {t("世界级萃取标准，回归本味", "World-class extraction, pure origin")}
+              </span>
+            </div>
+            <div className="mt-0.5 h-[0.5px] bg-white/10" />
           </div>
-          <div className="h-[0.5px] bg-foreground/8 mb-1" />
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in">
-            {standard.map((product) => (
-              <UnifiedCard
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+            {allProducts.filter(p => !p.isCreative).map((product) => (
+              <ProductTile
                 key={product.id}
                 product={product}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
                 quantityInCart={qty(product.id)}
                 onAddToCart={(e) => add(product, e)}
               />
             ))}
           </div>
 
-          {/* ── Creative Series ── */}
-          <div className="flex items-baseline justify-between mt-2 mb-0.5">
-            <h2 className="text-[10px] font-bold tracking-wide text-foreground/70 uppercase">
-              {t("先锋实验", "Avant-Garde Lab")}
-            </h2>
-            <span className="text-[8px] font-light tracking-widest text-muted-foreground/50">
-              {t("WBC 冠军灵感", "WBC Champion Artistry")}
-            </span>
+          {/* ── Creative Series Header ── */}
+          <div className="mt-2 mb-1">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-[11px] font-bold tracking-wide text-white/80">
+                {t("先锋实验系列", "AVANT-GARDE LAB")}
+              </h2>
+              <span className="text-[10px] font-light tracking-wider text-white/45">
+                {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
+              </span>
+            </div>
+            <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
           </div>
-          <div className="h-[0.5px] bg-gradient-to-r from-foreground/10 via-primary/20 to-foreground/10 mb-1" />
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in">
-            {creative.map((product) => (
-              <UnifiedCard
+          <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
+            {allProducts.filter(p => p.isCreative).map((product, index) => (
+              <ProductTile
                 key={product.id}
                 product={product}
+                estimatedPrice={getEstimatedPrice(product.price, product.id)}
                 quantityInCart={qty(product.id)}
                 onAddToCart={(e) => add(product, e)}
+                labIndex={index + 7}
               />
             ))}
           </div>
         </section>
 
-        <section className="px-3 pt-1 pb-2">
+        <section className="px-4 pt-1.5 pb-3">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 text-muted-foreground/30">
-              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
-              <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
-              <span className="text-[7px]">🌱</span>
+            <div className="flex items-center gap-2 text-white/25">
+              <Coffee className="w-3 h-3" strokeWidth={1.5} />
+              <Award className="w-3 h-3" strokeWidth={1.5} />
+              <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">4.0</div>
+              <Coffee className="w-3 h-3" strokeWidth={1.5} />
+              <span className="text-[8px]">🌱</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[8px] text-muted-foreground/30">
-                {t("精品店全听你调遣", "Elite cafés at your command")}
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[10px] text-white/25">
+                {t("霸都精品店，全听你调遣！", "Elite cafés at your command!")}
               </span>
             </div>
           </div>
