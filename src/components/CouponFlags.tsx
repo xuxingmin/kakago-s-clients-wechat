@@ -52,7 +52,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           >
             <div
               className={`relative bg-gradient-to-br from-primary via-purple-500 to-violet-600 shadow-lg overflow-hidden ${
-                isLarge ? "w-10 h-14" : "w-8 h-11"
+                isLarge ? "w-9 h-12" : "w-7 h-10"
               }`}
               style={{
                 clipPath: "polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)",
@@ -99,12 +99,12 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
         );
       })}
 
-      <div className="ml-2 flex flex-col items-start">
-        <span className="text-[10px] font-bold text-primary animate-pulse">
+      <div className="ml-1 flex flex-col items-start shrink-0">
+        <span className="text-[9px] font-bold text-primary animate-pulse">
           GO!
         </span>
-        <span className="text-[9px] text-white/40">
-          {t("自动用券", "Auto coupon")}
+        <span className="text-[8px] text-white/40 whitespace-nowrap">
+          {t("自动用券", "Auto")}
         </span>
       </div>
 
