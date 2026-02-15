@@ -149,24 +149,6 @@ const Checkout = () => {
           </div>
         </section>
 
-        {/* Blind Box Info */}
-        <section className="p-4 rounded-2xl bg-gradient-to-br from-primary/8 to-violet-600/5 border border-primary/15">
-          <div className="flex items-center gap-2 mb-2">
-            <Gift className="w-4 h-4 text-primary" />
-            <span className="font-semibold text-foreground text-sm">{t("盲盒体验", "Blind Box")}</span>
-          </div>
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Sparkles className="w-3.5 h-3.5 text-primary/70" />
-              <span>{t("下单后将随机匹配附近优质咖啡馆", "Randomly matched to a nearby quality café")}</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Clock className="w-3.5 h-3.5 text-primary/70" />
-              <span>{t("商家接单后即刻揭晓专属咖啡馆", "Your café is revealed once order is accepted")}</span>
-            </div>
-          </div>
-        </section>
-
         {/* Product Cards with Full Details */}
         {items.map((item) => {
           const specs = getProductSpecs(item.nameZh);
