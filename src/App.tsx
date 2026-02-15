@@ -21,6 +21,7 @@ import InvoiceManagement from "./pages/InvoiceManagement";
 import MySquad from "./pages/MySquad";
 import MerchantAuth from "./pages/MerchantAuth";
 import MerchantDashboard from "./pages/MerchantDashboard";
+import Coupons from "./pages/Coupons";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
                     <Route path="/order-tracking" element={<OrderTracking />} />
                     <Route path="/wallet" element={<CoffeeWallet />} />
                     <Route path="/kaka-beans" element={<KakaBeans />} />
+                    <Route path="/coupons" element={<Coupons />} />
                     <Route path="/address" element={<AddressManagement />} />
                     <Route path="/address/new" element={<AddressFormPage />} />
                     <Route path="/address/edit/:id" element={<AddressFormPage />} />
