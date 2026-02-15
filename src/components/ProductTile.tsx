@@ -58,7 +58,7 @@ export const ProductTile = ({
     }`}>
       {/* Lab tag for creative */}
       {labIndex !== undefined && (
-        <span className="absolute top-1 right-1.5 text-[7px] font-mono font-bold tracking-widest text-white/30 uppercase">
+        <span className="absolute top-1 right-1.5 text-[7px] font-mono font-bold tracking-widest text-purple-400/40 uppercase">
           LAB {String(labIndex).padStart(2, "0")}
         </span>
       )}
@@ -77,12 +77,12 @@ export const ProductTile = ({
             </span>
           </div>
           {product.tagZh && (
-            <p className={`text-muted-foreground mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-violet-300/40 mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className={`text-muted-foreground mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-purple-300/45 mt-0.5 ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
@@ -92,13 +92,13 @@ export const ProductTile = ({
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 mt-auto pt-0.5">
         {product.specZh && !product.isCreative ? (
-          <div className="flex items-center gap-2 text-white/30 text-[9px]">
+          <div className="flex items-center gap-2 text-violet-400/35 text-[9px]">
             <span className="flex items-center gap-0.5"><CupSoda className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[0]}</span>
             <span className="flex items-center gap-0.5"><Thermometer className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[1]}</span>
             <span className="flex items-center gap-0.5"><Flame className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[2]}</span>
           </div>
         ) : product.isCreative && product.specTags ? (
-          <div className="flex items-center gap-1.5 text-white/30 text-[9px] flex-wrap">
+          <div className="flex items-center gap-1.5 text-purple-300/40 text-[9px] flex-wrap">
             {product.specTags.map((tag, i) => {
               const TagIcon = specTagIconMap[tag.icon];
               return (
