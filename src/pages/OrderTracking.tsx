@@ -32,8 +32,9 @@ const hefeiBrands = [
 const CosmicScanner = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [matchedBrand, setMatchedBrand] = useState<string | null>(null);
+  const [matchedBrands, setMatchedBrands] = useState<Set<string>>(new Set());
 
-  // Starfield canvas
+  // Full-screen starfield + nebula canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -41,20 +42,38 @@ const CosmicScanner = () => {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const W = 320;
-    const H = 320;
+    const W = 360;
+    const H = 400;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     ctx.scale(dpr, dpr);
 
-    // Generate stars
-    const stars = Array.from({ length: 80 }, () => ({
+    // Generate layered stars
+    const stars = Array.from({ length: 150 }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      r: Math.random() * 1.2 + 0.3,
-      speed: Math.random() * 0.3 + 0.1,
-      opacity: Math.random() * 0.6 + 0.2,
-      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      r: Math.random() * 1.5 + 0.2,
+      opacity: Math.random() * 0.7 + 0.1,
+      twinkleSpeed: Math.random() * 0.03 + 0.005,
+      phase: Math.random() * Math.PI * 2,
+      color: Math.random() > 0.8 
+        ? [180, 200, 255] // blue-white
+        : Math.random() > 0.5
+          ? [220, 200, 255] // purple-white  
+          : [255, 255, 255], // white
+    }));
+
+    // Shooting stars
+    const shootingStars: { x: number; y: number; vx: number; vy: number; life: number; maxLife: number }[] = [];
+
+    // Nebula particles (slow floating)
+    const nebula = Array.from({ length: 30 }, () => ({
+      x: W / 2 + (Math.random() - 0.5) * 200,
+      y: H / 2 + (Math.random() - 0.5) * 200,
+      r: Math.random() * 40 + 20,
+      opacity: Math.random() * 0.04 + 0.01,
+      hue: Math.random() > 0.5 ? 265 : 280,
+      drift: Math.random() * 0.2 - 0.1,
       phase: Math.random() * Math.PI * 2,
     }));
 
@@ -65,61 +84,156 @@ const CosmicScanner = () => {
       frame++;
       ctx.clearRect(0, 0, W, H);
 
-      // Draw stars
-      stars.forEach((s) => {
-        const twinkle = Math.sin(frame * s.twinkleSpeed + s.phase) * 0.3 + 0.7;
+      // Nebula background clouds
+      nebula.forEach((n) => {
+        const breathe = Math.sin(frame * 0.008 + n.phase) * 0.5 + 0.5;
+        const grad = ctx.createRadialGradient(
+          n.x + Math.sin(frame * 0.003 + n.phase) * 10,
+          n.y + Math.cos(frame * 0.004 + n.phase) * 8,
+          0,
+          n.x, n.y, n.r
+        );
+        grad.addColorStop(0, `hsla(${n.hue}, 70%, 50%, ${n.opacity * (0.6 + breathe * 0.4)})`);
+        grad.addColorStop(1, "transparent");
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity * twinkle})`;
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
         ctx.fill();
       });
 
-      // Central glow pulse
-      const cx = W / 2;
-      const cy = H / 2;
-      const pulse = Math.sin(frame * 0.03) * 0.15 + 0.85;
+      // Draw stars with twinkle
+      stars.forEach((s) => {
+        const twinkle = Math.sin(frame * s.twinkleSpeed + s.phase) * 0.4 + 0.6;
+        const alpha = s.opacity * twinkle;
+        
+        // Star glow
+        if (s.r > 1) {
+          const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 3);
+          glow.addColorStop(0, `rgba(${s.color.join(",")}, ${alpha * 0.3})`);
+          glow.addColorStop(1, "transparent");
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+          ctx.fillStyle = glow;
+          ctx.fill();
+        }
 
-      // Outer nebula rings
-      for (let i = 3; i > 0; i--) {
-        const radius = 40 + i * 35;
-        const ringPulse = Math.sin(frame * 0.015 + i) * 0.1 + 0.9;
         ctx.beginPath();
-        ctx.arc(cx, cy, radius * ringPulse, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(139, 92, 246, ${0.08 + (3 - i) * 0.04})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.color.join(",")}, ${alpha})`;
+        ctx.fill();
+      });
+
+      // Occasional shooting star
+      if (frame % 90 === 0 && shootingStars.length < 2) {
+        shootingStars.push({
+          x: Math.random() * W * 0.6,
+          y: Math.random() * H * 0.3,
+          vx: 3 + Math.random() * 2,
+          vy: 1.5 + Math.random(),
+          life: 0,
+          maxLife: 30 + Math.random() * 20,
+        });
       }
 
-      // Scanning beam (conic sweep)
-      const angle = (frame * 0.02) % (Math.PI * 2);
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(angle);
-      const beamGrad = ctx.createLinearGradient(0, 0, 120, 0);
-      beamGrad.addColorStop(0, "rgba(139, 92, 246, 0.25)");
-      beamGrad.addColorStop(1, "rgba(139, 92, 246, 0)");
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.arc(0, 0, 140, -0.2, 0.2);
-      ctx.closePath();
-      ctx.fillStyle = beamGrad;
-      ctx.fill();
-      ctx.restore();
+      // Draw shooting stars
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const ss = shootingStars[i];
+        ss.x += ss.vx;
+        ss.y += ss.vy;
+        ss.life++;
+        const fade = 1 - ss.life / ss.maxLife;
+        
+        ctx.save();
+        ctx.globalAlpha = fade;
+        const tailGrad = ctx.createLinearGradient(
+          ss.x, ss.y, ss.x - ss.vx * 8, ss.y - ss.vy * 8
+        );
+        tailGrad.addColorStop(0, "rgba(255, 255, 255, 0.8)");
+        tailGrad.addColorStop(1, "transparent");
+        ctx.strokeStyle = tailGrad;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(ss.x, ss.y);
+        ctx.lineTo(ss.x - ss.vx * 8, ss.y - ss.vy * 8);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(ss.x, ss.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.restore();
 
-      // Core glow
-      const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 20 * pulse);
-      coreGrad.addColorStop(0, "rgba(139, 92, 246, 0.8)");
-      coreGrad.addColorStop(0.5, "rgba(139, 92, 246, 0.2)");
-      coreGrad.addColorStop(1, "rgba(139, 92, 246, 0)");
-      ctx.beginPath();
-      ctx.arc(cx, cy, 20 * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = coreGrad;
-      ctx.fill();
+        if (ss.life >= ss.maxLife) shootingStars.splice(i, 1);
+      }
 
-      // Center dot
+      const cx = W / 2;
+      const cy = H / 2;
+      const pulse = Math.sin(frame * 0.025) * 0.15 + 0.85;
+
+      // Concentric orbit rings with glow
+      for (let i = 4; i > 0; i--) {
+        const radius = 30 + i * 40;
+        const ringPulse = Math.sin(frame * 0.012 + i * 0.8) * 0.06 + 0.94;
+        
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius * ringPulse, 0, Math.PI * 2);
+        ctx.strokeStyle = `hsla(265, 70%, 60%, ${0.06 + (4 - i) * 0.025})`;
+        ctx.lineWidth = 0.8;
+        ctx.setLineDash([2, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Dual scanning beams (opposite directions)
+      const angle1 = (frame * 0.018) % (Math.PI * 2);
+      const angle2 = (angle1 + Math.PI) % (Math.PI * 2);
+      
+      [angle1, angle2].forEach((a, idx) => {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(a);
+        const beamGrad = ctx.createLinearGradient(0, 0, 160, 0);
+        beamGrad.addColorStop(0, `hsla(265, 80%, 60%, ${idx === 0 ? 0.2 : 0.12})`);
+        beamGrad.addColorStop(0.6, `hsla(265, 80%, 60%, 0.05)`);
+        beamGrad.addColorStop(1, "transparent");
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 160, -0.15, 0.15);
+        ctx.closePath();
+        ctx.fillStyle = beamGrad;
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Core energy glow (layered)
+      [35, 20, 10].forEach((size, idx) => {
+        const r = size * pulse;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        const alphas = [0.15, 0.3, 0.6];
+        grad.addColorStop(0, `hsla(265, 80%, 70%, ${alphas[idx]})`);
+        grad.addColorStop(0.6, `hsla(265, 80%, 50%, ${alphas[idx] * 0.3})`);
+        grad.addColorStop(1, "transparent");
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      });
+
+      // Core bright dot
       ctx.beginPath();
       ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      ctx.fillStyle = `rgba(255, 255, 255, ${0.8 + Math.sin(frame * 0.05) * 0.2})`;
+      ctx.shadowColor = "rgba(139, 92, 246, 0.8)";
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Small orbiting dot on ring
+      const orbX = cx + Math.cos(frame * 0.025) * 110;
+      const orbY = cy + Math.sin(frame * 0.025) * 110;
+      ctx.beginPath();
+      ctx.arc(orbX, orbY, 2, 0, Math.PI * 2);
+      ctx.fillStyle = "hsla(265, 80%, 70%, 0.8)";
       ctx.fill();
 
       animId = requestAnimationFrame(draw);
@@ -129,75 +243,94 @@ const CosmicScanner = () => {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // Cycle matched brand highlight
+  // Progressively highlight brands (simulate matching)
   useEffect(() => {
     let idx = 0;
     const interval = setInterval(() => {
-      setMatchedBrand(hefeiBrands[idx % hefeiBrands.length]);
+      const brand = hefeiBrands[idx % hefeiBrands.length];
+      setMatchedBrand(brand);
+      setMatchedBrands(prev => new Set([...prev, brand]));
       idx++;
-    }, 400);
+    }, 300);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="relative w-72 h-72 flex items-center justify-center">
-      {/* Canvas starfield + rings */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ width: 320, height: 320 }}
-      />
+    <div className="relative flex flex-col items-center">
+      {/* Canvas cosmic background */}
+      <div className="relative w-80 h-80">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ width: 360, height: 400 }}
+        />
 
-      {/* Orbiting brand labels */}
-      {hefeiBrands.slice(0, 12).map((brand, i) => {
-        const total = 12;
-        const angle = (i / total) * Math.PI * 2;
-        const orbitRadius = 90 + (i % 3) * 25;
-        const isHighlighted = brand === matchedBrand;
-        
-        return (
-          <div
-            key={brand}
-            className="absolute transition-all duration-300"
-            style={{
-              left: `calc(50% + ${Math.cos(angle) * orbitRadius}px)`,
-              top: `calc(50% + ${Math.sin(angle) * orbitRadius}px)`,
-              transform: "translate(-50%, -50%)",
-              animation: `cosmic-orbit-${i % 4} ${18 + i * 2}s linear infinite`,
-            }}
-          >
-            <span
-              className={`text-[10px] whitespace-nowrap px-1.5 py-0.5 rounded-full transition-all duration-300 ${
-                isHighlighted
-                  ? "bg-primary/30 text-primary font-semibold scale-125 shadow-[0_0_12px_rgba(139,92,246,0.5)]"
-                  : "text-white/30 scale-100"
-              }`}
+        {/* Orbiting brand labels - outer ring */}
+        {hefeiBrands.slice(0, 8).map((brand, i) => {
+          const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
+          const radius = 125;
+          const isActive = brand === matchedBrand;
+          const wasMatched = matchedBrands.has(brand);
+          
+          return (
+            <div
+              key={brand}
+              className="absolute pointer-events-none"
+              style={{
+                left: `calc(50% + ${Math.cos(angle) * radius}px)`,
+                top: `calc(50% + ${Math.sin(angle) * radius}px)`,
+                transform: "translate(-50%, -50%)",
+              }}
             >
-              {brand}
-            </span>
-          </div>
-        );
-      })}
+              <span
+                className={`text-[10px] whitespace-nowrap px-2 py-0.5 rounded-full border transition-all duration-500 ${
+                  isActive
+                    ? "bg-primary/40 text-white border-primary/60 font-bold scale-125"
+                    : wasMatched
+                      ? "bg-primary/10 text-primary/70 border-primary/20"
+                      : "text-white/20 border-white/5 bg-white/5"
+                }`}
+                style={isActive ? { boxShadow: "0 0 16px rgba(139,92,246,0.6), 0 0 32px rgba(139,92,246,0.2)" } : {}}
+              >
+                {brand}
+              </span>
+            </div>
+          );
+        })}
 
-      {/* Inject orbit keyframes */}
-      <style>{`
-        @keyframes cosmic-orbit-0 {
-          from { transform: translate(-50%, -50%) rotate(0deg) translateX(3px) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg) translateX(3px) rotate(-360deg); }
-        }
-        @keyframes cosmic-orbit-1 {
-          from { transform: translate(-50%, -50%) rotate(0deg) translateX(-2px) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg) translateX(-2px) rotate(360deg); }
-        }
-        @keyframes cosmic-orbit-2 {
-          from { transform: translate(-50%, -50%) rotate(0deg) translateY(3px) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg) translateY(3px) rotate(-360deg); }
-        }
-        @keyframes cosmic-orbit-3 {
-          from { transform: translate(-50%, -50%) rotate(0deg) translateY(-2px) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg) translateY(-2px) rotate(360deg); }
-        }
-      `}</style>
+        {/* Inner ring brands */}
+        {hefeiBrands.slice(8, 14).map((brand, i) => {
+          const angle = (i / 6) * Math.PI * 2 - Math.PI / 4;
+          const radius = 75;
+          const isActive = brand === matchedBrand;
+          const wasMatched = matchedBrands.has(brand);
+          
+          return (
+            <div
+              key={brand}
+              className="absolute pointer-events-none"
+              style={{
+                left: `calc(50% + ${Math.cos(angle) * radius}px)`,
+                top: `calc(50% + ${Math.sin(angle) * radius}px)`,
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <span
+                className={`text-[9px] whitespace-nowrap px-1.5 py-0.5 rounded-full transition-all duration-500 ${
+                  isActive
+                    ? "bg-primary/40 text-white font-bold scale-125"
+                    : wasMatched
+                      ? "text-primary/50"
+                      : "text-white/15"
+                }`}
+                style={isActive ? { boxShadow: "0 0 12px rgba(139,92,246,0.5)" } : {}}
+              >
+                {brand}
+              </span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -391,10 +524,10 @@ const OrderTracking = () => {
 
   const currentState: OrderState = order?.status as OrderState || demoState;
 
-  // Auto-transition from pending to accepted after 0.8s (demo mode only)
+  // Auto-transition from pending to accepted after 2.5s (demo mode only)
   useEffect(() => {
     if (currentState === "pending" && !orderId) {
-      const timer = setTimeout(() => setDemoState("accepted"), 800);
+      const timer = setTimeout(() => setDemoState("accepted"), 2500);
       return () => clearTimeout(timer);
     }
   }, [currentState, orderId]);
