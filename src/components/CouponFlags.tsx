@@ -1,4 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 export interface Coupon {
   id: string;
@@ -7,33 +8,39 @@ export interface Coupon {
   applicableProducts?: string[];
 }
 
+// Map coupon type to short label
+const couponLabel: Record<Coupon["type"], { zh: string; en: string }> = {
+  universal: { zh: "通用", en: "ALL" },
+  americano: { zh: "美式", en: "AMR" },
+  latte: { zh: "拿铁", en: "LAT" },
+  cappuccino: { zh: "卡布", en: "CAP" },
+};
+
 interface CouponFlagsProps {
   coupons: Coupon[];
 }
 
 export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   if (coupons.length === 0) return null;
 
-  // 按面额排序，取最贵的三张券
   const topCoupons = [...coupons]
     .sort((a, b) => b.value - a.value)
     .slice(0, 3);
 
-  // 旗帜配置：KAKA, GO, COFFEE
-  const flagConfig = [
-    { label: "KAKA", size: "small" },
-    { label: "GO", size: "large" },
-    { label: "COFFEE", size: "small" },
-  ];
+  const sizes = ["small", "large", "small"] as const;
 
   return (
-    <div className="flex items-end gap-0.5">
+    <button
+      onClick={() => navigate("/kaka-beans")}
+      className="flex items-end gap-0.5 active:scale-95 transition-transform cursor-pointer"
+    >
       {topCoupons.map((coupon, index) => {
-        const config = flagConfig[index];
-        const isLarge = config.size === "large";
-        
+        const isLarge = sizes[index] === "large";
+        const label = couponLabel[coupon.type] || couponLabel.universal;
+
         return (
           <div
             key={coupon.id}
@@ -43,7 +50,6 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
               animationDelay: `${index * 0.15}s`,
             }}
           >
-            {/* 旗帜本体 */}
             <div
               className={`relative bg-gradient-to-br from-primary via-purple-500 to-violet-600 shadow-lg overflow-hidden ${
                 isLarge ? "w-10 h-14" : "w-8 h-11"
@@ -53,19 +59,16 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                 transform: `skewX(-3deg) rotate(${index === 0 ? -2 : index === 2 ? 2 : 0}deg)`,
               }}
             >
-              {/* 旗帜内容 */}
               <div className="absolute inset-0 flex flex-col items-center justify-center px-1">
-                {/* 品牌文字 */}
-                <span 
+                <span
                   className={`text-white/90 font-bold tracking-tight ${
                     isLarge ? "text-[8px]" : "text-[6px]"
                   }`}
                   style={{ transform: "skewX(3deg)" }}
                 >
-                  {config.label}
+                  {t(label.zh, label.en)}
                 </span>
-                {/* 券面额 */}
-                <span 
+                <span
                   className={`text-white font-black mt-0.5 ${
                     isLarge ? "text-sm" : "text-xs"
                   }`}
@@ -74,13 +77,11 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                   ¥{coupon.value}
                 </span>
               </div>
-              
-              {/* 高光效果 */}
+
               <div className="absolute top-0 left-0 right-0 h-1 bg-white/30" />
               <div className="absolute top-0 right-0 w-1.5 h-full bg-white/10" />
-              
-              {/* 飘扬波纹 */}
-              <div 
+
+              <div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                 style={{
                   animation: "shimmer 2s ease-in-out infinite",
@@ -88,9 +89,8 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                 }}
               />
             </div>
-            
-            {/* 旗杆 */}
-            <div 
+
+            <div
               className={`w-0.5 bg-gradient-to-b from-white/50 to-white/20 rounded-b-full ${
                 isLarge ? "h-3" : "h-2"
               }`}
@@ -98,8 +98,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           </div>
         );
       })}
-      
-      {/* 券数量标识 */}
+
       <div className="ml-2 flex flex-col items-start">
         <span className="text-[10px] font-bold text-primary animate-pulse">
           GO!
@@ -108,32 +107,18 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
           {t("自动用券", "Auto coupon")}
         </span>
       </div>
-      
-      {/* 飘扬动画样式 */}
+
       <style>{`
         @keyframes flagWave {
-          0%, 100% {
-            transform: rotate(0deg) translateY(0);
-          }
-          25% {
-            transform: rotate(1deg) translateY(-1px);
-          }
-          75% {
-            transform: rotate(-1deg) translateY(1px);
-          }
+          0%, 100% { transform: rotate(0deg) translateY(0); }
+          25% { transform: rotate(1deg) translateY(-1px); }
+          75% { transform: rotate(-1deg) translateY(1px); }
         }
-        
         @keyframes shimmer {
-          0%, 100% {
-            opacity: 0;
-            transform: translateX(-100%);
-          }
-          50% {
-            opacity: 1;
-            transform: translateX(100%);
-          }
+          0%, 100% { opacity: 0; transform: translateX(-100%); }
+          50% { opacity: 1; transform: translateX(100%); }
         }
       `}</style>
-    </div>
+    </button>
   );
 };
