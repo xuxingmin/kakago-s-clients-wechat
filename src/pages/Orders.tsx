@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { BrandBanner } from "@/components/BrandBanner";
+import { KakaBeanCelebration } from "@/components/KakaBeanCelebration";
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -119,6 +120,8 @@ const Orders = () => {
   const [orders, setOrders] = useState<Order[]>(demoOrders);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
   const [selectedOrderForRating, setSelectedOrderForRating] = useState<Order | null>(null);
+  const [celebrationOpen, setCelebrationOpen] = useState(false);
+  const [celebrationBeans, setCelebrationBeans] = useState(0);
 
   const filteredOrders = orders.filter((order) =>
     activeTab === "active"
@@ -195,13 +198,8 @@ const Orders = () => {
       )
     );
     const beansEarned = Math.floor(Math.random() * 10) + 1;
-    toast({
-      title: t("评价已提交", "Review Submitted"),
-      description: t(
-        `感谢您的${rating}星评价！随机获得 ${beansEarned} KAKA豆`,
-        `Thanks for your ${rating}-star review! +${beansEarned} KAKA beans earned`
-      ),
-    });
+    setCelebrationBeans(beansEarned);
+    setCelebrationOpen(true);
   };
 
   const activeCount = orders.filter((o) => o.status !== "completed").length;
@@ -306,6 +304,11 @@ const Orders = () => {
           selectedOrderForRating?.cafeNameEn || selectedOrderForRating?.cafeName || ""
         )}
         onSubmit={handleRatingSubmit}
+      />
+      <KakaBeanCelebration
+        isOpen={celebrationOpen}
+        beans={celebrationBeans}
+        onClose={() => setCelebrationOpen(false)}
       />
     </div>
   );
