@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, FileText, Eye, Download, X, QrCode } from "lucide-react";
+import { ChevronLeft, FileText, Eye, Download, X, ImageIcon } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
 import { Header } from "@/components/Header";
@@ -16,6 +16,7 @@ interface InvoiceRecord {
   status: "pending" | "issued";
   issuedAt?: string;
   items: { name: string; qty: number; unitPrice: number }[];
+  invoiceImageUrl?: string;
 }
 
 const demoInvoices: InvoiceRecord[] = [
@@ -54,6 +55,7 @@ const InvoiceManagement = () => {
 
   const handleSaveToAlbum = () => {
     toast({ title: t("已保存到手机相册", "Saved to Photo Album") });
+    setViewingInvoice(null);
   };
 
   return (
@@ -199,85 +201,101 @@ interface InvoiceDetailOverlayProps {
 }
 
 const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOverlayProps) => (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose}>
+  <div className="fixed inset-0 z-[100] flex flex-col" onClick={onClose}>
     <div className="absolute inset-0 bg-black/85 backdrop-blur-sm animate-fade-in" />
 
+    {/* Close button top-right */}
+    <div className="relative z-10 flex justify-end px-4 pt-4 safe-top flex-shrink-0">
+      <button
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+      >
+        <X className="w-4 h-4 text-white/70" />
+      </button>
+    </div>
+
+    {/* Scrollable invoice content */}
     <div
-      className="relative z-10 w-[340px] animate-fade-in"
+      className="relative z-10 flex-1 overflow-y-auto flex flex-col items-center px-6 pt-2 pb-4"
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Save button top-right */}
-      <div className="flex justify-end mb-3 gap-2">
-        <button
-          onClick={onSave}
-          className="flex items-center gap-1.5 text-[11px] font-medium text-white bg-primary/80 hover:bg-primary px-3 py-1.5 rounded-lg transition-colors"
-        >
-          <Download className="w-3.5 h-3.5" />
-          {t("保存到相册", "Save to Album")}
-        </button>
-        <button
-          onClick={onClose}
-          className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-        >
-          <X className="w-3.5 h-3.5 text-white/70" />
-        </button>
-      </div>
+      <div className="w-full max-w-[340px]">
+        {/* Invoice "paper" */}
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
+          {/* Header band */}
+          <div className="bg-gradient-to-r from-primary to-primary/80 px-5 py-4 text-center">
+            <p className="text-[10px] text-white/70 mb-1">{t("电子发票", "Electronic Invoice")}</p>
+            <p className="text-xl font-bold text-white">¥{invoice.amount.toFixed(2)}</p>
+          </div>
 
-      {/* Invoice "paper" */}
-      <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
-        {/* Header band */}
-        <div className="bg-gradient-to-r from-primary to-primary/80 px-5 py-4 text-center">
-          <p className="text-[10px] text-white/70 mb-1">{t("电子发票", "Electronic Invoice")}</p>
-          <p className="text-xl font-bold text-white">¥{invoice.amount.toFixed(2)}</p>
-        </div>
-
-        {/* Invoice body */}
-        <div className="px-5 py-4 space-y-3">
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-400">{t("发票抬头", "Title")}</span>
-            <span className="text-gray-800 font-medium text-right max-w-[180px] truncate">{invoice.title}</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-400">{t("发票类型", "Type")}</span>
-            <span className="text-gray-800">
-              {invoice.type === "corporate" ? t("企业", "Corporate") : t("个人", "Personal")}
-            </span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-400">{t("订单编号", "Order No")}</span>
-            <span className="text-gray-600 font-mono text-[11px]">{invoice.orderNumber}</span>
-          </div>
-          {invoice.issuedAt && (
+          {/* Invoice body */}
+          <div className="px-5 py-4 space-y-3">
             <div className="flex justify-between text-xs">
-              <span className="text-gray-400">{t("开票日期", "Date")}</span>
-              <span className="text-gray-800">{invoice.issuedAt}</span>
+              <span className="text-gray-400">{t("发票抬头", "Title")}</span>
+              <span className="text-gray-800 font-medium text-right max-w-[180px] truncate">{invoice.title}</span>
             </div>
-          )}
-
-          <div className="border-t border-gray-100 pt-3 space-y-1.5">
-            <p className="text-[10px] text-gray-400 mb-1">{t("商品明细", "Items")}</p>
-            {invoice.items.map((item, i) => (
-              <div key={i} className="flex justify-between text-xs text-gray-600">
-                <span>{item.name} × {item.qty}</span>
-                <span>¥{(item.unitPrice * item.qty).toFixed(2)}</span>
+            <div className="flex justify-between text-xs">
+              <span className="text-gray-400">{t("发票类型", "Type")}</span>
+              <span className="text-gray-800">
+                {invoice.type === "corporate" ? t("企业", "Corporate") : t("个人", "Personal")}
+              </span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-gray-400">{t("订单编号", "Order No")}</span>
+              <span className="text-gray-600 font-mono text-[11px]">{invoice.orderNumber}</span>
+            </div>
+            {invoice.issuedAt && (
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-400">{t("开票日期", "Date")}</span>
+                <span className="text-gray-800">{invoice.issuedAt}</span>
               </div>
-            ))}
-          </div>
+            )}
 
-          {/* QR Code area */}
-          <div className="flex flex-col items-center pt-3 border-t border-gray-100">
-            <div className="w-24 h-24 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center mb-2">
-              <QrCode className="w-16 h-16 text-gray-300" />
+            <div className="border-t border-gray-100 pt-3 space-y-1.5">
+              <p className="text-[10px] text-gray-400 mb-1">{t("商品明细", "Items")}</p>
+              {invoice.items.map((item, i) => (
+                <div key={i} className="flex justify-between text-xs text-gray-600">
+                  <span>{item.name} × {item.qty}</span>
+                  <span>¥{(item.unitPrice * item.qty).toFixed(2)}</span>
+                </div>
+              ))}
             </div>
-            <p className="text-[9px] text-gray-400">{t("扫码验证发票真伪", "Scan to verify invoice")}</p>
-          </div>
-        </div>
 
-        {/* Footer */}
-        <div className="bg-gray-50 px-5 py-3 text-center">
-          <p className="text-[9px] text-gray-400">KAKAGO · {t("电子发票", "Electronic Invoice")}</p>
+            {/* Invoice image (merchant uploaded) */}
+            <div className="pt-3 border-t border-gray-100">
+              <p className="text-[10px] text-gray-400 mb-2">{t("发票照片", "Invoice Photo")}</p>
+              {invoice.invoiceImageUrl ? (
+                <img
+                  src={invoice.invoiceImageUrl}
+                  alt="Invoice"
+                  className="w-full rounded-lg border border-gray-100"
+                />
+              ) : (
+                <div className="w-full aspect-[4/3] bg-gray-50 rounded-xl border border-gray-100 flex flex-col items-center justify-center">
+                  <ImageIcon className="w-10 h-10 text-gray-200 mb-1" />
+                  <p className="text-[9px] text-gray-300">{t("商户尚未上传发票照片", "Merchant has not uploaded invoice photo")}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="bg-gray-50 px-5 py-3 text-center">
+            <p className="text-[9px] text-gray-400">KAKAGO · {t("电子发票", "Electronic Invoice")}</p>
+          </div>
         </div>
       </div>
+    </div>
+
+    {/* Save button at bottom */}
+    <div className="relative z-10 flex-shrink-0 px-6 pb-6 safe-bottom" onClick={(e) => e.stopPropagation()}>
+      <button
+        onClick={onSave}
+        className="w-full max-w-[340px] mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/80 active:scale-[0.98] transition-all"
+      >
+        <Download className="w-4 h-4" />
+        {t("保存到手机相册", "Save to Photo Album")}
+      </button>
     </div>
   </div>
 );
