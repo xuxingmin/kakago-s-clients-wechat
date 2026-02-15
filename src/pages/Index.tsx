@@ -75,7 +75,7 @@ const Index = () => {
         
       </div>
 
-      <div className="flex-1 overflow-hidden flex flex-col pb-16">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col pb-16 scrollbar-hide">
         <section className="px-4 py-0.5">
           {/* ── Standard Series Header ── */}
           <div className="mb-0.5">

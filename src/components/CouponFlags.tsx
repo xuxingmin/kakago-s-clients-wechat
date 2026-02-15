@@ -35,7 +35,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
   return (
     <button
       onClick={() => navigate("/wallet")}
-      className="flex items-end gap-0.5 active:scale-95 transition-transform cursor-pointer"
+      className="flex items-end gap-0.5 active:scale-95 transition-transform cursor-pointer shrink-0"
     >
       {topCoupons.map((coupon, index) => {
         const isLarge = sizes[index] === "large";
