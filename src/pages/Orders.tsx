@@ -217,24 +217,25 @@ const Orders = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <div className="px-4 pt-2 pb-3 max-w-md mx-auto bg-background">
+        <div className="fog-divider mx-4" />
+         <div className="px-4 pt-1.5 pb-2 max-w-md mx-auto bg-background">
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab("active")}
-              className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border ${
+              className={`flex-1 py-1.5 text-[10px] font-semibold tracking-wide rounded-lg transition-all duration-200 border ${
                 activeTab === "active"
                   ? "bg-primary/15 border-primary/30 text-primary"
-                  : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:text-white/60"
+                  : "bg-white/[0.03] border-white/[0.06] text-muted-foreground hover:text-white/60"
               }`}
             >
               {t("当前订单", "Current")} ({activeCount})
             </button>
             <button
               onClick={() => setActiveTab("completed")}
-              className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border ${
+              className={`flex-1 py-1.5 text-[10px] font-semibold tracking-wide rounded-lg transition-all duration-200 border ${
                 activeTab === "completed"
                   ? "bg-primary/15 border-primary/30 text-primary"
-                  : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:text-white/60"
+                  : "bg-white/[0.03] border-white/[0.06] text-muted-foreground hover:text-white/60"
               }`}
             >
               {t("历史订单", "History")} ({completedCount})
