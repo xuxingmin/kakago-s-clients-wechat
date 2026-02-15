@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { ShoppingCart, Minus, Plus, X, Trash2, Coffee, Coins, MapPin, ChevronRight, ChevronLeft, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, X, Trash2, Coffee, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 interface MiniCartBarProps {
   estimatedTotal: number;
@@ -11,55 +10,27 @@ interface MiniCartBarProps {
   deliveryFee?: number;
 }
 
-const defaultAddress = {
-  name: "张三",
-  phone: "138****8888",
-  address: "朝阳区建国路88号SOHO现代城A座",
-};
-
-export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 2 }: MiniCartBarProps) => {
+export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3 }: MiniCartBarProps) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { items, totalItems, totalPrice, removeItem, updateQuantity, clearCart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [checkoutStep, setCheckoutStep] = useState<"cart" | "payment">("cart");
 
   useEffect(() => {
     if (totalItems === 0) {
       setIsCartOpen(false);
-      setCheckoutStep("cart");
     }
   }, [totalItems]);
 
   if (totalItems === 0) return null;
 
   const handleCheckout = () => {
-    setCheckoutStep("payment");
-  };
-
-  const handlePayment = async (method: string) => {
-    setIsProcessing(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    const success = Math.random() > 0.1;
-    
-    if (success) {
-      toast.success(t("支付成功", "Payment successful"));
-      clearCart();
-      setIsCartOpen(false);
-      setCheckoutStep("cart");
-      setIsProcessing(false);
-      navigate("/order-tracking");
-    } else {
-      toast.error(t("支付失败，请重试", "Payment failed, please retry"));
-      setIsProcessing(false);
-    }
+    setIsCartOpen(false);
+    navigate("/checkout");
   };
 
   const closeDrawer = () => {
     setIsCartOpen(false);
-    setCheckoutStep("cart");
   };
 
   return (
@@ -70,7 +41,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-violet-600/5 pointer-events-none" />
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
           
-          <button onClick={() => { setIsCartOpen(true); setCheckoutStep("cart"); }} className="flex items-center gap-3 group relative z-10">
+          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-3 group relative z-10">
             <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/10 flex items-center justify-center group-hover:from-primary/30 group-hover:to-violet-600/20 transition-all duration-300 border border-primary/20">
               <ShoppingCart className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
               <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gradient-to-br from-primary to-violet-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(127,0,255,0.5)] animate-pulse">
@@ -84,7 +55,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
           </button>
 
           <button
-            onClick={() => { setIsCartOpen(true); setCheckoutStep("payment"); }}
+            onClick={handleCheckout}
             className="relative h-11 px-6 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-xl flex items-center gap-2 text-white font-bold text-sm shadow-[0_0_25px_rgba(127,0,255,0.4)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_35px_rgba(127,0,255,0.6)] active:scale-[0.97] overflow-hidden z-10"
           >
             <span className="absolute inset-0 bg-gradient-to-t from-white/0 to-white/20 pointer-events-none" />
@@ -105,7 +76,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
                 <div className="w-8 h-1 bg-white/20 rounded-full" />
               </div>
 
-              {/* Header: "已选购商品 (X件)" + 清空购物车 */}
+              {/* Header */}
               <div className="flex items-center justify-between px-4 pb-2 border-b border-white/5">
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
@@ -168,7 +139,7 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
                 })}
               </div>
 
-              {/* ★ Sticky Bottom Bar - Luckin style: price left + 去结算 button right */}
+              {/* Sticky Bottom - Navigate to checkout */}
               <div className="px-4 py-3 pb-20 border-t border-white/10 bg-black/80">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -197,80 +168,6 @@ export const MiniCartBar = ({ estimatedTotal, couponDiscount = 3, deliveryFee = 
                     {t("去结算", "Checkout")}
                   </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Payment Confirmation Drawer */}
-      {checkoutStep === "payment" && (
-        <>
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]" onClick={() => !isProcessing && setCheckoutStep("cart")} />
-          <div className="fixed bottom-0 left-0 right-0 z-[60] animate-in slide-in-from-bottom duration-200">
-            <div className="bg-[#1a1a1d] rounded-t-2xl border-t border-white/10 px-4 py-4 pb-8">
-              <div className="flex justify-center mb-3">
-                <div className="w-8 h-1 bg-white/20 rounded-full" />
-              </div>
-
-              <div className="flex items-center gap-2 mb-3">
-                <button onClick={() => setCheckoutStep("cart")} className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-white/60">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <h3 className="text-white font-medium">{t("确认订单", "Confirm Order")}</h3>
-              </div>
-              
-              {/* Delivery address */}
-              <button className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 mb-3 text-left">
-                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-white text-sm">
-                    <span className="font-medium">{defaultAddress.name}</span>
-                    <span className="text-white/50">{defaultAddress.phone}</span>
-                  </div>
-                  <p className="text-[11px] text-white/40 truncate mt-0.5">{defaultAddress.address}</p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
-              </button>
-
-              {/* Price breakdown */}
-              <div className="bg-white/5 rounded-xl p-3 mb-4 space-y-1.5">
-                <div className="flex justify-between text-xs">
-                  <span className="text-white/50">{t("商品金额", "Subtotal")}</span>
-                  <span className="text-white">¥{totalPrice}</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-white/50">{t("优惠券", "Coupon")}</span>
-                  <span className="text-green-400">-¥{couponDiscount}</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-white/50">{t("配送费", "Delivery")}</span>
-                  <span className="text-white">¥{deliveryFee}</span>
-                </div>
-                <div className="flex justify-between pt-1.5 border-t border-white/10">
-                  <span className="text-white font-medium text-sm">{t("实付", "Total")}</span>
-                  <span className="text-primary font-bold text-lg">¥{estimatedTotal}</span>
-                </div>
-              </div>
-              
-              {/* Payment buttons */}
-              <div className="flex gap-3">
-                <button
-                  onClick={() => handlePayment("KAKA豆")}
-                  disabled={isProcessing}
-                  className="flex-1 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center gap-2 text-primary font-semibold text-sm hover:bg-primary/20 transition-colors active:scale-95 disabled:opacity-50"
-                >
-                  {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Coins className="w-4 h-4" />}
-                  {t("KAKA豆支付", "Beans")}
-                </button>
-                <button
-                  onClick={() => handlePayment("微信支付")}
-                  disabled={isProcessing}
-                  className="flex-1 h-12 rounded-xl bg-[#07C160]/10 border border-[#07C160]/30 flex items-center justify-center gap-2 text-[#07C160] font-semibold text-sm hover:bg-[#07C160]/20 transition-colors active:scale-95 disabled:opacity-50"
-                >
-                  {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="text-base">💬</span>}
-                  {t("微信支付", "WeChat")}
-                </button>
               </div>
             </div>
           </div>

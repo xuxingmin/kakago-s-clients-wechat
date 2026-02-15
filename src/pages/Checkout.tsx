@@ -24,14 +24,20 @@ const BeansIcon = () => (
 // Mock product specs data
 const getProductSpecs = (nameZh: string) => {
   const specsMap: Record<string, { origin: string; roast: string; process: string; flavor: string; caffeine: string }> = {
-    "经典美式": { origin: "埃塞俄比亚 耶加雪菲", roast: "中度烘焙", process: "水洗处理", flavor: "柑橘 · 花香 · 明亮酸质", caffeine: "~150mg" },
-    "拿铁": { origin: "哥伦比亚 慧兰", roast: "中深烘焙", process: "水洗处理", flavor: "焦糖 · 坚果 · 巧克力", caffeine: "~120mg" },
+    "热美式": { origin: "埃塞俄比亚 耶加雪菲", roast: "中度烘焙", process: "水洗处理", flavor: "柑橘 · 花香 · 明亮酸质", caffeine: "~150mg" },
+    "冰美式": { origin: "埃塞俄比亚 耶加雪菲", roast: "中度烘焙", process: "水洗处理", flavor: "酸质明亮 · 清脆鲜爽", caffeine: "~150mg" },
+    "热拿铁": { origin: "哥伦比亚 慧兰", roast: "中深烘焙", process: "水洗处理", flavor: "焦糖 · 坚果 · 巧克力", caffeine: "~120mg" },
+    "冰拿铁": { origin: "哥伦比亚 慧兰", roast: "中深烘焙", process: "水洗处理", flavor: "坚果醇厚 · 清晰透亮", caffeine: "~120mg" },
     "卡布奇诺": { origin: "巴西 喜拉多", roast: "中度烘焙", process: "日晒处理", flavor: "坚果 · 可可 · 奶油感", caffeine: "~120mg" },
     "澳白": { origin: "危地马拉 安提瓜", roast: "中深烘焙", process: "水洗处理", flavor: "太妃糖 · 烟草 · 饱满", caffeine: "~130mg" },
     "椰子拿铁": { origin: "印尼 曼特宁", roast: "深度烘焙", process: "湿刨处理", flavor: "椰香 · 黑巧 · 香料", caffeine: "~120mg" },
     "脏脏拿铁": { origin: "巴西+哥伦比亚 拼配", roast: "深度烘焙", process: "日晒拼配", flavor: "浓郁巧克力 · 烟熏 · 厚重", caffeine: "~140mg" },
     "抹茶拿铁": { origin: "日本宇治 一番摘", roast: "—", process: "石磨研磨", flavor: "海苔 · 鲜甜 · 奶香", caffeine: "~70mg" },
     "玫瑰拿铁": { origin: "云南 保山", roast: "浅中烘焙", process: "蜜处理", flavor: "玫瑰 · 蜂蜜 · 柔和", caffeine: "~100mg" },
+    "圣木拿铁": { origin: "秘鲁 有机认证", roast: "浅中烘焙", process: "真空慢煮", flavor: "圣木 · 松木 · 烟熏香草", caffeine: "~120mg" },
+    "米曲鲜咖": { origin: "云南 普洱", roast: "中度烘焙", process: "恒温发酵", flavor: "第五味觉 · 米味麴麦芽", caffeine: "~130mg" },
+    "岩盐酵咖": { origin: "肯尼亚 AA", roast: "中度烘焙", process: "乳酸发酵", flavor: "发酵反拨 · 海盐芝士", caffeine: "~130mg" },
+    "玻璃拿铁": { origin: "哥斯达黎加", roast: "浅度烘焙", process: "奶洗澄清", flavor: "丝滑橙花 · 玻璃澄清", caffeine: "~110mg" },
   };
   return specsMap[nameZh] || { origin: "精选产区", roast: "中度烘焙", process: "精细处理", flavor: "均衡 · 顺滑", caffeine: "~120mg" };
 };
