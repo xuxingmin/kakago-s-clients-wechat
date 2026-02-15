@@ -72,6 +72,10 @@ const Payment = () => {
     if (isSuccess) {
       setPaymentState("success");
       clearCart();
+      // Auto-redirect to order tracking after 2 seconds
+      setTimeout(() => {
+        navigate("/order-tracking?status=preparing", { replace: true });
+      }, 2000);
     } else {
       setPaymentState("failed");
     }
