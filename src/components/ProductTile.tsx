@@ -72,7 +72,7 @@ export const ProductTile = ({
             <h3 className={`font-semibold text-white leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
               {t(product.nameZh, product.nameEn)}
             </h3>
-            <span className="text-white font-bold text-base shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+            <span className="text-white font-bold text-sm shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
               ¥{estimatedPrice}
             </span>
           </div>
