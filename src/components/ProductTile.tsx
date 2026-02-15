@@ -53,8 +53,8 @@ export const ProductTile = ({
   return (
     <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden ${
       product.isCreative
-        ? "py-1.5 px-2 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
-        : "py-1 px-2"
+        ? "py-2 px-2.5 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
+        : "py-1.5 px-2.5"
     }`}>
       {/* Lab tag for creative */}
       {labIndex !== undefined && (
@@ -68,8 +68,8 @@ export const ProductTile = ({
           <Icon className={`w-3.5 h-3.5 ${product.iconColor}`} strokeWidth={1.5} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-1">
-            <h3 className={`font-semibold text-white leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
+          <div className="flex items-baseline justify-between gap-1">
+            <h3 className={`font-semibold text-white leading-tight truncate ${isEn ? "text-[11px]" : "text-sm"}`}>
               {t(product.nameZh, product.nameEn)}
             </h3>
             <span className="text-white font-bold text-sm shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
@@ -77,12 +77,12 @@ export const ProductTile = ({
             </span>
           </div>
           {product.tagZh && (
-            <p className={`text-violet-300/40 mt-0.5 leading-snug break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-violet-300/40 mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className={`text-purple-300/45 mt-0.5 leading-snug break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-purple-300/45 mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
