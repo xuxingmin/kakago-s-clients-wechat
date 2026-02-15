@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Home, ClipboardList, User } from "lucide-react";
+import { Hexagon, Ticket, IdCard } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -8,15 +8,15 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     const { t } = useLanguage();
     
     const navItems = [
-      { icon: Home, labelZh: "首页", labelEn: "Home", path: "/" },
-      { icon: ClipboardList, labelZh: "订单", labelEn: "Orders", path: "/orders" },
-      { icon: User, labelZh: "我的", labelEn: "Profile", path: "/profile" },
+      { icon: Hexagon, labelZh: "基地", labelEn: "Base", path: "/" },
+      { icon: Ticket, labelZh: "进度", labelEn: "Status", path: "/orders" },
+      { icon: IdCard, labelZh: "档案", labelEn: "ID", path: "/profile" },
     ];
 
     return (
       <nav
         ref={ref}
-        className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-xl border-t border-white/5 safe-bottom z-50"
+        className="fixed bottom-0 left-0 right-0 bg-[#000000] border-t border-[#222222] safe-bottom z-50"
         {...props}
       >
         <div className="flex justify-around items-center h-16 max-w-md mx-auto">
@@ -25,25 +25,36 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center gap-1 px-8 py-2 min-h-[52px] transition-all duration-200 active:scale-95 ${
+                `flex flex-col items-center justify-center gap-1.5 px-8 py-2 min-h-[52px] transition-all duration-200 active:scale-95 ${
                   isActive
-                    ? "text-primary"
-                    : "text-white/40 hover:text-white/60"
+                    ? "text-white"
+                    : "text-[#555555] hover:text-[#777777]"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <item.icon
-                    size={22}
-                    strokeWidth={isActive ? 2 : 1.5}
-                    className={`transition-all duration-200 ${
-                      isActive ? "drop-shadow-[0_0_8px_rgba(127,0,255,0.5)]" : ""
+                  {/* Glowing dot indicator */}
+                  <div
+                    className={`w-1 h-1 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? "bg-primary shadow-[0_0_6px_2px_hsl(var(--primary)/0.6)]"
+                        : "bg-transparent"
                     }`}
                   />
-                  <span className={`text-[10px] transition-all duration-200 ${
-                    isActive ? "font-medium" : "font-normal"
-                  }`}>
+                  <item.icon
+                    size={20}
+                    strokeWidth={isActive ? 0 : 2}
+                    fill={isActive ? "currentColor" : "none"}
+                    className="transition-all duration-200"
+                  />
+                  <span
+                    className={`text-[10px] tracking-[1px] uppercase transition-all duration-200 ${
+                      isActive
+                        ? "font-semibold text-primary"
+                        : "font-normal"
+                    }`}
+                  >
                     {t(item.labelZh, item.labelEn)}
                   </span>
                 </>
