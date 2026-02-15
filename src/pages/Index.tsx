@@ -1,4 +1,4 @@
-import { Coffee, Award, Flame, Snowflake, CloudRain, Sun, TreePine, Wheat, Mountain, Droplets, CupSoda } from "lucide-react";
+import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConical, Beaker } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -26,17 +26,21 @@ const userCoupons: Coupon[] = [
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
+const ICON_COLOR = "text-white/70";
+const ICON_BG = "bg-white/[0.06]";
+const ICON_BG_LAB = "bg-white/[0.08]";
+
 const allProducts: ProductTileData[] = [
-  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Flame, iconColor: "text-orange-400", iconBg: "bg-orange-400/15", tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
-  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, iconColor: "text-sky-400", iconBg: "bg-sky-400/15", tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
-  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, iconColor: "text-amber-400", iconBg: "bg-amber-400/15", tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced" },
-  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: CloudRain, iconColor: "text-cyan-400", iconBg: "bg-cyan-400/15", tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
-  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: Sun, iconColor: "text-yellow-400", iconBg: "bg-yellow-400/15", tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
-  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: CupSoda, iconColor: "text-stone-300", iconBg: "bg-stone-300/15", tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
-  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: TreePine, iconColor: "text-amber-600", iconBg: "bg-amber-600/15", descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", isCreative: true },
-  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: "text-yellow-500", iconBg: "bg-yellow-500/15", descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", isCreative: true },
-  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: Mountain, iconColor: "text-slate-400", iconBg: "bg-slate-400/15", descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", isCreative: true },
-  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Droplets, iconColor: "text-sky-300", iconBg: "bg-sky-300/15", descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", isCreative: true },
+  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
+  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
+  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced" },
+  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
+  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
+  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
+  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", isCreative: true },
+  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", isCreative: true },
+  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: FlaskConical, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", isCreative: true },
+  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", isCreative: true },
 ];
 
 const getBestCouponDiscount = (productId: string): number => {
@@ -72,9 +76,9 @@ const Index = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <section className="px-4 py-1.5">
+        <section className="px-4 py-1">
           {/* ── Standard Series Header ── */}
-          <div className="mb-1.5">
+          <div className="mb-1">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/70">
                 {t("意式基石系列", "FOUNDATION SERIES")}
@@ -83,7 +87,7 @@ const Index = () => {
                 {t("世界级萃取标准，回归本味", "World-class extraction, pure origin")}
               </span>
             </div>
-            <div className="mt-1 h-[0.5px] bg-white/10" />
+            <div className="mt-0.5 h-[0.5px] bg-white/10" />
           </div>
 
           <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -99,16 +103,16 @@ const Index = () => {
           </div>
 
           {/* ── Creative Series Header ── */}
-          <div className="mt-3 mb-1.5">
+          <div className="mt-2 mb-1">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/80">
                 {t("先锋实验系列", "AVANT-GARDE LAB")}
               </h2>
-              <span className="text-[10px] tracking-wider text-white/50" style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
+              <span className="text-[10px] font-light tracking-wider text-white/45">
                 {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
               </span>
             </div>
-            <div className="mt-1 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
+            <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
           </div>
 
           <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
@@ -125,13 +129,13 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="px-4 pt-2 pb-4">
+        <section className="px-4 pt-1.5 pb-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-white/25">
-              <Coffee className="w-3 h-3" />
-              <Award className="w-3 h-3" />
+              <Coffee className="w-3 h-3" strokeWidth={1.5} />
+              <Award className="w-3 h-3" strokeWidth={1.5} />
               <div className="flex items-center justify-center w-3 h-3 border border-white/20 rounded-sm text-[5px] font-bold">4.0</div>
-              <Coffee className="w-3 h-3" />
+              <Coffee className="w-3 h-3" strokeWidth={1.5} />
               <span className="text-[8px]">🌱</span>
             </div>
             <div className="flex items-center gap-1.5">
