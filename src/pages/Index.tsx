@@ -75,22 +75,22 @@ const Index = () => {
         <div className="fog-divider mx-4" />
       </div>
 
-      <div className="flex-1 overflow-hidden flex flex-col pb-16">
-        <section className="px-4 py-0.5">
+      <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
+        <section className="px-3 py-1">
           {/* ── Standard Series Header ── */}
-          <div className="mb-0.5">
+          <div className="mb-1">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/75">
                 {t("意式基石系列", "FOUNDATION SERIES")}
               </h2>
-              <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
+              <span className="text-[8px] font-light tracking-[0.1em] text-white/30">
                 {t("精品萃取标准，回归本味", "Premium extraction, pure origin")}
               </span>
             </div>
             <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
             {allProducts.filter(p => !p.isCreative).map((product) => (
               <ProductTile
                 key={product.id}
@@ -103,19 +103,19 @@ const Index = () => {
           </div>
 
           {/* ── Creative Series Header ── */}
-          <div className="mt-1 mb-0.5">
+          <div className="mt-2 mb-1">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/75">
                 {t("先锋实验系列", "AVANT-GARDE LAB")}
               </h2>
-              <span className="text-[10px] font-light tracking-wider text-white/35">
+              <span className="text-[8px] font-light tracking-wider text-white/35">
                 {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
               </span>
             </div>
             <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
+          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
             {allProducts.filter(p => p.isCreative).map((product, index) => (
               <ProductTile
                 key={product.id}
@@ -127,7 +127,7 @@ const Index = () => {
               />
             ))}
           </div>
-          <div className="flex items-center justify-between gap-2 mt-0.5 px-0.5">
+          <div className="flex items-center justify-between gap-2 mt-1 px-0.5 pb-4">
             <div className="flex items-center gap-1.5 text-violet-400/25">
               <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
               <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
