@@ -223,55 +223,41 @@ const Checkout = () => {
           </div>
         </section>
 
-        {/* Product Items */}
-        {items.map((item) => {
-          const spec = productSpecs[item.id];
-          const isCreative = spec?.isCreative;
-          return (
-            <section
-              key={item.id}
-              className={`rounded-2xl overflow-hidden border ${
-                isCreative
-                  ? "border-primary/20 bg-gradient-to-br from-primary/8 via-violet-950/20 to-purple-950/10"
-                  : "border-white/8 bg-white/[0.04]"
-              }`}
-            >
-              <div className="p-3.5">
-                {/* Name + Price row */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-foreground text-sm leading-tight">
+        {/* Product Items - single card, compact rows */}
+        <section className="rounded-2xl bg-white/[0.04] border border-white/8 overflow-hidden divide-y divide-white/5">
+          {items.map((item) => {
+            const spec = productSpecs[item.id];
+            return (
+              <div key={item.id} className="px-3 py-2">
+                {/* Row 1: Name + Price + Qty */}
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-1.5 flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground text-[13px] leading-tight truncate">
                       {t(item.nameZh, item.nameEn)}
                     </h3>
-                    <p className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mt-0.5">
+                    <span className="text-[8px] text-muted-foreground/40 uppercase tracking-wider shrink-0">
                       {item.nameEn}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-end shrink-0">
-                    <span className="text-foreground font-bold text-base drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                      ¥{item.price}
                     </span>
-                    <span className="text-muted-foreground/50 text-[10px] mt-0.5">x{item.quantity}</span>
+                  </div>
+                  <div className="flex items-baseline gap-1.5 shrink-0">
+                    <span className="text-foreground font-bold text-[13px]">¥{item.price}</span>
+                    <span className="text-muted-foreground/40 text-[10px]">x{item.quantity}</span>
                   </div>
                 </div>
-
-                {/* Flavor tag */}
+                {/* Row 2: Flavor */}
                 {spec && (
-                  <p className={`text-[10px] mt-1.5 leading-snug ${
-                    isCreative ? "text-purple-300/45" : "text-violet-300/40"
-                  }`}>
+                  <p className={`text-[9px] mt-0.5 leading-snug ${spec.isCreative ? "text-purple-300/45" : "text-violet-300/35"}`}>
                     {t(spec.tagZh, spec.tagEn)}
                   </p>
                 )}
-
-                {/* Spec tags footer - matching homepage exactly */}
-                <div className="mt-2 pt-1.5 border-t border-white/5">
+                {/* Row 3: Spec tags */}
+                <div className="mt-1">
                   {renderSpecFooter(item.id)}
                 </div>
               </div>
-            </section>
-          );
-        })}
+            );
+          })}
+        </section>
 
         {/* Order Remark */}
         <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8">
