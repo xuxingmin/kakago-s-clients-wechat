@@ -91,6 +91,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     const progress = STATUS_PROGRESS[status];
     const isSearching = !isRevealed && status === "pending";
     const isCompleted = status === "completed";
+    const canCancel = status === "pending";
 
     const [refundSecondsLeft, setRefundSecondsLeft] = useState<number | null>(null);
 
@@ -202,30 +203,9 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
         {/* Bottom action bar */}
         <div className="flex items-center justify-between px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
-          {/* Left side */}
-          {isCompleted && userRating ? (
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] text-white/30">{t("已评价", "Rated")}</span>
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`w-2.5 h-2.5 ${star <= userRating ? "fill-primary text-primary" : "text-white/15"}`}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : isCompleted && !userRating ? (
-            <button onClick={onClick} className="text-[11px] font-medium text-primary hover:text-primary/80 transition-colors">
-              {t("⭐ 评价得积分", "⭐ Rate for points")}
-            </button>
-          ) : (
-            <span className="text-[10px] text-white/20" />
-          )}
-
-          {/* Right side actions */}
+          {/* Left: More + Rating */}
           <div className="flex items-center gap-1.5">
-            {/* More button with dropdown */}
+            {/* More button */}
             <div className="relative">
               <button
                 onClick={(e) => { e.stopPropagation(); setMoreOpen(!moreOpen); }}
@@ -237,11 +217,16 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               {moreOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setMoreOpen(false)} />
-                  <div className="absolute bottom-full right-0 mb-1.5 z-50 w-32 rounded-lg border border-white/[0.08] bg-[hsl(270,15%,12%)] shadow-xl overflow-hidden">
+                  <div className="absolute bottom-full left-0 mb-1.5 z-50 w-32 rounded-lg border border-white/[0.08] bg-[hsl(270,15%,12%)] shadow-xl overflow-hidden">
                     {onCancel && (
                       <button
-                        onClick={(e) => { e.stopPropagation(); setMoreOpen(false); onCancel(); }}
-                        className="w-full flex items-center gap-2 px-3 py-2.5 text-[11px] text-white/60 hover:bg-white/[0.06] hover:text-white/90 transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setMoreOpen(false); if (canCancel) onCancel(); }}
+                        disabled={!canCancel}
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-[11px] transition-colors ${
+                          canCancel
+                            ? "text-white/60 hover:bg-white/[0.06] hover:text-white/90"
+                            : "text-white/20 cursor-not-allowed"
+                        }`}
                       >
                         <Ban className="w-3.5 h-3.5" />
                         {t("取消订单", "Cancel Order")}
@@ -269,7 +254,27 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 </>
               )}
             </div>
+            {/* Rating info for completed */}
+            {isCompleted && userRating ? (
+              <div className="flex items-center gap-1">
+                <div className="flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-2.5 h-2.5 ${star <= userRating ? "fill-primary text-primary" : "text-white/15"}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : isCompleted && !userRating ? (
+              <button onClick={onClick} className="text-[11px] font-medium text-primary hover:text-primary/80 transition-colors">
+                {t("⭐ 评价得积分", "⭐ Rate for points")}
+              </button>
+            ) : null}
+          </div>
 
+          {/* Right side actions */}
+          <div className="flex items-center gap-1.5">
             {/* Contact store */}
             {onContact && (
               <button
@@ -292,7 +297,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               </button>
             )}
 
-            {/* View order (replaces old phone icon) */}
+            {/* View order */}
             <button
               onClick={(e) => { e.stopPropagation(); onClick(); }}
               className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
