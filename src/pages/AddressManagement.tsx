@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Plus, MapPin, Edit2 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -9,8 +9,10 @@ import { CheckCircle2 } from "lucide-react";
 
 const AddressManagement = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useLanguage();
   const { addresses, selectedAddress, setSelectedAddress } = useAddress();
+  const returnTo = (location.state as { from?: string })?.from || "/";
 
   const maskPhone = (phone: string) =>
     phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
@@ -53,7 +55,7 @@ const AddressManagement = () => {
                   key={address.id}
                   onClick={() => {
                     setSelectedAddress(address);
-                    navigate("/");
+                    navigate(returnTo);
                   }}
                   className={`card-md relative cursor-pointer transition-all ${
                     isSelected ? "ring-1 ring-primary/60 bg-primary/5" : "hover:bg-white/5"
