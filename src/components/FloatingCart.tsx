@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Minus, Plus, Trash2, Loader2 } from "lucide-react";
+import { X, Minus, Plus, Trash2, Loader2, ArrowLeft, MapPin, ChevronRight } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
@@ -274,111 +274,125 @@ export const FloatingCart = () => {
         </div>
       </div>
 
-      {/* Payment Method Modal - Spring animation */}
+      {/* Checkout Confirmation Modal */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-[80] transition-transform duration-400 ${
           showPaymentModal ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
       >
-        <div className="bg-card/95 backdrop-blur-xl rounded-t-[28px] max-w-md mx-auto border-t border-white/10 shadow-float">
+        <div className="bg-card/95 backdrop-blur-xl rounded-t-[28px] max-w-md mx-auto border-t border-white/10 shadow-float max-h-[85vh] flex flex-col">
           {/* Handle */}
-          <div className="flex justify-center pt-4 pb-2">
+          <div className="flex justify-center pt-3 pb-1">
             <div className="w-9 h-1 bg-white/20 rounded-full" />
           </div>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-6 pb-4 border-b border-white/10">
-            <h3 className="text-lg font-semibold text-foreground">
-              {t("选择支付方式", "Select Payment")}
-            </h3>
+          <div className="flex items-center px-5 pb-3">
             <button
               onClick={() => setShowPaymentModal(false)}
-              className="p-2 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 active:scale-95 rounded-full"
+              className="p-1.5 text-muted-foreground hover:text-foreground transition-colors rounded-full"
             >
-              <X className="w-5 h-5" />
+              <ArrowLeft className="w-5 h-5" />
             </button>
+            <h3 className="flex-1 text-center text-base font-semibold text-foreground">
+              {t("确认订单", "Confirm Order")}
+            </h3>
+            <div className="w-8" />
           </div>
 
-          {/* Payment Methods */}
-          <div className="px-6 py-4 space-y-2.5">
-            <RadioGroup
-              value={selectedPayment}
-              onValueChange={(value) => setSelectedPayment(value as typeof selectedPayment)}
-            >
-              {paymentMethods.map((method, index) => (
-                <label
-                  key={method.id}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 cursor-pointer ${
-                    selectedPayment === method.id
-                      ? "border-primary/40 bg-primary/10 shadow-purple"
-                      : "border-white/8 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/12"
-                  } ${!method.available ? "opacity-40 cursor-not-allowed" : ""}`}
-                  style={{ 
-                    transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-                    animationDelay: `${index * 0.05}s`
-                  }}
-                >
-                  <div className="flex-shrink-0">{method.icon}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-foreground">
-                        {t(method.nameZh, method.nameEn)}
-                      </span>
-                      {method.id === "beans" && !method.available && (
-                        <span className="text-xs text-destructive">
-                          {t("余额不足", "Insufficient")}
-                        </span>
-                      )}
-                    </div>
-                    {method.id === "beans" && (
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {t(
-                          `需 ${method.needed?.toLocaleString()} 豆 · 余额 ${method.balance?.toLocaleString()} 豆`,
-                          `Need ${method.needed?.toLocaleString()} · Balance ${method.balance?.toLocaleString()}`
-                        )}
-                      </p>
-                    )}
-                  </div>
-                  <RadioGroupItem
-                    value={method.id}
-                    disabled={!method.available}
-                    className="flex-shrink-0"
-                  />
-                </label>
-              ))}
-            </RadioGroup>
-          </div>
-
-          {/* Order Summary */}
-          <div className="px-6 py-3 border-t border-border">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-muted-foreground text-sm">{t("订单金额", "Total")}</span>
-              <span className="text-xl font-bold text-primary">¥{totalPrice}</span>
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto px-5 space-y-3 pb-2 scrollbar-hide">
+            {/* Delivery Address */}
+            <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/8">
+              <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-foreground text-sm">张三</span>
+                  <span className="text-muted-foreground text-sm">138****8888</span>
+                </div>
+                <p className="text-muted-foreground text-xs mt-0.5 truncate">
+                  {t("朝阳区建国路88号SOHO现代城A座", "Building A, SOHO Modern City, No.88 Jianguo Rd")}
+                </p>
+              </div>
+              <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
             </div>
-            {selectedPayment === "beans" && (
-              <p className="text-xs text-amber-500 text-right">
-                ≈ {(totalPrice * 100).toLocaleString()} KAKA豆
-              </p>
-            )}
+
+            {/* Product Details */}
+            {items.map((item) => (
+              <div key={item.id} className="p-3 rounded-2xl bg-white/[0.04] border border-white/8">
+                <div className="flex gap-3">
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-secondary flex-shrink-0">
+                    <img src={item.image} alt={item.nameZh} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-foreground text-sm truncate">{t(item.nameZh, item.nameEn)}</h4>
+                    <p className="text-muted-foreground text-xs mt-0.5">{t(item.nameEn, item.nameEn)}</p>
+                    <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                      <span className="text-[10px] px-1.5 py-0.5 bg-primary/10 text-primary rounded-full">{t("中杯 360ml", "Medium 360ml")}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 bg-secondary text-muted-foreground rounded-full">{t("冰", "Iced")}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 bg-secondary text-muted-foreground rounded-full">{t("标准糖", "Normal Sugar")}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end justify-between flex-shrink-0">
+                    <span className="text-foreground font-semibold text-sm">¥{item.price}</span>
+                    <span className="text-muted-foreground text-xs">x{item.quantity}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Price Breakdown */}
+            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/8 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">{t("商品金额", "Subtotal")}</span>
+                <span className="text-foreground">¥{totalPrice}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">{t("优惠券", "Coupon")}</span>
+                <span className="text-primary">-¥3</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">{t("配送费", "Delivery")}</span>
+                <span className="text-foreground">¥2</span>
+              </div>
+              <div className="h-px bg-border" />
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-foreground text-sm">{t("实付", "Total")}</span>
+                <span className="text-lg font-bold text-primary">¥{totalPrice - 3 + 2}</span>
+              </div>
+            </div>
           </div>
 
-          {/* Confirm Button */}
-          <div className="px-6 py-4 safe-bottom">
-            <button
-              onClick={handleConfirmPayment}
-              disabled={(selectedPayment === "beans" && !hasEnoughBeans) || isProcessing}
-              className="btn-gold w-full py-4 rounded-2xl text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  {getProcessingText()}
-                </>
-              ) : (
-                t("确认支付", "Confirm Payment")
-              )}
-            </button>
+          {/* Payment Buttons */}
+          <div className="px-5 py-3 safe-bottom">
+            {isProcessing ? (
+              <button
+                disabled
+                className="btn-gold w-full py-3.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 opacity-70"
+              >
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {getProcessingText()}
+              </button>
+            ) : (
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setSelectedPayment("beans"); handleConfirmPayment(); }}
+                  disabled={!hasEnoughBeans}
+                  className="flex-1 py-3.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <BeansIcon />
+                  {t("KAKA豆支付", "KAKA Beans")}
+                </button>
+                <button
+                  onClick={() => { setSelectedPayment("wechat"); handleConfirmPayment(); }}
+                  className="flex-1 py-3.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-[#07C160] text-white hover:bg-[#06AD56] transition-colors"
+                >
+                  <WeChatIcon />
+                  {t("微信支付", "WeChat Pay")}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
