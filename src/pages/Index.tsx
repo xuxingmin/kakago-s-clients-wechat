@@ -2,6 +2,7 @@ import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConic
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { TacticalBoosters } from "@/components/TacticalBoosters";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Coupon } from "@/components/CouponFlags";
@@ -72,6 +73,7 @@ const Index = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
+        <TacticalBoosters />
         
       </div>
 
