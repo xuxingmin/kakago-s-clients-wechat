@@ -133,7 +133,7 @@ const Orders = () => {
       setSelectedOrderForRating(order);
       setRatingModalOpen(true);
     } else if (order.status !== "completed") {
-      navigate("/order-tracking");
+      navigate(`/order-tracking?status=${order.status}`);
     }
   };
 

@@ -516,13 +516,24 @@ const OrderTracking = () => {
   
   const { order, loading } = useOrder(orderId);
   
-  const [demoState, setDemoState] = useState<OrderState>("accepted");
+  const initialStatus = searchParams.get("status");
+  const [demoState, setDemoState] = useState<OrderState>(
+    initialStatus === "pending" ? "pending" : "accepted"
+  );
   const [showRevealCard, setShowRevealCard] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [showNavigateDialog, setShowNavigateDialog] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
 
   const currentState: OrderState = order?.status as OrderState || demoState;
+
+  // Auto-transition from pending to accepted after 2.5s (demo mode only)
+  useEffect(() => {
+    if (currentState === "pending" && !orderId) {
+      const timer = setTimeout(() => setDemoState("accepted"), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [currentState, orderId]);
 
   useEffect(() => {
     if (currentState === "accepted") {
