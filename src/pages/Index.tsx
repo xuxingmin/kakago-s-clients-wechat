@@ -1,4 +1,4 @@
-import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConical, Beaker } from "lucide-react";
+import { Coffee, Award } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -26,21 +26,20 @@ const userCoupons: Coupon[] = [
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
-const ICON_COLOR = "text-white/70";
-const ICON_BG = "bg-white/[0.06]";
-const ICON_BG_LAB = "bg-white/[0.08]";
-
 const allProducts: ProductTileData[] = [
-  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish" },
-  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh" },
-  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced" },
-  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear" },
-  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor" },
-  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense" },
-  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", isCreative: true },
-  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", isCreative: true },
-  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: FlaskConical, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", isCreative: true },
-  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", isCreative: true },
+  // Core Americano — ¥12
+  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish", tagsZh: ["360ml", "热/冰", "深烘拼配"], tagsEn: ["360ml", "Hot/Iced", "Dark Blend"] },
+  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh", tagsZh: ["360ml", "热/冰", "深烘拼配"], tagsEn: ["360ml", "Hot/Iced", "Dark Blend"] },
+  // Core Milk — ¥15
+  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced", tagsZh: ["360ml", "热/冰", "深烘拼配"], tagsEn: ["360ml", "Hot/Iced", "Dark Blend"] },
+  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear", tagsZh: ["360ml", "热/冰", "深烘拼配"], tagsEn: ["360ml", "Hot/Iced", "Dark Blend"] },
+  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor", tagsZh: ["360ml", "热/冰", "深烘拼配"], tagsEn: ["360ml", "Hot/Iced", "Dark Blend"] },
+  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense", tagsZh: ["360ml", "热/冰", "深烘拼配"], tagsEn: ["360ml", "Hot/Iced", "Dark Blend"] },
+  // Creative WBC — ¥25
+  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 25, image: coffeeDirty, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", isCreative: true, tagsZh: ["360ml", "仅冷饮", "SOE 花魁豆"], tagsEn: ["360ml", "Cold Only", "SOE Guji"] },
+  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 25, image: coffeeMatcha, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", isCreative: true, tagsZh: ["360ml", "仅冷饮", "SOE 花魁豆"], tagsEn: ["360ml", "Cold Only", "SOE Guji"] },
+  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 25, image: coffeeCoconut, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", isCreative: true, tagsZh: ["360ml", "仅冷饮", "SOE 花魁豆"], tagsEn: ["360ml", "Cold Only", "SOE Guji"] },
+  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 25, image: coffeeRose, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", isCreative: true, tagsZh: ["360ml", "仅冷饮", "SOE 花魁豆"], tagsEn: ["360ml", "Cold Only", "SOE Guji"] },
 ];
 
 const getBestCouponDiscount = (productId: string): number => {
@@ -77,7 +76,7 @@ const Index = () => {
 
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <section className="px-4 py-1">
-          {/* ── Standard Series Header ── */}
+          {/* ── Foundation Series ── */}
           <div className="mb-1">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/70">
@@ -90,7 +89,7 @@ const Index = () => {
             <div className="mt-0.5 h-[0.5px] bg-white/10" />
           </div>
 
-          <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+          <div className="flex flex-col gap-1.5 stagger-fade-in">
             {allProducts.filter(p => !p.isCreative).map((product) => (
               <ProductTile
                 key={product.id}
@@ -102,7 +101,7 @@ const Index = () => {
             ))}
           </div>
 
-          {/* ── Creative Series Header ── */}
+          {/* ── Avant-Garde Lab ── */}
           <div className="mt-2 mb-1">
             <div className="flex items-baseline justify-between">
               <h2 className="text-[11px] font-bold tracking-wide text-white/80">
@@ -115,15 +114,14 @@ const Index = () => {
             <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-white/15 via-primary/20 to-white/15" />
           </div>
 
-          <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
-            {allProducts.filter(p => p.isCreative).map((product, index) => (
+          <div className="flex flex-col gap-1.5 stagger-fade-in">
+            {allProducts.filter(p => p.isCreative).map((product) => (
               <ProductTile
                 key={product.id}
                 product={product}
                 estimatedPrice={getEstimatedPrice(product.price, product.id)}
                 quantityInCart={qty(product.id)}
                 onAddToCart={(e) => add(product, e)}
-                labIndex={index + 7}
               />
             ))}
           </div>
