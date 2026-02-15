@@ -47,7 +47,7 @@ const STATUS_PROGRESS: Record<OrderStatus, number> = {
 };
 
 const getStatusConfig = (t: (zh: string, en: string) => string) => ({
-  pending: { label: t("匹配中", "Matching"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: true },
+  pending: { label: t("待接单", "Pending"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: true },
   preparing: { label: t("制作中", "Making"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   ready: { label: t("待取货", "Ready"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   delivering: { label: t("配送中", "Delivering"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
@@ -122,8 +122,8 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               <span className="text-[11px] font-mono text-white/30 block">
                 {t("订单编号", "Order No")}
               </span>
-              <span className={`text-sm font-bold font-mono tracking-wide ${isSearching ? "text-primary animate-pulse" : "text-white"}`}>
-                {isSearching ? t("匹配中 . . .", "MATCHING . . .") : orderNumber}
+              <span className={`text-sm font-bold font-mono tracking-wide ${isSearching ? "text-primary" : "text-white"}`}>
+                {orderNumber}
               </span>
             </div>
             <div className="flex flex-col items-end gap-1 flex-shrink-0">
@@ -181,8 +181,8 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 </div>
               ) : null}
               {isSearching ? (
-                <span className="text-[10px] text-primary/60 font-mono">
-                  {t("正在为您匹配最近的精品咖啡师", "Matching nearest barista")}
+                <span className="text-[10px] text-primary/60 font-mono animate-pulse">
+                  {t("正在为您匹配最近的精品咖啡馆", "Matching nearest specialty café")}
                 </span>
               ) : (
                 <span className="text-[10px] text-white/30 truncate">
