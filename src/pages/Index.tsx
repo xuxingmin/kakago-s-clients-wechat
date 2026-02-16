@@ -3,10 +3,8 @@ import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConic
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
-import { CategoryTabs } from "@/components/CategoryTabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
-import { Coupon } from "@/components/CouponFlags";
 import { MiniCartBar } from "@/components/MiniCartBar";
 import { ProductTile, ProductTileData } from "@/components/ProductTile";
 import { toast } from "sonner";
@@ -19,12 +17,6 @@ import coffeeDirty from "@/assets/coffee-dirty.jpg";
 import coffeeMatcha from "@/assets/coffee-matcha.jpg";
 import coffeeCoconut from "@/assets/coffee-coconut.jpg";
 import coffeeRose from "@/assets/coffee-rose.jpg";
-
-const userCoupons: Coupon[] = [
-  { id: "c1", type: "universal", value: 3 },
-  { id: "c2", type: "latte", value: 2, applicableProducts: ["hot-latte", "iced-latte"] },
-  { id: "c3", type: "americano", value: 2, applicableProducts: ["hot-americano", "iced-americano"] },
-];
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
@@ -51,14 +43,6 @@ const categories = [
   { id: "lab", nameZh: "先锋实验", nameEn: "Avant-Garde" },
 ];
 
-const getBestCouponDiscount = (productId: string): number => {
-  const applicable = userCoupons.filter((c) => c.type === "universal" || c.applicableProducts?.includes(productId));
-  return applicable.length === 0 ? 0 : Math.max(...applicable.map(c => c.value));
-};
-
-const getEstimatedPrice = (price: number, id: string): number =>
-  Math.max(0, price - getBestCouponDiscount(id)) + ESTIMATED_DELIVERY_FEE;
-
 const Index = () => {
   const { t } = useLanguage();
   const { items, addItem } = useCart();
@@ -73,8 +57,7 @@ const Index = () => {
   const qty = (id: string) => items.find(i => i.id === id)?.quantity || 0;
 
   const cartSubtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-  const cartDiscount = items.length === 0 ? 0 : (userCoupons.length > 0 ? Math.max(...userCoupons.map(c => c.value)) : 0);
-  const cartTotal = items.length === 0 ? 0 : Math.max(0, cartSubtotal - cartDiscount) + ESTIMATED_DELIVERY_FEE;
+  const cartTotal = items.length === 0 ? 0 : cartSubtotal + ESTIMATED_DELIVERY_FEE;
 
   const showClassic = activeCategory === "all" || activeCategory === "classic";
   const showLab = activeCategory === "all" || activeCategory === "lab";
@@ -117,7 +100,7 @@ const Index = () => {
                   <ProductTile
                     key={product.id}
                     product={product}
-                    estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                    estimatedPrice={product.price}
                     quantityInCart={qty(product.id)}
                     onAddToCart={(e) => add(product, e)}
                   />
@@ -146,7 +129,7 @@ const Index = () => {
                   <ProductTile
                     key={product.id}
                     product={product}
-                    estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                    estimatedPrice={product.price}
                     quantityInCart={qty(product.id)}
                     onAddToCart={(e) => add(product, e)}
                     labIndex={index + 7}
@@ -172,7 +155,7 @@ const Index = () => {
         </section>
       </div>
 
-      <MiniCartBar estimatedTotal={cartTotal} couponDiscount={cartDiscount} deliveryFee={ESTIMATED_DELIVERY_FEE} />
+      <MiniCartBar estimatedTotal={cartTotal} couponDiscount={0} deliveryFee={ESTIMATED_DELIVERY_FEE} />
       <BottomNav />
     </div>
   );
