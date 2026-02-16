@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type OrderState = "pending" | "accepted" | "picked_up" | "delivered" | "rating";
+type OrderState = "accepted" | "picked_up" | "delivered" | "rating";
 
 // Hefei independent coffee brands
 const hefeiBrands = [
@@ -328,10 +328,9 @@ interface StatusTimelineProps {
 
 const StatusTimeline = ({ currentStatus, onStatusClick, isInteractive, t }: StatusTimelineProps) => {
   const steps = [
-    { key: "pending" as OrderState, labelZh: "待接单", labelEn: "Pending", icon: Clock },
-    { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee },
-    { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package },
-    { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2 },
+    { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee, hintZh: "预计15分钟", hintEn: "~15 min" },
+    { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package, hintZh: "预计15分钟", hintEn: "~15 min" },
+    { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2, hintZh: "已完成", hintEn: "Done" },
   ];
 
   const statusIndex = steps.findIndex(s => s.key === currentStatus);
@@ -381,6 +380,11 @@ const StatusTimeline = ({ currentStatus, onStatusClick, isInteractive, t }: Stat
               <span className={`text-[10px] leading-tight text-center ${isActive ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                 {t(step.labelZh, step.labelEn)}
               </span>
+              {isCurrent && (
+                <span className="text-[9px] text-primary/70 font-mono mt-0.5">
+                  {t(step.hintZh, step.hintEn)}
+                </span>
+              )}
             </button>
           );
         })}
@@ -425,9 +429,7 @@ const OrderTracking = () => {
   const { order, loading } = useOrder(orderId);
 
   const initialStatus = searchParams.get("status");
-  const [demoState, setDemoState] = useState<OrderState>(
-    initialStatus === "pending" ? "pending" : "accepted"
-  );
+  const [demoState, setDemoState] = useState<OrderState>("accepted");
   const [showRevealCard, setShowRevealCard] = useState(false);
   const [tasteRating, setTasteRating] = useState(0);
   const [packagingRating, setPackagingRating] = useState(0);
@@ -439,14 +441,7 @@ const OrderTracking = () => {
   const [showContactDialog, setShowContactDialog] = useState(false);
 
   const rawStatus = order?.status || demoState;
-  const currentState: OrderState = rawStatus === "rider_assigned" ? "picked_up" : rawStatus as OrderState;
-
-  useEffect(() => {
-    if (currentState === "pending" && !orderId) {
-      const timer = setTimeout(() => setDemoState("accepted"), 2500);
-      return () => clearTimeout(timer);
-    }
-  }, [currentState, orderId]);
+  const currentState: OrderState = (rawStatus === "pending" || rawStatus === "rider_assigned") ? "accepted" : rawStatus as OrderState;
 
   useEffect(() => {
     if (currentState === "accepted") {
@@ -560,18 +555,7 @@ const OrderTracking = () => {
 
       {/* Main Content */}
       <div className="flex-1 relative overflow-hidden">
-        {/* State 1: Pending */}
-        <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 transition-all duration-500 ${currentState === "pending" ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}>
-          <CosmicScanner />
-          <h2 className="text-lg font-bold text-foreground mt-8 text-center">
-            {t("正在为您匹配您附近的精品咖啡店...", "Matching nearby specialty coffee shops...")}
-          </h2>
-          <p className="text-sm text-muted-foreground mt-2 text-center">
-            {t("请稍候，通常需要 10-30 秒", "Please wait, usually 10-30 seconds")}
-          </p>
-        </div>
-
-        {/* State 2: Accepted */}
+        {/* State 1: Accepted */}
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${currentState === "accepted" ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className={`flex-1 px-4 pb-4 space-y-2 transition-all duration-700 ease-out ${showRevealCard ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
             {/* Coffee Parameters */}
