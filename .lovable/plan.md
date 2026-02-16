@@ -1,91 +1,57 @@
 
 
-# Tactical Boosters: Coupon Section Redesign
+# WeChat 风格自动授权登录
 
-## Overview
+## 概述
+模拟微信小程序的"一键授权登录"体验。未登录时，个人页显示授权登录卡片；点击后弹出微信风格的授权弹窗，用户确认后自动完成登录。实际使用邮箱+密码认证，但 UI 完全模拟微信授权流程。
 
-Replace the current "CouponFlags" (small waving pennant flags) in the BrandBanner with a full-width "Tactical Boosters" strip -- three skewed parallelogram modules that evoke a racing HUD / military ops dashboard.
+## 用户体验流程
 
-The new component sits between the BrandBanner header and the product grid, spanning the full width of the screen.
+**未登录状态（个人页）：**
+- 头像区域显示灰色默认头像 + "点击登录"
+- 资产栏（优惠券、KAKA豆）显示为"--"
+- 点击头像区域触发登录流程
 
-## Architecture
+**登录流程：**
+1. 弹出微信风格授权弹窗（深色毛玻璃底板）
+2. 显示 KAKAGO logo + "申请获取以下权限"
+3. 列出：头像、昵称、手机号
+4. 底部两个按钮："拒绝" / "允许"（紫色）
+5. 点击"允许"后，显示加载动画 "授权中..."
+6. 自动用预设邮箱注册/登录，完成后刷新页面
 
-### New Component: `TacticalBoosters.tsx`
+**已登录状态：**
+- 显示用户昵称（从 profiles 表读取，默认生成微信风格随机名）
+- 显示真实资产数据
+- 菜单底部增加"退出登录"选项
 
-A standalone component replacing `CouponFlags`. Three modules in a tight horizontal row:
+## 技术实现
 
-| Slot | Label | Value | Footer (zh/en) | Color Scheme |
-|------|-------|-------|----------------|--------------|
-| 01 | RECRUIT | ¥9.9 | 首杯补给 / First Boost | Signal Orange (#FF4500) |
-| 02 | SQUAD | 20% OFF | 职场充能 / Squad Power | Deep Charcoal (#222) with silver text |
-| 03 | WBC ACCESS | -¥5 | 冠军立减 / Champ Cut | Metallic Silver (#E0E0E0) with black text |
+### 1. 新建组件：WeChatAuthModal
+- 路径：`src/components/WeChatAuthModal.tsx`
+- 微信授权弹窗 UI，包含 logo、权限列表、允许/拒绝按钮
+- 点击"允许"调用 `supabase.auth.signUp` 或 `supabase.auth.signInWithPassword`
+- 使用自动确认邮箱（需启用 auto-confirm）
 
-### Visual Construction
+### 2. 修改 Profile 页面
+- 引入 `useAuth()` 获取登录状态
+- 未登录：显示登录引导卡片，点击打开 WeChatAuthModal
+- 已登录：显示真实用户信息 + 退出登录按钮
+- 退出登录调用 `signOut()`
 
-- Each module uses `transform: skewX(-15deg)` on the outer container for the speed/forward motion effect
-- Inner content uses `transform: skewX(15deg)` to keep text upright
-- 1px gap between modules to form a unified "acceleration strip"
-- Monospace font (system mono or `font-mono` from Tailwind) for English labels
+### 3. 数据库配置
+- 启用邮箱自动确认（auto-confirm），跳过邮箱验证
+- 利用已有 profiles 表存储 display_name、avatar_url
+- 注册成功后自动创建 profile 记录，生成微信风格随机昵称（如"微信用户_X7kP2"）
 
-### Status Bar
+### 4. 修改 AuthContext
+- 新增 `signIn` 和 `signUp` 方法暴露给组件使用
+- 登录成功后自动拉取/创建 profile 数据
 
-A tiny line above the boosters strip:
-- Red dot (pulsing) + "LIVE STATUS: SQUAD ASSEMBLING..." in monospace, 8px text
-- Adds the "tactical ops" atmosphere
-
-### Micro-Interactions
-
-- Shimmer: A light band sweeps across all three modules every 4 seconds
-- Click/Tap: `active:scale-95` press-down effect on each module
-
-## Integration Points
-
-### Files to Modify
-
-1. **New file: `src/components/TacticalBoosters.tsx`**
-   - Self-contained component with all three modules
-   - Includes shimmer animation via inline `<style>` tag
-   - Uses `useLanguage()` for bilingual footer text
-
-2. **Modify: `src/components/BrandBanner.tsx`**
-   - Remove the `CouponFlags` import and usage
-   - Keep the KAKAGO title + tagline section as-is
-
-3. **Modify: `src/pages/Index.tsx`**
-   - Import and place `<TacticalBoosters />` after `<BrandBanner />` inside the `flex-shrink-0` header zone
-   - Remove the `CouponFlags` / `Coupon` import if no longer needed elsewhere
-
-### Vertical Space Budget
-
-The boosters strip must be extremely compact (approximately 36-40px tall) to respect the single-screen constraint. The status line above adds ~12px. Total addition: ~50px. This may require minor padding reductions elsewhere (e.g., BrandBanner `pt-1` to `pt-0.5`).
-
-## Technical Details
-
-```text
-+--------------------------------------------------------------+
-| 🔴 LIVE STATUS: SQUAD ASSEMBLING...          (8px mono text) |
-+--------------------------------------------------------------+
-| ////RECRUIT//// | /////SQUAD////// | ///WBC ACCESS/// |
-| //// ¥9.9  //// | /// 20% OFF //// | ////  -¥5  ///// |
-| ////首杯补给//// | ///职场充能  //// | ////冠军立减///// |
-+--------------------------------------------------------------+
-  (orange, skewed)   (charcoal, skewed)  (silver, skewed)
-     1px gap              1px gap
-```
-
-### CSS Approach
-
-- Container: `flex gap-[1px] px-4` full width
-- Each module: `flex-1`, `skewX(-15deg)`, `overflow-hidden`, specific background color
-- Inner content: `skewX(15deg)`, centered vertically, `py-1.5 px-3`
-- Top label: `text-[7px] font-mono font-bold uppercase tracking-[0.2em]`
-- Main value: `text-base font-black font-mono`
-- Footer: `text-[8px] font-medium`
-- Shimmer: reuse existing `@keyframes shimmer` from `index.css`, triggered every 4s via `animation-delay`
-
-### Color Mapping
-
-- Module 1 (RECRUIT): `bg-[#FF4500]`, all text white
-- Module 2 (SQUAD): `bg-[#222]`, label `text-[#999]`, value `text-white`, footer `text-[#888]`
-- Module 3 (ACCESS): `bg-[#E0E0E0]`, all text `text-[#111]`
+### 涉及文件
+- 新建 `src/components/WeChatAuthModal.tsx`
+- 修改 `src/pages/Profile.tsx`
+- 修改 `src/contexts/AuthContext.tsx`
+- 数据库：启用 auto-confirm email
+- 数据库：添加 trigger 自动创建 profile（如尚未存在）
 
