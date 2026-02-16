@@ -870,63 +870,52 @@ const OrderTracking = () => {
         <div className={`absolute inset-0 overflow-y-auto transition-all duration-500 ${
           currentState === "delivered" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}>
-          <div className="flex flex-col items-center px-4 py-6 space-y-4">
-            {/* Success header */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
-                <CheckCircle2 className="w-6 h-6 text-green-500" />
-              </div>
-              <div>
-                <h2 className="text-base font-bold text-white">{t("咖啡已送达！", "Coffee Delivered!")}</h2>
-                <p className="text-xs text-white/50">{t("请享用您的咖啡", "Enjoy your coffee!")}</p>
-              </div>
+          <div className="flex flex-col items-center px-6 pt-10 pb-6 max-w-sm mx-auto">
+            {/* Success icon */}
+            <div className="w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center mb-4">
+              <CheckCircle2 className="w-8 h-8 text-primary" />
             </div>
+            <h2 className="text-lg font-bold text-white mb-1">{t("咖啡已送达", "Coffee Delivered")}</h2>
+            <p className="text-xs text-white/40 mb-6">{t("请享用您的咖啡", "Enjoy your coffee!")}</p>
 
             {/* Inline Rating */}
             {!order?.order_ratings && !ratingSubmitted ? (
-              <div className="w-full max-w-md card-lg !p-4 space-y-3">
-                <p className="text-xs text-white/50 text-center">{t("为这杯咖啡评分", "Rate Your Coffee")}</p>
+              <>
+                <p className="text-[11px] text-white/40 mb-4">{t("为这杯咖啡评分", "Rate Your Coffee")}</p>
                 
-                {/* Rating dimensions */}
-                {[
-                  { label: t("口味", "Taste"), emoji: "☕", value: tasteRating, set: setTasteRating },
-                  { label: t("包装", "Package"), emoji: "📦", value: packagingRating, set: setPackagingRating },
-                  { label: t("时效", "Speed"), emoji: "⏱️", value: timelinessRating, set: setTimelinessRating },
-                ].map((dim) => (
-                  <div key={dim.label} className="flex items-center gap-3">
-                    <span className="text-sm w-16 flex items-center gap-1.5">
-                      <span>{dim.emoji}</span>
-                      <span className="text-xs text-white/70">{dim.label}</span>
-                    </span>
-                    <div className="flex gap-1">
-                      {[1, 2, 3, 4, 5].map((v) => (
-                        <button
-                          key={v}
-                          onClick={() => dim.set(v)}
-                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                            v <= dim.value ? "bg-primary scale-105" : "bg-secondary"
-                          }`}
-                        >
-                          <ThumbsUp className={`w-3.5 h-3.5 ${v <= dim.value ? "text-white" : "text-white/25"}`} />
-                        </button>
-                      ))}
+                <div className="w-full space-y-3 mb-4">
+                  {[
+                    { label: t("口味", "Taste"), emoji: "☕", value: tasteRating, set: setTasteRating },
+                    { label: t("包装", "Package"), emoji: "📦", value: packagingRating, set: setPackagingRating },
+                    { label: t("时效", "Speed"), emoji: "⏱️", value: timelinessRating, set: setTimelinessRating },
+                  ].map((dim) => (
+                    <div key={dim.label} className="flex items-center justify-center gap-3">
+                      <span className="w-14 text-right text-[11px] text-white/50">{dim.emoji} {dim.label}</span>
+                      <div className="flex gap-1.5">
+                        {[1, 2, 3, 4, 5].map((v) => (
+                          <button
+                            key={v}
+                            onClick={() => dim.set(v)}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                              v <= dim.value ? "bg-primary" : "bg-secondary"
+                            }`}
+                          >
+                            <ThumbsUp className={`w-3.5 h-3.5 ${v <= dim.value ? "text-white" : "text-white/20"}`} />
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-
-                {/* Comment */}
-                <div className="relative">
-                  <MessageSquare className="absolute left-3 top-2.5 w-3.5 h-3.5 text-white/30" />
-                  <textarea
-                    value={ratingComment}
-                    onChange={(e) => setRatingComment(e.target.value)}
-                    placeholder={t("分享你的体验（选填）...", "Share your experience (optional)...")}
-                    className="w-full h-16 pl-8 pr-3 py-2 bg-secondary rounded-xl text-xs text-white placeholder:text-white/30 resize-none focus:outline-none focus:ring-1 focus:ring-primary/30"
-                    maxLength={200}
-                  />
+                  ))}
                 </div>
 
-                {/* Submit */}
+                <textarea
+                  value={ratingComment}
+                  onChange={(e) => setRatingComment(e.target.value)}
+                  placeholder={t("分享你的体验（选填）...", "Share your experience (optional)...")}
+                  className="w-full h-16 px-4 py-2.5 bg-secondary rounded-xl text-xs text-white placeholder:text-white/30 resize-none focus:outline-none focus:ring-1 focus:ring-primary/30 mb-4"
+                  maxLength={200}
+                />
+
                 <button
                   onClick={handleRatingSubmit}
                   disabled={!isRatingValid || isSubmittingRating}
@@ -940,22 +929,19 @@ const OrderTracking = () => {
                     <><Send className="w-3.5 h-3.5" />{t("提交评价", "Submit")}</>
                   )}
                 </button>
-              </div>
+              </>
             ) : (
-              <div className="w-full max-w-md card-lg !p-4">
-                <p className="text-xs text-white/50 text-center mb-2">{t("您的评价", "Your Rating")}</p>
-                <div className="flex justify-center gap-6">
-                  {[
-                    { v: order?.order_ratings?.taste_rating || tasteRating, l: t("口味", "Taste") },
-                    { v: order?.order_ratings?.packaging_rating || packagingRating, l: t("包装", "Package") },
-                    { v: order?.order_ratings?.timeliness_rating || timelinessRating, l: t("时效", "Speed") },
-                  ].map((d) => (
-                    <div key={d.l} className="text-center">
-                      <p className="text-lg font-bold text-primary">{d.v}</p>
-                      <p className="text-[10px] text-white/50">{d.l}</p>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex justify-center gap-8 mt-2">
+                {[
+                  { v: order?.order_ratings?.taste_rating || tasteRating, l: t("口味", "Taste") },
+                  { v: order?.order_ratings?.packaging_rating || packagingRating, l: t("包装", "Package") },
+                  { v: order?.order_ratings?.timeliness_rating || timelinessRating, l: t("时效", "Speed") },
+                ].map((d) => (
+                  <div key={d.l} className="text-center">
+                    <p className="text-xl font-bold text-primary">{d.v}</p>
+                    <p className="text-[10px] text-white/40">{d.l}</p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
