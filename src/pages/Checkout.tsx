@@ -76,6 +76,8 @@ const Checkout = () => {
         beansDeduction,
         beansUsed: beansToUse,
         itemCount: totalItems,
+        cartItems: items,
+        address: address,
       },
     });
   };

@@ -1,9 +1,11 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Loader2, Shield, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
-import { useCart } from "@/contexts/CartContext";
+import { useCart, CartItem } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import type { Address } from "@/contexts/AddressContext";
 
 const WeChatIcon = ({ size = 20 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="#07C160">
@@ -33,6 +35,8 @@ const Payment = () => {
     beansDeduction: number;
     beansUsed: number;
     itemCount: number;
+    cartItems?: CartItem[];
+    address?: Address | null;
   }) || { totalPrice: 0, beansDeduction: 0, beansUsed: 0, itemCount: 0 };
 
   const cashToPay = Math.max(0, paymentInfo.totalPrice - paymentInfo.beansDeduction);
@@ -82,12 +86,42 @@ const Payment = () => {
 
     const isSuccess = Math.random() > 0.1;
     if (isSuccess) {
+      // Write order to database
+      try {
+        const { data: userData } = await supabase.auth.getUser();
+        if (userData?.user && paymentInfo.cartItems && paymentInfo.cartItems.length > 0) {
+          const addr = paymentInfo.address;
+          const productNames = paymentInfo.cartItems.map(i => i.nameZh).join(", ");
+          const totalQty = paymentInfo.cartItems.reduce((s, i) => s + i.quantity, 0);
+          // Use nearest merchant from service check
+          const merchantId = "ae0f30a4-6c70-4988-a5a0-7ddf7909dd9c";
+
+          await supabase.from("orders").insert({
+            user_id: userData.user.id,
+            merchant_id: merchantId,
+            product_name: productNames,
+            product_image: paymentInfo.cartItems[0]?.image || null,
+            price: paymentInfo.totalPrice,
+            quantity: totalQty,
+            total_amount: paymentInfo.totalPrice,
+            status: "pending",
+            delivery_address: addr ? `${addr.district}${addr.detail}` : "未选择地址",
+            delivery_contact_name: addr?.name || "用户",
+            delivery_contact_phone: addr?.phone || "",
+            delivery_lat: addr?.latitude || null,
+            delivery_lng: addr?.longitude || null,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to save order:", err);
+      }
+
       setPaymentState("success");
       clearCart();
     } else {
       setPaymentState("failed");
     }
-  }, [clearCart]);
+  }, [clearCart, paymentInfo]);
 
   if (paymentInfo.totalPrice === 0) {
     navigate("/");
