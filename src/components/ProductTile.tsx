@@ -51,15 +51,22 @@ export const ProductTile = ({
   };
 
   return (
-    <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-primary/25 hover:shadow-[0_0_16px_-4px_hsla(271,81%,56%,0.3)] ${
+    <div className={`group text-left relative flex flex-col justify-between min-h-0 overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_16px_-4px_hsla(271,81%,56%,0.3)] ${
       product.isCreative
-        ? "py-1.5 px-2 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
-        : "py-1 px-2"
-    }`}>
-      {/* Lab tag for creative */}
+        ? "py-1.5 px-2 border border-primary/20 shadow-[inset_0_1px_0_hsla(271,81%,56%,0.08)]"
+        : "py-1 px-2 border border-white/[0.06]"
+    }`}
+    style={{ background: product.isCreative 
+      ? 'linear-gradient(135deg, hsla(271,81%,56%,0.08), hsla(270,50%,10%,0.9), hsla(280,40%,8%,0.95))' 
+      : '#1A1A1A' 
+    }}>
+      {/* Lab badge for creative */}
       {labIndex !== undefined && (
-        <span className="absolute top-1 right-1.5 text-[7px] font-mono font-bold tracking-widest text-purple-400/40 uppercase">
-          LAB {String(labIndex).padStart(2, "0")}
+        <span className="absolute top-1 right-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-primary/10 border border-primary/20">
+          <FlaskConical className="w-2 h-2 text-primary/60" strokeWidth={2} />
+          <span className="text-[7px] font-mono font-bold tracking-widest text-primary/50 uppercase">
+            {String(labIndex).padStart(2, "0")}
+          </span>
         </span>
       )}
       {/* Top: Icon + Name + Price */}
@@ -69,20 +76,20 @@ export const ProductTile = ({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-1">
-            <h3 className={`font-semibold text-white leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
+            <h3 className={`font-bold text-white tracking-tight leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
               {t(product.nameZh, product.nameEn)}
             </h3>
-            <span className="text-white font-bold text-base shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+            <span className="text-primary font-extrabold text-base shrink-0 drop-shadow-[0_0_12px_hsla(271,81%,56%,0.4)]">
               ¥{estimatedPrice}
             </span>
           </div>
           {product.tagZh && (
-            <p className={`text-violet-300/40 mt-0.5 leading-snug break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-white/35 mt-0.5 leading-relaxed break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className={`text-purple-300/45 mt-0.5 leading-snug break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-purple-300/50 mt-0.5 leading-relaxed break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
