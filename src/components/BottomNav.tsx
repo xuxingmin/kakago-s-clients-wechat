@@ -1,17 +1,22 @@
 import * as React from "react";
 import { Home, ClipboardList, User } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   (props, ref) => {
     const { t } = useLanguage();
+    const location = useLocation();
     
     const navItems = [
       { icon: Home, labelZh: "首页", labelEn: "Home", path: "/" },
       { icon: ClipboardList, labelZh: "订单", labelEn: "Orders", path: "/orders" },
       { icon: User, labelZh: "我的", labelEn: "Profile", path: "/profile" },
     ];
+
+    const activeIndex = navItems.findIndex(
+      (item) => item.path === "/" ? location.pathname === "/" : location.pathname.startsWith(item.path)
+    );
 
     return (
       <nav
@@ -20,7 +25,15 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
         style={{ WebkitBackdropFilter: 'blur(40px) saturate(180%)' }}
         {...props}
       >
-        <div className="flex justify-around items-center h-16 max-w-md mx-auto gap-4 px-4">
+        <div className="relative flex justify-around items-center h-16 max-w-md mx-auto gap-4 px-4">
+          {/* Sliding indicator */}
+          <span
+            className="absolute top-0 h-[2px] bg-primary rounded-full transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_0_12px_hsla(271,81%,56%,0.6)]"
+            style={{
+              width: '40px',
+              left: `calc(${(activeIndex * 100) / navItems.length}% + ${100 / navItems.length / 2}% - 20px)`,
+            }}
+          />
           {navItems.map((item) => (
             <NavLink
               key={item.path}
@@ -36,7 +49,7 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
               {({ isActive }) => (
                 <>
                   {isActive && (
-                    <span className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_0_20px_4px_hsla(271,81%,56%,0.2)] pointer-events-none" />
+                    <span className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_0_20px_4px_hsla(271,81%,56%,0.2)] pointer-events-none animate-fade-in" />
                   )}
                   <item.icon
                     size={22}

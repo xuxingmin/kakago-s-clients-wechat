@@ -31,7 +31,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40">
+      <header className="sticky top-0 z-40 shadow-[0_4px_20px_-4px_hsla(270,25%,5%,0.7)] transition-shadow duration-300">
         {/* WeChat Status Bar */}
         <div className="h-8 bg-background flex items-end justify-between px-6 pb-0.5">
           <span className="text-xs font-semibold text-white/90">
