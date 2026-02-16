@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Home, ClipboardList, User } from "lucide-react";
+import { Home, Compass, Coffee, MessageCircle, User } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -10,7 +10,9 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     
     const navItems = [
       { icon: Home, labelZh: "首页", labelEn: "Home", path: "/" },
-      { icon: ClipboardList, labelZh: "订单", labelEn: "Orders", path: "/orders" },
+      { icon: Compass, labelZh: "发现", labelEn: "Discover", path: "/discover" },
+      { icon: Coffee, labelZh: "咖卡圈", labelEn: "Circle", path: "/circle" },
+      { icon: MessageCircle, labelZh: "消息", labelEn: "Messages", path: "/messages" },
       { icon: User, labelZh: "我的", labelEn: "Profile", path: "/profile" },
     ];
 
@@ -25,13 +27,13 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
         style={{ WebkitBackdropFilter: 'blur(40px) saturate(180%)' }}
         {...props}
       >
-        <div className="relative flex justify-around items-center h-16 max-w-md mx-auto gap-4 px-4">
+        <div className="relative flex justify-around items-center h-14 max-w-md mx-auto px-2">
           {/* Sliding indicator */}
           <span
-            className="absolute top-0 h-[2px] bg-primary rounded-full transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_0_12px_hsla(271,81%,56%,0.6)]"
+            className="absolute top-0 h-[2px] bg-primary rounded-full transition-all duration-400 ease-spring shadow-[0_0_12px_hsla(271,81%,56%,0.6)]"
             style={{
-              width: '40px',
-              left: `calc(${(activeIndex * 100) / navItems.length}% + ${100 / navItems.length / 2}% - 20px)`,
+              width: '32px',
+              left: `calc(${(activeIndex * 100) / navItems.length}% + ${100 / navItems.length / 2}% - 16px)`,
             }}
           />
           {navItems.map((item) => (
@@ -39,26 +41,26 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `relative flex flex-col items-center justify-center gap-1 px-6 py-2 min-h-[52px] rounded-2xl transition-all duration-300 active:scale-95 ${
+                `relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 min-h-[48px] min-w-[48px] rounded-xl transition-all duration-300 active:scale-95 ${
                   isActive
                     ? "text-primary"
-                    : "text-white/55 hover:text-white/70"
+                    : "text-white/50 hover:text-white/70"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   {isActive && (
-                    <span className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_0_20px_4px_hsla(271,81%,56%,0.2)] pointer-events-none animate-fade-in" />
+                    <span className="absolute inset-0 rounded-xl bg-primary/10 shadow-[0_0_16px_2px_hsla(271,81%,56%,0.15)] pointer-events-none animate-fade-in" />
                   )}
                   <item.icon
-                    size={22}
+                    size={20}
                     strokeWidth={isActive ? 2.2 : 1.5}
                     className={`relative z-10 transition-all duration-300 ${
-                      isActive ? "drop-shadow-[0_0_10px_rgba(127,0,255,0.6)]" : ""
+                      isActive ? "drop-shadow-[0_0_8px_rgba(127,0,255,0.5)]" : ""
                     }`}
                   />
-                  <span className={`relative z-10 text-[10px] transition-all duration-300 ${
+                  <span className={`relative z-10 text-[9px] transition-all duration-300 ${
                     isActive ? "font-semibold" : "font-normal"
                   }`}>
                     {t(item.labelZh, item.labelEn)}
