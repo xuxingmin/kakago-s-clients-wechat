@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { OrderCard } from "@/components/OrderCard";
 import { EmptyState } from "@/components/EmptyState";
@@ -10,6 +10,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { BrandBanner } from "@/components/BrandBanner";
 import { KakaBeanCelebration } from "@/components/KakaBeanCelebration";
+import { useAuth } from "@/contexts/AuthContext";
+import { useOrders } from "@/hooks/useOrders";
 
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
@@ -22,7 +24,7 @@ interface OrderItem {
   image?: string;
 }
 
-interface Order {
+interface DisplayOrder {
   id: string;
   orderNumber: string;
   items: OrderItem[];
@@ -42,7 +44,32 @@ interface Order {
   orderCreatedMs: number;
 }
 
-const demoOrders: Order[] = [
+// Map DB order status to display status
+const mapStatus = (s: string): OrderStatus => {
+  switch (s) {
+    case "pending": return "pending";
+    case "accepted": return "preparing";
+    case "rider_assigned": return "delivering";
+    case "picked_up": return "delivering";
+    case "delivered": return "completed";
+    case "rated": return "completed";
+    case "cancelled": return "completed";
+    default: return "pending";
+  }
+};
+
+const formatTime = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffDays = Math.floor(diffMs / 86400000);
+  const time = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  if (diffDays === 0) return { zh: `今天 ${time}`, en: `Today ${time}` };
+  if (diffDays === 1) return { zh: `昨天 ${time}`, en: `Yesterday ${time}` };
+  return { zh: `${diffDays}天前 ${time}`, en: `${diffDays}d ago ${time}` };
+};
+
+const demoOrders: DisplayOrder[] = [
   {
     id: "order-001",
     orderNumber: "HF001-260215-0001",
@@ -94,22 +121,6 @@ const demoOrders: Order[] = [
     userRating: 5,
     orderCreatedMs: Date.now() - 86400000,
   },
-  {
-    id: "order-004",
-    orderNumber: "HF001-260213-0004",
-    items: [
-      { name: "澳白", nameEn: "Flat White", qty: 3, unitPrice: 15 },
-    ],
-    price: 45,
-    status: "completed",
-    cafeName: "慢时光咖啡",
-    cafeNameEn: "Slow Time Coffee",
-    cafeRating: 4.8,
-    createdAt: "前天 15:42",
-    createdAtEn: "2 days ago 15:42",
-    isRevealed: true,
-    orderCreatedMs: Date.now() - 172800000,
-  },
 ];
 
 const Orders = () => {
@@ -117,12 +128,39 @@ const Orders = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
   const { addItem } = useCart();
+  const { user } = useAuth();
+  const { orders: dbOrders, loading: dbLoading } = useOrders({ realtime: true });
   const [activeTab, setActiveTab] = useState("active");
-  const [orders, setOrders] = useState<Order[]>(demoOrders);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
-  const [selectedOrderForRating, setSelectedOrderForRating] = useState<Order | null>(null);
+  const [selectedOrderForRating, setSelectedOrderForRating] = useState<DisplayOrder | null>(null);
   const [celebrationOpen, setCelebrationOpen] = useState(false);
   const [celebrationBeans, setCelebrationBeans] = useState(0);
+  const [ratedOrderIds, setRatedOrderIds] = useState<Set<string>>(new Set());
+
+  // Convert DB orders to display orders
+  const realOrders: DisplayOrder[] = dbOrders.map((o) => {
+    const timeStr = formatTime(o.created_at);
+    return {
+      id: o.id,
+      orderNumber: `KKG-${o.id.slice(0, 8).toUpperCase()}`,
+      items: [{ name: o.product_name, qty: o.quantity, unitPrice: o.price, image: o.product_image || undefined }],
+      price: o.total_amount,
+      status: mapStatus(o.status),
+      cafeName: o.merchants?.name,
+      cafeNameEn: o.merchants?.name_en || o.merchants?.name,
+      cafeRating: o.merchants?.rating || undefined,
+      merchantId: o.merchant_id,
+      createdAt: timeStr.zh,
+      createdAtEn: timeStr.en,
+      isRevealed: o.status !== "pending",
+      userRating: o.order_ratings ? o.order_ratings.overall_rating || undefined : (ratedOrderIds.has(o.id) ? 5 : undefined),
+      storeLogo: o.merchants?.logo_url || undefined,
+      orderCreatedMs: new Date(o.created_at).getTime(),
+    };
+  });
+
+  // Use real orders if authenticated, otherwise demo
+  const orders = user ? realOrders : demoOrders;
 
   const filteredOrders = orders.filter((order) =>
     activeTab === "active"
@@ -177,8 +215,11 @@ const Orders = () => {
     });
   };
 
-  const handleCancel = (orderId: string) => {
-    setOrders((prev) => prev.filter((o) => o.id !== orderId));
+  const handleCancel = async (orderId: string) => {
+    if (user) {
+      const { supabase } = await import("@/integrations/supabase/client");
+      await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
+    }
     toast({
       title: t("订单已取消", "Order Cancelled"),
       description: t("款项将在1-3个工作日内退回", "Refund will be processed in 1-3 business days"),
@@ -194,13 +235,7 @@ const Orders = () => {
 
   const handleRatingSubmit = (rating: number, tags: string[], note: string) => {
     if (!selectedOrderForRating) return;
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === selectedOrderForRating.id
-          ? { ...order, userRating: rating }
-          : order
-      )
-    );
+    setRatedOrderIds((prev) => new Set(prev).add(selectedOrderForRating.id));
     const beansEarned = Math.floor(Math.random() * 10) + 1;
     setCelebrationBeans(beansEarned);
     setCelebrationOpen(true);
