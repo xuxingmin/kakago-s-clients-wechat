@@ -44,9 +44,9 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
         return (
           <div
             key={coupon.id}
-            className="relative flex flex-col items-center"
+            className="relative flex flex-col items-center float-subtle"
             style={{
-              animation: `flagWave ${1.5 + index * 0.2}s ease-in-out infinite`,
+              animation: `flagWave ${1.5 + index * 0.2}s ease-in-out infinite, floatSubtle ${4 + index * 0.5}s ease-in-out infinite`,
               animationDelay: `${index * 0.15}s`,
             }}
           >

@@ -51,7 +51,7 @@ export const ProductTile = ({
   };
 
   return (
-    <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden ${
+    <div className={`group card-md text-left relative flex flex-col justify-between min-h-0 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-primary/25 hover:shadow-[0_0_16px_-4px_hsla(271,81%,56%,0.3)] ${
       product.isCreative
         ? "py-1.5 px-2 border-t border-primary/20 bg-gradient-to-br from-primary/10 via-violet-950/30 to-purple-950/20"
         : "py-1 px-2"
@@ -111,11 +111,17 @@ export const ProductTile = ({
           </div>
         ) : <span />}
         <button
-          onClick={onAddToCart}
-          className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
+          onClick={(e) => {
+            onAddToCart(e);
+            const btn = e.currentTarget;
+            btn.classList.remove('animate-cart-pop');
+            void btn.offsetWidth;
+            btn.classList.add('animate-cart-pop');
+          }}
+          className={`ripple rounded-full flex items-center justify-center transition-all duration-300 active:scale-75 shrink-0 ${
             quantityInCart > 0
               ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30"
-              : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+              : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-110"
           }`}
           style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
         >
