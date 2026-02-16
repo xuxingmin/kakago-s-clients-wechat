@@ -156,13 +156,18 @@ const Index = () => {
             </>
           )}
 
-          <div className="flex items-center gap-2 mt-2 px-1 pb-2">
-            <span className="text-[11px] font-medium text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.7)] animate-pulse">
-              ⚡
-            </span>
-            <span className="text-[11px] text-white/90 tracking-wide">
-              {t("预计送达时间约30分钟", "Estimated delivery in ~30 min")}
-            </span>
+          <div className="flex items-center justify-between gap-2 mt-1 px-0.5 pb-2">
+            <div className="flex items-center gap-1.5 text-violet-400/25">
+              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
+              <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
+              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="w-1 h-1 rounded-full bg-violet-400 animate-pulse" />
+              <span className="text-[9px] text-white/25">
+                {t("全城精品店，全听你调遣！", "Elite cafés at your command!")}
+              </span>
+            </div>
           </div>
         </section>
       </div>
