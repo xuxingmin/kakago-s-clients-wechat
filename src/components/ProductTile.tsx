@@ -51,10 +51,12 @@ export const ProductTile = ({
   };
 
   return (
-    <div className={`group text-left relative flex flex-col justify-between min-h-0 overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_16px_-4px_hsla(271,81%,56%,0.3)] ${
-      product.isCreative
-        ? "py-1.5 px-2 border border-primary/20 shadow-[inset_0_1px_0_hsla(271,81%,56%,0.08)]"
-        : "py-1 px-2 border border-white/[0.06]"
+    <div className={`group text-left relative flex flex-col justify-between min-h-0 overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] py-1.5 px-2 ${
+      product.price >= 25
+        ? "border border-rose-500/40 hover:shadow-[0_0_16px_-4px_hsla(350,80%,55%,0.3)] shadow-[inset_0_1px_0_hsla(350,80%,55%,0.08)]"
+        : product.price >= 15
+          ? "border border-amber-400/40 hover:shadow-[0_0_16px_-4px_hsla(45,90%,55%,0.3)]"
+          : "border border-sky-400/40 hover:shadow-[0_0_16px_-4px_hsla(200,80%,55%,0.3)]"
     }`}
     style={{ background: product.isCreative 
       ? 'linear-gradient(135deg, hsla(271,81%,56%,0.08), hsla(270,50%,10%,0.9), hsla(280,40%,8%,0.95))' 
