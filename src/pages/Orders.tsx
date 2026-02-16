@@ -10,7 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { BrandBanner } from "@/components/BrandBanner";
 import { KakaBeanCelebration } from "@/components/KakaBeanCelebration";
-import { InvoiceRequestModal } from "@/components/InvoiceRequestModal";
+
 
 type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
 
@@ -123,8 +123,6 @@ const Orders = () => {
   const [selectedOrderForRating, setSelectedOrderForRating] = useState<Order | null>(null);
   const [celebrationOpen, setCelebrationOpen] = useState(false);
   const [celebrationBeans, setCelebrationBeans] = useState(0);
-  const [invoiceModalOpen, setInvoiceModalOpen] = useState(false);
-  const [invoiceOrder, setInvoiceOrder] = useState<Order | null>(null);
 
   const filteredOrders = orders.filter((order) =>
     activeTab === "active"
@@ -190,8 +188,7 @@ const Orders = () => {
   const handleInvoice = (orderId: string) => {
     const order = orders.find((o) => o.id === orderId);
     if (order) {
-      setInvoiceOrder(order);
-      setInvoiceModalOpen(true);
+      navigate(`/invoice-request?orderNumber=${encodeURIComponent(order.orderNumber)}&price=${order.price}`);
     }
   };
 
@@ -316,18 +313,6 @@ const Orders = () => {
         isOpen={celebrationOpen}
         beans={celebrationBeans}
         onClose={() => setCelebrationOpen(false)}
-      />
-      <InvoiceRequestModal
-        isOpen={invoiceModalOpen}
-        orderNumber={invoiceOrder?.orderNumber || ""}
-        price={invoiceOrder?.price || 0}
-        onClose={() => { setInvoiceModalOpen(false); setInvoiceOrder(null); }}
-        onSubmit={() => {
-          toast({
-            title: t("开票申请已提交", "Invoice Request Submitted"),
-            description: t("商户将在1个工作日内开具发票", "Merchant will issue within 1 business day"),
-          });
-        }}
       />
     </div>
   );

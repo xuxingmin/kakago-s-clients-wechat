@@ -18,6 +18,7 @@ import AddressManagement from "./pages/AddressManagement";
 import AddressFormPage from "./pages/AddressFormPage";
 import AddressSelectPage from "./pages/AddressSelectPage";
 import InvoiceManagement from "./pages/InvoiceManagement";
+import InvoiceRequest from "./pages/InvoiceRequest";
 import MySquad from "./pages/MySquad";
 import MerchantAuth from "./pages/MerchantAuth";
 import MerchantDashboard from "./pages/MerchantDashboard";
@@ -56,6 +57,7 @@ const App = () => (
                     <Route path="/address/edit/:id" element={<AddressFormPage />} />
                     <Route path="/address/select" element={<AddressSelectPage />} />
                     <Route path="/invoice" element={<InvoiceManagement />} />
+                    <Route path="/invoice-request" element={<InvoiceRequest />} />
                     <Route path="/my-squad" element={<MySquad />} />
                     <Route path="/merchant-auth" element={<MerchantAuth />} />
                     <Route path="/merchant" element={<MerchantDashboard />} />
