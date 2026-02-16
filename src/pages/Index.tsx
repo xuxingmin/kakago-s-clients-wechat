@@ -92,11 +92,7 @@ const Index = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <CategoryTabs
-          categories={tabCategories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-        />
+        <div className="h-[32px] px-4 py-1.5" />
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
