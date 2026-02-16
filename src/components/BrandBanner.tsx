@@ -15,7 +15,7 @@ export const BrandBanner = () => {
 
   return (
     <section className="px-4 pt-1 pb-0.5 hero-reveal bg-background">
-      <div className="flex items-center justify-between min-h-[48px]">
+      <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-white tracking-tight">KAKAGO</h1>

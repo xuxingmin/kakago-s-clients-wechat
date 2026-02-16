@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type OrderState = "accepted" | "picked_up" | "delivered" | "rating";
+type OrderState = "pending" | "accepted" | "rider_assigned" | "picked_up" | "delivered" | "rating";
 
 // Hefei independent coffee brands
 const hefeiBrands = [
@@ -328,9 +328,11 @@ interface StatusTimelineProps {
 
 const StatusTimeline = ({ currentStatus, onStatusClick, isInteractive, t }: StatusTimelineProps) => {
   const steps = [
-    { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee, hintZh: "预计15分钟", hintEn: "~15 min" },
-    { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package, hintZh: "预计15分钟", hintEn: "~15 min" },
-    { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2, hintZh: "已完成", hintEn: "Done" },
+    { key: "pending" as OrderState, labelZh: "待接单", labelEn: "Pending", icon: Clock },
+    { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee },
+    { key: "rider_assigned" as OrderState, labelZh: "骑手接单", labelEn: "Rider", icon: Navigation },
+    { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package },
+    { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2 },
   ];
 
   const statusIndex = steps.findIndex(s => s.key === currentStatus);
@@ -380,11 +382,6 @@ const StatusTimeline = ({ currentStatus, onStatusClick, isInteractive, t }: Stat
               <span className={`text-[10px] leading-tight text-center ${isActive ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                 {t(step.labelZh, step.labelEn)}
               </span>
-              {isCurrent && (
-                <span className="text-[9px] text-primary/70 font-mono mt-0.5">
-                  {t(step.hintZh, step.hintEn)}
-                </span>
-              )}
             </button>
           );
         })}
@@ -429,7 +426,9 @@ const OrderTracking = () => {
   const { order, loading } = useOrder(orderId);
 
   const initialStatus = searchParams.get("status");
-  const [demoState, setDemoState] = useState<OrderState>("accepted");
+  const [demoState, setDemoState] = useState<OrderState>(
+    initialStatus === "pending" ? "pending" : "accepted"
+  );
   const [showRevealCard, setShowRevealCard] = useState(false);
   const [tasteRating, setTasteRating] = useState(0);
   const [packagingRating, setPackagingRating] = useState(0);
@@ -440,8 +439,14 @@ const OrderTracking = () => {
   const [showNavigateDialog, setShowNavigateDialog] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
 
-  const rawStatus = order?.status || demoState;
-  const currentState: OrderState = (rawStatus === "pending" || rawStatus === "rider_assigned") ? "accepted" : rawStatus as OrderState;
+  const currentState: OrderState = order?.status as OrderState || demoState;
+
+  useEffect(() => {
+    if (currentState === "pending" && !orderId) {
+      const timer = setTimeout(() => setDemoState("accepted"), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [currentState, orderId]);
 
   useEffect(() => {
     if (currentState === "accepted") {
@@ -555,7 +560,18 @@ const OrderTracking = () => {
 
       {/* Main Content */}
       <div className="flex-1 relative overflow-hidden">
-        {/* State 1: Accepted */}
+        {/* State 1: Pending */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 transition-all duration-500 ${currentState === "pending" ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}>
+          <CosmicScanner />
+          <h2 className="text-lg font-bold text-foreground mt-8 text-center">
+            {t("正在为您匹配您附近的精品咖啡店...", "Matching nearby specialty coffee shops...")}
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2 text-center">
+            {t("请稍候，通常需要 10-30 秒", "Please wait, usually 10-30 seconds")}
+          </p>
+        </div>
+
+        {/* State 2: Accepted */}
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${currentState === "accepted" ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className={`flex-1 px-4 pb-4 space-y-2 transition-all duration-700 ease-out ${showRevealCard ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
             {/* Coffee Parameters */}
@@ -638,7 +654,26 @@ const OrderTracking = () => {
           </div>
         </div>
 
-        {/* State 3: Picked Up */}
+        {/* State 3: Rider Assigned */}
+        <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${currentState === "rider_assigned" ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+          <div className="flex-1 flex items-center justify-center p-4">
+            <div className="w-full card-xl text-center">
+              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-3xl mx-auto mb-4">🧑‍💼</div>
+              <h3 className="text-lg font-bold text-foreground">{order?.rider_name || demoRider.name}</h3>
+              <span className="inline-block text-xs text-muted-foreground bg-secondary px-3 py-1 rounded-full mt-2">{order?.delivery_platform || demoRider.platform}</span>
+              <div className="flex items-center justify-center gap-1 mt-3">
+                <Star className="w-3 h-3 fill-primary text-primary" />
+                <span className="text-xs text-muted-foreground">{demoRider.rating}% {t("好评率", "Rating")}</span>
+              </div>
+              <button className="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-green-500 text-white text-sm font-medium">
+                <Phone className="w-4 h-4" strokeWidth={1.5} />
+                <span>{t("联系骑手", "Contact Rider")}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* State 4: Picked Up */}
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${currentState === "picked_up" ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="flex-1 p-4">
             <DeliveryMap riderLat={order?.rider_lat} riderLng={order?.rider_lng} />
