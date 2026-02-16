@@ -13,7 +13,7 @@ import {
   Package,
   X
 } from "lucide-react";
-import { MultiDimensionRatingModal } from "@/components/MultiDimensionRatingModal";
+import { ThumbsUp, MessageSquare, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -521,7 +521,12 @@ const OrderTracking = () => {
     initialStatus === "pending" ? "pending" : "accepted"
   );
   const [showRevealCard, setShowRevealCard] = useState(false);
-  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [tasteRating, setTasteRating] = useState(0);
+  const [packagingRating, setPackagingRating] = useState(0);
+  const [timelinessRating, setTimelinessRating] = useState(0);
+  const [ratingComment, setRatingComment] = useState("");
+  const [isSubmittingRating, setIsSubmittingRating] = useState(false);
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
   const [showNavigateDialog, setShowNavigateDialog] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
 
@@ -544,30 +549,19 @@ const OrderTracking = () => {
     }
   }, [currentState]);
 
-  useEffect(() => {
-    if (currentState === "delivered" && !order?.order_ratings) {
-      const timer = setTimeout(() => setShowRatingModal(true), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [currentState, order?.order_ratings]);
+  const isRatingValid = tasteRating > 0 && packagingRating > 0 && timelinessRating > 0;
 
-  const handleRatingSubmit = async (
-    tasteRating: number,
-    packagingRating: number,
-    timelinessRating: number,
-    comment: string
-  ) => {
+  const handleRatingSubmit = async () => {
+    if (!isRatingValid) return;
+    setIsSubmittingRating(true);
     try {
       if (orderId) {
-        await submitOrderRating(orderId, tasteRating, packagingRating, timelinessRating, comment);
+        await submitOrderRating(orderId, tasteRating, packagingRating, timelinessRating, ratingComment);
       }
-      
+      setRatingSubmitted(true);
       toast({
         title: t("评价已提交", "Review Submitted"),
-        description: t(
-          `感谢您的评价！综合评分: ${((tasteRating + packagingRating + timelinessRating) / 3).toFixed(1)}`,
-          `Thanks for your review! Average: ${((tasteRating + packagingRating + timelinessRating) / 3).toFixed(1)}`
-        ),
+        description: t("感谢您的评价！", "Thanks for your review!"),
       });
     } catch (error) {
       toast({
@@ -576,6 +570,7 @@ const OrderTracking = () => {
         variant: "destructive",
       });
     }
+    setIsSubmittingRating(false);
   };
 
   // Demo data with bilingual support
@@ -872,58 +867,100 @@ const OrderTracking = () => {
         </div>
 
         {/* State 5: Delivered */}
-        <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 transition-all duration-500 ${
-          currentState === "delivered" ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+        <div className={`absolute inset-0 overflow-y-auto transition-all duration-500 ${
+          currentState === "delivered" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}>
-          <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mb-6">
-            <CheckCircle2 className="w-10 h-10 text-green-500" />
-          </div>
-          <h2 className="text-xl font-bold text-white text-center">
-            {t("咖啡已送达！", "Coffee Delivered!")}
-          </h2>
-          <p className="text-sm text-white/50 mt-2 text-center">
-            {t("感谢您的订购，请享用您的咖啡", "Thank you for ordering. Enjoy your coffee!")}
-          </p>
-          
-          {!order?.order_ratings && (
-            <button
-              onClick={() => setShowRatingModal(true)}
-              className="mt-8 px-8 py-4 bg-primary text-white rounded-2xl font-semibold"
-            >
-              {t("为这杯咖啡评分", "Rate Your Coffee")}
-            </button>
-          )}
-
-          {order?.order_ratings && (
-            <div className="mt-6 card-lg w-full max-w-xs">
-              <p className="text-xs text-white/50 text-center mb-2">{t("您的评价", "Your Rating")}</p>
-              <div className="flex justify-center gap-4">
-                <div className="text-center">
-                  <p className="text-lg font-bold text-primary">{order.order_ratings.taste_rating}</p>
-                  <p className="text-xs text-white/50">{t("口味", "Taste")}</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-bold text-primary">{order.order_ratings.packaging_rating}</p>
-                  <p className="text-xs text-white/50">{t("包装", "Package")}</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-bold text-primary">{order.order_ratings.timeliness_rating}</p>
-                  <p className="text-xs text-white/50">{t("时效", "Speed")}</p>
-                </div>
+          <div className="flex flex-col items-center px-4 py-6 space-y-4">
+            {/* Success header */}
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
+                <CheckCircle2 className="w-6 h-6 text-green-500" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-white">{t("咖啡已送达！", "Coffee Delivered!")}</h2>
+                <p className="text-xs text-white/50">{t("请享用您的咖啡", "Enjoy your coffee!")}</p>
               </div>
             </div>
-          )}
+
+            {/* Inline Rating */}
+            {!order?.order_ratings && !ratingSubmitted ? (
+              <div className="w-full max-w-md card-lg !p-4 space-y-3">
+                <p className="text-xs text-white/50 text-center">{t("为这杯咖啡评分", "Rate Your Coffee")}</p>
+                
+                {/* Rating dimensions */}
+                {[
+                  { label: t("口味", "Taste"), emoji: "☕", value: tasteRating, set: setTasteRating },
+                  { label: t("包装", "Package"), emoji: "📦", value: packagingRating, set: setPackagingRating },
+                  { label: t("时效", "Speed"), emoji: "⏱️", value: timelinessRating, set: setTimelinessRating },
+                ].map((dim) => (
+                  <div key={dim.label} className="flex items-center gap-3">
+                    <span className="text-sm w-16 flex items-center gap-1.5">
+                      <span>{dim.emoji}</span>
+                      <span className="text-xs text-white/70">{dim.label}</span>
+                    </span>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((v) => (
+                        <button
+                          key={v}
+                          onClick={() => dim.set(v)}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                            v <= dim.value ? "bg-primary scale-105" : "bg-secondary"
+                          }`}
+                        >
+                          <ThumbsUp className={`w-3.5 h-3.5 ${v <= dim.value ? "text-white" : "text-white/25"}`} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Comment */}
+                <div className="relative">
+                  <MessageSquare className="absolute left-3 top-2.5 w-3.5 h-3.5 text-white/30" />
+                  <textarea
+                    value={ratingComment}
+                    onChange={(e) => setRatingComment(e.target.value)}
+                    placeholder={t("分享你的体验（选填）...", "Share your experience (optional)...")}
+                    className="w-full h-16 pl-8 pr-3 py-2 bg-secondary rounded-xl text-xs text-white placeholder:text-white/30 resize-none focus:outline-none focus:ring-1 focus:ring-primary/30"
+                    maxLength={200}
+                  />
+                </div>
+
+                {/* Submit */}
+                <button
+                  onClick={handleRatingSubmit}
+                  disabled={!isRatingValid || isSubmittingRating}
+                  className={`w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
+                    isRatingValid ? "btn-gold" : "bg-secondary text-white/30 cursor-not-allowed"
+                  }`}
+                >
+                  {isSubmittingRating ? (
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <><Send className="w-3.5 h-3.5" />{t("提交评价", "Submit")}</>
+                  )}
+                </button>
+              </div>
+            ) : (
+              <div className="w-full max-w-md card-lg !p-4">
+                <p className="text-xs text-white/50 text-center mb-2">{t("您的评价", "Your Rating")}</p>
+                <div className="flex justify-center gap-6">
+                  {[
+                    { v: order?.order_ratings?.taste_rating || tasteRating, l: t("口味", "Taste") },
+                    { v: order?.order_ratings?.packaging_rating || packagingRating, l: t("包装", "Package") },
+                    { v: order?.order_ratings?.timeliness_rating || timelinessRating, l: t("时效", "Speed") },
+                  ].map((d) => (
+                    <div key={d.l} className="text-center">
+                      <p className="text-lg font-bold text-primary">{d.v}</p>
+                      <p className="text-[10px] text-white/50">{d.l}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Rating Modal */}
-      <MultiDimensionRatingModal
-        isOpen={showRatingModal}
-        onClose={() => setShowRatingModal(false)}
-        storeName={order?.merchants?.name || demoMerchant.name}
-        productName={order?.product_name || demoProduct.name}
-        onSubmit={handleRatingSubmit}
-      />
 
       {/* Backdrop */}
       <div
