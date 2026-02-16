@@ -16,33 +16,37 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     return (
       <nav
         ref={ref}
-        className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-xl border-t border-white/5 safe-bottom z-50"
+        className="fixed bottom-0 left-0 right-0 bg-black/40 backdrop-blur-2xl border-t border-white/[0.06] safe-bottom z-50"
+        style={{ WebkitBackdropFilter: 'blur(40px) saturate(180%)' }}
         {...props}
       >
-        <div className="flex justify-around items-center h-16 max-w-md mx-auto">
+        <div className="flex justify-around items-center h-16 max-w-md mx-auto gap-4 px-4">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center gap-1 px-8 py-2 min-h-[52px] transition-all duration-200 active:scale-95 ${
+                `relative flex flex-col items-center justify-center gap-1 px-6 py-2 min-h-[52px] rounded-2xl transition-all duration-300 active:scale-95 ${
                   isActive
                     ? "text-primary"
-                    : "text-white/40 hover:text-white/60"
+                    : "text-white/55 hover:text-white/70"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
+                  {isActive && (
+                    <span className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_0_20px_4px_hsla(271,81%,56%,0.2)] pointer-events-none" />
+                  )}
                   <item.icon
                     size={22}
-                    strokeWidth={isActive ? 2 : 1.5}
-                    className={`transition-all duration-200 ${
-                      isActive ? "drop-shadow-[0_0_8px_rgba(127,0,255,0.5)]" : ""
+                    strokeWidth={isActive ? 2.2 : 1.5}
+                    className={`relative z-10 transition-all duration-300 ${
+                      isActive ? "drop-shadow-[0_0_10px_rgba(127,0,255,0.6)]" : ""
                     }`}
                   />
-                  <span className={`text-[10px] transition-all duration-200 ${
-                    isActive ? "font-medium" : "font-normal"
+                  <span className={`relative z-10 text-[10px] transition-all duration-300 ${
+                    isActive ? "font-semibold" : "font-normal"
                   }`}>
                     {t(item.labelZh, item.labelEn)}
                   </span>
