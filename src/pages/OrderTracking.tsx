@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useOrder, submitOrderRating } from "@/hooks/useOrders";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type OrderState = "pending" | "accepted" | "rider_assigned" | "picked_up" | "delivered" | "rating";
+type OrderState = "pending" | "accepted" | "picked_up" | "delivered" | "rating";
 
 // Hefei independent coffee brands
 const hefeiBrands = [
@@ -330,7 +330,6 @@ const StatusTimeline = ({ currentStatus, onStatusClick, isInteractive, t }: Stat
   const steps = [
     { key: "pending" as OrderState, labelZh: "待接单", labelEn: "Pending", icon: Clock },
     { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee },
-    { key: "rider_assigned" as OrderState, labelZh: "骑手接单", labelEn: "Rider", icon: Navigation },
     { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package },
     { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2 },
   ];
@@ -439,7 +438,8 @@ const OrderTracking = () => {
   const [showNavigateDialog, setShowNavigateDialog] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
 
-  const currentState: OrderState = order?.status as OrderState || demoState;
+  const rawStatus = order?.status || demoState;
+  const currentState: OrderState = rawStatus === "rider_assigned" ? "picked_up" : rawStatus as OrderState;
 
   useEffect(() => {
     if (currentState === "pending" && !orderId) {
@@ -654,26 +654,7 @@ const OrderTracking = () => {
           </div>
         </div>
 
-        {/* State 3: Rider Assigned */}
-        <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${currentState === "rider_assigned" ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-          <div className="flex-1 flex items-center justify-center p-4">
-            <div className="w-full card-xl text-center">
-              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-3xl mx-auto mb-4">🧑‍💼</div>
-              <h3 className="text-lg font-bold text-foreground">{order?.rider_name || demoRider.name}</h3>
-              <span className="inline-block text-xs text-muted-foreground bg-secondary px-3 py-1 rounded-full mt-2">{order?.delivery_platform || demoRider.platform}</span>
-              <div className="flex items-center justify-center gap-1 mt-3">
-                <Star className="w-3 h-3 fill-primary text-primary" />
-                <span className="text-xs text-muted-foreground">{demoRider.rating}% {t("好评率", "Rating")}</span>
-              </div>
-              <button className="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-green-500 text-white text-sm font-medium">
-                <Phone className="w-4 h-4" strokeWidth={1.5} />
-                <span>{t("联系骑手", "Contact Rider")}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* State 4: Picked Up */}
+        {/* State 3: Picked Up */}
         <div className={`absolute inset-0 flex flex-col transition-all duration-500 ${currentState === "picked_up" ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="flex-1 p-4">
             <DeliveryMap riderLat={order?.rider_lat} riderLng={order?.rider_lng} />
