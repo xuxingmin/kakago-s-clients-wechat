@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConical, Beaker } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { CategoryTabs } from "@/components/CategoryTabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Coupon } from "@/components/CouponFlags";
@@ -43,6 +45,12 @@ const allProducts: ProductTileData[] = [
   { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "droplets", labelZh: "奶洗澄清", labelEn: "Milk Wash" }], isCreative: true },
 ];
 
+const categories = [
+  { id: "all", nameZh: "全部", nameEn: "All" },
+  { id: "classic", nameZh: "意式基石", nameEn: "Foundation" },
+  { id: "lab", nameZh: "先锋实验", nameEn: "Avant-Garde" },
+];
+
 const getBestCouponDiscount = (productId: string): number => {
   const applicable = userCoupons.filter((c) => c.type === "universal" || c.applicableProducts?.includes(productId));
   return applicable.length === 0 ? 0 : Math.max(...applicable.map(c => c.value));
@@ -54,6 +62,7 @@ const getEstimatedPrice = (price: number, id: string): number =>
 const Index = () => {
   const { t } = useLanguage();
   const { items, addItem } = useCart();
+  const [activeCategory, setActiveCategory] = useState("all");
 
   const add = (product: ProductTileData, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,67 +76,91 @@ const Index = () => {
   const cartDiscount = items.length === 0 ? 0 : (userCoupons.length > 0 ? Math.max(...userCoupons.map(c => c.value)) : 0);
   const cartTotal = items.length === 0 ? 0 : Math.max(0, cartSubtotal - cartDiscount) + ESTIMATED_DELIVERY_FEE;
 
+  const showClassic = activeCategory === "all" || activeCategory === "classic";
+  const showLab = activeCategory === "all" || activeCategory === "lab";
+
+  const classicProducts = allProducts.filter(p => !p.isCreative);
+  const labProducts = allProducts.filter(p => p.isCreative);
+
+  const tabCategories = categories.map(c => ({
+    ...c,
+    count: c.id === "all" ? allProducts.length : c.id === "classic" ? classicProducts.length : labProducts.length,
+  }));
+
   return (
     <div className="h-screen flex flex-col page-enter overflow-hidden">
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        
+        <CategoryTabs
+          categories={tabCategories}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+        />
       </div>
 
-      <div className="flex-1 overflow-hidden flex flex-col pb-16">
+      <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
         <section className="px-4 py-0.5">
-          {/* ── Standard Series Header ── */}
-          <div className="mb-0.5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-white/75">
-                {t("意式基石系列", "FOUNDATION SERIES")}
-              </h2>
-              <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
-                {t("精品萃取标准，回归本味", "Premium extraction, pure origin")}
-              </span>
-            </div>
-            <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
-          </div>
+          {/* ── Standard Series ── */}
+          {showClassic && (
+            <>
+              <div className="mb-0.5">
+                <div className="flex items-baseline justify-between">
+                  <h2 className="text-[11px] font-bold tracking-wide text-white/75">
+                    {t("意式基石系列", "FOUNDATION SERIES")}
+                  </h2>
+                  <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
+                    {t("精品萃取标准，回归本味", "Premium extraction, pure origin")}
+                  </span>
+                </div>
+                <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
+              </div>
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
-            {allProducts.filter(p => !p.isCreative).map((product) => (
-              <ProductTile
-                key={product.id}
-                product={product}
-                estimatedPrice={getEstimatedPrice(product.price, product.id)}
-                quantityInCart={qty(product.id)}
-                onAddToCart={(e) => add(product, e)}
-              />
-            ))}
-          </div>
+              <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+                {classicProducts.map((product) => (
+                  <ProductTile
+                    key={product.id}
+                    product={product}
+                    estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                    quantityInCart={qty(product.id)}
+                    onAddToCart={(e) => add(product, e)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
 
-          {/* ── Creative Series Header ── */}
-          <div className="mt-1 mb-0.5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-[11px] font-bold tracking-wide text-white/75">
-                {t("先锋实验系列", "AVANT-GARDE LAB")}
-              </h2>
-              <span className="text-[10px] font-light tracking-wider text-white/35">
-                {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
-              </span>
-            </div>
-            <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
-          </div>
+          {/* ── Creative Series ── */}
+          {showLab && (
+            <>
+              <div className={`${showClassic ? "mt-2" : ""} mb-0.5`}>
+                <div className="flex items-baseline justify-between">
+                  <h2 className="text-[11px] font-bold tracking-wide text-white/75">
+                    {t("先锋实验系列", "AVANT-GARDE LAB")}
+                  </h2>
+                  <span className="text-[10px] font-light tracking-wider text-white/35">
+                    {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
+                  </span>
+                </div>
+                <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
+              </div>
 
-          <div className="grid grid-cols-2 gap-1 stagger-fade-in auto-rows-fr">
-            {allProducts.filter(p => p.isCreative).map((product, index) => (
-              <ProductTile
-                key={product.id}
-                product={product}
-                estimatedPrice={getEstimatedPrice(product.price, product.id)}
-                quantityInCart={qty(product.id)}
-                onAddToCart={(e) => add(product, e)}
-                labIndex={index + 7}
-              />
-            ))}
-          </div>
-          <div className="flex items-center justify-between gap-2 mt-0.5 px-0.5">
+              <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+                {labProducts.map((product, index) => (
+                  <ProductTile
+                    key={product.id}
+                    product={product}
+                    estimatedPrice={getEstimatedPrice(product.price, product.id)}
+                    quantityInCart={qty(product.id)}
+                    onAddToCart={(e) => add(product, e)}
+                    labIndex={index + 7}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className="flex items-center justify-between gap-2 mt-1 px-0.5 pb-2">
             <div className="flex items-center gap-1.5 text-violet-400/25">
               <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
               <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
