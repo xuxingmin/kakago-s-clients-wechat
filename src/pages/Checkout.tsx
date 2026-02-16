@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, ChevronRight, MessageSquare, CupSoda, Thermometer, Flame, Snowflake, FlaskConical, Droplets, Minus, Plus } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, MapPin, ChevronRight, MessageSquare, CupSoda, Thermometer, Flame, Snowflake, FlaskConical, Droplets, Minus, Plus, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useAddress } from "@/contexts/AddressContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -53,6 +53,8 @@ const Checkout = () => {
   const { t } = useLanguage();
   const [remark, setRemark] = useState("");
   const [beansToUse, setBeansToUse] = useState(0);
+  const [estimatedMinutes, setEstimatedMinutes] = useState<number | null>(null);
+  const [etaLoading, setEtaLoading] = useState(false);
 
   const deliveryFee = 2;
   const couponDiscount = 3;
@@ -63,6 +65,23 @@ const Checkout = () => {
 
   const maskPhone = (phone: string) =>
     phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+
+  // Fetch estimated delivery time based on address
+  useEffect(() => {
+    if (!selectedAddress) {
+      setEstimatedMinutes(null);
+      return;
+    }
+    setEtaLoading(true);
+    // TODO: Replace with real UU跑腿 API call via edge function
+    // supabase.functions.invoke('estimate-delivery', { body: { lat, lng } })
+    const timer = setTimeout(() => {
+      // Mock: 25-40 min based on address
+      setEstimatedMinutes(Math.floor(Math.random() * 16) + 25);
+      setEtaLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [selectedAddress]);
 
   if (totalItems === 0) {
     navigate("/");
@@ -91,7 +110,7 @@ const Checkout = () => {
 
     if (spec.isCreative && spec.specTags) {
       return (
-        <div className="flex items-center gap-2 text-purple-300/50 text-[9px]">
+        <div className="flex items-center gap-2 text-primary/40 text-[10px]">
           {spec.specTags.map((tag, i) => {
             const TagIcon = specTagIconMap[tag.icon];
             return (
@@ -109,7 +128,7 @@ const Checkout = () => {
       const partsZh = spec.specZh.split(" ");
       const partsEn = (spec.specEn || "").split(" ");
       return (
-        <div className="flex items-center gap-2 text-violet-400/40 text-[9px]">
+        <div className="flex items-center gap-2 text-primary/35 text-[10px]">
           <span className="flex items-center gap-0.5">
             <CupSoda className="w-[9px] h-[9px]" strokeWidth={1.5} />
             {t(partsZh[0], partsEn[0])}
@@ -158,10 +177,10 @@ const Checkout = () => {
             {address ? (
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-foreground text-sm">{address.name}</span>
-                  <span className="text-muted-foreground text-xs">{maskPhone(address.phone)}</span>
+                  <span className="font-semibold text-foreground text-[13px]">{address.name}</span>
+                  <span className="text-muted-foreground text-[12px]">{maskPhone(address.phone)}</span>
                 </div>
-                <p className="text-muted-foreground text-[11px] mt-0.5 leading-relaxed">
+                <p className="text-muted-foreground text-[12px] mt-0.5 leading-relaxed">
                   {t(
                     `${address.district}${address.detail}`,
                     `${address.detailEn}, ${address.districtEn}`
@@ -170,37 +189,53 @@ const Checkout = () => {
               </div>
             ) : (
               <div className="flex-1 min-w-0 py-1">
-                <span className="text-muted-foreground text-sm">{t("请选择收货地址", "Select delivery address")}</span>
+                <span className="text-muted-foreground text-[13px]">{t("请选择收货地址", "Select delivery address")}</span>
               </div>
             )}
             <ChevronRight className="w-4 h-4 text-muted-foreground/50 flex-shrink-0 mt-1" />
           </div>
         </section>
 
+        {/* Estimated Delivery Time */}
+        {address && (
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-primary/[0.06] border border-primary/10">
+            <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+            {etaLoading ? (
+              <span className="text-[12px] text-muted-foreground/60">{t("预估送达时间计算中...", "Calculating delivery time...")}</span>
+            ) : estimatedMinutes ? (
+              <span className="text-[12px] text-foreground/80">
+                {t(`预计 ${estimatedMinutes} 分钟送达`, `Est. delivery in ${estimatedMinutes} min`)}
+              </span>
+            ) : (
+              <span className="text-[12px] text-muted-foreground/50">{t("暂无预估时间", "ETA unavailable")}</span>
+            )}
+          </div>
+        )}
+
         {/* Product Items - single card, compact rows */}
         <section className="rounded-2xl bg-white/[0.04] border border-white/8 overflow-hidden divide-y divide-white/5">
           {items.map((item) => {
             const spec = productSpecs[item.id];
             return (
-              <div key={item.id} className="px-3 py-2">
+              <div key={item.id} className="px-3.5 py-2.5">
                 {/* Row 1: Name + Price + Qty */}
                 <div className="flex items-baseline justify-between gap-2">
                   <div className="flex items-baseline gap-1.5 flex-1 min-w-0">
                     <h3 className="font-semibold text-foreground text-[13px] leading-tight truncate">
                       {t(item.nameZh, item.nameEn)}
                     </h3>
-                    <span className="text-[8px] text-muted-foreground/40 uppercase tracking-wider shrink-0">
+                    <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider shrink-0">
                       {item.nameEn}
                     </span>
                   </div>
                   <div className="flex items-baseline gap-1.5 shrink-0">
                     <span className="text-foreground font-bold text-[13px]">¥{item.price}</span>
-                    <span className="text-muted-foreground/40 text-[10px]">x{item.quantity}</span>
+                    <span className="text-muted-foreground/50 text-[11px]">x{item.quantity}</span>
                   </div>
                 </div>
                 {/* Row 2: Flavor */}
                 {spec && (
-                  <p className={`text-[9px] mt-0.5 leading-snug ${spec.isCreative ? "text-purple-300/45" : "text-violet-300/35"}`}>
+                  <p className={`text-[10px] mt-0.5 leading-snug ${spec.isCreative ? "text-primary/45" : "text-primary/35"}`}>
                     {t(spec.tagZh, spec.tagEn)}
                   </p>
                 )}
@@ -215,15 +250,15 @@ const Checkout = () => {
 
         {/* Price Breakdown with KAKA Beans deduction */}
         <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8 space-y-2">
-          <div className="flex justify-between text-xs">
+          <div className="flex justify-between text-[12px]">
             <span className="text-muted-foreground/60">{t("商品金额", "Subtotal")}</span>
             <span className="text-foreground/80">¥{totalPrice}</span>
           </div>
-          <div className="flex justify-between text-xs">
+          <div className="flex justify-between text-[12px]">
             <span className="text-muted-foreground/60">{t("优惠券", "Coupon")}</span>
             <span className="text-primary">-¥{couponDiscount}</span>
           </div>
-          <div className="flex justify-between text-xs">
+          <div className="flex justify-between text-[12px]">
             <span className="text-muted-foreground/60">{t("配送费", "Delivery")}</span>
             <span className="text-foreground/80">¥{deliveryFee}</span>
           </div>
@@ -233,10 +268,10 @@ const Checkout = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <BeansIcon />
-                <span className="text-xs text-foreground/80">{t("KAKA豆抵扣", "KAKA Beans")}</span>
+                <span className="text-[12px] text-foreground/80">{t("KAKA豆抵扣", "KAKA Beans")}</span>
               </div>
               {beansToUse > 0 && (
-                <span className="text-primary text-xs">-¥{beansDeduction.toFixed(2)}</span>
+                <span className="text-primary text-[12px]">-¥{beansDeduction.toFixed(2)}</span>
               )}
             </div>
             <div className="flex items-center gap-2 mt-1.5">
@@ -266,7 +301,7 @@ const Checkout = () => {
                 <Plus className="w-3 h-3" />
               </button>
             </div>
-            <div className="flex justify-between mt-1 text-[9px] text-muted-foreground/40">
+            <div className="flex justify-between mt-1 text-[10px] text-muted-foreground/40">
               <span>{t(`使用 ${beansToUse.toLocaleString()} 豆`, `Use ${beansToUse.toLocaleString()} beans`)}</span>
               <span>{t(`余额 ${userBeansBalance.toLocaleString()} 豆`, `Balance: ${userBeansBalance.toLocaleString()}`)}</span>
             </div>
@@ -274,8 +309,8 @@ const Checkout = () => {
 
           <div className="h-[0.5px] bg-violet-500/15" />
           <div className="flex justify-between items-center">
-            <span className="font-semibold text-foreground text-sm">{t("实付", "Total")}</span>
-            <span className="text-lg font-bold text-primary drop-shadow-[0_0_12px_rgba(127,0,255,0.3)]">¥{finalPrice.toFixed(2)}</span>
+            <span className="font-semibold text-foreground text-[13px]">{t("实付", "Total")}</span>
+            <span className="text-lg font-bold text-primary">¥{finalPrice.toFixed(2)}</span>
           </div>
         </section>
 
@@ -283,18 +318,18 @@ const Checkout = () => {
         <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8">
           <div className="flex items-center gap-1.5 mb-2">
             <MessageSquare className="w-3.5 h-3.5 text-violet-400/50" />
-            <span className="text-[11px] font-medium text-foreground/80">{t("订单备注", "Order Remark")}</span>
+            <span className="text-[12px] font-medium text-foreground/80">{t("订单备注", "Order Remark")}</span>
           </div>
           <textarea
             value={remark}
             onChange={(e) => setRemark(e.target.value)}
             placeholder={t("如需特殊要求请在此备注，如：少冰、加浓等", "Special requests: less ice, extra shot...")}
-            className="w-full bg-white/[0.03] border border-white/6 rounded-xl px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/30 resize-none focus:outline-none focus:border-primary/30 transition-colors"
+            className="w-full bg-white/[0.03] border border-white/6 rounded-xl px-3 py-2.5 text-[12px] text-foreground placeholder:text-muted-foreground/30 resize-none focus:outline-none focus:border-primary/30 transition-colors"
             rows={2}
             maxLength={200}
           />
           <div className="text-right mt-0.5">
-            <span className="text-[9px] text-muted-foreground/30">{remark.length}/200</span>
+            <span className="text-[10px] text-muted-foreground/30">{remark.length}/200</span>
           </div>
         </section>
       </div>
@@ -304,11 +339,11 @@ const Checkout = () => {
         <div className="px-4 py-3 max-w-md mx-auto flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-1">
-              <span className="text-muted-foreground/60 text-[10px]">{t("合计", "Total")}</span>
-              <span className="text-lg font-bold text-primary drop-shadow-[0_0_12px_rgba(127,0,255,0.3)]">¥{finalPrice.toFixed(2)}</span>
+              <span className="text-muted-foreground/60 text-[11px]">{t("合计", "Total")}</span>
+              <span className="text-lg font-bold text-primary">¥{finalPrice.toFixed(2)}</span>
             </div>
             {beansToUse > 0 && (
-              <span className="text-[9px] text-primary/60">{t(`含KAKA豆抵扣 ¥${beansDeduction.toFixed(2)}`, `Incl. beans -¥${beansDeduction.toFixed(2)}`)}</span>
+              <span className="text-[10px] text-primary/60">{t(`含KAKA豆抵扣 ¥${beansDeduction.toFixed(2)}`, `Incl. beans -¥${beansDeduction.toFixed(2)}`)}</span>
             )}
           </div>
           <button
