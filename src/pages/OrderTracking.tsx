@@ -330,7 +330,6 @@ const StatusTimeline = ({ currentStatus, onStatusClick, isInteractive, t }: Stat
   const steps = [
     { key: "pending" as OrderState, labelZh: "待接单", labelEn: "Pending", icon: Clock },
     { key: "accepted" as OrderState, labelZh: "制作中", labelEn: "Brewing", icon: Coffee },
-    { key: "rider_assigned" as OrderState, labelZh: "骑手接单", labelEn: "Rider", icon: Navigation },
     { key: "picked_up" as OrderState, labelZh: "配送中", labelEn: "On Way", icon: Package },
     { key: "delivered" as OrderState, labelZh: "已送达", labelEn: "Done", icon: CheckCircle2 },
   ];
