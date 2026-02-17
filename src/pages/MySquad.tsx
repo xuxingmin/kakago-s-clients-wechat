@@ -171,7 +171,7 @@ const MySquad = () => {
             </div>
             
             <button
-              onClick={handleShare}
+              onClick={() => setShowPoster(true)}
               className="btn-gold px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1"
             >
               <MessageCircle className="w-3.5 h-3.5" />
