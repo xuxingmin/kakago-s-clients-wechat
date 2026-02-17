@@ -557,6 +557,20 @@ const OrderTracking = () => {
         t={t}
       />
 
+      {/* Dynamic delivery status message */}
+      <div className="mx-4 mb-2">
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary/50 border border-border">
+          <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" strokeWidth={1.5} />
+          <span className="text-[11px] text-muted-foreground">
+            {currentState === "pending" && t("接单后预计30分钟送达", "Est. 30 min delivery after accepted")}
+            {currentState === "accepted" && t("预计25分钟送达", "Est. 25 min delivery")}
+            {(currentState === "picked_up") && t("预计12分钟送达", "Est. 12 min delivery")}
+            {currentState === "delivered" && t("已完成配送，请注意查收", "Delivery completed, please check")}
+            {currentState === "rating" && t("已完成配送，请注意查收", "Delivery completed, please check")}
+          </span>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="flex-1 relative overflow-hidden">
         {/* State 1: Pending */}
