@@ -14,7 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOrders } from "@/hooks/useOrders";
 
 
-type OrderStatus = "pending" | "preparing" | "delivering" | "completed";
+type OrderStatus = "pending" | "preparing" | "delivering" | "delivered" | "completed";
 
 interface OrderItem {
   name: string;
@@ -45,13 +45,22 @@ interface DisplayOrder {
 }
 
 // Map DB order status to display status
-const mapStatus = (s: string): OrderStatus => {
+const DELIVERY_DISPLAY_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
+
+const mapStatus = (s: string, deliveredAt?: string | null): OrderStatus => {
   switch (s) {
     case "pending": return "pending";
     case "accepted": return "preparing";
     case "rider_assigned": return "delivering";
     case "picked_up": return "delivering";
-    case "delivered": return "completed";
+    case "delivered": {
+      // Show as "delivered" for 30 min, then auto-archive to "completed"
+      if (deliveredAt) {
+        const elapsed = Date.now() - new Date(deliveredAt).getTime();
+        if (elapsed < DELIVERY_DISPLAY_WINDOW_MS) return "delivered";
+      }
+      return "completed";
+    }
     case "rated": return "completed";
     case "cancelled": return "completed";
     default: return "pending";
@@ -145,7 +154,7 @@ const Orders = () => {
       orderNumber: `KKG-${o.id.slice(0, 8).toUpperCase()}`,
       items: [{ name: o.product_name, qty: o.quantity, unitPrice: o.price, image: o.product_image || undefined }],
       price: o.total_amount,
-      status: mapStatus(o.status),
+      status: mapStatus(o.status, o.delivered_at),
       cafeName: o.merchants?.name,
       cafeNameEn: o.merchants?.name_en || o.merchants?.name,
       cafeRating: o.merchants?.rating || undefined,
@@ -171,7 +180,7 @@ const Orders = () => {
   const handleOrderClick = (orderId: string) => {
     const order = orders.find((o) => o.id === orderId);
     if (!order) return;
-    if (order.status === "completed" && !order.userRating) {
+    if ((order.status === "completed" || order.status === "delivered") && !order.userRating) {
       setSelectedOrderForRating(order);
       setRatingModalOpen(true);
     } else if (order.status !== "completed") {
