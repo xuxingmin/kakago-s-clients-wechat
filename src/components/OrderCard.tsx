@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Star, Coffee, Phone, RotateCcw, ChevronRight, X, FileText, Ban } from "lucide-react";
 
-type OrderStatus = "pending" | "preparing" | "delivering" | "completed";
+type OrderStatus = "pending" | "preparing" | "delivering" | "delivered" | "completed";
 
 interface OrderItem {
   name: string;
@@ -42,6 +42,7 @@ const STATUS_PROGRESS: Record<OrderStatus, number> = {
   pending: 0,
   preparing: 35,
   delivering: 70,
+  delivered: 100,
   completed: 100,
 };
 
@@ -49,6 +50,7 @@ const getStatusConfig = (t: (zh: string, en: string) => string) => ({
   pending: { label: t("待接单", "Pending"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: true },
   preparing: { label: t("制作中", "Making"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   delivering: { label: t("配送中", "Delivering"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
+  delivered: { label: t("已送达", "Delivered"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   completed: { label: t("已完成", "Done"), color: "text-white/40", borderColor: "border-white/10", bgColor: "bg-white/5", blink: false },
 });
 
@@ -89,12 +91,14 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     const progress = STATUS_PROGRESS[status];
     const isSearching = !isRevealed && status === "pending";
     const isCompleted = status === "completed";
+    const isDelivered = status === "delivered";
+    const isFinished = isCompleted || isDelivered;
     const canCancel = status === "pending";
 
     const [refundSecondsLeft, setRefundSecondsLeft] = useState<number | null>(null);
 
     useEffect(() => {
-      if (!orderCreatedMs || isCompleted) return;
+      if (!orderCreatedMs || isFinished) return;
       const calc = () => {
         const elapsed = Date.now() - orderCreatedMs;
         const remaining = Math.max(0, Math.ceil((REFUND_WINDOW_MS - elapsed) / 1000));
@@ -103,7 +107,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       calc();
       const interval = setInterval(calc, 1000);
       return () => clearInterval(interval);
-    }, [orderCreatedMs, isCompleted]);
+    }, [orderCreatedMs, isFinished]);
 
     const canSelfRefund = refundSecondsLeft !== null && refundSecondsLeft > 0;
 
@@ -128,14 +132,14 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${statusInfo.color} ${statusInfo.bgColor} ${statusInfo.borderColor} ${statusInfo.blink ? "animate-pulse" : ""}`}>
                 {statusInfo.label}
               </span>
-              {displayEta && !isCompleted && (
+              {displayEta && !isFinished && (
                 <span className="text-[10px] font-mono text-primary/70">≈ {displayEta}</span>
               )}
             </div>
           </div>
 
           {/* Progress bar for active orders */}
-          {!isCompleted && (
+          {!isFinished && (
             <div className="flex items-center gap-2 mb-3">
               <div className="flex-1 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
                 <div
@@ -202,7 +206,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
         <div className="flex items-center justify-between px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
           {/* Left side */}
           <div className="flex items-center gap-1.5">
-            {!isCompleted && onCancel && (
+            {!isFinished && onCancel && (
               <button
                 onClick={(e) => { e.stopPropagation(); if (canCancel) onCancel(); }}
                 disabled={!canCancel}
@@ -216,6 +220,15 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 {t("取消订单", "Cancel")}
               </button>
             )}
+            {isDelivered && !userRating && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onClick(); }}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
+              >
+                <Star className="w-3 h-3" />
+                {t("评价得KAKA豆", "Rate for beans")}
+              </button>
+            )}
             {isCompleted && !userRating && (
               <button
                 onClick={(e) => { e.stopPropagation(); onClick(); }}
@@ -225,7 +238,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 {t("评价得KAKA豆", "Rate for beans")}
               </button>
             )}
-            {isCompleted && userRating && (
+            {isFinished && userRating && (
               <span className="text-[10px] text-white/30">
                 {t("已评价", "Rated")}
               </span>
@@ -234,7 +247,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
           {/* Right side actions */}
           <div className="flex items-center gap-1.5">
-            {isCompleted && onInvoice && (
+            {isFinished && onInvoice && (
               <button
                 onClick={(e) => { e.stopPropagation(); onInvoice(); }}
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-primary/30 bg-primary/5 text-[10px] font-medium text-primary hover:bg-primary/15 transition-colors"
@@ -244,7 +257,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               </button>
             )}
 
-            {!isCompleted && onContact && (
+            {!isFinished && onContact && (
               <button
                 onClick={(e) => { e.stopPropagation(); onContact(); }}
                 className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
@@ -264,7 +277,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
               </button>
             )}
 
-            {!isCompleted && (
+            {!isFinished && (
               <button
                 onClick={(e) => { e.stopPropagation(); onClick(); }}
                 className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
