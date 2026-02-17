@@ -14,7 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOrders } from "@/hooks/useOrders";
 
 
-type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
+type OrderStatus = "pending" | "preparing" | "delivering" | "completed";
 
 interface OrderItem {
   name: string;

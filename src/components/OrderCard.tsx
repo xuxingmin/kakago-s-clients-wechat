@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Star, Coffee, Phone, RotateCcw, ChevronRight, X, FileText, Ban } from "lucide-react";
 
-type OrderStatus = "pending" | "preparing" | "ready" | "delivering" | "completed";
+type OrderStatus = "pending" | "preparing" | "delivering" | "completed";
 
 interface OrderItem {
   name: string;
@@ -40,16 +40,14 @@ interface OrderCardProps {
 
 const STATUS_PROGRESS: Record<OrderStatus, number> = {
   pending: 0,
-  preparing: 30,
-  ready: 60,
-  delivering: 85,
+  preparing: 35,
+  delivering: 70,
   completed: 100,
 };
 
 const getStatusConfig = (t: (zh: string, en: string) => string) => ({
   pending: { label: t("待接单", "Pending"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: true },
   preparing: { label: t("制作中", "Making"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
-  ready: { label: t("待取货", "Ready"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   delivering: { label: t("配送中", "Delivering"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   completed: { label: t("已完成", "Done"), color: "text-white/40", borderColor: "border-white/10", bgColor: "bg-white/5", blink: false },
 });
