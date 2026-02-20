@@ -70,64 +70,55 @@ const Profile = () => {
             {/* User Profile Card */}
             <button
               onClick={() => !isLoggedIn && setAuthModalOpen(true)}
-              className="card-md text-left"
+              className="card-md text-left flex flex-col"
             >
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1.5">
                 {isLoggedIn ? (
-                  <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <Phone className="w-3.5 h-3.5 text-primary" />
+                  <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Phone className="w-3 h-3 text-primary" />
                   </div>
                 ) : (
-                  <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
-                    <User className="w-3.5 h-3.5 text-muted-foreground" />
+                  <div className="w-6 h-6 rounded-lg bg-muted flex items-center justify-center">
+                    <User className="w-3 h-3 text-muted-foreground" />
                   </div>
                 )}
-                <div>
-                  <h3 className="text-xs font-semibold text-foreground">
-                    {isLoggedIn ? t("我的账号", "My Account") : t("点击登录", "Tap to Login")}
-                  </h3>
-                  <p className="text-[9px] text-muted-foreground">
-                    {isLoggedIn ? t("安全中心", "Security Center") : t("手机号快捷登录", "Quick phone login")}
-                  </p>
-                </div>
+                <span className="text-[9px] text-muted-foreground">{t("安全中心", "Security")}</span>
               </div>
-              <div>
-                <div className="flex items-baseline gap-1 mb-1.5">
-                  <span className="text-xl font-black text-foreground">
-                    {isLoggedIn ? userName : "--"}
-                  </span>
-                </div>
-                <p className="text-[9px] text-muted-foreground">
-                  {isLoggedIn
-                    ? (userPhone ? t("已绑定手机", "Phone linked") : t("已登录", "Logged in"))
-                    : t("登录后享受更多权益", "Login for more benefits")}
-                </p>
-              </div>
+              <h3 className="text-base font-black text-foreground leading-tight mb-1">
+                {isLoggedIn ? t("我的账号", "My Account") : t("点击登录", "Tap to Login")}
+              </h3>
+              <p className="text-xs text-muted-foreground mb-auto">
+                {isLoggedIn ? userName : t("手机号快捷登录", "Quick phone login")}
+              </p>
+              <p className="text-[9px] text-muted-foreground mt-2">
+                {isLoggedIn
+                  ? (userPhone ? t("已绑定手机", "Phone linked") : t("已登录", "Logged in"))
+                  : t("登录享更多权益", "Login for benefits")}
+              </p>
             </button>
 
             {/* Coffee Mates Card */}
-            <button onClick={() => navigate("/my-squad")} className="card-md text-left">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <Users className="w-3.5 h-3.5 text-primary" />
+            <button onClick={() => navigate("/my-squad")} className="card-md text-left flex flex-col">
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <Users className="w-3 h-3 text-primary" />
                 </div>
-                <div>
-                  <h3 className="text-xs font-semibold text-foreground">{t("咖啡搭子", "Coffee Mates")}</h3>
-                  <p className="text-[9px] text-muted-foreground">{t("一起喝更快乐", "Better together")}</p>
-                </div>
+                <span className="text-[9px] text-muted-foreground">{t("一起喝更快乐", "Better together")}</span>
               </div>
-              <div>
-                <div className="flex items-baseline gap-1 mb-1.5">
-                  <span className="text-xl font-black text-foreground">{isLoggedIn ? "348" : "--"}</span>
-                  <span className="text-[10px] text-muted-foreground">{t("位", "mates")}</span>
+              <h3 className="text-base font-black text-foreground leading-tight mb-1">
+                {t("咖啡搭子", "Coffee Mates")}
+              </h3>
+              <p className="text-xs text-muted-foreground mb-auto">
+                {isLoggedIn ? t("共 348 位成员", "348 members total") : "--"}
+              </p>
+              {isLoggedIn ? (
+                <div className="flex items-center gap-1 text-[9px] mt-2" style={{ color: 'hsl(142 71% 45%)' }}>
+                  <span>⚡️</span>
+                  <span className="font-medium">{t("今日产出", "Today")} +1,200 KAKA{t("豆", " Beans")}</span>
                 </div>
-                {isLoggedIn && (
-                  <div className="flex items-center gap-1 text-[9px]" style={{ color: 'hsl(142 71% 45%)' }}>
-                    <span>⚡️</span>
-                    <span className="font-medium">{t("今日产出", "Today")} +1,200 KAKA{t("豆", " Beans")}</span>
-                  </div>
-                )}
-              </div>
+              ) : (
+                <p className="text-[9px] text-muted-foreground mt-2">&nbsp;</p>
+              )}
             </button>
           </div>
         </section>
