@@ -7,6 +7,7 @@ import { CategoryTabs } from "@/components/CategoryTabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Coupon } from "@/components/CouponFlags";
+
 import { MiniCartBar } from "@/components/MiniCartBar";
 import { ProductTile, ProductTileData } from "@/components/ProductTile";
 import { toast } from "sonner";
