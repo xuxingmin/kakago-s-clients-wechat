@@ -191,7 +191,7 @@ const HelpSupport = () => {
 
         {/* FAQ Tab */}
         {activeTab === "faq" && (
-          <section className="px-4 mt-3 pb-4 space-y-3 max-w-md mx-auto">
+          <section className="px-4 mt-3 pb-24 space-y-3 max-w-md mx-auto">
             {faqSections.map((section, sIdx) => (
               <div key={sIdx}>
                 <h3 className="text-xs font-semibold text-foreground mb-2">
@@ -284,7 +284,7 @@ const HelpSupport = () => {
 
         {/* Feedback Tab */}
         {activeTab === "feedback" && (
-          <section className="px-4 mt-3 pb-4 max-w-md mx-auto space-y-3">
+          <section className="px-4 mt-3 pb-24 max-w-md mx-auto space-y-3">
             <div className="card-lg !p-3 space-y-3">
               <div>
                 <label className="text-xs font-medium text-foreground mb-1.5 block">
@@ -333,7 +333,7 @@ const HelpSupport = () => {
 
         {/* About Tab */}
         {activeTab === "about" && (
-          <section className="px-4 mt-3 pb-4 max-w-md mx-auto space-y-3">
+          <section className="px-4 mt-3 pb-24 max-w-md mx-auto space-y-3">
             <div className="card-lg !p-4 text-center">
               <div className="w-14 h-14 rounded-3xl bg-primary/15 flex items-center justify-center mx-auto mb-3 shadow-[0_0_20px_hsla(271,81%,56%,0.2)]">
                 <Coffee className="w-7 h-7 text-primary" />

@@ -186,7 +186,7 @@ const MerchantAuth = () => {
         </div>
 
         {/* Benefits - compact list */}
-        <div className="flex-1 flex flex-col px-4 pt-1 pb-2 space-y-1.5 overflow-hidden">
+        <div className="flex-1 flex flex-col px-4 pt-1 pb-2 space-y-1.5 overflow-y-auto scrollbar-hide">
           {benefits.map((b, i) => {
             const Icon = b.icon;
             return (
@@ -351,7 +351,7 @@ const MerchantAuth = () => {
           <div className="fog-divider mx-4" />
         </div>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3 space-y-2">
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3 pb-24 space-y-2">
           {/* Document Upload */}
           <div className="card-md">
             <h3 className="text-xs font-semibold text-white mb-3">{t("证件上传", "Documents")}</h3>
