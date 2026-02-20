@@ -214,33 +214,91 @@ const MySquad = () => {
       {/* Poster Modal */}
       {showPoster && (
         <>
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[80]" onClick={() => setShowPoster(false)} />
-          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[85] max-w-sm mx-auto">
-            <div className="card-lg bg-gradient-to-br from-[hsl(270,15%,12%)] to-[hsl(280,20%,6%)]">
-              <div className="text-center">
-                <h2 className="text-xl font-black text-foreground tracking-tight mb-1">KAKAGO</h2>
-                <p className="text-[10px] text-muted-foreground mb-3">{t("可负担的精品咖啡", "Affordable Specialty Coffee")}</p>
-                <div className="w-24 h-24 mx-auto bg-foreground rounded-xl p-1.5 mb-2">
-                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-purple-800/20 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/30">
-                    <QrCode className="w-8 h-8 text-primary" />
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[80]" onClick={() => setShowPoster(false)} />
+          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[85] max-w-[340px] mx-auto">
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: 'linear-gradient(160deg, hsl(270 12% 10%), hsl(280 15% 5%))',
+                border: '1px solid hsl(271 81% 40% / 0.4)',
+                boxShadow: '0 0 40px hsl(271 81% 56% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
+              }}
+            >
+              <div className="p-5">
+                {/* Header */}
+                <div className="text-center mb-4">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <span className="text-lg font-black tracking-wider text-foreground">KAKAGO</span>
+                    <span className="text-base">✨</span>
+                  </div>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground/60">{t("创世搭子凭证", "Genesis Mate Pass")}</p>
+                </div>
+
+                {/* QR Code Area — futuristic reticle frame */}
+                <div className="flex justify-center mb-4">
+                  <div className="relative w-[140px] h-[140px]">
+                    {/* Outer glow */}
+                    <div className="absolute inset-0 rounded-xl opacity-30" style={{ boxShadow: '0 0 30px hsl(271 81% 56%), 0 0 60px hsl(271 81% 56% / 0.3)' }} />
+                    {/* Corner reticles */}
+                    <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary rounded-tl-lg" />
+                    <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary rounded-tr-lg" />
+                    <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary rounded-bl-lg" />
+                    <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary rounded-br-lg" />
+                    {/* QR placeholder */}
+                    <div className="absolute inset-3 bg-foreground/95 rounded-lg flex items-center justify-center">
+                      <QrCode className="w-16 h-16 text-background/80" strokeWidth={1} />
+                    </div>
+                    {/* Scan line animation */}
+                    <div className="absolute inset-x-3 top-3 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-60 animate-pulse" />
                   </div>
                 </div>
-                <div className="bg-primary/15 rounded-lg px-2 py-1 inline-block mb-2">
-                  <p className="text-[8px] text-muted-foreground">{t("邀请码", "Code")}</p>
-                  <p className="text-sm font-mono font-black text-primary tracking-wider">{squadStats.inviteCode}</p>
+
+                {/* Invite Code Pill */}
+                <div className="flex justify-center mb-3">
+                  <button
+                    onClick={handleCopyCode}
+                    className="flex items-center gap-2 px-4 py-1.5 rounded-full"
+                    style={{ background: 'hsl(271 81% 56% / 0.1)', border: '1px solid hsl(271 81% 56% / 0.25)' }}
+                  >
+                    <span className="text-[9px] text-muted-foreground/60">{t("邀请码", "Code")}</span>
+                    <span className="text-xs font-mono font-black text-primary tracking-widest">{squadStats.inviteCode}</span>
+                    {copied ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3 text-primary/50" />}
+                  </button>
                 </div>
-                <p className="text-[11px] text-foreground/70">
-                  {t("扫码加入，首杯", "Join now, get")} <span className="text-primary font-bold">5{t("折", "0% off")}</span>
+
+                {/* CTA Text */}
+                <p className="text-center text-[11px] font-semibold text-foreground/90 mb-3">
+                  {t("扫码激活 Taste ID，解锁惊喜！", "Scan to activate Taste ID & unlock rewards!")}
                 </p>
-              </div>
-              <div className="flex gap-2 mt-3">
-                <button onClick={() => setShowPoster(false)} className="flex-1 py-2 rounded-xl bg-secondary text-muted-foreground text-xs font-medium">
-                  {t("关闭", "Close")}
-                </button>
-                <button onClick={() => { handleShare(); setShowPoster(false); }} className="flex-1 py-2 rounded-xl btn-gold text-xs font-bold flex items-center justify-center gap-1.5 !min-h-0">
-                  <Share2 className="w-3.5 h-3.5" />
-                  {t("分享", "Share")}
-                </button>
+
+                {/* Sharer Benefit Note */}
+                <div className="text-center mb-4 px-2">
+                  <p className="text-[8px] leading-relaxed" style={{ color: 'hsl(142 71% 45%)' }}>
+                    ⚡️ {t(
+                      "绑定成功后，搭子每笔消费将为你注入 2% KKB 能量。",
+                      "Once linked, every mate order charges 2% KKB energy for you."
+                    )}
+                  </p>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-2.5">
+                  <button
+                    onClick={() => setShowPoster(false)}
+                    className="flex-1 py-2.5 rounded-xl text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    style={{ border: '1px solid hsl(0 0% 100% / 0.1)' }}
+                  >
+                    {t("关闭", "Close")}
+                  </button>
+                  <button
+                    onClick={() => { handleShare(); setShowPoster(false); }}
+                    className="flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 text-primary-foreground transition-colors"
+                    style={{ background: 'hsl(271 81% 40%)', boxShadow: '0 0 20px hsl(271 81% 56% / 0.3)' }}
+                  >
+                    <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    {t("发送通行证", "Send Pass")}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
