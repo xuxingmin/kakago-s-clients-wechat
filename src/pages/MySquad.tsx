@@ -1,10 +1,10 @@
 import { useState } from "react";
+import squadInvitePoster from "@/assets/squad-invite-poster.jpg";
 import { useNavigate } from "react-router-dom";
 import { 
   ChevronLeft, 
   Copy, 
   Share2,
-  QrCode,
   Check,
   Zap,
   Link2,
@@ -234,22 +234,17 @@ const MySquad = () => {
                   <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground/60">{t("创世搭子凭证", "Genesis Mate Pass")}</p>
                 </div>
 
-                {/* QR Code Area — futuristic reticle frame */}
+                {/* Poster Image */}
                 <div className="flex justify-center mb-4">
-                  <div className="relative w-[140px] h-[140px]">
-                    {/* Outer glow */}
-                    <div className="absolute inset-0 rounded-xl opacity-30" style={{ boxShadow: '0 0 30px hsl(271 81% 56%), 0 0 60px hsl(271 81% 56% / 0.3)' }} />
-                    {/* Corner reticles */}
-                    <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary rounded-tl-lg" />
-                    <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary rounded-tr-lg" />
-                    <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary rounded-bl-lg" />
-                    <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary rounded-br-lg" />
-                    {/* QR placeholder */}
-                    <div className="absolute inset-3 bg-foreground/95 rounded-lg flex items-center justify-center">
-                      <QrCode className="w-16 h-16 text-background/80" strokeWidth={1} />
-                    </div>
-                    {/* Scan line animation */}
-                    <div className="absolute inset-x-3 top-3 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-60 animate-pulse" />
+                  <div
+                    className="w-[160px] h-[160px] rounded-2xl overflow-hidden"
+                    style={{ boxShadow: '0 0 24px hsl(271 81% 56% / 0.5), 0 0 48px hsl(271 81% 56% / 0.2)' }}
+                  >
+                    <img
+                      src={squadInvitePoster}
+                      alt="KAKAGO VIP Pass"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
 
@@ -268,7 +263,7 @@ const MySquad = () => {
 
                 {/* CTA Text */}
                 <p className="text-center text-[11px] font-semibold text-foreground/90 mb-3">
-                  {t("扫码激活 Taste ID，解锁惊喜！", "Scan to activate Taste ID & unlock rewards!")}
+                  {t("发送专属通行证，邀请搭子加入", "Send your exclusive pass and invite mates to join")}
                 </p>
 
                 {/* Sharer Benefit Note */}
