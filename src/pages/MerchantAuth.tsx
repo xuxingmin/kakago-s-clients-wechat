@@ -28,6 +28,8 @@ const MerchantAuth = () => {
   const [dailyPeakCups, setDailyPeakCups] = useState("");
   const [businessHoursOpen, setBusinessHoursOpen] = useState("09:00");
   const [businessHoursClose, setBusinessHoursClose] = useState("22:00");
+  const [closedDays, setClosedDays] = useState<string[]>([]);
+  const [closedDaysOpen, setClosedDaysOpen] = useState(false);
   const [businessLicense, setBusinessLicense] = useState<File | null>(null);
   const [foodPermit, setFoodPermit] = useState<File | null>(null);
 
@@ -62,6 +64,22 @@ const MerchantAuth = () => {
       desc: t("统一部署品控与包材。无需操心叫货与营销设置。无入驻门槛，你只管专注萃取出杯。", "Unified QC & packaging. No ordering or marketing hassle. Just focus on brewing."),
     },
   ];
+
+  const weekDays = [
+    { value: "mon", label: t("周一", "Mon") },
+    { value: "tue", label: t("周二", "Tue") },
+    { value: "wed", label: t("周三", "Wed") },
+    { value: "thu", label: t("周四", "Thu") },
+    { value: "fri", label: t("周五", "Fri") },
+    { value: "sat", label: t("周六", "Sat") },
+    { value: "sun", label: t("周日", "Sun") },
+  ];
+
+  const toggleClosedDay = (day: string) => {
+    setClosedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
 
   // Send verification code
   const handleSendCode = async () => {
@@ -120,7 +138,7 @@ const MerchantAuth = () => {
         store_features: storeFeatures,
         coffee_machine_model: coffeeMachine,
         daily_peak_cups: parseInt(dailyPeakCups),
-        business_hours: { open: businessHoursOpen, close: businessHoursClose },
+        business_hours: { open: businessHoursOpen, close: businessHoursClose, closed_days: closedDays },
         business_license_url: licenseUrl,
         food_permit_url: permitUrl,
       });
@@ -440,6 +458,43 @@ const MerchantAuth = () => {
                 onChange={(e) => setBusinessHoursClose(e.target.value)}
                 className="flex-1 px-3 py-2.5 rounded-xl bg-secondary text-white text-xs outline-none focus:ring-1 focus:ring-primary/50"
               />
+            </div>
+
+            {/* Closed Days */}
+            <div>
+              <label className="text-[10px] text-white/50 mb-1.5 block">{t("店休日", "Closed Days")}</label>
+              <div
+                onClick={() => setClosedDaysOpen(!closedDaysOpen)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-xs cursor-pointer flex items-center justify-between"
+              >
+                <span className={closedDays.length > 0 ? "text-white" : "text-white/30"}>
+                  {closedDays.length > 0
+                    ? closedDays.map((d) => weekDays.find((w) => w.value === d)?.label).join("、")
+                    : t("选择店休日（可多选）", "Select closed days")}
+                </span>
+                <ChevronRight className={`w-3.5 h-3.5 text-white/40 transition-transform ${closedDaysOpen ? "rotate-90" : ""}`} />
+              </div>
+              {closedDaysOpen && (
+                <div className="mt-1.5 rounded-xl bg-secondary/80 border border-white/10 overflow-hidden animate-fade-in">
+                  {weekDays.map((day) => (
+                    <button
+                      key={day.value}
+                      type="button"
+                      onClick={() => toggleClosedDay(day.value)}
+                      className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs hover:bg-white/5 transition-colors"
+                    >
+                      <span className="text-white">{day.label}</span>
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
+                        closedDays.includes(day.value)
+                          ? "bg-primary border-primary"
+                          : "border-white/20"
+                      }`}>
+                        {closedDays.includes(day.value) && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
