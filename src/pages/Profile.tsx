@@ -45,7 +45,7 @@ const Profile = () => {
   const menuItems: MenuItem[] = [
     { Icon: MapPin, labelZh: "地址管理", labelEn: "Address Management", descZh: "管理收货地址", descEn: "Manage delivery addresses", onClick: () => navigate("/address") },
     { Icon: FileText, labelZh: "发票管理", labelEn: "Invoice Management", descZh: "管理发票抬头", descEn: "Manage invoice headers", onClick: () => navigate("/invoice") },
-    { Icon: HelpCircle, labelZh: "帮助与支持", labelEn: "Help & Support", descZh: "常见问题与联系客服", descEn: "FAQ and customer service", onClick: () => {} },
+    { Icon: HelpCircle, labelZh: "帮助与支持", labelEn: "Help & Support", descZh: "常见问题与联系客服", descEn: "FAQ and customer service", onClick: () => navigate("/help") },
     { Icon: Store, labelZh: "成为合作商家", labelEn: "Become a Partner", descZh: "加入我们，一起成长", descEn: "Join us and grow together", onClick: () => navigate("/merchant-auth") },
   ];
 

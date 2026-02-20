@@ -25,6 +25,7 @@ import MerchantDashboard from "./pages/MerchantDashboard";
 import Coupons from "./pages/Coupons";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
+import HelpSupport from "./pages/HelpSupport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
                     <Route path="/my-squad" element={<MySquad />} />
                     <Route path="/merchant-auth" element={<MerchantAuth />} />
                     <Route path="/merchant" element={<MerchantDashboard />} />
+                    <Route path="/help" element={<HelpSupport />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
