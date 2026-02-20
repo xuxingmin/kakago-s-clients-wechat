@@ -14,7 +14,7 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
       { icon: User, labelZh: "我的", labelEn: "Profile", path: "/profile" },
     ];
 
-    const profileSubPaths = ["/profile", "/address", "/invoice", "/wallet", "/kaka-beans", "/my-squad", "/merchant"];
+    const profileSubPaths = ["/profile", "/address", "/invoice", "/wallet", "/kaka-beans", "/my-squad", "/merchant", "/help"];
     const isProfileSection = profileSubPaths.some(p => location.pathname.startsWith(p));
 
     const activeIndex = navItems.findIndex(
