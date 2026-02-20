@@ -17,6 +17,7 @@ import { BrandBanner } from "@/components/BrandBanner";
 import { Header } from "@/components/Header";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { CosmicMatesWaterfall } from "@/components/CosmicMatesWaterfall";
 
 const squadStats = {
   totalBeans: 124050,
@@ -46,6 +47,7 @@ const MySquad = () => {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [showPoster, setShowPoster] = useState(false);
+  const [showCosmic, setShowCosmic] = useState(false);
 
   const handleCopyCode = async () => {
     try {
@@ -95,20 +97,24 @@ const MySquad = () => {
             <ChevronLeft className="w-3.5 h-3.5" />
           </button>
           <h2 className="text-sm font-medium text-muted-foreground flex-shrink-0">{t("我的咖啡搭子", "Coffee Mates")}</h2>
-          <div className="flex items-center gap-0 ml-1">
+          <button
+            onClick={() => setShowCosmic(true)}
+            className="flex items-center gap-0 ml-1 group"
+          >
             <div className="flex -space-x-2">
               {matesAvatars.map((m) => (
                 <div
                   key={m.id}
-                  className="w-6 h-6 rounded-full border border-background flex items-center justify-center text-[8px] font-bold text-primary-foreground"
+                  className="w-6 h-6 rounded-full border border-background flex items-center justify-center text-[8px] font-bold text-primary-foreground transition-transform group-hover:scale-110"
                   style={{ background: `linear-gradient(135deg, hsl(271 81% ${38 + m.id * 5}%), hsl(280 70% ${33 + m.id * 4}%))` }}
                 >
                   {m.initial}
                 </div>
               ))}
             </div>
-            <span className="text-[11px] text-muted-foreground ml-1.5">+{squadStats.squadSize}</span>
-          </div>
+            <span className="text-[11px] text-muted-foreground ml-1.5 group-hover:text-primary transition-colors">+{squadStats.squadSize}</span>
+            <ChevronRight className="w-3 h-3 text-muted-foreground/50 ml-0.5 group-hover:text-primary transition-colors" />
+          </button>
         </div>
 
         {/* Fund Card — compact */}
@@ -291,6 +297,9 @@ const MySquad = () => {
           </div>
         </>
       )}
+
+      {/* Cosmic Waterfall View */}
+      <CosmicMatesWaterfall open={showCosmic} onClose={() => setShowCosmic(false)} />
     </div>
   );
 };
