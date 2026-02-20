@@ -53,8 +53,8 @@ const MerchantAuth = () => {
     },
     {
       emoji: "🎯",
-      title: t("精准用户匹配", "Precision User Matching"),
-      desc: t("拒绝低质羊毛党。懂风味的用户，自动匹配给正在使用对应精品豆的你。", "No bargain hunters. Flavor-savvy users matched to your specialty beans."),
+      title: t("精准用户引流", "Precision Customer Acquisition"),
+      desc: t("拒绝一次性羊毛党。为你精准输送真正懂咖啡的高质量客群，用好风味沉淀出高频复购的死忠粉。", "No one-time bargain hunters. We deliver quality coffee lovers who become loyal repeat customers."),
     },
     {
       emoji: "🤖",
@@ -155,25 +155,25 @@ const MerchantAuth = () => {
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto scrollbar-hide">
-          {/* Hero - compact */}
-          <div className="relative bg-gradient-to-b from-primary/20 via-background to-background pt-8 pb-3 px-5 text-center">
-            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto mb-2">
-              <Coffee className="w-6 h-6 text-primary" />
+          {/* Hero - compressed */}
+          <div className="relative bg-gradient-to-b from-primary/20 via-background to-background pt-5 pb-2 px-5 text-center">
+            <div className="w-10 h-10 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto mb-1.5">
+              <Coffee className="w-5 h-5 text-primary" />
             </div>
-            <h1 className="text-lg font-bold text-foreground mb-1">
+            <h1 className="text-[17px] font-bold text-foreground mb-0.5">
               {t("接入 KAKAGO 咖啡网络", "Join the KAKAGO Coffee Network")}
             </h1>
-            <p className="text-[11px] text-muted-foreground leading-snug max-w-[280px] mx-auto">
+            <p className="text-xs text-muted-foreground leading-snug max-w-[300px] mx-auto">
               {t("让闲置产能变现，成为全城精品咖啡基础设施。", "Monetize idle capacity. Become citywide specialty coffee infrastructure.")}
             </p>
             {/* Key Tags */}
-            <div className="flex justify-center gap-2 mt-3">
+            <div className="flex justify-center gap-2 mt-2.5">
               {[
                 t("0 入驻门槛", "0 Barrier"),
                 t("稳定收入增量", "Steady Revenue"),
                 t("保持门店独立", "Stay Independent"),
               ].map((tag, i) => (
-                <span key={i} className="text-[9px] font-medium text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-0.5">
+                <span key={i} className="text-[10px] font-medium text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-0.5">
                   {tag}
                 </span>
               ))}
@@ -192,10 +192,10 @@ const MerchantAuth = () => {
                 }`}
                 style={(b as any).accent ? { boxShadow: '0 0 20px hsl(271 81% 56% / 0.15)' } : undefined}
               >
-                <h3 className="text-[13px] font-bold text-foreground mb-1 tracking-tight">
+                <h3 className="text-sm font-bold text-foreground mb-1 tracking-tight">
                   <span className="mr-1.5">{b.emoji}</span>{b.title}
                 </h3>
-                <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">{b.desc}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed pl-6">{b.desc}</p>
               </div>
             ))}
           </div>
