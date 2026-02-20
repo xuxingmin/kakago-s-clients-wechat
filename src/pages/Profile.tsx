@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
-  Ticket, Coffee, HelpCircle, Store, ChevronRight,
-  Users, TrendingUp, LucideIcon, Coins, MapPin, FileText, LogOut, User
+  Ticket, HelpCircle, Store, ChevronRight,
+  Users, TrendingUp, LucideIcon, Coins, MapPin, FileText, LogOut, User, Phone
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
 import { Header } from "@/components/Header";
 import { WeChatAuthModal } from "@/components/WeChatAuthModal";
+import { PhoneAuthModal } from "@/components/PhoneAuthModal";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -35,7 +36,8 @@ const Profile = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const isLoggedIn = !!user;
-  const userName = profile?.display_name || "微信用户";
+  const userPhone = profile?.phone;
+  const userName = userPhone ? `${userPhone.slice(0, 3)}****${userPhone.slice(-4)}` : profile?.display_name || "用户";
 
   const assetItems: AssetItem[] = [
     { Icon: Ticket, value: isLoggedIn ? "3" : "--", labelZh: "优惠券", labelEn: "Coupons", onClick: () => navigate("/wallet") },
@@ -72,13 +74,9 @@ const Profile = () => {
             >
               <div className="flex items-center gap-2 mb-2">
                 {isLoggedIn ? (
-                  profile?.avatar_url ? (
-                    <img src={profile.avatar_url} alt="avatar" className="w-9 h-9 rounded-full object-cover" />
-                  ) : (
-                    <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Coffee className="w-4 h-4 text-primary" />
-                    </div>
-                  )
+                  <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Phone className="w-4 h-4 text-primary" />
+                  </div>
                 ) : (
                   <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
                     <User className="w-4 h-4 text-muted-foreground" />
@@ -90,7 +88,7 @@ const Profile = () => {
                   </h2>
                   {!isLoggedIn && (
                     <div className="text-[9px] text-muted-foreground flex items-center gap-0.5">
-                      <span>{t("授权微信登录", "WeChat Authorization")}</span>
+                      <span>{t("手机号快捷登录", "Quick phone login")}</span>
                       <ChevronRight className="w-2 h-2" />
                     </div>
                   )}
@@ -99,7 +97,7 @@ const Profile = () => {
               
               {isLoggedIn ? (
                 <p className="text-[9px] text-muted-foreground">
-                  {profile?.phone ? profile.phone : t("微信已授权", "WeChat Authorized")}
+                  {userPhone ? t("手机号已绑定", "Phone verified") : t("已登录", "Logged in")}
                 </p>
               ) : (
                 <p className="text-[9px] text-muted-foreground">
@@ -217,7 +215,7 @@ const Profile = () => {
         <BottomNav />
       </div>
 
-      <WeChatAuthModal
+      <PhoneAuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
       />
