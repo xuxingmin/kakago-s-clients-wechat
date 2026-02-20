@@ -23,6 +23,7 @@ const MerchantAuth = () => {
 
   // Merchant info state
   const [ownerName, setOwnerName] = useState("");
+  const [ownerNameEn, setOwnerNameEn] = useState("");
   const [storeName, setStoreName] = useState("");
   const [storeNameEn, setStoreNameEn] = useState("");
   const [storeAddress, setStoreAddress] = useState("");
@@ -468,12 +469,21 @@ const MerchantAuth = () => {
             <h3 className="text-xs font-semibold text-white">{t("主理人与特色", "Owner & Specialties")}</h3>
             <div>
               <label className="text-[10px] text-white/50 mb-1 block">{t("主理人名称", "Owner Name")} *</label>
-              <input
-                placeholder={t("您的称呼", "Your name")}
-                value={ownerName}
-                onChange={(e) => setOwnerName(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  placeholder={t("中文名", "Chinese name")}
+                  value={ownerName}
+                  onChange={(e) => setOwnerName(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+                />
+                <input
+                  placeholder={t("拼音/英文", "Pinyin/English")}
+                  value={ownerNameEn}
+                  onChange={(e) => setOwnerNameEn(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+                />
+              </div>
+              <p className="text-[9px] text-white/30 mt-1">{t("如：韩梅梅 = MEIMEI HAN", "e.g. 韩梅梅 = MEIMEI HAN")}</p>
             </div>
             <div>
               <label className="text-[10px] text-white/50 mb-1 block">{t("门店简介", "Store Description")}</label>
