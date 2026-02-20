@@ -94,7 +94,7 @@ const MySquad = () => {
           >
             <ChevronLeft className="w-3.5 h-3.5" />
           </button>
-          <h2 className="text-xs font-medium text-muted-foreground flex-shrink-0">{t("我的咖啡搭子", "Coffee Mates")}</h2>
+          <h2 className="text-sm font-medium text-muted-foreground flex-shrink-0">{t("我的咖啡搭子", "Coffee Mates")}</h2>
           <div className="flex items-center gap-0 ml-1">
             <div className="flex -space-x-2">
               {matesAvatars.map((m) => (
@@ -107,7 +107,7 @@ const MySquad = () => {
                 </div>
               ))}
             </div>
-            <span className="text-[9px] text-muted-foreground ml-1.5">+{squadStats.squadSize}</span>
+            <span className="text-[11px] text-muted-foreground ml-1.5">+{squadStats.squadSize}</span>
           </div>
         </div>
 
@@ -118,12 +118,12 @@ const MySquad = () => {
               <div className="w-32 h-32 rounded-full opacity-15" style={{ background: 'radial-gradient(circle, hsl(271 81% 56%), transparent 70%)' }} />
             </div>
             <div className="relative z-10">
-              <p className="text-[9px] tracking-widest uppercase text-muted-foreground mb-1">{t("共饮小金库", "Coffee Fund")}</p>
+              <p className="text-[11px] tracking-widest uppercase text-muted-foreground mb-1">{t("共饮小金库", "Coffee Fund")}</p>
               <div className="flex items-baseline justify-center gap-1">
                 <span className="text-3xl font-black text-gold-gradient tracking-tight tabular-nums">{squadStats.totalBeans.toLocaleString()}</span>
-                <span className="text-[10px] font-medium text-muted-foreground">KKB</span>
+                <span className="text-xs font-medium text-muted-foreground">KKB</span>
               </div>
-              <p className="text-[8px] text-muted-foreground/50 mt-0.5">{t("搭子每次消费，你都在蓄能", "Every mate's order charges your fund")}</p>
+              <p className="text-[11px] text-muted-foreground/50 mt-0.5">{t("搭子每次消费，你都在蓄能", "Every mate's order charges your fund")}</p>
             </div>
           </div>
         </section>
@@ -140,8 +140,8 @@ const MySquad = () => {
                 <div className="w-7 h-7 rounded-lg border border-primary/20 flex items-center justify-center">
                   <item.icon className="w-3.5 h-3.5 text-primary" strokeWidth={1.5} />
                 </div>
-                <p className="text-[9px] font-medium text-foreground/80">{item.label}</p>
-                <span className="text-[8px] text-muted-foreground leading-none">{item.sub}</span>
+                <p className="text-[11px] font-medium text-foreground/80">{item.label}</p>
+                <span className="text-[10px] text-muted-foreground leading-none">{item.sub}</span>
               </div>
             ))}
           </div>
@@ -156,13 +156,13 @@ const MySquad = () => {
             <div className="relative p-3">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className="text-[8px] tracking-[0.15em] uppercase text-muted-foreground">KAKAGO · VIP PASS</p>
-                  <p className="text-[11px] font-semibold text-foreground leading-tight mt-0.5">
+                  <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">KAKAGO · VIP PASS</p>
+                  <p className="text-xs font-semibold text-foreground leading-tight mt-0.5">
                     {t("送好友一杯", "Gift a friend")} <span className="text-primary">{t("5 折首单特权", "50% off")}</span>
                   </p>
                 </div>
                 <div className="flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-md px-1.5 py-0.5">
-                  <span className="text-primary font-mono text-[10px] font-bold">{squadStats.inviteCode}</span>
+                  <span className="text-primary font-mono text-xs font-bold">{squadStats.inviteCode}</span>
                   <button onClick={handleCopyCode} className="p-0.5">
                     {copied ? <Check className="w-2.5 h-2.5 text-green-400" /> : <Copy className="w-2.5 h-2.5 text-primary/60" />}
                   </button>
@@ -170,7 +170,7 @@ const MySquad = () => {
               </div>
               <button
                 onClick={() => setShowPoster(true)}
-                className="btn-gold w-full py-2 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1.5 pulse-glow !min-h-0"
+                className="btn-gold w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 pulse-glow !min-h-0"
               >
                 <Coffee className="w-3.5 h-3.5" strokeWidth={1.5} />
                 {t("摇人喝一杯", "Call for coffee")}
@@ -184,7 +184,7 @@ const MySquad = () => {
         {/* Activity Feed — ultra compact */}
         <section className="px-4 py-2">
           <button onClick={() => navigate("/kaka-beans")} className="flex items-center justify-between w-full mb-1.5">
-            <h3 className="text-[10px] font-semibold text-foreground/70">{t("搭子动态", "Mates Activity")}</h3>
+            <h3 className="text-xs font-semibold text-foreground/70">{t("搭子动态", "Mates Activity")}</h3>
             <ChevronRight className="w-3 h-3 text-muted-foreground" />
           </button>
           <div className="space-y-1">
@@ -196,11 +196,11 @@ const MySquad = () => {
                 >
                   {item.name[0]}
                 </div>
-                <p className="text-[9px] text-muted-foreground flex-1 min-w-0 truncate">
+                <p className="text-[11px] text-muted-foreground flex-1 min-w-0 truncate">
                   <span className="text-foreground/70 font-medium">{item.name}</span> {t("点了", "ordered")} {item.action}
                 </p>
-                <span className="text-[9px] font-bold text-primary flex-shrink-0">+{item.beans}</span>
-                <span className="text-[7px] text-muted-foreground/50 flex-shrink-0">{item.time}</span>
+                <span className="text-[11px] font-bold text-primary flex-shrink-0">+{item.beans}</span>
+                <span className="text-[10px] text-muted-foreground/50 flex-shrink-0">{item.time}</span>
               </div>
             ))}
           </div>
@@ -231,7 +231,7 @@ const MySquad = () => {
                     <span className="text-lg font-black tracking-wider text-foreground">KAKAGO</span>
                     <span className="text-base">✨</span>
                   </div>
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground/60">{t("创世搭子凭证", "Genesis Mate Pass")}</p>
+                  <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground/60">{t("创世搭子凭证", "Genesis Mate Pass")}</p>
                 </div>
 
                 {/* Poster Image */}
@@ -255,20 +255,20 @@ const MySquad = () => {
                     className="flex items-center gap-2 px-4 py-1.5 rounded-full"
                     style={{ background: 'hsl(271 81% 56% / 0.1)', border: '1px solid hsl(271 81% 56% / 0.25)' }}
                   >
-                    <span className="text-[9px] text-muted-foreground/60">{t("邀请码", "Code")}</span>
-                    <span className="text-xs font-mono font-black text-primary tracking-widest">{squadStats.inviteCode}</span>
+                    <span className="text-[11px] text-muted-foreground/60">{t("邀请码", "Code")}</span>
+                    <span className="text-sm font-mono font-black text-primary tracking-widest">{squadStats.inviteCode}</span>
                     {copied ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3 text-primary/50" />}
                   </button>
                 </div>
 
                 {/* CTA Text */}
-                <p className="text-center text-[11px] font-semibold text-foreground/90 mb-3">
+                <p className="text-center text-xs font-semibold text-foreground/90 mb-3">
                   {t("发送专属通行证，邀请搭子加入", "Send your exclusive pass and invite mates to join")}
                 </p>
 
                 {/* Sharer Benefit Note */}
                 <div className="text-center mb-4 px-2">
-                  <p className="text-[8px] leading-relaxed" style={{ color: 'hsl(142 71% 45%)' }}>
+                  <p className="text-[11px] leading-relaxed" style={{ color: 'hsl(142 71% 45%)' }}>
                     ⚡️ {t(
                       "绑定成功后，搭子每笔消费将为你注入 2% KKB 能量。",
                       "Once linked, every mate order charges 2% KKB energy for you."
@@ -280,14 +280,14 @@ const MySquad = () => {
                 <div className="flex gap-2.5">
                   <button
                     onClick={() => setShowPoster(false)}
-                    className="flex-1 py-2.5 rounded-xl text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    className="flex-1 py-2.5 rounded-xl text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                     style={{ border: '1px solid hsl(0 0% 100% / 0.1)' }}
                   >
                     {t("关闭", "Close")}
                   </button>
                   <button
                     onClick={() => { handleShare(); setShowPoster(false); }}
-                    className="flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 text-primary-foreground transition-colors"
+                    className="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 text-primary-foreground transition-colors"
                     style={{ background: 'hsl(271 81% 40%)', boxShadow: '0 0 20px hsl(271 81% 56% / 0.3)' }}
                   >
                     <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
