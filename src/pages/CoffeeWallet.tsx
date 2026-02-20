@@ -96,17 +96,22 @@ const CoffeeWallet = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
-        {/* Back Button */}
-        <div className="absolute top-3 left-4 z-50 safe-top">
-          <button 
-            onClick={() => navigate("/profile")}
-            className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center"
-          >
-            <ChevronLeft className="w-4 h-4 text-white" />
-          </button>
-        </div>
         <Header />
         <BrandBanner />
+        <div className="fog-divider mx-4" />
+
+        {/* Section Title with Back */}
+        <div className="px-4 pt-3 pb-1">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <h2 className="text-sm font-medium text-muted-foreground">{t("优惠券", "Coupons")}</h2>
+          </div>
+        </div>
 
         {/* Compact Summary */}
         <section className="px-4 pt-3 pb-2">
