@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Plus, MapPin, Edit2 } from "lucide-react";
+import { Plus, MapPin, Edit2, ChevronLeft } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BrandBanner } from "@/components/BrandBanner";
 import { BottomNav } from "@/components/BottomNav";
@@ -32,13 +32,21 @@ const AddressManagement = () => {
         <div className="fog-divider mx-4" />
       </div>
 
-      {/* Section Title */}
+      {/* Section Title with Back */}
       <div className="flex-shrink-0 px-4 pt-3 pb-1">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-white/60">
-            {t("收货地址管理", "Delivery Addresses")}
-          </h2>
-          <span className="text-[11px] text-white/30">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <h2 className="text-sm font-medium text-muted-foreground">
+              {t("收货地址管理", "Delivery Addresses")}
+            </h2>
+          </div>
+          <span className="text-[11px] text-muted-foreground/50">
             {t(`${addresses.length}个地址`, `${addresses.length} addresses`)}
           </span>
         </div>
@@ -58,7 +66,7 @@ const AddressManagement = () => {
                     navigate(returnTo);
                   }}
                   className={`card-md relative cursor-pointer transition-all ${
-                    isSelected ? "ring-1 ring-primary/60 bg-primary/5" : "hover:bg-white/5"
+                    isSelected ? "ring-1 ring-primary/60 bg-primary/10 shadow-[0_0_16px_2px_hsla(271,81%,56%,0.15)]" : "hover:bg-accent/30"
                   }`}
                 >
                   {/* Top row: Tag + Address + Selected indicator */}

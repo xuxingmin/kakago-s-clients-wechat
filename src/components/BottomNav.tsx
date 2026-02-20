@@ -14,8 +14,15 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
       { icon: User, labelZh: "我的", labelEn: "Profile", path: "/profile" },
     ];
 
+    const profileSubPaths = ["/profile", "/address", "/invoice", "/wallet", "/kaka-beans", "/my-squad", "/merchant"];
+    const isProfileSection = profileSubPaths.some(p => location.pathname.startsWith(p));
+
     const activeIndex = navItems.findIndex(
-      (item) => item.path === "/" ? location.pathname === "/" : location.pathname.startsWith(item.path)
+      (item) => {
+        if (item.path === "/profile") return isProfileSection;
+        if (item.path === "/") return location.pathname === "/";
+        return location.pathname.startsWith(item.path);
+      }
     );
 
     return (
@@ -38,15 +45,22 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) =>
-                `relative flex flex-col items-center justify-center gap-1 px-6 py-2 min-h-[52px] rounded-2xl transition-all duration-300 active:scale-95 ${
+              className={() => {
+                const isActive = item.path === "/profile" ? isProfileSection
+                  : item.path === "/" ? location.pathname === "/"
+                  : location.pathname.startsWith(item.path);
+                return `relative flex flex-col items-center justify-center gap-1 px-6 py-2 min-h-[52px] rounded-2xl transition-all duration-300 active:scale-95 ${
                   isActive
                     ? "text-primary"
                     : "text-white/55 hover:text-white/70"
-                }`
-              }
+                }`;
+              }}
             >
-              {({ isActive }) => (
+              {() => {
+                const isActive = item.path === "/profile" ? isProfileSection
+                  : item.path === "/" ? location.pathname === "/"
+                  : location.pathname.startsWith(item.path);
+                return (
                 <>
                   {isActive && (
                     <span className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_0_20px_4px_hsla(271,81%,56%,0.2)] pointer-events-none animate-fade-in" />
@@ -64,7 +78,8 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
                     {t(item.labelZh, item.labelEn)}
                   </span>
                 </>
-              )}
+                );
+              }}
             </NavLink>
           ))}
         </div>
