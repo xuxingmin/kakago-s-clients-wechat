@@ -349,283 +349,202 @@ const MerchantAuth = () => {
   // ══════════════════════════════════════════
   // STEP: INFO — Merchant Information
   // ══════════════════════════════════════════
+  // Progress indicator for info step
+  const infoFields = [storeName, storeAddress, ownerName, coffeeMachine, dailyPeakCups];
+  const optionalFilled = [storeNameEn, storeDescription, grinderModel, greetingMessage, storeFeatures].filter(Boolean).length;
+  const requiredFilled = infoFields.filter(Boolean).length;
+  const docsUploaded = [businessLicense, foodPermit].filter(Boolean).length;
+  const totalProgress = Math.round(((requiredFilled + docsUploaded + Math.min(optionalFilled, 3)) / (5 + 2 + 3)) * 100);
+
+  const encourageText = totalProgress < 30
+    ? t("🚀 开始吧！几分钟搞定", "🚀 Let's go! Just a few minutes")
+    : totalProgress < 60
+    ? t("⚡ 太棒了，继续保持！", "⚡ Awesome, keep going!")
+    : totalProgress < 90
+    ? t("🔥 马上就好！胜利在望", "🔥 Almost there! Victory ahead")
+    : t("✨ 就差最后一步了！", "✨ One last step!");
+
+  const inputCls = "w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/25 outline-none focus:ring-1 focus:ring-primary/50 transition-all";
+
   if (step === "info") {
     return (
       <div className="h-screen flex flex-col overflow-hidden">
         <div className="flex-shrink-0">
           <div className="px-4 pt-3 pb-1">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setStep("verify")}
-                className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <h2 className="text-sm font-medium text-muted-foreground">{t("填写商户信息", "Merchant Info")}</h2>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setStep("verify")}
+                  className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+                <h2 className="text-sm font-medium text-muted-foreground">{t("接入信息", "Setup")}</h2>
+              </div>
+              <span className="text-[10px] text-primary font-semibold">{totalProgress}%</span>
             </div>
+            {/* Progress bar */}
+            <div className="mt-1.5 h-1 rounded-full bg-secondary overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-500"
+                style={{ width: `${totalProgress}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-primary/80 mt-1 text-center font-medium">{encourageText}</p>
           </div>
-          <div className="fog-divider mx-4" />
         </div>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3 pb-24 space-y-2">
-          {/* Document Upload */}
-          <div className="card-md">
-            <h3 className="text-xs font-semibold text-white mb-3">{t("证件上传", "Documents")}</h3>
-            <div className="grid grid-cols-3 gap-2">
-              <div
-                className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
-                  businessLicense ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
-                }`}
-                onClick={() => businessLicenseRef.current?.click()}
-              >
-                <input ref={businessLicenseRef} type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => setBusinessLicense(e.target.files?.[0] || null)} />
-                {businessLicense ? (
-                  <>
-                    <Check className="w-5 h-5 text-primary mb-1" />
-                    <span className="text-[10px] text-primary">{t("已上传", "Uploaded")}</span>
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-5 h-5 text-white/40 mb-1" />
-                    <span className="text-[10px] text-white/40">{t("营业执照", "License")}</span>
-                  </>
-                )}
-              </div>
-              <div
-                className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
-                  foodPermit ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
-                }`}
-                onClick={() => foodPermitRef.current?.click()}
-              >
-                <input ref={foodPermitRef} type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => setFoodPermit(e.target.files?.[0] || null)} />
-                {foodPermit ? (
-                  <>
-                    <Check className="w-5 h-5 text-primary mb-1" />
-                    <span className="text-[10px] text-primary">{t("已上传", "Uploaded")}</span>
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-5 h-5 text-white/40 mb-1" />
-                    <span className="text-[10px] text-white/40">{t("食品许可证", "Permit")}</span>
-                  </>
-                )}
-              </div>
-              <div
-                className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
-                  storefrontPhoto ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
-                }`}
-                onClick={() => storefrontPhotoRef.current?.click()}
-              >
-                <input ref={storefrontPhotoRef} type="file" accept="image/*" className="hidden" onChange={(e) => setStorefrontPhoto(e.target.files?.[0] || null)} />
-                {storefrontPhoto ? (
-                  <>
-                    <Check className="w-5 h-5 text-primary mb-1" />
-                    <span className="text-[10px] text-primary">{t("已上传", "Uploaded")}</span>
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-5 h-5 text-white/40 mb-1" />
-                    <span className="text-[10px] text-white/40">{t("门头照", "Storefront")}</span>
-                  </>
-                )}
-              </div>
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3 pb-24 space-y-2.5">
+
+          {/* ── 1. Store Identity ── */}
+          <div className="card-md space-y-2.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm">☕</span>
+              <h3 className="text-xs font-bold text-white">{t("你的咖啡馆", "Your Café")}</h3>
             </div>
+            <div className="grid grid-cols-2 gap-2">
+              <input placeholder={t("店名 *", "Café name *")} value={storeName} onChange={(e) => setStoreName(e.target.value)} className={inputCls} />
+              <input placeholder={t("英文名/拼音", "English/Pinyin")} value={storeNameEn} onChange={(e) => setStoreNameEn(e.target.value)} className={inputCls} />
+            </div>
+            <input placeholder={t("门店地址 *  如：朝阳区建国路88号SOHO现代城B座1层", "Address *  e.g. B1, SOHO, 88 Jianguo Rd")} value={storeAddress} onChange={(e) => setStoreAddress(e.target.value)} className={inputCls} />
+            <textarea
+              placeholder={t("一句话介绍  如：藏在胡同里的手冲实验室", "Bio  e.g. A pour-over lab hidden in a hutong")}
+              value={storeDescription}
+              onChange={(e) => setStoreDescription(e.target.value)}
+              rows={2}
+              className={`${inputCls} resize-none`}
+            />
           </div>
 
-          {/* Store Identity */}
-          <div className="card-md space-y-3">
-            <h3 className="text-xs font-semibold text-white">{t("门店信息", "Store Identity")}</h3>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("门店名称", "Store Name")} *</label>
-              <input
-                placeholder={t("您的咖啡馆名称", "Your café name")}
-                value={storeName}
-                onChange={(e) => setStoreName(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
+          {/* ── 2. Owner ── */}
+          <div className="card-md space-y-2.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm">👤</span>
+              <h3 className="text-xs font-bold text-white">{t("主理人", "Owner")}</h3>
             </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("英文名称（选填）", "English Name (optional)")}</label>
-              <input
-                placeholder="e.g. Tranquil Coffee Studio"
-                value={storeNameEn}
-                onChange={(e) => setStoreNameEn(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
+            <div className="grid grid-cols-2 gap-2">
+              <input placeholder={t("中文名 *  如：韩梅梅", "Chinese *  e.g. 韩梅梅")} value={ownerName} onChange={(e) => setOwnerName(e.target.value)} className={inputCls} />
+              <input placeholder={t("拼音/英文  MEIMEI HAN", "Pinyin  MEIMEI HAN")} value={ownerNameEn} onChange={(e) => setOwnerNameEn(e.target.value)} className={inputCls} />
             </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("门店地址", "Store Address")} *</label>
-              <input
-                placeholder={t("详细地址，用于用户导航", "Full address for customer navigation")}
-                value={storeAddress}
-                onChange={(e) => setStoreAddress(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
-            </div>
+            <input
+              placeholder={t("店家寄语  如：愿这杯带来今日份好心情", "Greeting  e.g. May this cup bring joy")}
+              value={greetingMessage}
+              onChange={(e) => setGreetingMessage(e.target.value)}
+              className={inputCls}
+            />
+            <p className="text-[9px] text-white/20 pl-1">{t("用户收到订单时看到这句话 ☕", "Shown when customers receive orders ☕")}</p>
           </div>
 
-          {/* Owner & Description */}
-          <div className="card-md space-y-3">
-            <h3 className="text-xs font-semibold text-white">{t("主理人与特色", "Owner & Specialties")}</h3>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("主理人名称", "Owner Name")} *</label>
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  placeholder={t("中文名", "Chinese name")}
-                  value={ownerName}
-                  onChange={(e) => setOwnerName(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-                />
-                <input
-                  placeholder={t("拼音/英文", "Pinyin/English")}
-                  value={ownerNameEn}
-                  onChange={(e) => setOwnerNameEn(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-                />
-              </div>
-              <p className="text-[9px] text-white/30 mt-1">{t("如：韩梅梅 = MEIMEI HAN", "e.g. 韩梅梅 = MEIMEI HAN")}</p>
+          {/* ── 3. Equipment ── */}
+          <div className="card-md space-y-2.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm">⚙️</span>
+              <h3 className="text-xs font-bold text-white">{t("设备", "Equipment")}</h3>
             </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("门店简介", "Store Description")}</label>
-              <textarea
-                placeholder={t("一句话介绍您的门店，展示给用户", "One-liner shown to customers")}
-                value={storeDescription}
-                onChange={(e) => setStoreDescription(e.target.value)}
-                rows={2}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50 resize-none"
-              />
+            <div className="grid grid-cols-2 gap-2">
+              <input placeholder={t("咖啡机 *  La Marzocco", "Machine *  La Marzocco")} value={coffeeMachine} onChange={(e) => setCoffeeMachine(e.target.value)} className={inputCls} />
+              <input placeholder={t("磨豆机  Mahlkönig EK43", "Grinder  EK43")} value={grinderModel} onChange={(e) => setGrinderModel(e.target.value)} className={inputCls} />
             </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("本店特色", "Features")}</label>
-              <textarea
-                placeholder={t("介绍您的咖啡馆特色...", "Describe your café...")}
-                value={storeFeatures}
-                onChange={(e) => setStoreFeatures(e.target.value)}
-                rows={2}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50 resize-none"
-              />
-            </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("店家寄语", "Greeting Message")}</label>
-              <input
-                placeholder={t("如：愿这杯咖啡带来温暖与能量", "e.g. May this cup bring warmth")}
-                value={greetingMessage}
-                onChange={(e) => setGreetingMessage(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
-              <p className="text-[9px] text-white/30 mt-1">{t("用户收到订单时会看到这句话", "Shown to customers when they receive their order")}</p>
-            </div>
-          </div>
-
-          {/* Equipment */}
-          <div className="card-md space-y-3">
-            <h3 className="text-xs font-semibold text-white">{t("设备与产能", "Equipment")}</h3>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("咖啡机型号", "Machine")} *</label>
-              <input
-                placeholder="La Marzocco Linea PB"
-                value={coffeeMachine}
-                onChange={(e) => setCoffeeMachine(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
-            </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("磨豆机型号", "Grinder")} </label>
-              <input
-                placeholder="e.g. Mahlkönig EK43"
-                value={grinderModel}
-                onChange={(e) => setGrinderModel(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
-              />
-            </div>
-            <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("日峰值杯数", "Peak Cups")} *</label>
+            <div className="grid grid-cols-2 gap-2">
               <input
                 type="number"
-                placeholder={t("预估每日最大产能", "Max daily capacity")}
+                placeholder={t("日峰值杯数 *  如：120", "Peak cups/day *  e.g. 120")}
                 value={dailyPeakCups}
                 onChange={(e) => setDailyPeakCups(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+                className={inputCls}
+              />
+              <input
+                placeholder={t("特色  如：手冲 虹吸 冷萃", "Features  e.g. Pour-over")}
+                value={storeFeatures}
+                onChange={(e) => setStoreFeatures(e.target.value)}
+                className={inputCls}
               />
             </div>
           </div>
 
-          {/* Hours */}
-          <div className="card-md space-y-3">
-            <h3 className="text-xs font-semibold text-white">{t("营业时间", "Hours")}</h3>
+          {/* ── 4. Hours ── */}
+          <div className="card-md space-y-2.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm">🕐</span>
+              <h3 className="text-xs font-bold text-white">{t("营业时间", "Hours")}</h3>
+            </div>
             <div className="flex items-center gap-2">
-              <input
-                type="time"
-                value={businessHoursOpen}
-                onChange={(e) => setBusinessHoursOpen(e.target.value)}
-                className="flex-1 px-3 py-2.5 rounded-xl bg-secondary text-white text-xs outline-none focus:ring-1 focus:ring-primary/50"
-              />
-              <span className="text-white/40 text-xs">{t("至", "to")}</span>
-              <input
-                type="time"
-                value={businessHoursClose}
-                onChange={(e) => setBusinessHoursClose(e.target.value)}
-                className="flex-1 px-3 py-2.5 rounded-xl bg-secondary text-white text-xs outline-none focus:ring-1 focus:ring-primary/50"
-              />
+              <input type="time" value={businessHoursOpen} onChange={(e) => setBusinessHoursOpen(e.target.value)} className={`flex-1 ${inputCls}`} />
+              <span className="text-white/30 text-xs">—</span>
+              <input type="time" value={businessHoursClose} onChange={(e) => setBusinessHoursClose(e.target.value)} className={`flex-1 ${inputCls}`} />
             </div>
-
-            {/* Closed Days */}
             <div>
-              <label className="text-[10px] text-white/50 mb-1.5 block">{t("店休日（可多选）", "Closed Days (multi-select)")}</label>
-              <button
-                type="button"
-                onClick={() => setClosedDaysOpen(!closedDaysOpen)}
-                className="w-full min-h-[48px] px-3 py-2.5 rounded-xl bg-secondary text-xs flex items-center justify-between active:scale-[0.98] transition-all"
-              >
-                <span className={closedDays.length > 0 ? "text-white" : "text-white/30"}>
-                  {closedDays.length > 0
-                    ? closedDays.map((d) => weekDays.find((w) => w.value === d)?.label).join("、")
-                    : t("选择店休日", "Select closed days")}
-                </span>
-                <ChevronRight className={`w-4 h-4 text-white/40 transition-transform duration-200 ${closedDaysOpen ? "rotate-90" : ""}`} />
-              </button>
-              {closedDaysOpen && (
-                <div className="mt-1.5 rounded-xl bg-[hsl(var(--secondary))] border border-white/10 overflow-hidden animate-fade-in">
-                  {weekDays.map((day) => (
-                    <button
-                      key={day.value}
-                      type="button"
-                      onClick={() => toggleClosedDay(day.value)}
-                      className="w-full min-h-[48px] flex items-center justify-between px-4 py-3 text-xs hover:bg-white/5 active:bg-white/10 transition-colors border-b border-white/5 last:border-b-0"
-                    >
-                      <span className="text-white text-[13px]">{day.label}</span>
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
-                        closedDays.includes(day.value)
-                          ? "bg-primary border-primary"
-                          : "border-white/20"
-                      }`}>
-                        {closedDays.includes(day.value) && <Check className="w-3.5 h-3.5 text-white" />}
-                      </div>
-                    </button>
-                  ))}
+              <label className="text-[10px] text-white/30 mb-1.5 block">{t("店休日", "Days off")}</label>
+              <div className="flex flex-wrap gap-1.5">
+                {weekDays.map((day) => (
                   <button
+                    key={day.value}
                     type="button"
-                    onClick={() => setClosedDaysOpen(false)}
-                    className="w-full min-h-[48px] flex items-center justify-center px-4 py-3 text-xs text-primary font-semibold border-t border-white/10 active:bg-white/5 transition-colors"
+                    onClick={() => toggleClosedDay(day.value)}
+                    className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
+                      closedDays.includes(day.value)
+                        ? "bg-primary/20 text-primary border border-primary/40"
+                        : "bg-secondary text-white/40 border border-transparent"
+                    }`}
                   >
-                    {t("确认", "Confirm")}
+                    {day.label}
                   </button>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Submit */}
+          {/* ── 5. Documents ── */}
+          <div className="card-md">
+            <div className="flex items-center gap-1.5 mb-2.5">
+              <span className="text-sm">📋</span>
+              <h3 className="text-xs font-bold text-white">{t("证件上传", "Documents")}</h3>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { ref: businessLicenseRef, file: businessLicense, set: setBusinessLicense, label: t("营业执照 *", "License *"), accept: "image/*,.pdf" },
+                { ref: foodPermitRef, file: foodPermit, set: setFoodPermit, label: t("食品许可 *", "Permit *"), accept: "image/*,.pdf" },
+                { ref: storefrontPhotoRef, file: storefrontPhoto, set: setStorefrontPhoto, label: t("门头照", "Storefront"), accept: "image/*" },
+              ].map((doc, i) => (
+                <div
+                  key={i}
+                  className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all active:scale-95 ${
+                    doc.file ? "border-primary bg-primary/10" : "border-white/15 hover:border-white/30"
+                  }`}
+                  onClick={() => doc.ref.current?.click()}
+                >
+                  <input ref={doc.ref} type="file" accept={doc.accept} className="hidden" onChange={(e) => doc.set(e.target.files?.[0] || null)} />
+                  {doc.file ? (
+                    <>
+                      <Check className="w-5 h-5 text-primary mb-0.5" />
+                      <span className="text-[9px] text-primary">✓</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 text-white/25 mb-0.5" />
+                      <span className="text-[9px] text-white/25">{doc.label}</span>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Submit ── */}
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full py-3.5 rounded-xl btn-gold text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-40 mt-2"
+            className="w-full py-3.5 rounded-xl btn-gold text-sm font-bold flex items-center justify-center gap-2 disabled:opacity-40 mt-1"
           >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("提交审核", "Submit for Review")}
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                {t("提交，加入网络！", "Submit & Join!")}
+              </>
+            )}
           </button>
-
-          <p className="text-center text-[10px] text-white/30 pb-4">
-            {t("审核通常需要1-3个工作日", "Review typically takes 1-3 business days")}
+          <p className="text-center text-[9px] text-white/20 pb-4">
+            {t("提交后 24h 内 Fellow 伙伴联系你 🤝", "A Fellow will reach out within 24h 🤝")}
           </p>
         </div>
 
