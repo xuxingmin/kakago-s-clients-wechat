@@ -7,10 +7,6 @@ import {
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
 import { Header } from "@/components/Header";
-import { 
-  IdentityVerificationModal, getIdentityBadge, getAllBadges,
-  type UserIdentities 
-} from "@/components/IdentityVerificationModal";
 import { WeChatAuthModal } from "@/components/WeChatAuthModal";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,17 +32,10 @@ const Profile = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { user, profile, signOut, loading } = useAuth();
-  const [identityModalOpen, setIdentityModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [currentIdentities, setCurrentIdentities] = useState<UserIdentities>({
-    industry: null, user: "expert", squad: "leader",
-  });
 
   const isLoggedIn = !!user;
   const userName = profile?.display_name || "微信用户";
-
-  const identityBadge = getIdentityBadge(currentIdentities);
-  const allBadges = getAllBadges(currentIdentities);
 
   const assetItems: AssetItem[] = [
     { Icon: Ticket, value: isLoggedIn ? "3" : "--", labelZh: "优惠券", labelEn: "Coupons", onClick: () => navigate("/wallet") },
@@ -78,14 +67,18 @@ const Profile = () => {
           <div className="grid grid-cols-2 gap-2">
             {/* User Profile Card */}
             <button
-              onClick={() => isLoggedIn ? setIdentityModalOpen(true) : setAuthModalOpen(true)}
+              onClick={() => !isLoggedIn && setAuthModalOpen(true)}
               className="card-md text-left"
             >
               <div className="flex items-center gap-2 mb-2">
                 {isLoggedIn ? (
-                  <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Coffee className="w-4 h-4 text-primary" />
-                  </div>
+                  profile?.avatar_url ? (
+                    <img src={profile.avatar_url} alt="avatar" className="w-9 h-9 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
+                      <Coffee className="w-4 h-4 text-primary" />
+                    </div>
+                  )
                 ) : (
                   <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
                     <User className="w-4 h-4 text-muted-foreground" />
@@ -95,35 +88,19 @@ const Profile = () => {
                   <h2 className="text-xs font-semibold text-foreground truncate">
                     {isLoggedIn ? userName : t("点击登录", "Tap to Login")}
                   </h2>
-                  <div className="text-[9px] text-muted-foreground flex items-center gap-0.5">
-                    <span>
-                      {isLoggedIn
-                        ? t("点击认证", "Tap to verify")
-                        : t("授权微信登录", "WeChat Authorization")}
-                    </span>
-                    <ChevronRight className="w-2 h-2" />
-                  </div>
+                  {!isLoggedIn && (
+                    <div className="text-[9px] text-muted-foreground flex items-center gap-0.5">
+                      <span>{t("授权微信登录", "WeChat Authorization")}</span>
+                      <ChevronRight className="w-2 h-2" />
+                    </div>
+                  )}
                 </div>
               </div>
               
               {isLoggedIn ? (
-                <div className="flex flex-wrap gap-1">
-                  {allBadges.length > 0 ? (
-                    allBadges.slice(0, 2).map((badge, index) => {
-                      const IconComponent = badge.icon;
-                      return (
-                        <span key={index} className={`inline-flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full bg-secondary/50 ${badge.color}`}>
-                          <IconComponent className="w-2 h-2" />
-                          {badge.label}
-                        </span>
-                      );
-                    })
-                  ) : (
-                    <span className="text-[9px] text-muted-foreground px-1.5 py-0.5 rounded-full bg-secondary/50">
-                      {t("未认证", "Not verified")}
-                    </span>
-                  )}
-                </div>
+                <p className="text-[9px] text-muted-foreground">
+                  {profile?.phone ? profile.phone : t("微信已授权", "WeChat Authorized")}
+                </p>
               ) : (
                 <p className="text-[9px] text-muted-foreground">
                   {t("登录后享受更多权益", "Login for more benefits")}
@@ -239,13 +216,6 @@ const Profile = () => {
       <div className="flex-shrink-0">
         <BottomNav />
       </div>
-
-      <IdentityVerificationModal
-        isOpen={identityModalOpen}
-        onClose={() => setIdentityModalOpen(false)}
-        currentIdentities={currentIdentities}
-        onUpdateIdentities={setCurrentIdentities}
-      />
 
       <WeChatAuthModal
         isOpen={authModalOpen}
