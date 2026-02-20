@@ -22,13 +22,21 @@ export type Database = {
           created_at: string
           daily_peak_cups: number
           food_permit_url: string
+          greeting_message: string | null
           id: string
+          latitude: number | null
+          logo_url: string | null
+          longitude: number | null
           owner_name: string
           phone: string
           reviewed_at: string | null
           reviewer_notes: string | null
           status: Database["public"]["Enums"]["merchant_application_status"]
+          store_address: string | null
+          store_description: string | null
           store_features: string
+          store_name: string | null
+          store_name_en: string | null
           updated_at: string
         }
         Insert: {
@@ -38,13 +46,21 @@ export type Database = {
           created_at?: string
           daily_peak_cups: number
           food_permit_url: string
+          greeting_message?: string | null
           id?: string
+          latitude?: number | null
+          logo_url?: string | null
+          longitude?: number | null
           owner_name: string
           phone: string
           reviewed_at?: string | null
           reviewer_notes?: string | null
           status?: Database["public"]["Enums"]["merchant_application_status"]
+          store_address?: string | null
+          store_description?: string | null
           store_features: string
+          store_name?: string | null
+          store_name_en?: string | null
           updated_at?: string
         }
         Update: {
@@ -54,13 +70,21 @@ export type Database = {
           created_at?: string
           daily_peak_cups?: number
           food_permit_url?: string
+          greeting_message?: string | null
           id?: string
+          latitude?: number | null
+          logo_url?: string | null
+          longitude?: number | null
           owner_name?: string
           phone?: string
           reviewed_at?: string | null
           reviewer_notes?: string | null
           status?: Database["public"]["Enums"]["merchant_application_status"]
+          store_address?: string | null
+          store_description?: string | null
           store_features?: string
+          store_name?: string | null
+          store_name_en?: string | null
           updated_at?: string
         }
         Relationships: []

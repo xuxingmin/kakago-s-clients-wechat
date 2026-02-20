@@ -23,6 +23,11 @@ const MerchantAuth = () => {
 
   // Merchant info state
   const [ownerName, setOwnerName] = useState("");
+  const [storeName, setStoreName] = useState("");
+  const [storeNameEn, setStoreNameEn] = useState("");
+  const [storeAddress, setStoreAddress] = useState("");
+  const [storeDescription, setStoreDescription] = useState("");
+  const [greetingMessage, setGreetingMessage] = useState("");
   const [storeFeatures, setStoreFeatures] = useState("");
   const [coffeeMachine, setCoffeeMachine] = useState("");
   const [dailyPeakCups, setDailyPeakCups] = useState("");
@@ -122,7 +127,7 @@ const MerchantAuth = () => {
   };
 
   const handleSubmit = async () => {
-    if (!ownerName || !storeFeatures || !coffeeMachine || !dailyPeakCups || !businessLicense || !foodPermit) {
+    if (!storeName || !ownerName || !storeAddress || !coffeeMachine || !dailyPeakCups || !businessLicense || !foodPermit) {
       toast({ title: t("请填写完整信息", "Please complete all fields"), variant: "destructive" });
       return;
     }
@@ -135,6 +140,11 @@ const MerchantAuth = () => {
       const { error } = await supabase.from("merchant_applications").insert({
         phone,
         owner_name: ownerName,
+        store_name: storeName,
+        store_name_en: storeNameEn || null,
+        store_address: storeAddress,
+        store_description: storeDescription || null,
+        greeting_message: greetingMessage || null,
         store_features: storeFeatures,
         coffee_machine_model: coffeeMachine,
         daily_peak_cups: parseInt(dailyPeakCups),
@@ -393,11 +403,43 @@ const MerchantAuth = () => {
             </div>
           </div>
 
-          {/* Owner Info */}
+          {/* Store Identity */}
           <div className="card-md space-y-3">
-            <h3 className="text-xs font-semibold text-white">{t("主理人信息", "Owner Info")}</h3>
+            <h3 className="text-xs font-semibold text-white">{t("门店信息", "Store Identity")}</h3>
             <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("主理人名称", "Name")} *</label>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("门店名称", "Store Name")} *</label>
+              <input
+                placeholder={t("您的咖啡馆名称", "Your café name")}
+                value={storeName}
+                onChange={(e) => setStoreName(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("英文名称（选填）", "English Name (optional)")}</label>
+              <input
+                placeholder="e.g. Tranquil Coffee Studio"
+                value={storeNameEn}
+                onChange={(e) => setStoreNameEn(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("门店地址", "Store Address")} *</label>
+              <input
+                placeholder={t("详细地址，用于用户导航", "Full address for customer navigation")}
+                value={storeAddress}
+                onChange={(e) => setStoreAddress(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+            </div>
+          </div>
+
+          {/* Owner & Description */}
+          <div className="card-md space-y-3">
+            <h3 className="text-xs font-semibold text-white">{t("主理人与特色", "Owner & Specialties")}</h3>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("主理人名称", "Owner Name")} *</label>
               <input
                 placeholder={t("您的称呼", "Your name")}
                 value={ownerName}
@@ -406,14 +448,34 @@ const MerchantAuth = () => {
               />
             </div>
             <div>
-              <label className="text-[10px] text-white/50 mb-1 block">{t("本店特色", "Features")} *</label>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("门店简介", "Store Description")}</label>
+              <textarea
+                placeholder={t("一句话介绍您的门店，展示给用户", "One-liner shown to customers")}
+                value={storeDescription}
+                onChange={(e) => setStoreDescription(e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50 resize-none"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("本店特色", "Features")}</label>
               <textarea
                 placeholder={t("介绍您的咖啡馆特色...", "Describe your café...")}
                 value={storeFeatures}
                 onChange={(e) => setStoreFeatures(e.target.value)}
-                rows={3}
+                rows={2}
                 className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50 resize-none"
               />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("店家寄语", "Greeting Message")}</label>
+              <input
+                placeholder={t("如：愿这杯咖啡带来温暖与能量", "e.g. May this cup bring warmth")}
+                value={greetingMessage}
+                onChange={(e) => setGreetingMessage(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+              <p className="text-[9px] text-white/30 mt-1">{t("用户收到订单时会看到这句话", "Shown to customers when they receive their order")}</p>
             </div>
           </div>
 
