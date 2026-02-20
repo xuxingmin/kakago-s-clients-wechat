@@ -193,13 +193,13 @@ const Profile = () => {
             {isLoggedIn && (
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-3 hover:bg-destructive/10 transition-colors border-t border-border"
+                className="w-full flex items-center gap-3 px-3 py-3 hover:bg-accent/50 transition-colors border-t border-border"
               >
-                <div className="w-8 h-8 rounded-xl bg-destructive/10 flex items-center justify-center">
-                  <LogOut className="w-4 h-4 text-destructive" />
+                <div className="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center">
+                  <LogOut className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="font-medium text-destructive text-xs">{t("退出登录", "Log Out")}</p>
+                  <p className="font-medium text-foreground text-xs">{t("退出登录", "Log Out")}</p>
                   <p className="text-[10px] text-muted-foreground">{t("退出当前账号", "Sign out of current account")}</p>
                 </div>
                 <ChevronRight className="w-4 h-4 text-muted-foreground" />
