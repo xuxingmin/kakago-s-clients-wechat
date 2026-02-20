@@ -234,18 +234,12 @@ const MySquad = () => {
                   <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground/60">{t("创世搭子凭证", "Genesis Mate Pass")}</p>
                 </div>
 
-                {/* Poster Image */}
-                <div className="flex justify-center mb-4">
-                  <div
-                    className="w-[160px] h-[160px] rounded-2xl overflow-hidden"
-                    style={{ boxShadow: '0 0 24px hsl(271 81% 56% / 0.5), 0 0 48px hsl(271 81% 56% / 0.2)' }}
-                  >
-                    <img
-                      src={squadInvitePoster}
-                      alt="KAKAGO VIP Pass"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                {/* Poster Image — full width */}
+                <div
+                  className="rounded-xl overflow-hidden mb-4"
+                  style={{ boxShadow: '0 0 24px hsl(271 81% 56% / 0.4), 0 0 48px hsl(271 81% 56% / 0.15)' }}
+                >
+                  <img src={squadInvitePoster} alt="KAKAGO VIP Pass" className="w-full h-auto object-cover" />
                 </div>
 
                 {/* Invite Code Pill */}
@@ -262,19 +256,14 @@ const MySquad = () => {
                 </div>
 
                 {/* CTA Text */}
-                <p className="text-center text-xs font-semibold text-foreground/90 mb-3">
+                <p className="text-center text-xs font-semibold text-foreground/90 mb-2">
                   {t("发送专属通行证，邀请搭子加入", "Send your exclusive pass and invite mates to join")}
                 </p>
 
-                {/* Sharer Benefit Note */}
-                <div className="text-center mb-4 px-2">
-                  <p className="text-[11px] leading-relaxed" style={{ color: 'hsl(142 71% 45%)' }}>
-                    ⚡️ {t(
-                      "绑定成功后，搭子每笔消费将为你注入 2% KKB 能量。",
-                      "Once linked, every mate order charges 2% KKB energy for you."
-                    )}
-                  </p>
-                </div>
+                {/* Sharer Benefit Note — single line */}
+                <p className="text-center text-[10px] mb-4" style={{ color: 'hsl(142 71% 45%)' }}>
+                  ⚡️ {t("绑定后搭子每笔消费为你注入 2% KKB", "Linked mates charge you 2% KKB per order")}
+                </p>
 
                 {/* Buttons */}
                 <div className="flex gap-2.5">
