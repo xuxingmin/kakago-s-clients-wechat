@@ -30,6 +30,7 @@ const MerchantAuth = () => {
   const [greetingMessage, setGreetingMessage] = useState("");
   const [storeFeatures, setStoreFeatures] = useState("");
   const [coffeeMachine, setCoffeeMachine] = useState("");
+  const [grinderModel, setGrinderModel] = useState("");
   const [dailyPeakCups, setDailyPeakCups] = useState("");
   const [businessHoursOpen, setBusinessHoursOpen] = useState("09:00");
   const [businessHoursClose, setBusinessHoursClose] = useState("22:00");
@@ -37,9 +38,11 @@ const MerchantAuth = () => {
   const [closedDaysOpen, setClosedDaysOpen] = useState(false);
   const [businessLicense, setBusinessLicense] = useState<File | null>(null);
   const [foodPermit, setFoodPermit] = useState<File | null>(null);
+  const [storefrontPhoto, setStorefrontPhoto] = useState<File | null>(null);
 
   const businessLicenseRef = useRef<HTMLInputElement>(null);
   const foodPermitRef = useRef<HTMLInputElement>(null);
+  const storefrontPhotoRef = useRef<HTMLInputElement>(null);
 
   const benefits = [
     {
@@ -133,10 +136,14 @@ const MerchantAuth = () => {
     }
     setLoading(true);
     try {
-      const [licenseUrl, permitUrl] = await Promise.all([
+      const uploadPromises: Promise<string>[] = [
         uploadFile(businessLicense, "licenses"),
         uploadFile(foodPermit, "permits"),
-      ]);
+      ];
+      if (storefrontPhoto) {
+        uploadPromises.push(uploadFile(storefrontPhoto, "storefronts"));
+      }
+      const [licenseUrl, permitUrl, storefrontUrl] = await Promise.all(uploadPromises);
       const { error } = await supabase.from("merchant_applications").insert({
         phone,
         owner_name: ownerName,
@@ -147,10 +154,12 @@ const MerchantAuth = () => {
         greeting_message: greetingMessage || null,
         store_features: storeFeatures,
         coffee_machine_model: coffeeMachine,
+        grinder_model: grinderModel || null,
         daily_peak_cups: parseInt(dailyPeakCups),
         business_hours: { open: businessHoursOpen, close: businessHoursClose, closed_days: closedDays },
         business_license_url: licenseUrl,
         food_permit_url: permitUrl,
+        storefront_photo_url: storefrontUrl || null,
       });
       if (error) throw error;
       setStep("success");
@@ -361,7 +370,7 @@ const MerchantAuth = () => {
           {/* Document Upload */}
           <div className="card-md">
             <h3 className="text-xs font-semibold text-white mb-3">{t("证件上传", "Documents")}</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <div
                 className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
                   businessLicense ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
@@ -396,7 +405,26 @@ const MerchantAuth = () => {
                 ) : (
                   <>
                     <Upload className="w-5 h-5 text-white/40 mb-1" />
-                    <span className="text-[10px] text-white/40">{t("食品许可证", "Food Permit")}</span>
+                    <span className="text-[10px] text-white/40">{t("食品许可证", "Permit")}</span>
+                  </>
+                )}
+              </div>
+              <div
+                className={`aspect-[4/3] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
+                  storefrontPhoto ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40"
+                }`}
+                onClick={() => storefrontPhotoRef.current?.click()}
+              >
+                <input ref={storefrontPhotoRef} type="file" accept="image/*" className="hidden" onChange={(e) => setStorefrontPhoto(e.target.files?.[0] || null)} />
+                {storefrontPhoto ? (
+                  <>
+                    <Check className="w-5 h-5 text-primary mb-1" />
+                    <span className="text-[10px] text-primary">{t("已上传", "Uploaded")}</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-5 h-5 text-white/40 mb-1" />
+                    <span className="text-[10px] text-white/40">{t("门头照", "Storefront")}</span>
                   </>
                 )}
               </div>
@@ -488,6 +516,15 @@ const MerchantAuth = () => {
                 placeholder="La Marzocco Linea PB"
                 value={coffeeMachine}
                 onChange={(e) => setCoffeeMachine(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] text-white/50 mb-1 block">{t("磨豆机型号", "Grinder")} </label>
+              <input
+                placeholder="e.g. Mahlkönig EK43"
+                value={grinderModel}
+                onChange={(e) => setGrinderModel(e.target.value)}
                 className="w-full px-3 py-2.5 rounded-xl bg-secondary text-white text-xs placeholder:text-white/30 outline-none focus:ring-1 focus:ring-primary/50"
               />
             </div>
