@@ -156,12 +156,12 @@ const MySquad = () => {
             <div className="relative p-3">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">KAKAGO · VIP PASS</p>
+                  <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">KAKAGO · ACCESS TOKEN</p>
                   <p className="text-xs font-semibold text-foreground leading-tight mt-0.5">
                     {t("赠送一枚「创世搭子特权」", "Gift a Genesis Mate Privilege")}
                   </p>
                   <p className="text-[10px] text-muted-foreground/60 mt-0.5">
-                    {t("激活后 Ta 即享有首单 5 折礼遇", "Once activated, they get 50% off their first order")}
+                    {t("含：专属 Taste ID 特别惊喜！", "Includes: exclusive Taste ID & special surprise!")}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-md px-1.5 py-0.5">
