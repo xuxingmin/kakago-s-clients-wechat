@@ -158,7 +158,10 @@ const MySquad = () => {
                 <div>
                   <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">KAKAGO · VIP PASS</p>
                   <p className="text-xs font-semibold text-foreground leading-tight mt-0.5">
-                    {t("送好友一杯", "Gift a friend")} <span className="text-primary">{t("5 折首单特权", "50% off")}</span>
+                    {t("赠送一枚「创世搭子特权」", "Gift a Genesis Mate Privilege")}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/60 mt-0.5">
+                    {t("激活后 Ta 即享有首单 5 折礼遇", "Once activated, they get 50% off their first order")}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-md px-1.5 py-0.5">
@@ -173,7 +176,7 @@ const MySquad = () => {
                 className="btn-gold w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 pulse-glow !min-h-0"
               >
                 <Coffee className="w-3.5 h-3.5" strokeWidth={1.5} />
-                {t("摇人喝一杯", "Call for coffee")}
+                {t("递出特权卡", "Send Privilege Card")}
               </button>
             </div>
           </div>
