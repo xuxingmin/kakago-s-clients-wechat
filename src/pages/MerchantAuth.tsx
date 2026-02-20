@@ -39,16 +39,12 @@ const MerchantAuth = () => {
       emoji: "🛡️",
       title: t("独立咖啡守护", "Defending Independent Coffee"),
       desc: t("抵抗工业化连锁的吞噬，用分布式的力量，捍卫属于独立咖啡馆的生存空间。", "Resist industrial chains. Use distributed power to defend independent café space."),
+      accent: true,
     },
     {
       emoji: "🏰",
       title: t("门店绝对独立", "Full Store Autonomy"),
       desc: t("保持原有的价格体系与菜单独立，拒绝平台强制打折。零平台裹挟，无经营负担。", "Keep your pricing & menu. No forced discounts. Zero platform lock-in."),
-    },
-    {
-      emoji: "🤖",
-      title: t("AI 智能托管", "AI-Powered Operations"),
-      desc: t("统一部署品控与包材。无需操心叫货与营销设置。无入驻门槛，你只管专注萃取出杯。", "Unified QC & packaging. No ordering or marketing hassle. Just focus on brewing."),
     },
     {
       emoji: "⚡️",
@@ -59,6 +55,11 @@ const MerchantAuth = () => {
       emoji: "🎯",
       title: t("精准用户匹配", "Precision User Matching"),
       desc: t("拒绝低质羊毛党。懂风味的用户，自动匹配给正在使用对应精品豆的你。", "No bargain hunters. Flavor-savvy users matched to your specialty beans."),
+    },
+    {
+      emoji: "🤖",
+      title: t("AI 智能托管", "AI-Powered Operations"),
+      desc: t("统一部署品控与包材。无需操心叫货与营销设置。无入驻门槛，你只管专注萃取出杯。", "Unified QC & packaging. No ordering or marketing hassle. Just focus on brewing."),
     },
   ];
 
@@ -179,14 +180,22 @@ const MerchantAuth = () => {
             </div>
           </div>
 
-          {/* Benefits — 5 cards, ideology-first order */}
-          <div className="px-4 pt-1 pb-2 space-y-1.5">
+          {/* Benefits — 5 cards */}
+          <div className="px-4 pt-1 pb-2 space-y-2">
             {benefits.map((b, i) => (
-              <div key={i} className="rounded-xl bg-secondary/60 px-3 py-3">
-                <h3 className="text-xs font-semibold text-foreground mb-0.5">
-                  <span className="mr-1">{b.emoji}</span>{b.title}
+              <div
+                key={i}
+                className={`rounded-xl px-4 py-3.5 border transition-all ${
+                  (b as any).accent
+                    ? "bg-primary/10 border-primary/30"
+                    : "bg-secondary/50 border-transparent"
+                }`}
+                style={(b as any).accent ? { boxShadow: '0 0 20px hsl(271 81% 56% / 0.15)' } : undefined}
+              >
+                <h3 className="text-[13px] font-bold text-foreground mb-1 tracking-tight">
+                  <span className="mr-1.5">{b.emoji}</span>{b.title}
                 </h3>
-                <p className="text-[10px] text-muted-foreground leading-relaxed">{b.desc}</p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">{b.desc}</p>
               </div>
             ))}
           </div>
