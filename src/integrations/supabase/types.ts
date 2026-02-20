@@ -23,6 +23,7 @@ export type Database = {
           daily_peak_cups: number
           food_permit_url: string
           greeting_message: string | null
+          grinder_model: string | null
           id: string
           latitude: number | null
           logo_url: string | null
@@ -37,6 +38,7 @@ export type Database = {
           store_features: string
           store_name: string | null
           store_name_en: string | null
+          storefront_photo_url: string | null
           updated_at: string
         }
         Insert: {
@@ -47,6 +49,7 @@ export type Database = {
           daily_peak_cups: number
           food_permit_url: string
           greeting_message?: string | null
+          grinder_model?: string | null
           id?: string
           latitude?: number | null
           logo_url?: string | null
@@ -61,6 +64,7 @@ export type Database = {
           store_features: string
           store_name?: string | null
           store_name_en?: string | null
+          storefront_photo_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -71,6 +75,7 @@ export type Database = {
           daily_peak_cups?: number
           food_permit_url?: string
           greeting_message?: string | null
+          grinder_model?: string | null
           id?: string
           latitude?: number | null
           logo_url?: string | null
@@ -85,6 +90,7 @@ export type Database = {
           store_features?: string
           store_name?: string | null
           store_name_en?: string | null
+          storefront_photo_url?: string | null
           updated_at?: string
         }
         Relationships: []
