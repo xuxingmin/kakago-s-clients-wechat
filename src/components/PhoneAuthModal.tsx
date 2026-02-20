@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Coffee, Loader2, ChevronLeft, X, MessageCircle, Smartphone } from "lucide-react";
+import { Coffee, Loader2, ChevronLeft, X, Smartphone, MapPin, Info } from "lucide-react";
+
+// WeChat icon SVG component
+const WeChatIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.062-6.122zm-2.036 2.87c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.072 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982z"/>
+  </svg>
+);
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
@@ -237,13 +244,12 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
                   toast.error(t("请先勾选同意协议", "Please agree to the terms first"));
                   return;
                 }
-                handleWeChatLogin();
+                setStep("wechat");
               }}
-              disabled={loading}
-              className="w-full h-12 rounded-full bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full h-12 rounded-full bg-[#07C160] text-sm font-semibold text-white hover:bg-[#06AD56] transition-colors flex items-center justify-center gap-2.5"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <MessageCircle className="w-4 h-4" />}
-              {t("一键登录", "One-click Login")}
+              <WeChatIcon className="w-5 h-5" />
+              {t("微信一键登录", "WeChat Login")}
             </button>
             <button
               onClick={() => {
@@ -288,7 +294,72 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
     );
   }
 
-  // ═══ STEP 3a: WeChat permission popup (handled in choose step directly) ═══
+  // ═══ STEP 3a: WeChat Authorization (dark overlay like Cotti image 3) ═══
+  if (step === "wechat") {
+    return (
+      <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col justify-end animate-in fade-in duration-200">
+        {/* Dark area - tap to go back */}
+        <div className="flex-1" onClick={() => setStep("choose")} />
+
+        {/* Authorization panel */}
+        <div className="bg-card rounded-t-2xl px-5 pt-5 pb-8 animate-in slide-in-from-bottom duration-300">
+          {/* App info row */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
+                <Coffee className="w-5 h-5 text-primary" />
+              </div>
+              <span className="text-sm font-medium text-foreground">KAKAGO {t("申请", "requests")}</span>
+            </div>
+            <Info className="w-4 h-4 text-muted-foreground" />
+          </div>
+
+          {/* Permission title */}
+          <h3 className="text-base font-bold text-foreground mb-2">
+            {t("获取你的位置信息", "Access your location")}
+          </h3>
+          <p className="text-[13px] text-muted-foreground leading-relaxed mb-6">
+            {t(
+              "将获取你的具体位置信息，用于向您推荐、展示您附近门店的菜单(商品列表)、优惠活动等营销信息",
+              "Your location will be used to recommend nearby stores, menus, and promotional offers"
+            )}
+          </p>
+
+          {/* Action buttons */}
+          <div className="flex gap-3 mb-4">
+            <button
+              onClick={() => setStep("choose")}
+              className="flex-1 h-11 rounded-full bg-muted text-sm font-medium text-muted-foreground hover:bg-muted/80 transition-colors"
+            >
+              {t("拒绝", "Decline")}
+            </button>
+            <button
+              onClick={handleWeChatLogin}
+              disabled={loading}
+              className="flex-1 h-11 rounded-full bg-[#07C160] text-sm font-semibold text-white hover:bg-[#06AD56] transition-colors flex items-center justify-center gap-2"
+            >
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("允许", "Allow")}
+            </button>
+          </div>
+
+          {/* Privacy note */}
+          <div className="flex items-center gap-2 justify-center">
+            <button
+              onClick={() => setAgreedCheck(!agreedCheck)}
+              className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
+                agreedCheck ? "bg-primary border-primary" : "border-muted-foreground/40"
+              }`}
+            >
+              {agreedCheck && <span className="text-primary-foreground text-[8px]">✓</span>}
+            </button>
+            <p className="text-[10px] text-muted-foreground">
+              {t("已阅读并接受《KAKAGO小程序隐私保护指引》", "Read and accepted KAKAGO Privacy Guidelines")}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ═══ STEP 3b: Phone Number Input (Cotti style) ═══
   return (
