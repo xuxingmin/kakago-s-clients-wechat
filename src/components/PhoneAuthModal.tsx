@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Coffee, Loader2, ShieldCheck, ChevronRight, X } from "lucide-react";
+import { Coffee, Loader2, ChevronLeft, X, MessageCircle, Smartphone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
@@ -9,7 +9,7 @@ interface PhoneAuthModalProps {
   onClose: () => void;
 }
 
-type AuthStep = "privacy" | "phone";
+type AuthStep = "privacy" | "choose" | "wechat" | "phone";
 
 export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
   const [step, setStep] = useState<AuthStep>("privacy");
@@ -18,18 +18,17 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
   const [code, setCode] = useState("");
   const [codeSent, setCodeSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  const [agreed, setAgreed] = useState(false);
+  const [agreedCheck, setAgreedCheck] = useState(false);
   const { t } = useLanguage();
 
   useEffect(() => {
     if (!isOpen) {
-      // Reset on close
       setStep("privacy");
       setPhone("");
       setCode("");
       setCodeSent(false);
       setCountdown(0);
-      setAgreed(false);
+      setAgreedCheck(false);
     }
   }, [isOpen]);
 
@@ -46,9 +45,45 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
 
   if (!isOpen) return null;
 
-  const handleAgree = () => {
-    setAgreed(true);
-    setStep("phone");
+  const doLogin = async (phoneNum: string) => {
+    setLoading(true);
+    try {
+      const email = `phone_${phoneNum}@kakago.app`;
+      const password = `kakago_phone_${phoneNum}_2024`;
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (signInError) {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
+        if (signUpError) {
+          toast.error(t("登录失败，请重试", "Login failed, please try again"));
+          setLoading(false);
+          return;
+        }
+        if (signUpData.user) {
+          await new Promise((r) => setTimeout(r, 600));
+          await supabase.from("profiles").update({ phone: phoneNum, display_name: `用户${phoneNum.slice(-4)}` }).eq("user_id", signUpData.user.id);
+        }
+      } else {
+        const { data: { user: currentUser } } = await supabase.auth.getUser();
+        if (currentUser) {
+          await supabase.from("profiles").update({ phone: phoneNum }).eq("user_id", currentUser.id);
+        }
+      }
+      await new Promise((r) => setTimeout(r, 300));
+      toast.success(t("登录成功", "Login successful"));
+      onClose();
+    } catch {
+      toast.error(t("登录失败", "Login failed"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleWeChatLogin = async () => {
+    // Simulate WeChat one-click: generate a random phone
+    const randomPhone = "138" + Math.random().toString().slice(2, 10);
+    await doLogin(randomPhone);
   };
 
   const handleSendCode = async () => {
@@ -57,7 +92,6 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
       return;
     }
     setLoading(true);
-    // Simulate SMS sending
     await new Promise((r) => setTimeout(r, 800));
     setCodeSent(true);
     setCountdown(60);
@@ -65,240 +99,283 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
     toast.success(t("验证码已发送", "Verification code sent"));
   };
 
-  const handleLogin = async () => {
+  const handlePhoneLogin = async () => {
     if (code.length !== 6) {
       toast.error(t("请输入6位验证码", "Please enter the 6-digit code"));
       return;
     }
-    setLoading(true);
-    try {
-      // Use phone-based email pattern for Supabase auth
-      const email = `phone_${phone}@kakago.app`;
-      const password = `kakago_phone_${phone}_2024`;
-
-      // Try sign in first
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (signInError) {
-        // If sign in fails, sign up (new user)
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
-        if (signUpError) {
-          console.error("Auth error:", signUpError.message);
-          toast.error(t("登录失败，请重试", "Login failed, please try again"));
-          setLoading(false);
-          return;
-        }
-
-        // Update profile with phone number
-        if (signUpData.user) {
-          await new Promise((r) => setTimeout(r, 600));
-          await supabase
-            .from("profiles")
-            .update({ phone, display_name: `用户${phone.slice(-4)}` })
-            .eq("user_id", signUpData.user.id);
-        }
-      } else {
-        // Existing user - update phone if needed
-        const { data: { user: currentUser } } = await supabase.auth.getUser();
-        if (currentUser) {
-          await supabase
-            .from("profiles")
-            .update({ phone })
-            .eq("user_id", currentUser.id);
-        }
-      }
-
-      await new Promise((r) => setTimeout(r, 300));
-      toast.success(t("登录成功", "Login successful"));
-      onClose();
-    } catch (err) {
-      console.error("Auth error:", err);
-      toast.error(t("登录失败", "Login failed"));
-    } finally {
-      setLoading(false);
-    }
+    await doLogin(phone);
   };
 
-  // ═══ STEP: Privacy Agreement ═══
+  // Back button for sub-steps
+  const BackButton = ({ to }: { to: AuthStep }) => (
+    <button
+      onClick={() => setStep(to)}
+      className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+    >
+      <ChevronLeft className="w-5 h-5" />
+    </button>
+  );
+
+  // ═══ STEP 1: Privacy Disclaimer (Cotti style - full page) ═══
   if (step === "privacy") {
     return (
-      <div className="fixed inset-0 z-[100] flex items-end justify-center">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative w-full max-w-[393px] rounded-t-3xl bg-secondary/95 backdrop-blur-xl border-t border-white/10 overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
-          {/* Close */}
-          <button onClick={onClose} className="absolute right-4 top-4 w-7 h-7 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground z-10">
-            <X className="w-4 h-4" />
+      <div className="fixed inset-0 z-[100] bg-background flex flex-col animate-in fade-in duration-200">
+        {/* Header */}
+        <div className="flex-shrink-0 flex items-center justify-between px-4 pt-3 pb-2">
+          <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground">
+            <X className="w-5 h-5" />
           </button>
+          <span className="text-sm font-medium text-foreground">{t("温馨提示", "Notice")}</span>
+          <div className="w-8" />
+        </div>
 
-          <div className="px-6 pt-8 pb-6">
-            {/* Title */}
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center">
-                <Coffee className="w-4 h-4 text-primary" />
+        {/* Logo */}
+        <div className="flex flex-col items-center pt-4 pb-3">
+          <div className="w-16 h-16 rounded-2xl bg-primary/15 flex items-center justify-center mb-3">
+            <Coffee className="w-8 h-8 text-primary" />
+          </div>
+          <h2 className="text-base font-bold text-foreground">{t("温馨提示", "Warm Reminder")}</h2>
+        </div>
+
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto px-5 scrollbar-hide">
+          <div className="text-[13px] text-foreground leading-[1.8] space-y-4">
+            <p>{t(
+              "欢迎使用KAKAGO咖啡盲盒。我们深知个人信息对您的重要性，我们将按相关法律法规要求，尽力保护您的个人信息安全可控。",
+              "Welcome to KAKAGO Coffee Blind Box. We understand the importance of your personal information and will protect it in accordance with applicable laws."
+            )}</p>
+            <p>{t(
+              "在使用KAKAGO服务前，请您务必审慎阅读《隐私协议》和《用户协议》，并充分理解相关协议条款。为便于理解协议条款，特向您说明如下：",
+              "Before using KAKAGO services, please carefully read the Privacy Policy and User Agreement. Key points include:"
+            )}</p>
+            <ol className="list-decimal list-outside pl-5 space-y-3">
+              <li>{t(
+                "为了向您提供订单、交易、会员权益相关的基本服务，我们会收集和使用必要的个人信息；",
+                "We collect necessary personal information to provide order, transaction, and membership services;"
+              )}</li>
+              <li>{t(
+                "为了向您提供所在位置附近的门店展示、产品及服务，需要授权同意我们获取位置权限，您有权同意或拒绝授权；",
+                "To show nearby stores and services, we need your location permission. You may agree or decline;"
+              )}</li>
+              <li>{t(
+                "我们将严格按照您同意的各项条款使用您的个人信息。未经您同意，我们不会从第三方获取、共享或向其提供您的个人信息；",
+                "We will strictly use your information per agreed terms. We will not share your data with third parties without consent;"
+              )}</li>
+              <li>{t(
+                "我们提供账户注销的渠道，您可以查询、更正、删除个人信息；",
+                "You can query, correct, or delete your personal information, and request account deletion;"
+              )}</li>
+              <li>{t(
+                "如果您是14周岁以下的未成年人，您需要和您的监护人一起仔细阅读《儿童隐私保护声明》，并在征得您的监护人同意后，使用我们的产品、服务或向我们提供信息。",
+                "If you are under 14, please read the Children's Privacy Statement with your guardian and obtain their consent."
+              )}</li>
+            </ol>
+          </div>
+        </div>
+
+        {/* Bottom buttons */}
+        <div className="flex-shrink-0 px-5 pb-6 pt-3 flex gap-3">
+          <button
+            onClick={onClose}
+            className="flex-1 h-12 rounded-full border border-border text-sm font-medium text-muted-foreground hover:bg-accent/50 transition-colors"
+          >
+            {t("不同意并退出", "Disagree & Exit")}
+          </button>
+          <button
+            onClick={() => setStep("choose")}
+            className="flex-1 h-12 rounded-full bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+          >
+            {t("同意", "Agree")}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ═══ STEP 2: Choose Login Method (Cotti style) ═══
+  if (step === "choose") {
+    return (
+      <div className="fixed inset-0 z-[100] bg-background flex flex-col animate-in fade-in duration-200">
+        {/* Header */}
+        <div className="flex-shrink-0 flex items-center justify-between px-4 pt-3 pb-2">
+          <BackButton to="privacy" />
+          <span className="text-sm font-medium text-foreground">{t("登录", "Login")}</span>
+          <div className="w-8" />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 flex flex-col items-center px-6">
+          {/* Brand */}
+          <div className="mt-12 mb-4">
+            <h1 className="text-3xl font-black text-foreground tracking-tight">KAKAGO</h1>
+          </div>
+          <p className="text-sm text-muted-foreground mb-8">{t("立即登录，享受会员权益", "Login now, enjoy member benefits")}</p>
+
+          {/* Benefits icons */}
+          <div className="flex gap-10 mb-16">
+            {[
+              { icon: "🎫", labelZh: "优惠券", labelEn: "Coupons" },
+              { icon: "🎁", labelZh: "盲盒", labelEn: "Blind Box" },
+              { icon: "💬", labelZh: "专属客服", labelEn: "Support" },
+            ].map((item) => (
+              <div key={item.labelZh} className="flex flex-col items-center gap-1.5">
+                <span className="text-2xl">{item.icon}</span>
+                <span className="text-xs text-muted-foreground">{t(item.labelZh, item.labelEn)}</span>
               </div>
-              <h3 className="text-base font-bold text-foreground">KAKAGO {t("温馨提示", "Notice")}</h3>
-            </div>
+            ))}
+          </div>
 
-            {/* Content */}
-            <div className="text-[12px] text-muted-foreground leading-relaxed space-y-3 max-h-[280px] overflow-y-auto scrollbar-hide">
-              <p>
-                {t(
-                  "尊敬的用户，为了向您提供更优质的服务，在您使用KAKAGO咖啡盲盒小程序前，您需要通过点击\\\"我已阅读并同意本温馨提示内容及相关协议\\\"以表示您充分知悉、理解并同意本温馨提示一级相关协议的各项规则，包括：",
-                  "Dear user, to provide better service, before using KAKAGO Coffee Blind Box, please read and agree to the following terms and policies:"
-                )}
-              </p>
-              <p>
-                {t(
-                  "我们会在您开启位置权限后访问获取您的位置信息，根据您的位置信息提供更契合您需求的页面展示、产品或服务，比如首页向您推荐附近门店售卖中的商品及排行榜，菜单页向您推荐附近门店售卖商品及相应优惠信息。",
-                  "We will access your location (with your permission) to show nearby stores, products, rankings, and offers tailored to your area."
-                )}
-              </p>
-              <p>
-                {t(
-                  "我们会收集您的手机号用于账户注册和登录验证。您的个人信息将严格按照隐私政策进行保护。",
-                  "We collect your phone number for account registration and login verification. Your personal information will be strictly protected per our privacy policy."
-                )}
-              </p>
-              <button className="text-primary text-[12px] font-medium">
-                {t("《KAKAGO隐私权政策》", "《KAKAGO Privacy Policy》")}
-              </button>
-            </div>
+          {/* Spacer */}
+          <div className="flex-1" />
 
-            {/* Buttons */}
-            <div className="flex gap-3 mt-5">
-              <button
-                onClick={onClose}
-                className="flex-1 h-11 rounded-xl bg-muted/50 text-sm font-medium text-muted-foreground hover:bg-muted/70 transition-colors"
-              >
-                {t("不同意", "Disagree")}
-              </button>
-              <button
-                onClick={handleAgree}
-                className="flex-1 h-11 rounded-xl bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                {t("同意", "Agree")}
-              </button>
-            </div>
+          {/* Buttons */}
+          <div className="w-full max-w-[320px] space-y-3 mb-4">
+            <button
+              onClick={() => {
+                if (!agreedCheck) {
+                  toast.error(t("请先勾选同意协议", "Please agree to the terms first"));
+                  return;
+                }
+                handleWeChatLogin();
+              }}
+              disabled={loading}
+              className="w-full h-12 rounded-full bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+            >
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <MessageCircle className="w-4 h-4" />}
+              {t("一键登录", "One-click Login")}
+            </button>
+            <button
+              onClick={() => {
+                if (!agreedCheck) {
+                  toast.error(t("请先勾选同意协议", "Please agree to the terms first"));
+                  return;
+                }
+                setStep("phone");
+              }}
+              className="w-full h-12 rounded-full border border-border text-sm font-medium text-foreground hover:bg-accent/50 transition-colors flex items-center justify-center gap-2"
+            >
+              <Smartphone className="w-4 h-4" />
+              {t("验证码登录", "SMS Login")}
+            </button>
+            <button
+              onClick={onClose}
+              className="w-full text-center text-sm text-muted-foreground py-2"
+            >
+              {t("暂不登录", "Skip for now")}
+            </button>
+          </div>
+
+          {/* Agreement checkbox */}
+          <div className="flex items-center gap-2 pb-8">
+            <button
+              onClick={() => setAgreedCheck(!agreedCheck)}
+              className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
+                agreedCheck ? "bg-primary border-primary" : "border-muted-foreground/40"
+              }`}
+            >
+              {agreedCheck && <span className="text-primary-foreground text-[8px]">✓</span>}
+            </button>
+            <p className="text-[11px] text-muted-foreground">
+              {t("我已阅读并同意", "I have read and agree to ")}
+              <span className="text-primary">{t("《用户协议》", "Terms")}</span>
+              {t(" 与 ", " and ")}
+              <span className="text-primary">{t("《隐私条款》", "Privacy Policy")}</span>
+            </p>
           </div>
         </div>
       </div>
     );
   }
 
-  // ═══ STEP: Phone Login ═══
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-[340px] rounded-2xl bg-secondary/95 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl animate-in zoom-in-95 fade-in duration-200">
-        {/* Close */}
-        <button onClick={onClose} className="absolute right-3 top-3 w-7 h-7 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground z-10">
-          <X className="w-4 h-4" />
-        </button>
+  // ═══ STEP 3a: WeChat permission popup (handled in choose step directly) ═══
 
-        {/* Header */}
-        <div className="flex flex-col items-center pt-8 pb-4 px-6">
-          <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-3">
-            <Coffee className="w-7 h-7 text-primary" />
-          </div>
-          <h3 className="text-base font-bold text-foreground">
-            {t("手机号登录", "Phone Login")}
-          </h3>
-          <p className="text-[11px] text-muted-foreground mt-1">
-            {t("未注册手机号将自动创建账号", "Unregistered numbers will auto-create an account")}
-          </p>
+  // ═══ STEP 3b: Phone Number Input (Cotti style) ═══
+  return (
+    <div className="fixed inset-0 z-[100] bg-background flex flex-col animate-in fade-in duration-200">
+      {/* Header */}
+      <div className="flex-shrink-0 flex items-center justify-between px-4 pt-3 pb-2">
+        <BackButton to="choose" />
+        <span className="text-sm font-medium text-foreground">{t("登录", "Login")}</span>
+        <div className="w-8" />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 px-5 pt-6">
+        <h2 className="text-xl font-bold text-foreground mb-2">{t("您的手机号", "Your Phone Number")}</h2>
+        <p className="text-sm text-muted-foreground mb-8">
+          {t("未注册过的手机号验证后将自动创建 KAKAGO 账号", "Unregistered numbers will auto-create a KAKAGO account")}
+        </p>
+
+        {/* Phone input */}
+        <div className="mb-6">
+          <input
+            type="tel"
+            inputMode="numeric"
+            placeholder={t("请输入手机号", "Enter phone number")}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
+            maxLength={11}
+            className="w-full text-lg py-3 bg-transparent border-b border-border text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary transition-colors"
+          />
         </div>
 
-        {/* Form */}
-        <div className="px-6 pb-6 space-y-3">
-          {/* Phone */}
-          <div>
-            <label className="text-[10px] text-muted-foreground mb-1.5 block">
-              {t("手机号", "Phone Number")}
-            </label>
-            <div className="flex gap-2">
-              <div className="flex items-center gap-1 px-3 py-2.5 rounded-xl bg-background/30 border border-white/5 text-xs text-muted-foreground">
-                +86
-              </div>
-              <input
-                type="tel"
-                placeholder={t("请输入11位手机号", "Enter 11-digit phone")}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
-                maxLength={11}
-                className="flex-1 px-3 py-2.5 rounded-xl bg-background/30 border border-white/5 text-foreground text-xs placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/50"
-              />
-            </div>
-          </div>
-
-          {/* SMS Code */}
-          <div>
-            <label className="text-[10px] text-muted-foreground mb-1.5 block">
-              {t("验证码", "Verification Code")}
-            </label>
-            <div className="flex gap-2">
+        {/* SMS code - show after sending */}
+        {codeSent && (
+          <div className="mb-6 animate-in slide-in-from-top-2 duration-200">
+            <div className="flex gap-3">
               <input
                 type="text"
-                placeholder={t("6位验证码", "6-digit code")}
+                inputMode="numeric"
+                placeholder={t("请输入验证码", "Enter code")}
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 maxLength={6}
-                className="flex-1 px-3 py-2.5 rounded-xl bg-background/30 border border-white/5 text-foreground text-sm text-center tracking-[0.2em] font-mono placeholder:text-muted-foreground/50 placeholder:tracking-normal placeholder:font-sans outline-none focus:ring-1 focus:ring-primary/50"
+                className="flex-1 text-lg py-3 bg-transparent border-b border-border text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary transition-colors tracking-widest"
               />
               <button
                 onClick={handleSendCode}
-                disabled={loading || countdown > 0 || phone.length !== 11}
-                className="px-3 py-2.5 rounded-xl text-[11px] font-medium bg-primary/10 text-primary border border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+                disabled={loading || countdown > 0}
+                className="text-sm text-primary font-medium whitespace-nowrap disabled:text-muted-foreground"
               >
-                {loading ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : countdown > 0 ? (
-                  `${countdown}s`
-                ) : codeSent ? (
-                  t("重新发送", "Resend")
-                ) : (
-                  t("获取验证码", "Get Code")
-                )}
+                {countdown > 0 ? `${countdown}s` : t("重新发送", "Resend")}
               </button>
             </div>
           </div>
+        )}
 
-          {/* Login button */}
+        {/* Agreement */}
+        <div className="flex items-center gap-2 mb-8">
           <button
-            onClick={handleLogin}
-            disabled={!codeSent || code.length !== 6 || loading}
-            className="w-full h-11 rounded-xl bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed mt-1"
+            onClick={() => setAgreedCheck(!agreedCheck)}
+            className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
+              agreedCheck ? "bg-primary border-primary" : "border-muted-foreground/40"
+            }`}
           >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                {t("登录中...", "Logging in...")}
-              </>
-            ) : (
-              <>
-                {t("登录 / 注册", "Login / Register")}
-                <ChevronRight className="w-4 h-4" />
-              </>
-            )}
+            {agreedCheck && <span className="text-primary-foreground text-[8px]">✓</span>}
           </button>
-
-          {/* Agreement */}
-          <div className="flex items-start gap-1.5 pt-1">
-            <ShieldCheck className="w-3 h-3 text-primary mt-0.5 flex-shrink-0" />
-            <p className="text-[9px] text-muted-foreground/60 leading-relaxed">
-              {t(
-                "登录即表示您已同意《KAKAGO用户协议》和《隐私政策》",
-                "By logging in, you agree to KAKAGO Terms of Service and Privacy Policy"
-              )}
-            </p>
-          </div>
+          <p className="text-[11px] text-muted-foreground">
+            {t("我已阅读并同意", "I have read and agree to ")}
+            <span className="text-primary">{t("《用户协议》", "Terms")}</span>
+            {t(" 与 ", " and ")}
+            <span className="text-primary">{t("《隐私条款》", "Privacy Policy")}</span>
+          </p>
         </div>
+
+        {/* Action button */}
+        <button
+          onClick={codeSent ? handlePhoneLogin : handleSendCode}
+          disabled={loading || phone.length !== 11 || !agreedCheck}
+          className="w-full h-12 rounded-full bg-primary text-sm font-semibold text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : codeSent ? (
+            t("登录", "Login")
+          ) : (
+            t("下一步", "Next")
+          )}
+        </button>
       </div>
     </div>
   );
