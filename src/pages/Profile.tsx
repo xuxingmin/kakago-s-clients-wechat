@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Ticket, HelpCircle, Store, ChevronRight,
-  Users, TrendingUp, LucideIcon, Coins, MapPin, FileText, LogOut, User, Phone
+  Users, LucideIcon, Coins, MapPin, FileText, LogOut, User, Phone
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
@@ -106,34 +106,28 @@ const Profile = () => {
               )}
             </button>
 
-            {/* My Squad Card */}
+            {/* Coffee Mates Card */}
             <button onClick={() => navigate("/my-squad")} className="card-md text-left">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
                   <Users className="w-3.5 h-3.5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xs font-semibold text-foreground">{t("拉帮结派", "My Squad")}</h3>
-                  <p className="text-[9px] text-muted-foreground">{t("邀请返佣", "Invite & Earn")}</p>
+                  <h3 className="text-xs font-semibold text-foreground">{t("咖啡搭子", "Coffee Mates")}</h3>
+                  <p className="text-[9px] text-muted-foreground">{t("一起喝更快乐", "Better together")}</p>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[9px] text-muted-foreground">{t("累计收益", "Earnings")}</p>
-                  <span className="text-base font-black text-primary">{isLoggedIn ? "¥1,240" : "--"}</span>
+              <div>
+                <div className="flex items-baseline gap-1 mb-1.5">
+                  <span className="text-xl font-black text-foreground">{isLoggedIn ? "348" : "--"}</span>
+                  <span className="text-[10px] text-muted-foreground">{t("位", "mates")}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="text-right">
-                    <p className="text-xs font-bold text-foreground">{isLoggedIn ? "348" : "--"}</p>
-                    <p className="text-[9px] text-muted-foreground">{t("队员", "Members")}</p>
+                {isLoggedIn && (
+                  <div className="flex items-center gap-1 text-[9px]" style={{ color: 'hsl(142 71% 45%)' }}>
+                    <span>⚡️</span>
+                    <span className="font-medium">{t("今日产出", "Today")} +1,200 KAKA{t("豆", " Beans")}</span>
                   </div>
-                  {isLoggedIn && (
-                    <div className="flex items-center gap-0.5 text-green-400">
-                      <TrendingUp className="w-2.5 h-2.5" />
-                      <span className="text-[10px] font-bold">+12</span>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </button>
           </div>
