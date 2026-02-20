@@ -257,7 +257,7 @@ const Orders = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       <div className="flex-shrink-0">
         <Header />
-        <BrandBanner variant="orders" />
+        <BrandBanner />
         <div className="px-4 pt-2 pb-3 max-w-md mx-auto bg-background">
           <div className="flex gap-2">
             <button

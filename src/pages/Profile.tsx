@@ -59,7 +59,7 @@ const Profile = () => {
     <div className="h-screen flex flex-col overflow-hidden">
       <div className="flex-shrink-0">
         <Header />
-        <BrandBanner variant="profile" />
+        <BrandBanner />
         <div className="fog-divider mx-4" />
       </div>
 
