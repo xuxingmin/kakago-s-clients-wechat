@@ -32,14 +32,21 @@ const Coupons = () => {
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="flex items-center h-12 px-4 shrink-0 border-b border-white/5">
-        <button onClick={() => navigate(-1)} className="p-1 -ml-1 text-white/70 hover:text-white">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <h1 className="ml-3 text-base font-bold text-white">{t("我的卡券包", "My Coupons")}</h1>
-        <span className="ml-auto text-xs text-white/40">{mockCoupons.length} {t("张可用", "available")}</span>
-      </header>
+      {/* Section Title with Back */}
+      <div className="flex-shrink-0 px-4 pt-3 pb-1 border-b border-border">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <h2 className="text-sm font-medium text-muted-foreground">{t("我的卡券包", "My Coupons")}</h2>
+          </div>
+          <span className="text-[11px] text-muted-foreground/50">{mockCoupons.length} {t("张可用", "available")}</span>
+        </div>
+      </div>
 
       {/* Coupon List */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 pb-20">

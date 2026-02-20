@@ -148,11 +148,20 @@ const MerchantAuth = () => {
   if (step === "intro") {
     return (
       <div className="h-screen flex flex-col overflow-hidden">
-        {/* Back button */}
-        <div className="absolute top-3 left-4 z-50 safe-top">
-          <button onClick={() => navigate(-1)} className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center">
-            <ArrowLeft className="w-4 h-4 text-white" />
-          </button>
+        {/* Fixed Header */}
+        <div className="flex-shrink-0">
+          {/* Section Title with Back */}
+          <div className="px-4 pt-3 pb-1">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => navigate(-1)}
+                className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <h2 className="text-sm font-medium text-muted-foreground">{t("成为合作商家", "Become a Partner")}</h2>
+            </div>
+          </div>
         </div>
 
         {/* Hero - compact */}
@@ -243,10 +252,16 @@ const MerchantAuth = () => {
     return (
       <div className="h-screen flex flex-col overflow-hidden">
         <div className="flex-shrink-0">
-          <div className="absolute top-3 left-4 z-50 safe-top">
-            <button onClick={() => setStep("intro")} className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center">
-              <ArrowLeft className="w-4 h-4 text-white" />
-            </button>
+          <div className="px-4 pt-3 pb-1">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setStep("intro")}
+                className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <h2 className="text-sm font-medium text-muted-foreground">{t("验证手机号", "Verify Phone")}</h2>
+            </div>
           </div>
 
           <div className="pt-14 pb-4 px-5 text-center">
@@ -322,15 +337,16 @@ const MerchantAuth = () => {
     return (
       <div className="h-screen flex flex-col overflow-hidden">
         <div className="flex-shrink-0">
-          <div className="absolute top-3 left-4 z-50 safe-top">
-            <button onClick={() => setStep("verify")} className="w-8 h-8 rounded-full bg-secondary/80 backdrop-blur flex items-center justify-center">
-              <ArrowLeft className="w-4 h-4 text-white" />
-            </button>
-          </div>
-
-          <div className="pt-14 pb-3 px-5">
-            <h2 className="text-lg font-bold text-white">{t("填写商户信息", "Merchant Info")}</h2>
-            <p className="text-[11px] text-white/50 mt-0.5">{t("完善以下信息，加速审核流程", "Complete info to expedite review")}</p>
+          <div className="px-4 pt-3 pb-1">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setStep("verify")}
+                className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <h2 className="text-sm font-medium text-muted-foreground">{t("填写商户信息", "Merchant Info")}</h2>
+            </div>
           </div>
           <div className="fog-divider mx-4" />
         </div>

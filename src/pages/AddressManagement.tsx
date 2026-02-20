@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Plus, MapPin, Edit2, ChevronLeft } from "lucide-react";
+import { Plus, MapPin, Edit2, ChevronLeft, Star } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BrandBanner } from "@/components/BrandBanner";
 import { BottomNav } from "@/components/BottomNav";
@@ -11,7 +11,7 @@ const AddressManagement = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
-  const { addresses, selectedAddress, setSelectedAddress } = useAddress();
+  const { addresses, selectedAddress, setSelectedAddress, setDefault } = useAddress();
   const returnTo = (location.state as { from?: string })?.from || "/";
 
   const maskPhone = (phone: string) =>
@@ -89,21 +89,35 @@ const AddressManagement = () => {
                     )}
                   </div>
 
-                  {/* Bottom row: Name + Phone + Edit */}
+                  {/* Bottom row: Name + Phone + Actions */}
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
-                    <div className="flex items-center gap-3 text-white/40">
+                    <div className="flex items-center gap-3 text-muted-foreground">
                       <span className="text-xs">{address.name}</span>
                       <span className="text-xs">{maskPhone(address.phone)}</span>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/address/edit/${address.id}`);
-                      }}
-                      className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
-                    >
-                      <Edit2 className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                      {!address.isDefault && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDefault(address.id);
+                          }}
+                          className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] text-muted-foreground bg-secondary/60 hover:bg-primary/15 hover:text-primary transition-all"
+                        >
+                          <Star className="w-3 h-3" />
+                          {t("设为默认", "Default")}
+                        </button>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/address/edit/${address.id}`);
+                        }}
+                        className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
