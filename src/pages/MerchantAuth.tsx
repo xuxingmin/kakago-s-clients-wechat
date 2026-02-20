@@ -131,7 +131,7 @@ const MerchantAuth = () => {
   };
 
   const handleSubmit = async () => {
-    if (!storeName || !ownerName || !storeAddress || !coffeeMachine || !dailyPeakCups || !businessLicense || !foodPermit) {
+    if (!storeName || !ownerName || !storeAddress || !coffeeMachine || !businessLicense || !foodPermit) {
       toast({ title: t("请填写完整信息", "Please complete all fields"), variant: "destructive" });
       return;
     }
@@ -153,10 +153,10 @@ const MerchantAuth = () => {
         store_address: storeAddress,
         store_description: storeDescription || null,
         greeting_message: greetingMessage || null,
-        store_features: storeFeatures,
+        store_features: storeFeatures || "",
         coffee_machine_model: coffeeMachine,
         grinder_model: grinderModel || null,
-        daily_peak_cups: parseInt(dailyPeakCups),
+        daily_peak_cups: 0,
         business_hours: { open: businessHoursOpen, close: businessHoursClose, closed_days: closedDays },
         business_license_url: licenseUrl,
         food_permit_url: permitUrl,
@@ -350,11 +350,11 @@ const MerchantAuth = () => {
   // STEP: INFO — Merchant Information
   // ══════════════════════════════════════════
   // Progress indicator for info step
-  const infoFields = [storeName, storeAddress, ownerName, coffeeMachine, dailyPeakCups];
-  const optionalFilled = [storeNameEn, storeDescription, grinderModel, greetingMessage, storeFeatures].filter(Boolean).length;
+  const infoFields = [storeName, storeAddress, ownerName, coffeeMachine];
+  const optionalFilled = [storeNameEn, storeDescription, grinderModel, greetingMessage].filter(Boolean).length;
   const requiredFilled = infoFields.filter(Boolean).length;
   const docsUploaded = [businessLicense, foodPermit].filter(Boolean).length;
-  const totalProgress = Math.round(((requiredFilled + docsUploaded + Math.min(optionalFilled, 3)) / (5 + 2 + 3)) * 100);
+  const totalProgress = Math.round(((requiredFilled + docsUploaded + Math.min(optionalFilled, 3)) / (4 + 2 + 3)) * 100);
 
   const encourageText = totalProgress < 30
     ? t("🚀 开始吧！几分钟搞定", "🚀 Let's go! Just a few minutes")
@@ -444,21 +444,6 @@ const MerchantAuth = () => {
             <div className="grid grid-cols-2 gap-2">
               <input placeholder={t("咖啡机 *  La Marzocco", "Machine *  La Marzocco")} value={coffeeMachine} onChange={(e) => setCoffeeMachine(e.target.value)} className={inputCls} />
               <input placeholder={t("磨豆机  Mahlkönig EK43", "Grinder  EK43")} value={grinderModel} onChange={(e) => setGrinderModel(e.target.value)} className={inputCls} />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                type="number"
-                placeholder={t("日峰值杯数 *  如：120", "Peak cups/day *  e.g. 120")}
-                value={dailyPeakCups}
-                onChange={(e) => setDailyPeakCups(e.target.value)}
-                className={inputCls}
-              />
-              <input
-                placeholder={t("特色  如：手冲 虹吸 冷萃", "Features  e.g. Pour-over")}
-                value={storeFeatures}
-                onChange={(e) => setStoreFeatures(e.target.value)}
-                className={inputCls}
-              />
             </div>
           </div>
 
