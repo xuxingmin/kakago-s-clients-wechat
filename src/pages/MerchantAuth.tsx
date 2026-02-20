@@ -148,94 +148,94 @@ const MerchantAuth = () => {
   if (step === "intro") {
     return (
       <div className="h-screen flex flex-col overflow-hidden">
-        {/* Fixed Header */}
-        <div className="flex-shrink-0">
-          {/* Section Title with Back */}
-          <div className="px-4 pt-3 pb-1">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => navigate(-1)}
-                className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <h2 className="text-sm font-medium text-muted-foreground">{t("成为合作商家", "Become a Partner")}</h2>
+        {/* Fixed Header with Back */}
+        <div className="flex-shrink-0 px-4 pt-3 pb-1">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors active:scale-95"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <h2 className="text-sm font-medium text-muted-foreground">{t("成为合作商家", "Become a Partner")}</h2>
+          </div>
+        </div>
+
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
+          {/* Hero - compact */}
+          <div className="relative bg-gradient-to-b from-primary/20 via-background to-background pt-8 pb-3 px-5 text-center">
+            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto mb-2">
+              <Coffee className="w-6 h-6 text-primary" />
+            </div>
+            <h1 className="text-lg font-bold text-foreground mb-1">
+              {t("成为 KAKAGO 合作商家", "Become a KAKAGO Partner")}
+            </h1>
+            <p className="text-[11px] text-muted-foreground leading-snug max-w-[250px] mx-auto">
+              {t("与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味", "Partner with our mystery coffee platform")}
+            </p>
+            <div className="flex justify-center gap-8 mt-3">
+              {stats.map((s, i) => (
+                <div key={i} className="text-center">
+                  <p className="text-base font-black text-primary">{s.value}</p>
+                  <p className="text-[9px] text-muted-foreground">{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Hero - compact */}
-        <div className="flex-shrink-0 relative bg-gradient-to-b from-primary/20 via-background to-background pt-12 pb-3 px-5 text-center">
-          <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto mb-2">
-            <Coffee className="w-6 h-6 text-primary" />
-          </div>
-          <h1 className="text-lg font-bold text-white mb-1">
-            {t("成为 KAKAGO 合作商家", "Become a KAKAGO Partner")}
-          </h1>
-          <p className="text-[11px] text-white/50 leading-snug max-w-[250px] mx-auto">
-            {t("与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味", "Partner with our mystery coffee platform")}
-          </p>
-          <div className="flex justify-center gap-8 mt-3">
-            {stats.map((s, i) => (
-              <div key={i} className="text-center">
-                <p className="text-base font-black text-primary">{s.value}</p>
-                <p className="text-[9px] text-white/40">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+          {/* Benefits */}
+          <div className="px-4 pt-1 pb-2 space-y-1.5">
+            {benefits.map((b, i) => {
+              const Icon = b.icon;
+              return (
+                <div key={i} className="flex items-center gap-3 rounded-xl bg-secondary/60 px-3 py-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xs font-semibold text-foreground">{b.title}</h3>
+                    <p className="text-[10px] text-muted-foreground leading-tight">{b.desc}</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs font-black text-primary">{b.stat}</span>
+                    <p className="text-[8px] text-muted-foreground">{b.statLabel}</p>
+                  </div>
+                </div>
+              );
+            })}
 
-        {/* Benefits - compact list */}
-        <div className="flex-1 flex flex-col px-4 pt-1 pb-2 space-y-1.5 overflow-y-auto scrollbar-hide">
-          {benefits.map((b, i) => {
-            const Icon = b.icon;
-            return (
-              <div key={i} className="flex items-center gap-3 rounded-xl bg-secondary/60 px-3 py-2.5">
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
-                  <Icon className="w-4 h-4 text-primary" />
+            {/* Testimonial */}
+            <div className="flex items-start gap-2 rounded-xl bg-secondary/60 border border-primary/15 px-3 py-2.5">
+              <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-0.5 mb-0.5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="w-2.5 h-2.5 text-primary fill-primary" />
+                  ))}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xs font-semibold text-white">{b.title}</h3>
-                  <p className="text-[10px] text-white/45 leading-tight">{b.desc}</p>
-                </div>
-                <div className="text-right shrink-0">
-                  <span className="text-xs font-black text-primary">{b.stat}</span>
-                  <p className="text-[8px] text-white/35">{b.statLabel}</p>
-                </div>
+                <p className="text-[10px] text-muted-foreground leading-snug italic">
+                  {t("\"加入KAKAGO三个月，日均订单增长了40%，品牌曝光度大幅提升。\"", '"3 months: 40% order growth, massive brand exposure."')}
+                </p>
+                <p className="text-[9px] text-muted-foreground/60 mt-0.5">— {t("合肥某精品咖啡馆主理人", "Hefei café owner")}</p>
               </div>
-            );
-          })}
-
-          {/* Testimonial - inline compact */}
-          <div className="flex items-start gap-2 rounded-xl bg-secondary/60 border border-primary/15 px-3 py-2.5">
-            <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-            <div className="min-w-0">
-              <div className="flex items-center gap-0.5 mb-0.5">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-2.5 h-2.5 text-primary fill-primary" />
-                ))}
-              </div>
-              <p className="text-[10px] text-white/60 leading-snug italic">
-                {t("\"加入KAKAGO三个月，日均订单增长了40%，品牌曝光度大幅提升。\"", '"3 months: 40% order growth, massive brand exposure."')}
-              </p>
-              <p className="text-[9px] text-white/35 mt-0.5">— {t("合肥某精品咖啡馆主理人", "Hefei café owner")}</p>
             </div>
           </div>
-        </div>
 
-        {/* CTA - fixed bottom */}
-        <div className="flex-shrink-0 px-4 pb-2 pt-1">
-          <button
-            onClick={() => setStep("verify")}
-            className="w-full py-3 rounded-xl btn-gold text-sm font-semibold flex items-center justify-center gap-2"
-          >
-            <Coffee className="w-4 h-4" />
-            {t("立即入驻", "Apply Now")}
-            <ChevronRight className="w-4 h-4" />
-          </button>
-          <p className="text-center text-[9px] text-white/30 mt-1.5">
-            {t("提交申请后，24小时内将有工作人员与您联系", "Our team will contact you within 24 hours")}
-          </p>
+          {/* CTA */}
+          <div className="px-4 pb-24 pt-2">
+            <button
+              onClick={() => setStep("verify")}
+              className="w-full py-3 rounded-xl btn-gold text-sm font-semibold flex items-center justify-center gap-2"
+            >
+              <Coffee className="w-4 h-4" />
+              {t("立即入驻", "Apply Now")}
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <p className="text-center text-[9px] text-muted-foreground/50 mt-1.5">
+              {t("提交申请后，24小时内将有工作人员与您联系", "Our team will contact you within 24 hours")}
+            </p>
+          </div>
         </div>
 
         <div className="flex-shrink-0">
