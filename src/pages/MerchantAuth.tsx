@@ -36,39 +36,30 @@ const MerchantAuth = () => {
 
   const benefits = [
     {
-      icon: TrendingUp,
-      title: t("精准流量", "Targeted Traffic"),
-      desc: t("盲盒模式带来高质量咖啡爱好者", "Mystery box attracts quality coffee lovers"),
-      stat: "85%",
-      statLabel: t("转化率", "Conversion"),
+      emoji: "🛡️",
+      title: t("独立咖啡守护", "Defending Independent Coffee"),
+      desc: t("抵抗工业化连锁的吞噬，用分布式的力量，捍卫属于独立咖啡馆的生存空间。", "Resist industrial chains. Use distributed power to defend independent café space."),
     },
     {
-      icon: Shield,
-      title: t("品质保障", "Quality Assurance"),
-      desc: t("严选合作，维护高端品牌调性", "Curated partners, premium positioning"),
-      stat: "A+",
-      statLabel: t("品牌评级", "Brand Grade"),
+      emoji: "🏰",
+      title: t("门店绝对独立", "Full Store Autonomy"),
+      desc: t("保持原有的价格体系与菜单独立，拒绝平台强制打折。零平台裹挟，无经营负担。", "Keep your pricing & menu. No forced discounts. Zero platform lock-in."),
     },
     {
-      icon: Users,
-      title: t("社群赋能", "Community Power"),
-      desc: t("精品咖啡联盟，共享行业资源", "Specialty coffee alliance, shared resources"),
-      stat: "10K+",
-      statLabel: t("活跃用户", "Active Users"),
+      emoji: "🤖",
+      title: t("AI 智能托管", "AI-Powered Operations"),
+      desc: t("统一部署品控与包材。无需操心叫货与营销设置。无入驻门槛，你只管专注萃取出杯。", "Unified QC & packaging. No ordering or marketing hassle. Just focus on brewing."),
     },
     {
-      icon: Zap,
-      title: t("智能调度", "Smart Dispatch"),
-      desc: t("AI驱动订单分配，平衡产能", "AI-powered order distribution"),
-      stat: "< 3min",
-      statLabel: t("平均响应", "Avg Response"),
+      emoji: "⚡️",
+      title: t("闲置产能变现", "Monetize Idle Capacity"),
+      desc: t("告别低谷期打苍蝇。精准填补非高峰期产能，为你带来持续、稳定的额外收入。", "Fill off-peak gaps with steady, stable extra revenue."),
     },
-  ];
-
-  const stats = [
-    { value: "200+", label: t("合作商户", "Partners") },
-    { value: "50K+", label: t("日均订单", "Daily Orders") },
-    { value: "4.9", label: t("平均评分", "Avg Rating") },
+    {
+      emoji: "🎯",
+      title: t("精准用户匹配", "Precision User Matching"),
+      desc: t("拒绝低质羊毛党。懂风味的用户，自动匹配给正在使用对应精品豆的你。", "No bargain hunters. Flavor-savvy users matched to your specialty beans."),
+    },
   ];
 
   // Send verification code
@@ -169,57 +160,35 @@ const MerchantAuth = () => {
               <Coffee className="w-6 h-6 text-primary" />
             </div>
             <h1 className="text-lg font-bold text-foreground mb-1">
-              {t("成为 KAKAGO 合作商家", "Become a KAKAGO Partner")}
+              {t("接入 KAKAGO 咖啡网络", "Join the KAKAGO Coffee Network")}
             </h1>
-            <p className="text-[11px] text-muted-foreground leading-snug max-w-[250px] mx-auto">
-              {t("与精品咖啡盲盒平台携手，让更多咖啡爱好者发现您的独特风味", "Partner with our mystery coffee platform")}
+            <p className="text-[11px] text-muted-foreground leading-snug max-w-[280px] mx-auto">
+              {t("让闲置产能变现，成为全城精品咖啡基础设施。", "Monetize idle capacity. Become citywide specialty coffee infrastructure.")}
             </p>
-            <div className="flex justify-center gap-8 mt-3">
-              {stats.map((s, i) => (
-                <div key={i} className="text-center">
-                  <p className="text-base font-black text-primary">{s.value}</p>
-                  <p className="text-[9px] text-muted-foreground">{s.label}</p>
-                </div>
+            {/* Key Tags */}
+            <div className="flex justify-center gap-2 mt-3">
+              {[
+                t("0 入驻门槛", "0 Barrier"),
+                t("稳定收入增量", "Steady Revenue"),
+                t("保持门店独立", "Stay Independent"),
+              ].map((tag, i) => (
+                <span key={i} className="text-[9px] font-medium text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-0.5">
+                  {tag}
+                </span>
               ))}
             </div>
           </div>
 
-          {/* Benefits */}
+          {/* Benefits — 5 cards, ideology-first order */}
           <div className="px-4 pt-1 pb-2 space-y-1.5">
-            {benefits.map((b, i) => {
-              const Icon = b.icon;
-              return (
-                <div key={i} className="flex items-center gap-3 rounded-xl bg-secondary/60 px-3 py-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
-                    <Icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs font-semibold text-foreground">{b.title}</h3>
-                    <p className="text-[10px] text-muted-foreground leading-tight">{b.desc}</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <span className="text-xs font-black text-primary">{b.stat}</span>
-                    <p className="text-[8px] text-muted-foreground">{b.statLabel}</p>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* Testimonial */}
-            <div className="flex items-start gap-2 rounded-xl bg-secondary/60 border border-primary/15 px-3 py-2.5">
-              <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-              <div className="min-w-0">
-                <div className="flex items-center gap-0.5 mb-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="w-2.5 h-2.5 text-primary fill-primary" />
-                  ))}
-                </div>
-                <p className="text-[10px] text-muted-foreground leading-snug italic">
-                  {t("\"加入KAKAGO三个月，日均订单增长了40%，品牌曝光度大幅提升。\"", '"3 months: 40% order growth, massive brand exposure."')}
-                </p>
-                <p className="text-[9px] text-muted-foreground/60 mt-0.5">— {t("合肥某精品咖啡馆主理人", "Hefei café owner")}</p>
+            {benefits.map((b, i) => (
+              <div key={i} className="rounded-xl bg-secondary/60 px-3 py-3">
+                <h3 className="text-xs font-semibold text-foreground mb-0.5">
+                  <span className="mr-1">{b.emoji}</span>{b.title}
+                </h3>
+                <p className="text-[10px] text-muted-foreground leading-relaxed">{b.desc}</p>
               </div>
-            </div>
+            ))}
           </div>
 
           {/* CTA */}
@@ -229,7 +198,7 @@ const MerchantAuth = () => {
               className="w-full py-3 rounded-xl btn-gold text-sm font-semibold flex items-center justify-center gap-2"
             >
               <Coffee className="w-4 h-4" />
-              {t("立即入驻", "Apply Now")}
+              {t("立即申请接入网络", "Apply to Join Network")}
               <ChevronRight className="w-4 h-4" />
             </button>
             <p className="text-center text-[9px] text-muted-foreground/50 mt-1.5">
