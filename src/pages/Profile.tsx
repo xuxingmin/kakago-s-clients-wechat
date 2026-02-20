@@ -74,36 +74,35 @@ const Profile = () => {
             >
               <div className="flex items-center gap-2 mb-2">
                 {isLoggedIn ? (
-                  <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Phone className="w-4 h-4 text-primary" />
+                  <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Phone className="w-3.5 h-3.5 text-primary" />
                   </div>
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
-                    <User className="w-4 h-4 text-muted-foreground" />
+                  <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
+                    <User className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                 )}
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-xs font-semibold text-foreground truncate">
-                    {isLoggedIn ? userName : t("点击登录", "Tap to Login")}
-                  </h2>
-                  {!isLoggedIn && (
-                    <div className="text-[9px] text-muted-foreground flex items-center gap-0.5">
-                      <span>{t("手机号快捷登录", "Quick phone login")}</span>
-                      <ChevronRight className="w-2 h-2" />
-                    </div>
-                  )}
+                <div>
+                  <h3 className="text-xs font-semibold text-foreground">
+                    {isLoggedIn ? t("我的账号", "My Account") : t("点击登录", "Tap to Login")}
+                  </h3>
+                  <p className="text-[9px] text-muted-foreground">
+                    {isLoggedIn ? t("安全中心", "Security Center") : t("手机号快捷登录", "Quick phone login")}
+                  </p>
                 </div>
               </div>
-              
-              {isLoggedIn ? (
+              <div>
+                <div className="flex items-baseline gap-1 mb-1.5">
+                  <span className="text-xl font-black text-foreground">
+                    {isLoggedIn ? userName : "--"}
+                  </span>
+                </div>
                 <p className="text-[9px] text-muted-foreground">
-                  {userPhone ? t("手机号已绑定", "Phone verified") : t("已登录", "Logged in")}
+                  {isLoggedIn
+                    ? (userPhone ? t("已绑定手机", "Phone linked") : t("已登录", "Logged in"))
+                    : t("登录后享受更多权益", "Login for more benefits")}
                 </p>
-              ) : (
-                <p className="text-[9px] text-muted-foreground">
-                  {t("登录后享受更多权益", "Login for more benefits")}
-                </p>
-              )}
+              </div>
             </button>
 
             {/* Coffee Mates Card */}
