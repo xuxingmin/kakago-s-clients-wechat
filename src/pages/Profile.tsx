@@ -48,7 +48,7 @@ const Profile = () => {
     { Icon: MapPin, labelZh: "地址管理", labelEn: "Address Management", descZh: "管理收货地址", descEn: "Manage delivery addresses", onClick: () => navigate("/address") },
     { Icon: FileText, labelZh: "发票管理", labelEn: "Invoice Management", descZh: "管理发票抬头", descEn: "Manage invoice headers", onClick: () => navigate("/invoice") },
     { Icon: HelpCircle, labelZh: "帮助与支持", labelEn: "Help & Support", descZh: "常见问题与联系客服", descEn: "FAQ and customer service", onClick: () => navigate("/help") },
-    { Icon: Store, labelZh: "成为合作商家", labelEn: "Become a Partner", descZh: "加入我们，一起成长", descEn: "Join us and grow together", onClick: () => navigate("/merchant-auth") },
+    { Icon: Store, labelZh: "开启合作", labelEn: "Start Partnership", descZh: "加入我们，一起成长", descEn: "Join us and grow together", onClick: () => navigate("/merchant-auth") },
   ];
 
   const handleLogout = async () => {
@@ -74,23 +74,23 @@ const Profile = () => {
             >
               <div className="flex items-center gap-2 mb-1.5">
                 {isLoggedIn ? (
-                  <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <Phone className="w-3 h-3 text-primary" />
+                  <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Phone className="w-3.5 h-3.5 text-primary" />
                   </div>
                 ) : (
-                  <div className="w-6 h-6 rounded-lg bg-muted flex items-center justify-center">
-                    <User className="w-3 h-3 text-muted-foreground" />
+                  <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
+                    <User className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                 )}
-                <span className="text-[9px] text-muted-foreground">{t("安全中心", "Security")}</span>
+                <span className="text-[10px] text-muted-foreground">{t("账号中心", "Account Center")}</span>
               </div>
               <h3 className="text-base font-black text-foreground leading-tight mb-1">
                 {isLoggedIn ? t("我的账号", "My Account") : t("点击登录", "Tap to Login")}
               </h3>
-              <p className="text-xs text-muted-foreground mb-auto">
+              <p className="text-[11px] text-muted-foreground mb-auto">
                 {isLoggedIn ? userName : t("手机号快捷登录", "Quick phone login")}
               </p>
-              <p className="text-[9px] text-muted-foreground mt-2">
+              <p className="text-[10px] text-muted-foreground mt-2">
                 {isLoggedIn
                   ? (userPhone ? t("已绑定手机", "Phone linked") : t("已登录", "Logged in"))
                   : t("登录享更多权益", "Login for benefits")}
@@ -100,19 +100,19 @@ const Profile = () => {
             {/* Coffee Mates Card */}
             <button onClick={() => navigate("/my-squad")} className="card-md text-left flex flex-col">
               <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <Users className="w-3 h-3 text-primary" />
+                <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <Users className="w-3.5 h-3.5 text-primary" />
                 </div>
-                <span className="text-[9px] text-muted-foreground">{t("一起喝更快乐", "Better together")}</span>
+                <span className="text-[10px] text-muted-foreground">{t("一起喝更快乐", "Better together")}</span>
               </div>
               <h3 className="text-base font-black text-foreground leading-tight mb-1">
                 {t("咖啡搭子", "Coffee Mates")}
               </h3>
-              <p className="text-xs text-muted-foreground mb-auto">
+              <p className="text-[11px] text-muted-foreground mb-auto">
                 {isLoggedIn ? t("共 348 位成员", "348 members total") : "--"}
               </p>
               {isLoggedIn ? (
-                <div className="flex items-center gap-1 text-[9px] mt-2" style={{ color: 'hsl(142 71% 45%)' }}>
+                <div className="flex items-center gap-1 text-[10px] mt-2" style={{ color: 'hsl(142 71% 45%)' }}>
                   <span>⚡️</span>
                   <span className="font-medium">{t("今日产出", "Today")} +1,200 KAKA{t("豆", " Beans")}</span>
                 </div>
