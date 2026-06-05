@@ -51,7 +51,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
             }}
           >
             <div
-              className={`relative bg-gradient-to-br from-primary via-purple-600 to-copper-600 shadow-lg overflow-hidden ${
+              className={`relative bg-gradient-to-br from-primary via-purple-600 to-accent shadow-purple-sm overflow-hidden ${
                 isLarge ? "w-10 h-14" : "w-8 h-11"
               }`}
               style={{
@@ -61,7 +61,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
             >
               <div className="absolute inset-0 flex flex-col items-center justify-center px-1">
                 <span
-                  className={`text-white/90 font-bold tracking-tight ${
+                  className={`text-oat/90 font-bold tracking-tight ${
                     isLarge ? "text-[8px]" : "text-[6px]"
                   }`}
                   style={{ transform: "skewX(3deg)" }}
@@ -69,7 +69,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                   {t(label.zh, label.en)}
                 </span>
                 <span
-                  className={`text-white font-black mt-0.5 ${
+                  className={`text-oat font-black mt-0.5 ${
                     isLarge ? "text-sm" : "text-xs"
                   }`}
                   style={{ transform: "skewX(3deg)" }}
@@ -78,11 +78,11 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
                 </span>
               </div>
 
-              <div className="absolute top-0 left-0 right-0 h-1 bg-white/30" />
-              <div className="absolute top-0 right-0 w-1.5 h-full bg-white/10" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-oat/20" />
+              <div className="absolute top-0 right-0 w-1.5 h-full bg-oat/10" />
 
               <div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-oat/10 to-transparent"
                 style={{
                   animation: "shimmer 2s ease-in-out infinite",
                   animationDelay: `${index * 0.3}s`,
