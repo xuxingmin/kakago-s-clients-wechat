@@ -91,7 +91,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
             </div>
 
             <div
-              className={`w-0.5 bg-gradient-to-b from-white/50 to-white/20 rounded-b-full ${
+              className={`w-0.5 bg-gradient-to-b from-foreground/30 to-foreground/10 rounded-b-full ${
                 isLarge ? "h-3" : "h-2"
               }`}
             />
@@ -103,7 +103,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
         <span className="text-[10px] font-bold text-primary animate-pulse">
           GO!
         </span>
-        <span className="text-[9px] text-white/40">
+        <span className="text-[9px] text-muted-foreground">
           {t("自动用券", "Auto coupon")}
         </span>
       </div>
