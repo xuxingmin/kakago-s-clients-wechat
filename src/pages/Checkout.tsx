@@ -307,7 +307,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          <div className="h-[0.5px] bg-violet-500/15" />
+          <div className="h-[0.5px] bg-primary/10" />
           <div className="flex justify-between items-center">
             <span className="font-semibold text-foreground text-[13px]">{t("实付", "Total")}</span>
             <span className="text-lg font-bold text-primary">¥{finalPrice.toFixed(2)}</span>
@@ -317,7 +317,7 @@ const Checkout = () => {
         {/* Order Remark */}
         <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8">
           <div className="flex items-center gap-1.5 mb-2">
-            <MessageSquare className="w-3.5 h-3.5 text-violet-400/50" />
+            <MessageSquare className="w-3.5 h-3.5 text-primary/40" />
             <span className="text-[12px] font-medium text-foreground/80">{t("订单备注", "Order Remark")}</span>
           </div>
           <textarea
