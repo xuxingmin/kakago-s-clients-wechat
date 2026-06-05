@@ -114,8 +114,8 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
 
 
     return (
-      <div className={`relative rounded-xl border bg-[hsl(270,15%,10%)] overflow-hidden transition-all duration-300 ${
-        isSearching ? "border-primary/25 shadow-[0_0_20px_hsla(271,81%,56%,0.08)]" : "border-white/[0.06]"
+      <div className={`relative rounded-xl border bg-paper overflow-hidden transition-all duration-300 ${
+        isSearching ? "border-primary/30 shadow-md" : "border-foreground/10"
       }`}>
         <button ref={ref} onClick={onClick} className="w-full text-left p-3.5 pb-0">
           {/* Header: Order number + Status */}
