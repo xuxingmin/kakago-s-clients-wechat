@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', '"Times New Roman"', '"Noto Serif SC"', 'SimSun', 'serif'],
       },
       colors: {
         /* ═══════════════════════════════════════════════════════════
