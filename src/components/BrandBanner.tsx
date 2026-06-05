@@ -1,6 +1,7 @@
 import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CouponFlags, Coupon } from "@/components/CouponFlags";
+import trivaLogo from "@/assets/triva-logo.png.asset.json";
 
 // 用户可用优惠券（测试数据）
 const userCoupons: Coupon[] = [
