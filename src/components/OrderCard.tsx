@@ -226,7 +226,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
               >
                 <Star className="w-3 h-3" />
-                {t("评价得KAKA豆", "Rate for beans")}
+                {t("评价得TRIVA豆", "Rate for beans")}
               </button>
             )}
             {isCompleted && !userRating && (
@@ -235,7 +235,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
               >
                 <Star className="w-3 h-3" />
-                {t("评价得KAKA豆", "Rate for beans")}
+                {t("评价得TRIVA豆", "Rate for beans")}
               </button>
             )}
             {isFinished && userRating && (

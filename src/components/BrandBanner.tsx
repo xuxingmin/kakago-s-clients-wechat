@@ -18,7 +18,7 @@ export const BrandBanner = () => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-white tracking-tight">KAKAGO</h1>
+            <h1 className="text-xl font-bold text-white tracking-tight">TRIVA</h1>
             <Sparkles className="w-3.5 h-3.5 text-primary/60 float-subtle" />
           </div>
           <p className="text-xs text-white/80 mt-0 font-light">

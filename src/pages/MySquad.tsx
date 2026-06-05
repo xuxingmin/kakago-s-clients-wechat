@@ -62,10 +62,10 @@ const MySquad = () => {
 
   const handleShare = async () => {
     const shareData = {
-      title: 'KAKAGO',
+      title: 'TRIVA',
       text: t(
-        `使用我的邀请码 ${squadStats.inviteCode} 加入KAKAGO，首杯5折！`,
-        `Join KAKAGO with my code ${squadStats.inviteCode} and get 50% off!`
+        `使用我的邀请码 ${squadStats.inviteCode} 加入TRIVA，首杯5折！`,
+        `Join TRIVA with my code ${squadStats.inviteCode} and get 50% off!`
       ),
       url: window.location.origin,
     };
@@ -162,7 +162,7 @@ const MySquad = () => {
             <div className="relative p-3">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">KAKAGO · ACCESS TOKEN</p>
+                  <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">TRIVA · ACCESS TOKEN</p>
                   <p className="text-xs font-semibold text-foreground leading-tight mt-0.5">
                     {t("赠送一枚「创世搭子特权」", "Gift a Genesis Mate Privilege")}
                   </p>
@@ -237,7 +237,7 @@ const MySquad = () => {
                 {/* Header */}
                 <div className="text-center mb-4">
                   <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <span className="text-lg font-black tracking-wider text-foreground">KAKAGO</span>
+                    <span className="text-lg font-black tracking-wider text-foreground">TRIVA</span>
                     <span className="text-base">✨</span>
                   </div>
                   <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground/60">{t("创世搭子凭证", "Genesis Mate Pass")}</p>
@@ -248,7 +248,7 @@ const MySquad = () => {
                   className="rounded-xl overflow-hidden mb-4"
                   style={{ boxShadow: '0 0 24px hsl(271 81% 56% / 0.4), 0 0 48px hsl(271 81% 56% / 0.15)' }}
                 >
-                  <img src={squadInvitePoster} alt="KAKAGO VIP Pass" className="w-full h-auto object-cover" />
+                  <img src={squadInvitePoster} alt="TRIVA VIP Pass" className="w-full h-auto object-cover" />
                 </div>
 
                 {/* Invite Code Pill */}

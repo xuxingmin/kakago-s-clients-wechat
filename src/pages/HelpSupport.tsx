@@ -29,8 +29,8 @@ const faqSections: { titleZh: string; titleEn: string; items: FAQItem[] }[] = [
       {
         questionZh: "什么是咖啡盲盒？",
         questionEn: "What is a Coffee Blind Box?",
-        answerZh: "KAKAGO咖啡盲盒是一种全新的咖啡体验方式。您选择想喝的咖啡品类（如拿铁、美式等），系统会从附近合作的精品咖啡馆中随机匹配一家来为您制作，直到商家接单后才会揭晓是哪家咖啡馆，给您带来惊喜体验！",
-        answerEn: "KAKAGO Coffee Blind Box is a new way to enjoy coffee. You choose the coffee type (like Latte, Americano), and the system randomly matches a nearby boutique café to prepare it. The café's identity is revealed only after the merchant accepts the order — a delightful surprise!",
+        answerZh: "TRIVA咖啡盲盒是一种全新的咖啡体验方式。您选择想喝的咖啡品类（如拿铁、美式等），系统会从附近合作的精品咖啡馆中随机匹配一家来为您制作，直到商家接单后才会揭晓是哪家咖啡馆，给您带来惊喜体验！",
+        answerEn: "TRIVA Coffee Blind Box is a new way to enjoy coffee. You choose the coffee type (like Latte, Americano), and the system randomly matches a nearby boutique café to prepare it. The café's identity is revealed only after the merchant accepts the order — a delightful surprise!",
         icon: <Gift className="w-3.5 h-3.5 text-primary" />,
       },
       {
@@ -97,14 +97,14 @@ const faqSections: { titleZh: string; titleEn: string; items: FAQItem[] }[] = [
     ],
   },
   {
-    titleZh: "KAKA豆与优惠",
-    titleEn: "KAKA Beans & Offers",
+    titleZh: "TRIVA豆与优惠",
+    titleEn: "TRIVA Beans & Offers",
     items: [
       {
-        questionZh: "KAKA豆怎么获得和使用？",
-        questionEn: "How to earn and use KAKA Beans?",
-        answerZh: "每笔订单完成后自动获得KAKA豆奖励；邀请好友、参与活动也可获得额外豆子。KAKA豆可用于兑换优惠券、抵扣订单金额等。",
-        answerEn: "Earn KAKA Beans automatically after each completed order; also from inviting friends and events. Use them to redeem coupons or offset order amounts.",
+        questionZh: "TRIVA豆怎么获得和使用？",
+        questionEn: "How to earn and use TRIVA Beans?",
+        answerZh: "每笔订单完成后自动获得TRIVA豆奖励；邀请好友、参与活动也可获得额外豆子。TRIVA豆可用于兑换优惠券、抵扣订单金额等。",
+        answerEn: "Earn TRIVA Beans automatically after each completed order; also from inviting friends and events. Use them to redeem coupons or offset order amounts.",
         icon: <Gift className="w-3.5 h-3.5 text-primary" />,
       },
       {
@@ -271,7 +271,7 @@ const HelpSupport = () => {
                     <p className="text-xs font-semibold text-foreground">
                       {t("微信客服", "WeChat Support")}
                     </p>
-                    <p className="text-[11px] text-muted-foreground">KAKAGO_Service</p>
+                    <p className="text-[11px] text-muted-foreground">TRIVA_Service</p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">
                       {t("添加微信获取在线支持", "Add WeChat for online support")}
                     </p>
@@ -338,7 +338,7 @@ const HelpSupport = () => {
               <div className="w-14 h-14 rounded-3xl bg-primary/15 flex items-center justify-center mx-auto mb-3 shadow-[0_0_20px_hsla(271,81%,56%,0.2)]">
                 <Coffee className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-base font-bold text-foreground">KAKAGO</h3>
+              <h3 className="text-base font-bold text-foreground">TRIVA</h3>
               <p className="text-[11px] text-primary font-medium mt-0.5">
                 {t("咖啡盲盒 · 每一杯都是惊喜", "Coffee Blind Box · Every Cup a Surprise")}
               </p>
@@ -353,8 +353,8 @@ const HelpSupport = () => {
                 </h4>
                 <p className="text-[11px] text-muted-foreground leading-relaxed mt-1.5">
                   {t(
-                    "KAKAGO 诞生于对精品咖啡的热爱与对未知惊喜的追求。我们相信，每一杯咖啡都承载着咖啡师的匠心，而盲盒模式让您有机会发现身边那些隐藏的宝藏咖啡馆。我们严选每一位合作伙伴，确保每一杯都超出期待。",
-                    "KAKAGO was born from a love for specialty coffee and a pursuit of delightful surprises. We believe every cup carries the barista's craftsmanship, and the blind box model helps you discover hidden gem cafés nearby. We carefully select every partner to ensure every cup exceeds expectations."
+                    "TRIVA 诞生于对精品咖啡的热爱与对未知惊喜的追求。我们相信，每一杯咖啡都承载着咖啡师的匠心，而盲盒模式让您有机会发现身边那些隐藏的宝藏咖啡馆。我们严选每一位合作伙伴，确保每一杯都超出期待。",
+                    "TRIVA was born from a love for specialty coffee and a pursuit of delightful surprises. We believe every cup carries the barista's craftsmanship, and the blind box model helps you discover hidden gem cafés nearby. We carefully select every partner to ensure every cup exceeds expectations."
                   )}
                 </p>
               </div>
@@ -397,7 +397,7 @@ const HelpSupport = () => {
             </div>
 
             <p className="text-center text-[10px] text-muted-foreground pb-2">
-              © 2025 KAKAGO. All rights reserved.
+              © 2025 TRIVA. All rights reserved.
             </p>
           </section>
         )}

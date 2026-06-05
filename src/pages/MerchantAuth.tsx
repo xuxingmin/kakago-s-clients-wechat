@@ -173,7 +173,7 @@ const MerchantAuth = () => {
   };
 
   // ══════════════════════════════════════════
-  // STEP: INTRO — Why Join KAKAGO
+  // STEP: INTRO — Why Join TRIVA
   // ══════════════════════════════════════════
   if (step === "intro") {
     return (
@@ -199,7 +199,7 @@ const MerchantAuth = () => {
               <Coffee className="w-5 h-5 text-primary" />
             </div>
             <h1 className="text-[17px] font-bold text-foreground mb-0.5">
-              {t("接入 KAKAGO 咖啡网络", "Join the KAKAGO Coffee Network")}
+              {t("接入 TRIVA 咖啡网络", "Join the TRIVA Coffee Network")}
             </h1>
             <p className="text-xs text-muted-foreground leading-snug max-w-[300px] mx-auto">
               {t("让闲置产能变现，成为全城精品咖啡基础设施。", "Monetize idle capacity. Become citywide specialty coffee infrastructure.")}
@@ -556,8 +556,8 @@ const MerchantAuth = () => {
             </h2>
             <p className="text-xs text-white/50 leading-relaxed max-w-[260px] mx-auto mb-8">
               {t(
-                "24小时内将有 KAKAGO 的 Fellow 伙伴与您联系，请保持手机畅通",
-                "A KAKAGO Fellow will contact you within 24 hours"
+                "24小时内将有 TRIVA 的 Fellow 伙伴与您联系，请保持手机畅通",
+                "A TRIVA Fellow will contact you within 24 hours"
               )}
             </p>
             <button

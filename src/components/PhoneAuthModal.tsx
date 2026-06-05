@@ -55,7 +55,7 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
   const doLogin = async (phoneNum: string) => {
     setLoading(true);
     try {
-      const email = `phone_${phoneNum}@kakago.app`;
+      const email = `phone_${phoneNum}@triva.app`;
       const password = `kakago_phone_${phoneNum}_2024`;
 
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
@@ -149,12 +149,12 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
         <div className="flex-1 overflow-y-auto px-5 scrollbar-hide">
           <div className="text-[13px] text-foreground leading-[1.8] space-y-4">
             <p>{t(
-              "欢迎使用KAKAGO咖啡盲盒。我们深知个人信息对您的重要性，我们将按相关法律法规要求，尽力保护您的个人信息安全可控。",
-              "Welcome to KAKAGO Coffee Blind Box. We understand the importance of your personal information and will protect it in accordance with applicable laws."
+              "欢迎使用TRIVA咖啡盲盒。我们深知个人信息对您的重要性，我们将按相关法律法规要求，尽力保护您的个人信息安全可控。",
+              "Welcome to TRIVA Coffee Blind Box. We understand the importance of your personal information and will protect it in accordance with applicable laws."
             )}</p>
             <p>{t(
-              "在使用KAKAGO服务前，请您务必审慎阅读《隐私协议》和《用户协议》，并充分理解相关协议条款。为便于理解协议条款，特向您说明如下：",
-              "Before using KAKAGO services, please carefully read the Privacy Policy and User Agreement. Key points include:"
+              "在使用TRIVA服务前，请您务必审慎阅读《隐私协议》和《用户协议》，并充分理解相关协议条款。为便于理解协议条款，特向您说明如下：",
+              "Before using TRIVA services, please carefully read the Privacy Policy and User Agreement. Key points include:"
             )}</p>
             <ol className="list-decimal list-outside pl-5 space-y-3">
               <li>{t(
@@ -215,7 +215,7 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
         <div className="flex-1 flex flex-col items-center px-6">
           {/* Brand */}
           <div className="mt-12 mb-4">
-            <h1 className="text-3xl font-black text-foreground tracking-tight">KAKAGO</h1>
+            <h1 className="text-3xl font-black text-foreground tracking-tight">TRIVA</h1>
           </div>
           <p className="text-sm text-muted-foreground mb-8">{t("立即登录，享受会员权益", "Login now, enjoy member benefits")}</p>
 
@@ -309,7 +309,7 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
               <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
                 <Coffee className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-sm font-medium text-foreground">KAKAGO {t("申请", "requests")}</span>
+              <span className="text-sm font-medium text-foreground">TRIVA {t("申请", "requests")}</span>
             </div>
             <Info className="w-4 h-4 text-muted-foreground" />
           </div>
@@ -353,7 +353,7 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
               {agreedCheck && <span className="text-primary-foreground text-[8px]">✓</span>}
             </button>
             <p className="text-[10px] text-muted-foreground">
-              {t("已阅读并接受《KAKAGO小程序隐私保护指引》", "Read and accepted KAKAGO Privacy Guidelines")}
+              {t("已阅读并接受《TRIVA小程序隐私保护指引》", "Read and accepted TRIVA Privacy Guidelines")}
             </p>
           </div>
         </div>
@@ -375,7 +375,7 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
       <div className="flex-1 px-5 pt-6">
         <h2 className="text-xl font-bold text-foreground mb-2">{t("您的手机号", "Your Phone Number")}</h2>
         <p className="text-sm text-muted-foreground mb-8">
-          {t("未注册过的手机号验证后将自动创建 KAKAGO 账号", "Unregistered numbers will auto-create a KAKAGO account")}
+          {t("未注册过的手机号验证后将自动创建 TRIVA 账号", "Unregistered numbers will auto-create a TRIVA account")}
         </p>
 
         {/* Phone input */}

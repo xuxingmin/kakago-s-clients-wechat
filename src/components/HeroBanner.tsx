@@ -16,7 +16,7 @@ export const HeroBanner = () => {
       {/* Content */}
       <div className="relative py-8 px-6">
         <h1 className="text-xl font-bold tracking-wide text-white">
-          KAKAGO
+          TRIVA
         </h1>
         <p className="text-sm text-white/80 mt-1 tracking-wide">
           不贵精品，即刻上瘾！

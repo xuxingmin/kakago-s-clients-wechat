@@ -235,9 +235,9 @@ export const CheckoutModal = ({
                 <Shield className="w-4 h-4 text-primary" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-primary">KAKAGO 品质保证</p>
+                <p className="text-sm font-semibold text-primary">TRIVA 品质保证</p>
                 <p className="text-xs text-white/60 mt-1 leading-relaxed">
-                  您的订单将由 KAKAGO 认证精品咖啡师制作，确保每一杯都达到专业标准。
+                  您的订单将由 TRIVA 认证精品咖啡师制作，确保每一杯都达到专业标准。
                 </p>
               </div>
             </div>

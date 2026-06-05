@@ -8,7 +8,7 @@ interface WeChatAuthModalProps {
   onClose: () => void;
 }
 
-const DEMO_EMAIL = "wechat_user@kakago.app";
+const DEMO_EMAIL = "wechat_user@triva.app";
 const DEMO_PASSWORD = "kakago2024secure";
 
 export const WeChatAuthModal = ({ isOpen, onClose }: WeChatAuthModalProps) => {
@@ -71,7 +71,7 @@ export const WeChatAuthModal = ({ isOpen, onClose }: WeChatAuthModalProps) => {
           <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-3">
             <Coffee className="w-8 h-8 text-primary" />
           </div>
-          <h3 className="text-base font-bold text-foreground">KAKAGO</h3>
+          <h3 className="text-base font-bold text-foreground">TRIVA</h3>
           <p className="text-xs text-muted-foreground mt-1">
             {t("申请获取以下权限", "Requesting the following permissions")}
           </p>
