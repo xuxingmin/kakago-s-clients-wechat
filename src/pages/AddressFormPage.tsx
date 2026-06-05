@@ -131,7 +131,7 @@ const AddressFormPage = () => {
 
       {/* Map area */}
       <div className="relative h-44 flex-shrink-0 overflow-hidden" style={{
-        background: 'linear-gradient(135deg, hsla(270, 20%, 10%, 0.8) 0%, hsla(270, 25%, 8%, 0.9) 100%)'
+        background: 'linear-gradient(135deg, hsl(var(--paper)) 0%, hsl(var(--oat)) 100%)'
       }}>
         {/* Grid lines */}
         <div className="absolute inset-0 opacity-[0.06]">

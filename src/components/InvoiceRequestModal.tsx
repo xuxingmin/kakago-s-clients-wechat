@@ -53,7 +53,7 @@ export const InvoiceRequestModal = ({ isOpen, orderNumber, price, onClose, onSub
       <div className="absolute inset-0 bg-black/70 animate-fade-in" />
 
       <div
-        className="relative w-full max-w-md bg-[hsl(270,15%,8%)] border-t border-white/[0.08] rounded-t-2xl z-10 animate-slide-up max-h-[85vh] flex flex-col"
+        className="relative w-full max-w-md bg-paper border-t border-foreground/10 rounded-t-2xl z-10 animate-slide-up max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

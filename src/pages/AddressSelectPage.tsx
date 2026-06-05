@@ -76,7 +76,7 @@ const AddressSelectPage = () => {
       {/* Map area */}
       <div className="relative flex-shrink-0 overflow-hidden" style={{
         height: '42vh',
-        background: 'linear-gradient(180deg, hsla(270, 20%, 10%, 0.9) 0%, hsla(270, 25%, 6%, 1) 100%)'
+        background: 'linear-gradient(180deg, hsl(var(--paper)) 0%, hsl(var(--oat)) 100%)'
       }}>
         {/* Grid lines */}
         <div className="absolute inset-0 opacity-[0.04]">
