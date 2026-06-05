@@ -2,133 +2,135 @@
 @tailwind components;
 @tailwind utilities;
 
-/* KAKAGO Design System - World-Class UX */
+/* TRIVA Design System - Editorial Coffee */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap');
 
 @layer base {
   :root {
     /* ═══════════════════════════════════════════════════════════
-       KAKAGO MASTER COLOR SYSTEM
-       A world-class palette built on four pillars:
-       Purple (Energy) · Fog Grey (Structure) · White (Clarity) · Black (Foundation)
+       TRIVA MASTER COLOR SYSTEM
+       Grape (Soul) · Copper (Accent) · Oat (Canvas) · Espresso (Ink)
        ═══════════════════════════════════════════════════════════ */
 
-    /* ─────────────────────────────────────────────────────────────
-       🟣 PURPLE SPECTRUM - The Soul of KAKAGO
-       Energy, Premium, Action
-       ───────────────────────────────────────────────────────────── */
-    --purple-50: 270 100% 98%;
-    --purple-100: 269 100% 95%;
-    --purple-200: 269 100% 90%;
-    --purple-300: 269 97% 82%;
-    --purple-400: 270 91% 72%;
-    --purple-500: 271 81% 56%;   /* ★ Primary Action */
-    --purple-600: 271 81% 46%;
-    --purple-700: 272 72% 38%;
-    --purple-800: 273 67% 31%;
-    --purple-900: 274 66% 20%;
+    /* 🟣 GRAPE PURPLE SPECTRUM — #3B255F */
+    --purple-50:  270 33% 96%;
+    --purple-100: 270 30% 90%;
+    --purple-200: 270 28% 80%;
+    --purple-300: 270 28% 65%;
+    --purple-400: 270 30% 48%;
+    --purple-500: 270 42% 26%;   /* ★ Grape #3B255F */
+    --purple-600: 270 45% 22%;
+    --purple-700: 270 48% 18%;
+    --purple-800: 270 50% 14%;
+    --purple-900: 270 55% 10%;
 
-    /* ─────────────────────────────────────────────────────────────
-       🔘 FOG GREY SPECTRUM - Structure & Depth
-       Cool neutrals with subtle purple undertones
-       ───────────────────────────────────────────────────────────── */
-    --fog-50: 240 5% 96%;
-    --fog-100: 240 6% 90%;
-    --fog-200: 240 5% 84%;
-    --fog-300: 240 5% 65%;
-    --fog-400: 240 4% 46%;
-    --fog-500: 240 5% 34%;
-    --fog-600: 240 4% 26%;
-    --fog-700: 240 5% 20%;       /* ★ Card Background */
-    --fog-800: 249 6% 14%;
-    --fog-900: 250 7% 10%;
+    /* 🟫 COPPER ACCENT SPECTRUM — #B46A3C */
+    --copper-50:  26 50% 94%;
+    --copper-100: 26 50% 86%;
+    --copper-200: 26 48% 76%;
+    --copper-300: 26 48% 64%;
+    --copper-400: 26 50% 52%;
+    --copper-500: 26 50% 47%;    /* ★ Copper #B46A3C */
+    --copper-600: 22 52% 40%;
+    --copper-700: 20 54% 32%;
 
-    /* ─────────────────────────────────────────────────────────────
-       ⚫ BLACK SPECTRUM - Foundation & Luxury
-       Deep blacks with elegant purple undertones
-       ───────────────────────────────────────────────────────────── */
-    --obsidian: 270 25% 5%;      /* ★ Primary Background */
-    --void: 270 30% 3%;          /* Deepest black */
-    --charcoal: 270 15% 8%;
-    --onyx: 270 20% 6%;
+    /* 🌾 OAT / PAPER / MIST SPECTRUM */
+    --oat:        36 53% 91%;    /* ★ Body BG #F3EBDD */
+    --paper:      33 65% 94%;    /* ★ Card BG #F8F0E6 */
+    --mist:       40 9% 82%;     /* #D6D2CA */
+    --espresso:   24 13% 9%;     /* ★ Text #181411 */
 
-    /* ─────────────────────────────────────────────────────────────
-       ⚪ WHITE HIERARCHY - Clarity & Readability
-       Precise opacity scale for text and borders
-       ───────────────────────────────────────────────────────────── */
+    /* 🔘 FOG GREY (warm neutrals) */
+    --fog-50:  40 30% 96%;
+    --fog-100: 40 20% 90%;
+    --fog-200: 40 14% 82%;
+    --fog-300: 35 10% 70%;
+    --fog-400: 30 8%  55%;
+    --fog-500: 28 8%  42%;
+    --fog-600: 26 10% 32%;
+    --fog-700: 25 12% 22%;
+    --fog-800: 24 13% 14%;
+    --fog-900: 24 13% 9%;
+
+    /* ⚫ FOUNDATION (renamed but kept for compatibility) */
+    --obsidian: 24 13% 9%;
+    --void:     24 14% 6%;
+    --charcoal: 24 12% 14%;
+    --onyx:     24 12% 12%;
+
+    /* ⚪ WHITE / opacity utility (kept for components) */
     --white-100: 0 0% 100%;
-    --white-90: 0 0% 90%;
-    --white-70: 0 0% 70%;
-    --white-50: 0 0% 50%;
-    --white-30: 0 0% 30%;
-    --white-15: 0 0% 15%;
-    --white-08: 0 0% 8%;
-    --white-04: 0 0% 4%;
+    --white-90:  0 0% 100%;
+    --white-70:  24 13% 9%;
+    --white-50:  24 13% 9%;
+    --white-30:  24 13% 9%;
+    --white-15:  24 13% 9%;
+    --white-08:  24 13% 9%;
+    --white-04:  24 13% 9%;
 
     /* ─────────────────────────────────────────────────────────────
-       SEMANTIC TOKENS - Design System Mapping
+       SEMANTIC TOKENS - TRIVA Light Editorial
        ───────────────────────────────────────────────────────────── */
-    --background: var(--obsidian);
-    --foreground: var(--white-100);
+    --background: var(--oat);
+    --foreground: var(--espresso);
 
-    --card: var(--fog-700);
-    --card-foreground: var(--white-100);
+    --card: var(--paper);
+    --card-foreground: var(--espresso);
 
-    --popover: var(--fog-800);
-    --popover-foreground: var(--white-100);
+    --popover: var(--paper);
+    --popover-foreground: var(--espresso);
 
     --primary: var(--purple-500);
-    --primary-foreground: var(--white-100);
+    --primary-foreground: var(--oat);
 
-    --secondary: var(--fog-600);
-    --secondary-foreground: var(--white-100);
+    --secondary: 36 35% 86%;
+    --secondary-foreground: var(--espresso);
 
-    --muted: var(--fog-700);
-    --muted-foreground: 0 0% 65%;
+    --muted: 36 25% 88%;
+    --muted-foreground: 24 8% 35%;
 
-    --accent: var(--purple-500);
-    --accent-foreground: var(--white-100);
+    --accent: var(--copper-500);
+    --accent-foreground: var(--oat);
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: var(--white-100);
+    --destructive: 0 65% 45%;
+    --destructive-foreground: var(--oat);
 
-    --border: 0 0% 100% / 0.08;
-    --input: 0 0% 100% / 0.10;
+    --border: 24 13% 9% / 0.18;
+    --input: 24 13% 9% / 0.14;
     --ring: var(--purple-500);
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     /* ─────────────────────────────────────────────────────────────
-       ELEVATION SHADOWS - Depth & Dimension
+       ELEVATION SHADOWS - Paper-lift, no glow
        ───────────────────────────────────────────────────────────── */
-    --shadow-xs: 0 1px 2px hsla(270, 25%, 5%, 0.5);
-    --shadow-sm: 0 2px 8px -2px hsla(270, 25%, 5%, 0.6);
-    --shadow-md: 0 4px 16px -4px hsla(270, 25%, 5%, 0.65);
-    --shadow-lg: 0 8px 24px -6px hsla(270, 25%, 5%, 0.7);
-    --shadow-xl: 0 16px 48px -12px hsla(270, 25%, 5%, 0.8);
-    
-    /* Purple Glow Shadows */
-    --shadow-purple-sm: 0 2px 12px -2px hsla(271, 81%, 56%, 0.25);
-    --shadow-purple: 0 4px 20px -4px hsla(271, 81%, 56%, 0.35);
-    --shadow-purple-lg: 0 8px 32px -8px hsla(271, 81%, 56%, 0.45);
-    --shadow-glow: 0 0 40px hsla(271, 81%, 56%, 0.25);
-    
-    /* Inset & Special */
-    --shadow-inner: inset 0 1px 0 hsla(0, 0%, 100%, 0.06);
-    --shadow-inner-strong: inset 0 2px 4px hsla(270, 25%, 5%, 0.4);
+    --shadow-xs: 0 1px 2px hsla(24, 13%, 9%, 0.06);
+    --shadow-sm: 0 2px 8px -2px hsla(24, 13%, 9%, 0.08);
+    --shadow-md: 0 6px 18px -6px hsla(24, 13%, 9%, 0.12);
+    --shadow-lg: 0 14px 36px -10px hsla(270, 42%, 26%, 0.14);
+    --shadow-xl: 0 28px 80px -24px hsla(270, 42%, 26%, 0.18);
 
-    /* ─────────────────────────────────────────────────────────────
-       SIDEBAR TOKENS
-       ───────────────────────────────────────────────────────────── */
-    --sidebar-background: var(--obsidian);
-    --sidebar-foreground: var(--white-100);
+    /* "Purple" shadow kept as semantic name, now grape paper-lift */
+    --shadow-purple-sm: 0 2px 10px -2px hsla(270, 42%, 26%, 0.12);
+    --shadow-purple:    0 8px 24px -8px hsla(270, 42%, 26%, 0.18);
+    --shadow-purple-lg: 0 16px 40px -12px hsla(270, 42%, 26%, 0.22);
+    --shadow-glow:      0 0 24px hsla(26, 50%, 47%, 0.18);
+
+    --shadow-card: 0 8px 24px -10px hsla(24, 13%, 9%, 0.12);
+    --shadow-inner: inset 0 1px 0 hsla(0, 0%, 100%, 0.5);
+    --shadow-inner-strong: inset 0 2px 4px hsla(24, 13%, 9%, 0.06);
+
+    /* Sidebar */
+    --sidebar-background: var(--paper);
+    --sidebar-foreground: var(--espresso);
     --sidebar-primary: var(--purple-500);
-    --sidebar-primary-foreground: var(--white-100);
-    --sidebar-accent: var(--fog-600);
-    --sidebar-accent-foreground: var(--white-100);
-    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-primary-foreground: var(--oat);
+    --sidebar-accent: 36 25% 88%;
+    --sidebar-accent-foreground: var(--espresso);
+    --sidebar-border: 24 13% 9% / 0.14;
     --sidebar-ring: var(--purple-500);
   }
 }
@@ -139,11 +141,10 @@
   }
 
   html {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Smooth scrolling */
     scroll-behavior: smooth;
   }
 
@@ -151,23 +152,23 @@
     @apply text-foreground;
     min-height: 100vh;
     min-height: 100dvh;
-    /* Premium gradient background with subtle noise */
-    background: 
-      radial-gradient(ellipse at top, hsla(263, 50%, 15%, 0.15) 0%, transparent 50%),
-      linear-gradient(180deg, hsl(270 30% 6%) 0%, hsl(280 60% 6%) 100%);
+    background: hsl(var(--oat));
     background-attachment: fixed;
-    /* Prevent overscroll bounce color flash */
     overscroll-behavior: none;
   }
 
-  /* Better focus states */
+  /* Serif headings — editorial brand voice */
+  h1, h2, .font-serif, .brand-serif {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', 'Noto Serif SC', 'SimSun', serif;
+    letter-spacing: -0.005em;
+  }
+
   *:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
     border-radius: 4px;
   }
 
-  /* Smooth transitions for everything */
   *, *::before, *::after {
     transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
@@ -175,54 +176,46 @@
 
 @layer components {
   /* ========================================
-     APPLE-INSPIRED BUTTON SYSTEM
+     BUTTON SYSTEM — Copper CTA (formerly "gold")
      ======================================== */
-  
+
   .btn-gold {
-    @apply text-white font-semibold rounded-2xl relative overflow-hidden;
-    background: linear-gradient(135deg, hsl(263 70% 55%), hsl(263 70% 45%));
-    box-shadow: 
-      var(--shadow-purple),
-      var(--shadow-inner);
+    @apply font-semibold rounded-full relative overflow-hidden;
+    color: hsl(var(--oat));
+    background: linear-gradient(135deg, hsl(var(--copper-500)), hsl(var(--copper-600)));
+    box-shadow: var(--shadow-md), var(--shadow-inner);
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    min-height: 52px;
+    min-height: 48px;
     -webkit-tap-highlight-color: transparent;
   }
-  
+
   .btn-gold::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.15), transparent 60%);
-    opacity: 1;
-    transition: opacity 0.3s ease;
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.18), transparent 60%);
+    pointer-events: none;
   }
-  
+
   .btn-gold:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 
-      0 8px 32px -4px hsla(263, 70%, 50%, 0.5),
-      var(--shadow-inner);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px -8px hsla(26, 50%, 40%, 0.45), var(--shadow-inner);
   }
-  
+
   .btn-gold:active {
     transform: translateY(0) scale(0.98);
     transition-duration: 0.1s;
   }
 
   /* ========================================
-     PREMIUM CARD SYSTEM - Apple-like Glass
+     CARD SYSTEM — Paper, hairline border
      ======================================== */
 
   .card-premium {
     @apply rounded-2xl relative;
-    background: hsla(270, 15%, 12%, 0.65);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid hsla(0, 0%, 100%, 0.06);
-    box-shadow: 
-      var(--shadow-card),
-      var(--shadow-inner);
+    background: hsl(var(--paper));
+    border: 1px solid hsla(24, 13%, 9%, 0.12);
+    box-shadow: var(--shadow-sm);
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     -webkit-tap-highlight-color: transparent;
   }
@@ -232,58 +225,34 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.04), transparent 50%);
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, 0.35), transparent 50%);
     pointer-events: none;
   }
 
   .card-premium:hover {
-    border-color: hsla(263, 70%, 50%, 0.15);
-    box-shadow: 
-      0 8px 24px -6px hsla(263, 70%, 50%, 0.12),
-      var(--shadow-card),
-      var(--shadow-inner);
+    border-color: hsla(270, 42%, 26%, 0.25);
+    box-shadow: var(--shadow-md);
   }
 
-  /* Interactive card with spring animation */
   .card-interactive {
     @apply card-premium cursor-pointer;
   }
 
   .card-interactive:hover {
-    transform: translateY(-3px) scale(1.015);
-    border-color: hsla(263, 70%, 50%, 0.2);
+    transform: translateY(-2px);
+    border-color: hsla(270, 42%, 26%, 0.3);
   }
 
   .card-interactive:active {
-    transform: translateY(-1px) scale(0.985);
+    transform: translateY(0) scale(0.99);
     transition-duration: 0.15s;
   }
 
-  /* Card sizes with consistent rhythm */
-  .card-xl {
-    @apply card-interactive p-5;
-    min-height: 140px;
-  }
-
-  .card-lg {
-    @apply card-interactive p-4;
-    min-height: 100px;
-  }
-
-  .card-md {
-    @apply card-interactive p-3.5;
-    min-height: 76px;
-  }
-
-  .card-sm {
-    @apply card-interactive p-3;
-    min-height: 56px;
-  }
-
-  .card-asset-bar {
-    @apply card-premium p-4;
-    min-height: 80px;
-  }
+  .card-xl { @apply card-interactive p-5; min-height: 140px; }
+  .card-lg { @apply card-interactive p-4; min-height: 100px; }
+  .card-md { @apply card-interactive p-3.5; min-height: 76px; }
+  .card-sm { @apply card-interactive p-3; min-height: 56px; }
+  .card-asset-bar { @apply card-premium p-4; min-height: 80px; }
 
   .card-menu-item {
     min-height: 64px;
@@ -291,50 +260,42 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .card-menu-item:hover {
-    background-color: hsla(0, 0%, 100%, 0.04);
-  }
-
-  .card-menu-item:active {
-    background-color: hsla(0, 0%, 100%, 0.08);
-    transform: scale(0.99);
-  }
+  .card-menu-item:hover { background-color: hsla(24, 13%, 9%, 0.04); }
+  .card-menu-item:active { background-color: hsla(24, 13%, 9%, 0.08); transform: scale(0.99); }
 
   /* ========================================
-     GLASS EFFECTS - Premium Blur
+     GLASS — Paper translucent (no dark blur)
      ======================================== */
 
   .glass {
-    background: hsla(270, 15%, 8%, 0.85);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid hsla(0, 0%, 100%, 0.06);
+    background: hsla(33, 65%, 94%, 0.92);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border-bottom: 1px solid hsla(24, 13%, 9%, 0.12);
   }
 
   .glass-light {
-    background: hsla(270, 15%, 15%, 0.6);
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    background: hsla(33, 65%, 94%, 0.75);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
   }
 
   /* ========================================
-     TEXT EFFECTS
+     TEXT EFFECTS — Grape gradient (formerly "gold")
      ======================================== */
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(263 70% 70%), hsl(263 70% 50%), hsl(280 70% 60%));
+    background: linear-gradient(135deg, hsl(var(--purple-500)), hsl(var(--copper-500)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-shimmer {
-    background: linear-gradient(
-      90deg,
-      hsl(0 0% 100%) 0%,
-      hsl(263 70% 80%) 50%,
-      hsl(0 0% 100%) 100%
-    );
+    background: linear-gradient(90deg,
+      hsl(var(--espresso)) 0%,
+      hsl(var(--copper-500)) 50%,
+      hsl(var(--espresso)) 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -348,44 +309,35 @@
   }
 
   /* ========================================
-     DIVIDERS & DECORATIVE
+     DIVIDERS
      ======================================== */
 
   .fog-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.08), transparent);
+    background: linear-gradient(90deg, transparent, hsla(24, 13%, 9%, 0.18), transparent);
   }
 
   /* ========================================
-     MICRO-ANIMATIONS - Apple-like Delight
+     MICRO-ANIMATIONS
      ======================================== */
 
-  /* Subtle breathing glow for CTAs */
-  .pulse-glow {
-    animation: pulseGlow 3s ease-in-out infinite;
-  }
+  .pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
 
   @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px hsla(263, 70%, 50%, 0.3); }
-    50% { box-shadow: 0 0 32px hsla(263, 70%, 50%, 0.45); }
+    0%, 100% { box-shadow: 0 0 16px hsla(26, 50%, 47%, 0.25); }
+    50%      { box-shadow: 0 0 28px hsla(26, 50%, 47%, 0.4); }
   }
 
-  /* Shimmer effect */
-  .shimmer {
-    position: relative;
-    overflow: hidden;
-  }
-  
+  .shimmer { position: relative; overflow: hidden; }
+
   .shimmer::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      90deg,
+    background: linear-gradient(90deg,
       transparent 0%,
-      hsla(263, 70%, 50%, 0.1) 50%,
-      transparent 100%
-    );
+      hsla(270, 42%, 26%, 0.08) 50%,
+      transparent 100%);
     animation: shimmer 2.5s ease-in-out infinite;
   }
 
@@ -394,12 +346,10 @@
     100% { transform: translateX(100%); }
   }
 
-  /* Stagger fade in for lists */
   .stagger-fade-in > * {
     opacity: 0;
     animation: staggerFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
-
   .stagger-fade-in > *:nth-child(1) { animation-delay: 0.05s; }
   .stagger-fade-in > *:nth-child(2) { animation-delay: 0.1s; }
   .stagger-fade-in > *:nth-child(3) { animation-delay: 0.15s; }
@@ -410,133 +360,70 @@
   .stagger-fade-in > *:nth-child(8) { animation-delay: 0.4s; }
 
   @keyframes staggerFadeIn {
-    from { 
-      opacity: 0; 
-      transform: translateY(12px) scale(0.96);
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* Hero reveal animation */
-  .hero-reveal {
-    animation: heroReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
+  .hero-reveal { animation: heroReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
   @keyframes heroReveal {
-    from { 
-      opacity: 0; 
-      transform: translateY(-10px);
-      filter: blur(4px);
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0);
-      filter: blur(0);
-    }
+    from { opacity: 0; transform: translateY(-10px); filter: blur(4px); }
+    to   { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
 
-  /* Floating element animation */
-  .float-subtle {
-    animation: floatSubtle 6s ease-in-out infinite;
-  }
+  .float-subtle { animation: floatSubtle 6s ease-in-out infinite; }
 
   @keyframes floatSubtle {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+    50%      { transform: translateY(-4px); }
   }
 
-  /* Icon pop animation on interaction */
-  .icon-pop {
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .icon-pop:hover {
-    transform: scale(1.15);
-  }
-
-  .icon-pop:active {
-    transform: scale(0.9);
-  }
+  .icon-pop { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .icon-pop:hover { transform: scale(1.15); }
+  .icon-pop:active { transform: scale(0.9); }
 
   /* ========================================
-     SAFE AREAS & ACCESSIBILITY
+     SAFE AREAS
      ======================================== */
 
-  .safe-bottom {
-    padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
-  }
-  
-  .safe-top {
-    padding-top: env(safe-area-inset-top, 0);
-  }
-
-  .touch-target {
-    min-height: 48px;
-    min-width: 48px;
-  }
+  .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px); }
+  .safe-top    { padding-top: env(safe-area-inset-top, 0); }
+  .touch-target { min-height: 48px; min-width: 48px; }
 
   /* ========================================
-     ENHANCED SCROLLBAR
+     SCROLLBAR
      ======================================== */
 
-  ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: hsla(0, 0%, 100%, 0.15);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsla(0, 0%, 100%, 0.25);
-  }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsla(24, 13%, 9%, 0.15); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsla(24, 13%, 9%, 0.3); }
 
   /* ========================================
      PAGE TRANSITIONS
      ======================================== */
 
-  .page-enter {
-    animation: pageEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
+  .page-enter { animation: pageEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
   @keyframes pageEnter {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ========================================
-     RIPPLE EFFECT
+     RIPPLE
      ======================================== */
 
-  .ripple {
-    position: relative;
-    overflow: hidden;
-  }
+  .ripple { position: relative; overflow: hidden; }
 
   .ripple::after {
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     pointer-events: none;
-    background-image: radial-gradient(circle, hsla(263, 70%, 50%, 0.3) 10%, transparent 10.01%);
+    background-image: radial-gradient(circle, hsla(270, 42%, 26%, 0.18) 10%, transparent 10.01%);
     background-repeat: no-repeat;
     background-position: 50%;
     transform: scale(10, 10);
@@ -553,43 +440,20 @@
 
 @keyframes radarSweep {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
 
 @keyframes cartPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(0.7); }
-  70% { transform: scale(1.2); }
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.7); }
+  70%  { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
 
-.animate-cart-pop {
-  animation: cartPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+.animate-cart-pop { animation: cartPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-/* ========================================
-   SELECTION STYLING
-   ======================================== */
+::selection      { background: hsla(270, 42%, 26%, 0.25); color: hsl(var(--espresso)); }
+::-moz-selection { background: hsla(270, 42%, 26%, 0.25); color: hsl(var(--espresso)); }
 
-::selection {
-  background: hsla(263, 70%, 50%, 0.3);
-  color: white;
-}
-
-::-moz-selection {
-  background: hsla(263, 70%, 50%, 0.3);
-  color: white;
-}
-
-/* ========================================
-   SCROLLBAR UTILITIES
-   ======================================== */
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
