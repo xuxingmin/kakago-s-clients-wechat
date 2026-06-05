@@ -50,7 +50,7 @@ export const InvoiceRequestModal = ({ isOpen, orderNumber, price, onClose, onSub
 
   return (
     <div className="fixed inset-0 z-[90] flex items-end justify-center" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/70 animate-fade-in" />
+      <div className="absolute inset-0 bg-espresso/60 animate-fade-in" />
 
       <div
         className="relative w-full max-w-md bg-paper border-t border-foreground/10 rounded-t-2xl z-10 animate-slide-up max-h-[85vh] flex flex-col"

@@ -60,7 +60,7 @@ export const CreativeProductCard = ({
             </p>
             <div className="flex items-baseline gap-1 mt-1">
               <span className="text-white/50 text-[9px]">预估到手</span>
-              <span className="text-white font-bold text-base drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+              <span className="text-white font-bold text-base ">
                 ¥{estimatedPrice}
               </span>
               <span className="text-white/30 text-[9px] line-through ml-1">¥{product.price}</span>
@@ -72,8 +72,8 @@ export const CreativeProductCard = ({
             style={{ width: '32px', height: '32px', minWidth: '32px', minHeight: '32px' }}
             className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
               quantityInCart > 0
-                ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30"
-                : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+                ? "bg-gradient-to-br from-primary via-primary to-accent text-white shadow-[0_0_20px_hsl(var(--copper-500)/0.35)] ring-2 ring-primary/30"
+                : "bg-gradient-to-br from-primary/80 to-accent text-white hover:shadow-[0_0_15px_hsl(var(--copper-500)/0.25)] hover:scale-105"
             }`}
           >
             {quantityInCart > 0 ? (

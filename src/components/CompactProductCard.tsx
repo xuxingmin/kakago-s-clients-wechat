@@ -42,7 +42,7 @@ export const CompactProductCard = ({
           <span className="text-white/60 text-[9px] mt-[5px] font-medium">
             预估到手
           </span>
-          <span className="text-white font-bold text-lg drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+          <span className="text-white font-bold text-lg ">
             ¥{estimatedPrice}
           </span>
         </div>
@@ -81,8 +81,8 @@ export const CompactProductCard = ({
           style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
           className={`rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 shrink-0 ${
             quantityInCart > 0
-              ? "bg-gradient-to-br from-primary via-purple-600 to-copper-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30"
-              : "bg-gradient-to-br from-copper to-copper-700 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-105"
+              ? "bg-gradient-to-br from-primary via-purple-600 to-copper-600 text-white shadow-[0_0_20px_hsl(var(--copper-500)/0.35)] ring-2 ring-primary/30"
+              : "bg-gradient-to-br from-copper to-copper-700 text-white hover:shadow-[0_0_15px_hsl(var(--copper-500)/0.25)] hover:scale-105"
           }`}
         >
           {quantityInCart > 0 ? (

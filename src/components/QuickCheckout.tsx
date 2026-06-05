@@ -77,7 +77,7 @@ export const QuickCheckout = ({
     <>
       {/* 背景遮罩 */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity"
+        className="fixed inset-0 bg-espresso/50 backdrop-blur-sm z-50 transition-opacity"
         onClick={onClose}
       />
       
@@ -145,7 +145,7 @@ export const QuickCheckout = ({
           {/* 一键支付按钮 */}
           <button
             onClick={handleQuickPay}
-            className="w-full h-14 bg-gradient-to-r from-primary via-purple-500 to-violet-600 rounded-2xl flex items-center justify-center gap-2 text-white font-semibold text-base shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full h-14 bg-gradient-to-r from-primary via-primary to-accent rounded-2xl flex items-center justify-center gap-2 text-white font-semibold text-base shadow-purple transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <Zap className="w-5 h-5" />
             {t("立即支付", "Pay Now")}

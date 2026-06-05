@@ -297,7 +297,7 @@ export const PhoneAuthModal = ({ isOpen, onClose }: PhoneAuthModalProps) => {
   // ═══ STEP 3a: WeChat Authorization (dark overlay like Cotti image 3) ═══
   if (step === "wechat") {
     return (
-      <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col justify-end animate-in fade-in duration-200">
+      <div className="fixed inset-0 z-[100] bg-espresso/80 flex flex-col justify-end animate-in fade-in duration-200">
         {/* Dark area - tap to go back */}
         <div className="flex-1" onClick={() => setStep("choose")} />
 

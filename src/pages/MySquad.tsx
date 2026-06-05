@@ -223,7 +223,7 @@ const MySquad = () => {
       {/* Poster Modal */}
       {showPoster && (
         <>
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[80]" onClick={() => setShowPoster(false)} />
+          <div className="fixed inset-0 bg-espresso/60 backdrop-blur-md z-[80]" onClick={() => setShowPoster(false)} />
           <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[85] max-w-[340px] mx-auto">
             <div
               className="rounded-2xl overflow-hidden"

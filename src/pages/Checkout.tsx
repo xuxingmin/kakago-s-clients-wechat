@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const userBeansBalance = 124050;
 
 const BeansIcon = () => (
-  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary/80 to-violet-600 flex items-center justify-center">
+  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary/80 to-accent flex items-center justify-center">
     <span className="text-[10px] font-bold text-white">K</span>
   </div>
 );
@@ -290,7 +290,7 @@ const Checkout = () => {
                   step={100}
                   value={beansToUse}
                   onChange={(e) => setBeansToUse(Number(e.target.value))}
-                  className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(127,0,255,0.5)]"
+                  className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-[0_0_8px_hsl(var(--copper-500)/0.35)]"
                 />
               </div>
               <button
@@ -348,7 +348,7 @@ const Checkout = () => {
           </div>
           <button
             onClick={handleGoToPay}
-            className="px-8 py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-95"
+            className="px-8 py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(var(--copper-500)/0.25)] transition-all active:scale-95"
           >
             {t("去支付", "Pay Now")}
           </button>

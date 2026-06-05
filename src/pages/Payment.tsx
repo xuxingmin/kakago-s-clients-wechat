@@ -274,7 +274,7 @@ const Payment = () => {
             <div className="w-full max-w-xs space-y-3">
               <button
                 onClick={() => navigate("/order-tracking?status=preparing", { replace: true })}
-                className="w-full py-3.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-[0.98]"
+                className="w-full py-3.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(var(--copper-500)/0.25)] transition-all active:scale-[0.98]"
               >
                 {t("查看订单", "View Order")}
                 <span className="ml-1 text-xs font-normal opacity-70">
@@ -315,7 +315,7 @@ const Payment = () => {
               </button>
               <button
                 onClick={handleConfirmPay}
-                className="flex-1 py-3 rounded-2xl text-xs font-semibold bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all"
+                className="flex-1 py-3 rounded-2xl text-xs font-semibold bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(var(--copper-500)/0.25)] transition-all"
               >
                 {t("重试支付", "Retry")}
               </button>
@@ -330,7 +330,7 @@ const Payment = () => {
           <div className="px-4 py-3 max-w-md mx-auto">
             <button
               onClick={handleConfirmPay}
-              className="w-full py-3.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-600 text-white hover:shadow-[0_0_20px_rgba(127,0,255,0.4)] transition-all active:scale-[0.98]"
+              className="w-full py-3.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(var(--copper-500)/0.25)] transition-all active:scale-[0.98]"
             >
               {t(`确认支付 ¥${cashToPay.toFixed(2)}`, `Confirm ¥${cashToPay.toFixed(2)}`)}
             </button>

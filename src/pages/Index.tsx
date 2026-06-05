@@ -138,7 +138,7 @@ const Index = () => {
                     {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
                   </span>
                 </div>
-                <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
+                <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-primary/20 via-primary/25 to-accent/20" />
               </div>
 
               <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">

@@ -165,7 +165,7 @@ export const CheckoutModal = ({
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-espresso/60 backdrop-blur-sm z-[60] transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
@@ -350,7 +350,7 @@ export const CheckoutModal = ({
         }`}
       >
         <div 
-          className={`fixed inset-0 bg-black/50 transition-opacity ${
+          className={`fixed inset-0 bg-espresso/40 transition-opacity ${
             showAddressPicker ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           onClick={() => setShowAddressPicker(false)}
@@ -425,7 +425,7 @@ export const CheckoutModal = ({
         }`}
       >
         <div 
-          className={`fixed inset-0 bg-black/50 transition-opacity ${
+          className={`fixed inset-0 bg-espresso/40 transition-opacity ${
             showCouponPicker ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           onClick={() => setShowCouponPicker(false)}

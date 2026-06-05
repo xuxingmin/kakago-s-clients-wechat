@@ -20,7 +20,7 @@ const mockCoupons: CouponItem[] = [
 ];
 
 const typeColor: Record<string, string> = {
-  universal: "from-primary via-purple-500 to-violet-600",
+  universal: "from-primary via-primary to-accent",
   americano: "from-amber-500 via-orange-500 to-red-500",
   latte: "from-sky-400 via-blue-500 to-indigo-500",
   cappuccino: "from-rose-400 via-pink-500 to-fuchsia-500",

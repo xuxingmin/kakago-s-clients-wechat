@@ -117,7 +117,7 @@ export const KakaBeanCelebration = ({ isOpen, beans, onClose }: KakaBeanCelebrat
       onClick={stableClose}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/85" />
+      <div className="absolute inset-0 bg-espresso/70" />
 
       {/* Particle explosion */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
