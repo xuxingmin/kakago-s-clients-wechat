@@ -236,7 +236,7 @@ const CosmicScanner = () => {
           const wasMatched = matchedBrands.has(brand);
           return (
             <div key={brand} className="absolute pointer-events-none" style={{ left: `calc(50% + ${Math.cos(angle) * radius}px)`, top: `calc(50% + ${Math.sin(angle) * radius}px)`, transform: "translate(-50%, -50%)" }}>
-              <span className={`text-[10px] whitespace-nowrap px-2 py-0.5 rounded-full border transition-all duration-500 ${isActive ? "bg-primary/40 text-white border-primary/60 font-bold scale-125" : wasMatched ? "bg-primary/10 text-primary/70 border-primary/20" : "text-white/20 border-white/5 bg-white/5"}`} style={isActive ? { boxShadow: "0 0 16px rgba(139,92,246,0.6), 0 0 32px rgba(139,92,246,0.2)" } : {}}>
+              <span className={`text-[10px] whitespace-nowrap px-2 py-0.5 rounded-full border transition-all duration-500 ${isActive ? "bg-primary/40 text-white border-primary/60 font-bold scale-125" : wasMatched ? "bg-primary/10 text-primary/70 border-primary/20" : "text-white/20 border-white/5 bg-white/5"}`} style={isActive ? { boxShadow: "0 0 16px hsl(var(--purple-500) / 0.35), 0 0 32px hsl(var(--purple-500) / 0.15)" } : {}}>
                 {brand}
               </span>
             </div>
@@ -249,7 +249,7 @@ const CosmicScanner = () => {
           const wasMatched = matchedBrands.has(brand);
           return (
             <div key={brand} className="absolute pointer-events-none" style={{ left: `calc(50% + ${Math.cos(angle) * radius}px)`, top: `calc(50% + ${Math.sin(angle) * radius}px)`, transform: "translate(-50%, -50%)" }}>
-              <span className={`text-[9px] whitespace-nowrap px-1.5 py-0.5 rounded-full transition-all duration-500 ${isActive ? "bg-primary/40 text-white font-bold scale-125" : wasMatched ? "text-primary/50" : "text-white/15"}`} style={isActive ? { boxShadow: "0 0 12px rgba(139,92,246,0.5)" } : {}}>
+              <span className={`text-[9px] whitespace-nowrap px-1.5 py-0.5 rounded-full transition-all duration-500 ${isActive ? "bg-primary/40 text-white font-bold scale-125" : wasMatched ? "text-primary/50" : "text-white/15"}`} style={isActive ? { boxShadow: "0 0 12px hsl(var(--purple-500) / 0.3)" } : {}}>
                 {brand}
               </span>
             </div>
