@@ -62,14 +62,16 @@
     --onyx:     24 12% 12%;
 
     /* ⚪ WHITE / opacity utility (kept for components) */
-    --white-100: 0 0% 100%;
-    --white-90:  0 0% 100%;
-    --white-70:  24 13% 9%;
-    --white-50:  24 13% 9%;
-    --white-30:  24 13% 9%;
-    --white-15:  24 13% 9%;
-    --white-08:  24 13% 9%;
-    --white-04:  24 13% 9%;
+    /* All "white" tokens remap to espresso ink so legacy text-white / text-white/60
+       utilities render correctly on the new oat canvas. */
+    --white-100: var(--espresso);
+    --white-90:  var(--espresso);
+    --white-70:  var(--espresso);
+    --white-50:  var(--espresso);
+    --white-30:  var(--espresso);
+    --white-15:  var(--espresso);
+    --white-08:  var(--espresso);
+    --white-04:  var(--espresso);
 
     /* ─────────────────────────────────────────────────────────────
        SEMANTIC TOKENS - TRIVA Light Editorial
