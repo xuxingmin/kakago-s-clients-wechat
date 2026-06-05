@@ -19,10 +19,15 @@ export const BrandBanner = () => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-serif text-2xl font-bold text-primary tracking-tight leading-none">TRIVA</h1>
+            <img
+              src={trivaLogo.url}
+              alt="TRIVA"
+              className="h-8 w-auto object-contain mix-blend-multiply select-none"
+              draggable={false}
+            />
             <Sparkles className="w-3.5 h-3.5 text-copper float-subtle" />
           </div>
-          <p className="text-xs text-foreground/70 mt-0.5 font-light">
+          <p className="text-xs text-foreground/70 mt-1 font-light">
             {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
           </p>
         </div>
