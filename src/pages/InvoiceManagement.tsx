@@ -211,7 +211,7 @@ interface InvoiceDetailOverlayProps {
 
 const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOverlayProps) => (
   <div className="fixed inset-0 z-[100] flex flex-col" onClick={onClose}>
-    <div className="absolute inset-0 bg-black/85 backdrop-blur-sm animate-fade-in" />
+    <div className="absolute inset-0 bg-espresso/70 backdrop-blur-sm animate-fade-in" />
 
     {/* Close button top-right */}
     <div className="relative z-10 flex justify-end px-4 pt-4 safe-top flex-shrink-0">

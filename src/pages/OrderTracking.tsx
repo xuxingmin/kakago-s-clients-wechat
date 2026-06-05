@@ -790,7 +790,7 @@ const OrderTracking = () => {
 
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] transition-opacity duration-300 ${showNavigateDialog || showContactDialog ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 bg-espresso/60 backdrop-blur-sm z-[70] transition-opacity duration-300 ${showNavigateDialog || showContactDialog ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={() => { setShowNavigateDialog(false); setShowContactDialog(false); }}
       />
 

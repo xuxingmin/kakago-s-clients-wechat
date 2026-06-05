@@ -41,7 +41,7 @@ export const AddressPicker = ({ isOpen, onClose }: AddressPickerProps) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70]" onClick={onClose} />
+      <div className="fixed inset-0 bg-espresso/50 backdrop-blur-sm z-[70]" onClick={onClose} />
       <div className="fixed bottom-0 left-0 right-0 z-[70] animate-in slide-in-from-bottom duration-300">
         <div className="bg-card rounded-t-2xl border-t border-white/10 max-h-[65vh] flex flex-col">
           {/* Handle */}

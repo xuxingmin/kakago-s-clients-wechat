@@ -122,7 +122,7 @@ export const MultiDimensionRatingModal = React.forwardRef<
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/70 backdrop-blur-md z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-espresso/60 backdrop-blur-md z-50 transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={handleClose}

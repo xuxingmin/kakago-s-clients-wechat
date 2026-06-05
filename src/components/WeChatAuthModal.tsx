@@ -60,7 +60,7 @@ export const WeChatAuthModal = ({ isOpen, onClose }: WeChatAuthModalProps) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-espresso/50 backdrop-blur-sm"
         onClick={onClose}
       />
 

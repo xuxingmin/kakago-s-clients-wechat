@@ -115,7 +115,7 @@ const AddressSelectPage = () => {
 
         {error && (
           <div className="absolute bottom-4 left-16 right-4 animate-fade-in">
-            <p className="text-xs text-red-400 bg-black/60 backdrop-blur-md rounded-xl py-2 px-3 border border-red-400/20">{error}</p>
+            <p className="text-xs text-red-400 bg-espresso/50 backdrop-blur-md rounded-xl py-2 px-3 border border-red-400/20">{error}</p>
           </div>
         )}
       </div>

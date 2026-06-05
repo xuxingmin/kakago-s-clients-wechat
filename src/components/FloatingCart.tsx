@@ -24,7 +24,7 @@ export const FloatingCart = () => {
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-md z-[70] transition-all duration-400 ${
+        className={`fixed inset-0 bg-espresso/50 backdrop-blur-md z-[70] transition-all duration-400 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}

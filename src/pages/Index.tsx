@@ -28,8 +28,8 @@ const userCoupons: Coupon[] = [
 
 const ESTIMATED_DELIVERY_FEE = 2;
 
-const ICON_COLOR = "text-violet-400";
-const ICON_BG = "bg-violet-500/10";
+const ICON_COLOR = "text-primary";
+const ICON_BG = "bg-primary/10";
 const ICON_BG_LAB = "bg-purple-400/15";
 
 const allProducts: ProductTileData[] = [
@@ -109,7 +109,7 @@ const Index = () => {
                     {t("精品萃取标准，回归本味", "Premium extraction, pure origin")}
                   </span>
                 </div>
-                <div className="mt-0.5 h-[0.5px] bg-violet-500/15" />
+                <div className="mt-0.5 h-[0.5px] bg-primary/10" />
               </div>
 
               <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -138,7 +138,7 @@ const Index = () => {
                     {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
                   </span>
                 </div>
-                <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-violet-500/15 via-purple-400/25 to-violet-500/15" />
+                <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-primary/20 via-primary/25 to-accent/20" />
               </div>
 
               <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -157,13 +157,13 @@ const Index = () => {
           )}
 
           <div className="flex items-center justify-between gap-2 mt-1 px-0.5 pb-2">
-            <div className="flex items-center gap-1.5 text-violet-400/25">
+            <div className="flex items-center gap-1.5 text-primary/40">
               <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
               <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
               <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
             </div>
             <div className="flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-violet-400 animate-pulse" />
+              <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
               <span className="text-[9px] text-white/25">
                 {t("全城精品店，全听你调遣！", "Elite cafés at your command!")}
               </span>
