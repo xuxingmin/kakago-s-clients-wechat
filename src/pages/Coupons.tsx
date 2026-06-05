@@ -20,10 +20,10 @@ const mockCoupons: CouponItem[] = [
 ];
 
 const typeColor: Record<string, string> = {
-  universal: "from-primary via-primary to-accent",
-  americano: "from-amber-500 via-orange-500 to-red-500",
-  latte: "from-sky-400 via-blue-500 to-indigo-500",
-  cappuccino: "from-rose-400 via-pink-500 to-fuchsia-500",
+  universal: "from-primary via-primary to-purple-700",
+  americano: "from-accent via-accent to-copper-700",
+  latte: "from-purple-700 via-primary to-accent",
+  cappuccino: "from-accent via-copper-600 to-primary",
 };
 
 const Coupons = () => {
@@ -53,12 +53,12 @@ const Coupons = () => {
         {mockCoupons.map((coupon) => (
           <div
             key={coupon.id}
-            className="relative flex overflow-hidden rounded-xl border border-white/5 bg-white/[0.03]"
+            className="relative flex overflow-hidden rounded-xl border border-border bg-card shadow-purple-sm"
           >
             {/* Left: value badge */}
             <div className={`w-24 shrink-0 bg-gradient-to-br ${typeColor[coupon.type]} flex flex-col items-center justify-center py-4`}>
-              <span className="text-2xl font-black text-white">¥{coupon.value}</span>
-              <span className="text-[10px] text-white/70 mt-0.5">{t("立减", "OFF")}</span>
+              <span className="text-2xl font-black text-oat">¥{coupon.value}</span>
+              <span className="text-[10px] text-oat/80 mt-0.5">{t("立减", "OFF")}</span>
             </div>
 
             {/* Serrated edge */}
@@ -70,18 +70,18 @@ const Coupons = () => {
 
             {/* Right: details */}
             <div className="flex-1 pl-5 pr-3 py-3 flex flex-col justify-center min-w-0">
-              <span className="text-sm font-semibold text-white truncate">
+              <span className="text-sm font-semibold text-foreground truncate">
                 {t(coupon.nameZh, coupon.nameEn)}
               </span>
               {coupon.minSpend !== undefined && (
-                <span className="text-[11px] text-white/40 mt-0.5">
+                <span className="text-[11px] text-muted-foreground mt-0.5">
                   {coupon.minSpend === 0
                     ? t("无门槛", "No minimum")
                     : t(`满¥${coupon.minSpend}可用`, `Min. ¥${coupon.minSpend}`)}
                 </span>
               )}
               {coupon.expiresAt && (
-                <span className="text-[10px] text-white/30 mt-1">
+                <span className="text-[10px] text-muted-foreground/70 mt-1">
                   {t("有效期至 ", "Expires ")}
                   {coupon.expiresAt}
                 </span>

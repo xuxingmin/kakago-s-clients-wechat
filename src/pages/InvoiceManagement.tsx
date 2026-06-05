@@ -217,9 +217,9 @@ const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOver
     <div className="relative z-10 flex justify-end px-4 pt-4 safe-top flex-shrink-0">
       <button
         onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+        className="w-8 h-8 rounded-full bg-oat/10 flex items-center justify-center hover:bg-oat/20 transition-colors"
       >
-        <X className="w-4 h-4 text-white/70" />
+        <X className="w-4 h-4 text-oat/80" />
       </button>
     </div>
 
@@ -230,11 +230,11 @@ const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOver
     >
       <div className="w-full max-w-[340px]">
         {/* Invoice "paper" */}
-        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
+        <div className="bg-paper rounded-2xl overflow-hidden shadow-2xl">
           {/* Header band */}
           <div className="bg-gradient-to-r from-primary to-primary/80 px-5 py-4 text-center">
-            <p className="text-[10px] text-white/70 mb-1">{t("电子发票", "Electronic Invoice")}</p>
-            <p className="text-xl font-bold text-white">¥{invoice.amount.toFixed(2)}</p>
+            <p className="text-[10px] text-oat/80 mb-1">{t("电子发票", "Electronic Invoice")}</p>
+            <p className="text-xl font-bold text-oat">¥{invoice.amount.toFixed(2)}</p>
           </div>
 
           {/* Invoice body */}
@@ -300,7 +300,7 @@ const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOver
     <div className="relative z-10 flex-shrink-0 px-6 pb-6 safe-bottom" onClick={(e) => e.stopPropagation()}>
       <button
         onClick={onSave}
-        className="w-full max-w-[340px] mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/80 active:scale-[0.98] transition-all"
+        className="w-full max-w-[340px] mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-oat text-sm font-semibold hover:bg-primary/80 active:scale-[0.98] transition-all"
       >
         <Download className="w-4 h-4" />
         {t("保存到手机相册", "Save to Photo Album")}
