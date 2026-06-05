@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', '"Times New Roman"', '"Noto Serif SC"', 'SimSun', 'serif'],
       },
       colors: {
         /* ═══════════════════════════════════════════════════════════
@@ -90,7 +91,29 @@ export default {
         },
 
         /* ─────────────────────────────────────────────────────────────
-           ⚫ BLACK SPECTRUM
+           🟫 COPPER SPECTRUM
+           ───────────────────────────────────────────────────────────── */
+        copper: {
+          50: "hsl(var(--copper-50))",
+          100: "hsl(var(--copper-100))",
+          200: "hsl(var(--copper-200))",
+          300: "hsl(var(--copper-300))",
+          400: "hsl(var(--copper-400))",
+          500: "hsl(var(--copper-500))",
+          600: "hsl(var(--copper-600))",
+          700: "hsl(var(--copper-700))",
+          DEFAULT: "hsl(var(--copper-500))",
+        },
+
+        /* TRIVA semantic surface aliases */
+        oat: "hsl(var(--oat))",
+        paper: "hsl(var(--paper))",
+        mist: "hsl(var(--mist))",
+        espresso: "hsl(var(--espresso))",
+        grape: "hsl(var(--purple-500))",
+
+        /* ─────────────────────────────────────────────────────────────
+           ⚫ BLACK SPECTRUM (legacy compatibility)
            ───────────────────────────────────────────────────────────── */
         obsidian: "hsl(var(--obsidian))",
         void: "hsl(var(--void))",

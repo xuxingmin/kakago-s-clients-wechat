@@ -248,7 +248,7 @@ const Checkout = () => {
           })}
         </section>
 
-        {/* Price Breakdown with KAKA Beans deduction */}
+        {/* Price Breakdown with TRIVA Beans deduction */}
         <section className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/8 space-y-2">
           <div className="flex justify-between text-[12px]">
             <span className="text-muted-foreground/60">{t("商品金额", "Subtotal")}</span>
@@ -263,12 +263,12 @@ const Checkout = () => {
             <span className="text-foreground/80">¥{deliveryFee}</span>
           </div>
 
-          {/* KAKA Beans deduction row */}
+          {/* TRIVA Beans deduction row */}
           <div className="pt-1.5 border-t border-white/5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <BeansIcon />
-                <span className="text-[12px] text-foreground/80">{t("KAKA豆抵扣", "KAKA Beans")}</span>
+                <span className="text-[12px] text-foreground/80">{t("TRIVA豆抵扣", "TRIVA Beans")}</span>
               </div>
               {beansToUse > 0 && (
                 <span className="text-primary text-[12px]">-¥{beansDeduction.toFixed(2)}</span>
@@ -343,7 +343,7 @@ const Checkout = () => {
               <span className="text-lg font-bold text-primary">¥{finalPrice.toFixed(2)}</span>
             </div>
             {beansToUse > 0 && (
-              <span className="text-[10px] text-primary/60">{t(`含KAKA豆抵扣 ¥${beansDeduction.toFixed(2)}`, `Incl. beans -¥${beansDeduction.toFixed(2)}`)}</span>
+              <span className="text-[10px] text-primary/60">{t(`含TRIVA豆抵扣 ¥${beansDeduction.toFixed(2)}`, `Incl. beans -¥${beansDeduction.toFixed(2)}`)}</span>
             )}
           </div>
           <button

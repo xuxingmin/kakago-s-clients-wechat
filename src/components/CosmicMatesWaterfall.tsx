@@ -79,7 +79,7 @@ export const CosmicMatesWaterfall = ({ open, onClose }: Props) => {
   return (
     <div
       className={`fixed inset-0 z-[90] transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-      style={{ background: "#0A0A0F" }}
+      style={{ background: "hsl(var(--oat))" }}
     >
       {/* Circuit pattern background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

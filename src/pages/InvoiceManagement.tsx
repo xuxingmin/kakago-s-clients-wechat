@@ -290,7 +290,7 @@ const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOver
 
           {/* Footer */}
           <div className="bg-gray-50 px-5 py-3 text-center">
-            <p className="text-[9px] text-gray-400">KAKAGO · {t("电子发票", "Electronic Invoice")}</p>
+            <p className="text-[9px] text-gray-400">TRIVA · {t("电子发票", "Electronic Invoice")}</p>
           </div>
         </div>
       </div>

@@ -31,21 +31,21 @@ export const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 shadow-[0_4px_20px_-4px_hsla(270,25%,5%,0.7)] transition-shadow duration-300">
+      <header className="sticky top-0 z-40 shadow-[0_4px_18px_-8px_hsla(270,42%,26%,0.18)] transition-shadow duration-300">
         {/* WeChat Status Bar */}
         <div className="h-8 bg-background flex items-end justify-between px-6 pb-0.5">
-          <span className="text-xs font-semibold text-white/90">
+          <span className="text-xs font-semibold text-foreground/85">
             {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </span>
           <div className="flex items-center gap-1">
-            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" className="text-white/70">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" className="text-foreground/70">
               <rect x="0" y="8" width="3" height="4" rx="0.5" fill="currentColor" />
               <rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="currentColor" />
               <rect x="9" y="2" width="3" height="10" rx="0.5" fill="currentColor" />
               <rect x="13" y="0" width="3" height="12" rx="0.5" fill="currentColor" />
             </svg>
-            <span className="text-[10px] text-white/70 font-medium ml-0.5">5G</span>
-            <svg width="22" height="11" viewBox="0 0 22 11" fill="none" className="text-white/70 ml-1">
+            <span className="text-[10px] text-foreground/70 font-medium ml-0.5">5G</span>
+            <svg width="22" height="11" viewBox="0 0 22 11" fill="none" className="text-foreground/70 ml-1">
               <rect x="0.5" y="0.5" width="18" height="10" rx="2" stroke="currentColor" strokeWidth="1" />
               <rect x="19.5" y="3" width="2" height="5" rx="1" fill="currentColor" />
               <rect x="2" y="2" width="12" height="7" rx="1" fill="currentColor" />

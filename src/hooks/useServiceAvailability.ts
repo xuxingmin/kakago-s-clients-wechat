@@ -23,7 +23,7 @@ const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
   try {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=zh&zoom=16`,
-      { headers: { "User-Agent": "KAKAGO-App/1.0" } }
+      { headers: { "User-Agent": "TRIVA-App/1.0" } }
     );
     if (!res.ok) return "";
     const data = await res.json();

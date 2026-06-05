@@ -51,20 +51,20 @@ export const ProductTile = ({
   };
 
   return (
-    <div className={`group text-left relative flex flex-col justify-between min-h-0 overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_16px_-4px_hsla(271,81%,56%,0.3)] ${
+    <div className={`group text-left relative flex flex-col justify-between min-h-0 overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-md ${
       product.isCreative
-        ? "py-1.5 px-2 border border-primary/20 shadow-[inset_0_1px_0_hsla(271,81%,56%,0.08)]"
-        : "py-1 px-2 border border-white/[0.06]"
+        ? "py-1.5 px-2 border border-primary/30 bg-paper"
+        : "py-1 px-2 border border-foreground/10 bg-paper"
     }`}
-    style={{ background: product.isCreative 
-      ? 'linear-gradient(135deg, hsla(271,81%,56%,0.08), hsla(270,50%,10%,0.9), hsla(280,40%,8%,0.95))' 
-      : '#1A1A1A' 
-    }}>
+    style={ product.isCreative
+      ? { background: 'linear-gradient(135deg, hsla(270,42%,26%,0.06), hsl(var(--paper)) 60%)' }
+      : undefined
+    }>
       {/* Lab badge for creative */}
       {labIndex !== undefined && (
-        <span className="absolute top-1 right-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-primary/10 border border-primary/20">
-          <FlaskConical className="w-2 h-2 text-primary/60" strokeWidth={2} />
-          <span className="text-[7px] font-mono font-bold tracking-widest text-primary/50 uppercase">
+        <span className="absolute top-1 right-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-primary/10 border border-primary/25">
+          <FlaskConical className="w-2 h-2 text-primary/70" strokeWidth={2} />
+          <span className="text-[7px] font-mono font-bold tracking-widest text-primary/70 uppercase">
             {String(labIndex).padStart(2, "0")}
           </span>
         </span>
@@ -76,20 +76,20 @@ export const ProductTile = ({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-1">
-            <h3 className={`font-bold text-white tracking-tight leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
+            <h3 className={`font-serif font-bold text-espresso tracking-tight leading-tight ${isEn ? "text-[11px]" : "text-sm"}`}>
               {t(product.nameZh, product.nameEn)}
             </h3>
-            <span className="text-primary font-extrabold text-base shrink-0 drop-shadow-[0_0_12px_hsla(271,81%,56%,0.4)]">
+            <span className="font-serif text-copper font-bold text-base shrink-0">
               ¥{estimatedPrice}
             </span>
           </div>
           {product.tagZh && (
-            <p className={`text-white/35 mt-0.5 leading-relaxed break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-foreground/55 mt-0.5 leading-relaxed break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.tagZh, product.tagEn || "")}
             </p>
           )}
           {product.descZh && (
-            <p className={`text-purple-300/50 mt-0.5 leading-relaxed break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
+            <p className={`text-primary/70 mt-0.5 leading-relaxed break-keep ${isEn ? "text-[8px]" : "text-[10px]"}`}>
               {t(product.descZh, product.descEn || "")}
             </p>
           )}
@@ -99,13 +99,13 @@ export const ProductTile = ({
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 mt-auto pt-0.5">
         {product.specZh && !product.isCreative ? (
-          <div className="flex items-center gap-2 text-violet-400/35 text-[9px]">
+          <div className="flex items-center gap-2 text-foreground/45 text-[9px]">
             <span className="flex items-center gap-0.5"><CupSoda className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[0]}</span>
             <span className="flex items-center gap-0.5"><Thermometer className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[1]}</span>
             <span className="flex items-center gap-0.5"><Flame className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[2]}</span>
           </div>
         ) : product.isCreative && product.specTags ? (
-          <div className="flex items-center gap-1.5 text-purple-300/40 text-[9px] flex-wrap">
+          <div className="flex items-center gap-1.5 text-primary/55 text-[9px] flex-wrap">
             {product.specTags.map((tag, i) => {
               const TagIcon = specTagIconMap[tag.icon];
               return (
@@ -127,8 +127,8 @@ export const ProductTile = ({
           }}
           className={`ripple rounded-full flex items-center justify-center transition-all duration-300 active:scale-75 shrink-0 ${
             quantityInCart > 0
-              ? "bg-gradient-to-br from-primary via-purple-500 to-violet-600 text-white shadow-[0_0_20px_rgba(127,0,255,0.5)] ring-2 ring-primary/30"
-              : "bg-gradient-to-br from-primary/80 to-violet-600 text-white hover:shadow-[0_0_15px_rgba(127,0,255,0.4)] hover:scale-110"
+              ? "bg-copper text-oat shadow-md ring-2 ring-copper/30"
+              : "bg-copper text-oat hover:shadow-md hover:scale-110"
           }`}
           style={{ width: '28px', height: '28px', minWidth: '28px', minHeight: '28px' }}
         >

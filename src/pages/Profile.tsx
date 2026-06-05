@@ -41,7 +41,7 @@ const Profile = () => {
 
   const assetItems: AssetItem[] = [
     { Icon: Ticket, value: isLoggedIn ? "3" : "--", labelZh: "优惠券", labelEn: "Coupons", onClick: () => navigate("/wallet") },
-    { Icon: Coins, value: isLoggedIn ? "124K" : "--", labelZh: "KAKA豆", labelEn: "KAKA Beans", onClick: () => navigate("/kaka-beans") },
+    { Icon: Coins, value: isLoggedIn ? "124K" : "--", labelZh: "TRIVA豆", labelEn: "TRIVA Beans", onClick: () => navigate("/kaka-beans") },
   ];
 
   const menuItems: MenuItem[] = [
@@ -191,7 +191,7 @@ const Profile = () => {
         </section>
 
         <p className="text-center text-[10px] text-muted-foreground mt-4 pb-4">
-          KAKAGO v1.0.0
+          TRIVA v1.0.0
         </p>
       </div>
 
