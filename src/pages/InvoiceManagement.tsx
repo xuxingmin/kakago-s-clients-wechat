@@ -300,7 +300,7 @@ const InvoiceDetailOverlay = ({ invoice, onClose, onSave, t }: InvoiceDetailOver
     <div className="relative z-10 flex-shrink-0 px-6 pb-6 safe-bottom" onClick={(e) => e.stopPropagation()}>
       <button
         onClick={onSave}
-        className="w-full max-w-[340px] mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/80 active:scale-[0.98] transition-all"
+        className="w-full max-w-[340px] mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-oat text-sm font-semibold hover:bg-primary/80 active:scale-[0.98] transition-all"
       >
         <Download className="w-4 h-4" />
         {t("保存到手机相册", "Save to Photo Album")}
