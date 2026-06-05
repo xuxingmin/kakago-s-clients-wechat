@@ -51,7 +51,7 @@ export const CouponFlags = ({ coupons }: CouponFlagsProps) => {
             }}
           >
             <div
-              className={`relative bg-gradient-to-br from-primary via-purple-500 to-violet-600 shadow-lg overflow-hidden ${
+              className={`relative bg-gradient-to-br from-primary via-purple-600 to-copper-600 shadow-lg overflow-hidden ${
                 isLarge ? "w-10 h-14" : "w-8 h-11"
               }`}
               style={{
