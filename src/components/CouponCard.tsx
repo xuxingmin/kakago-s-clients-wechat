@@ -17,18 +17,18 @@ interface CouponCardProps {
 
 const couponStyles: Record<CouponType, { gradient: string; accent: string; label: string }> = {
   universal: {
-    gradient: "from-amber-400 via-yellow-500 to-amber-600",
-    accent: "text-amber-900",
+    gradient: "from-primary via-primary to-purple-700",
+    accent: "text-oat",
     label: "全品类通用券",
   },
   americano: {
-    gradient: "from-slate-300 via-gray-400 to-slate-500",
-    accent: "text-slate-800",
+    gradient: "from-accent via-accent to-copper-700",
+    accent: "text-oat",
     label: "美式咖啡专享",
   },
   latte: {
-    gradient: "from-purple-400 via-primary to-purple-600",
-    accent: "text-white",
+    gradient: "from-purple-700 via-primary to-accent",
+    accent: "text-oat",
     label: "拿铁专享券",
   },
 };
