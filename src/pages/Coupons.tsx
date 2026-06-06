@@ -102,7 +102,7 @@ const Coupons = () => {
 
         {/* Empty hint */}
         {mockCoupons.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-white/30">
+          <div className="flex flex-col items-center justify-center py-16 text-foreground/40">
             <Ticket className="w-10 h-10 mb-2" />
             <span className="text-sm">{t("暂无可用卡券", "No coupons available")}</span>
           </div>
