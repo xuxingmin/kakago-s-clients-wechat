@@ -51,7 +51,7 @@ const getStatusConfig = (t: (zh: string, en: string) => string) => ({
   preparing: { label: t("制作中", "Making"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   delivering: { label: t("配送中", "Delivering"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
   delivered: { label: t("已送达", "Delivered"), color: "text-primary", borderColor: "border-primary/40", bgColor: "bg-primary/15", blink: false },
-  completed: { label: t("已完成", "Done"), color: "text-white/40", borderColor: "border-white/10", bgColor: "bg-white/5", blink: false },
+  completed: { label: t("已完成", "Done"), color: "text-foreground/45", borderColor: "border-foreground/15", bgColor: "bg-foreground/[0.04]", blink: false },
 });
 
 const REFUND_WINDOW_MS = 60 * 1000;
