@@ -28,15 +28,25 @@ export const BottomNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTML
     return (
       <nav
         ref={ref}
-        className="fixed bottom-0 left-0 right-0 bg-[hsl(33,65%,97%)] border-t border-foreground/10 safe-bottom z-50"
+        className="fixed bottom-0 left-0 right-0 safe-bottom z-50 backdrop-blur-xl"
+        style={{
+          backgroundColor: "hsla(33, 65%, 96%, 0.78)",
+          borderTop: "1px solid hsla(24,13%,9%,0.08)",
+          boxShadow: "0 -8px 28px -18px hsla(24,13%,9%,0.18)",
+          backgroundImage:
+            "repeating-linear-gradient(90deg, hsla(24,13%,9%,0.12) 0 3px, transparent 3px 7px)",
+          backgroundSize: "100% 1px",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "top",
+        }}
         {...props}
       >
-        <div className="relative flex justify-around items-center h-[56px] max-w-md mx-auto gap-4 px-4">
+        <div className="relative flex justify-around items-center h-[54px] max-w-md mx-auto gap-4 px-4">
           <span
-            className="absolute top-0 h-[2px] bg-primary rounded-full transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            className="absolute top-[1px] h-[2px] bg-primary rounded-full transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
             style={{
-              width: '28px',
-              left: `calc(${(activeIndex * 100) / navItems.length}% + ${100 / navItems.length / 2}% - 14px)`,
+              width: '24px',
+              left: `calc(${(activeIndex * 100) / navItems.length}% + ${100 / navItems.length / 2}% - 12px)`,
             }}
           />
           {navItems.map((item) => (

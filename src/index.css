@@ -154,9 +154,31 @@
     @apply text-foreground;
     min-height: 100vh;
     min-height: 100dvh;
-    background: hsl(var(--oat));
-    background-attachment: fixed;
+    background-color: hsl(var(--oat));
+    background-image:
+      /* warm vignette */
+      radial-gradient(ellipse at top, hsla(33, 50%, 88%, 0.55), transparent 55%),
+      radial-gradient(ellipse at bottom, hsla(26, 40%, 84%, 0.4), transparent 60%),
+      /* fine paper grain */
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.094  0 0 0 0 0.078  0 0 0 0 0.067  0 0 0 0.055 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-attachment: fixed, fixed, fixed;
+    background-size: auto, auto, 160px 160px;
     overscroll-behavior: none;
+  }
+
+  .paper-grain {
+    position: relative;
+  }
+  .paper-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.094  0 0 0 0 0.078  0 0 0 0 0.067  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 120px 120px;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+    border-radius: inherit;
   }
 
   /* Serif headings — editorial brand voice */
