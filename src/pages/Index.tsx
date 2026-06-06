@@ -100,16 +100,15 @@ const Index = () => {
           {/* ── Standard Series ── */}
           {showClassic && (
             <>
-              <div className="mb-0.5">
-                <div className="flex items-baseline justify-between">
-                  <h2 className="text-[11px] font-bold tracking-wide text-white/75">
-                    {t("意式基石系列", "FOUNDATION SERIES")}
+              <div className="mb-2 mt-1 border-t-2 border-primary pt-1.5">
+                <div className="flex items-baseline justify-between gap-2">
+                  <h2 className="font-serif text-base font-black tracking-tight text-primary">
+                    {t("意式基石", "FOUNDATION")}
                   </h2>
-                  <span className="text-[9px] font-light tracking-[0.15em] text-white/30">
-                    {t("精品萃取标准，回归本味", "Premium extraction, pure origin")}
+                  <span className="text-[9px] font-black tracking-[0.18em] text-copper uppercase">
+                    {t("精品萃取 · 回归本味", "Pure Extraction")}
                   </span>
                 </div>
-                <div className="mt-0.5 h-[0.5px] bg-primary/10" />
               </div>
 
               <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -129,16 +128,15 @@ const Index = () => {
           {/* ── Creative Series ── */}
           {showLab && (
             <>
-              <div className={`${showClassic ? "mt-2" : ""} mb-0.5`}>
-                <div className="flex items-baseline justify-between">
-                  <h2 className="text-[11px] font-bold tracking-wide text-white/75">
-                    {t("先锋实验系列", "AVANT-GARDE LAB")}
+              <div className={`${showClassic ? "mt-4" : "mt-1"} mb-2 border-t-2 border-copper pt-1.5`}>
+                <div className="flex items-baseline justify-between gap-2">
+                  <h2 className="font-serif italic text-base font-black tracking-tight text-copper">
+                    {t("先锋实验", "AVANT-GARDE")}
                   </h2>
-                  <span className="text-[10px] font-light tracking-wider text-white/35">
-                    {t("重构世界冠军灵感，先锋感官", "Reimagining WBC champion artistry")}
+                  <span className="text-[9px] font-black tracking-[0.18em] text-primary uppercase">
+                    {t("世界冠军灵感 · 先锋感官", "WBC Inspired")}
                   </span>
                 </div>
-                <div className="mt-0.5 h-[0.5px] bg-gradient-to-r from-primary/20 via-primary/25 to-accent/20" />
               </div>
 
               <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
@@ -164,8 +162,8 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-1">
               <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-              <span className="text-[9px] text-white/25">
-                {t("全城精品店，全听你调遣！", "Elite cafés at your command!")}
+              <span className="text-[9px] font-black tracking-[0.18em] text-foreground/45 uppercase">
+                {t("全城精品店 · 全听调遣", "Elite Cafés · On Command")}
               </span>
             </div>
           </div>
