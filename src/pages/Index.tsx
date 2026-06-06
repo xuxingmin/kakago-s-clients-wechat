@@ -100,19 +100,20 @@ const Index = () => {
           {/* ── Foundation Series ── */}
           {showClassic && (
             <>
-              <div className="mb-2.5 mt-2">
-                <div className="flex items-end gap-2">
-                  <span className="font-mono text-[9px] font-bold tracking-[0.22em] text-primary uppercase tabular-nums pb-0.5">
-                    Ch.I
-                  </span>
-                  <h2 className="font-serif text-[18px] font-bold tracking-tight text-espresso leading-none">
-                    {t("意式基石", "FOUNDATION")}
-                  </h2>
-                  <div className="flex-1 h-px bg-foreground/15 mb-1.5" />
-                  <span className="text-[9px] font-medium tracking-[0.2em] text-foreground/50 uppercase pb-0.5">
-                    {t("回归本味", "Pure Extraction")}
-                  </span>
-                </div>
+              <div className="mb-3 mt-2 flex items-baseline gap-2">
+                <span className="font-mono text-[9px] font-bold tracking-[0.28em] text-primary uppercase tabular-nums">
+                  Ch.I
+                </span>
+                <h2 className="font-serif text-[17px] font-bold tracking-tight text-espresso leading-none">
+                  {t("意式基石", "FOUNDATION")}
+                </h2>
+                <span className="font-serif italic text-[10px] text-foreground/45 leading-none">
+                  — Pure Extraction
+                </span>
+                <div className="flex-1 border-t border-foreground/15" />
+                <span className="font-mono text-[8.5px] font-semibold tracking-[0.22em] text-foreground/40 uppercase tabular-nums">
+                  {String(classicProducts.length).padStart(2,"0")}·SKU
+                </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
@@ -132,19 +133,20 @@ const Index = () => {
           {/* ── Avant-Garde Series ── */}
           {showLab && (
             <>
-              <div className={`${showClassic ? "mt-5" : "mt-2"} mb-2.5`}>
-                <div className="flex items-end gap-2">
-                  <span className="font-mono text-[9px] font-bold tracking-[0.22em] text-copper uppercase tabular-nums pb-0.5">
-                    Ch.II
-                  </span>
-                  <h2 className="font-serif italic text-[18px] font-bold tracking-tight text-espresso leading-none">
-                    {t("先锋实验", "AVANT-GARDE")}
-                  </h2>
-                  <div className="flex-1 border-t border-dashed border-copper/40 mb-1.5" />
-                  <span className="text-[9px] font-medium tracking-[0.2em] text-foreground/50 uppercase pb-0.5">
-                    {t("先锋感官", "WBC Inspired")}
-                  </span>
-                </div>
+              <div className={`${showClassic ? "mt-6" : "mt-2"} mb-3 flex items-baseline gap-2`}>
+                <span className="font-mono text-[9px] font-bold tracking-[0.28em] text-copper uppercase tabular-nums">
+                  Ch.II
+                </span>
+                <h2 className="font-serif italic text-[17px] font-bold tracking-tight text-espresso leading-none">
+                  {t("先锋实验", "AVANT-GARDE")}
+                </h2>
+                <span className="font-serif italic text-[10px] text-foreground/45 leading-none">
+                  — WBC Inspired
+                </span>
+                <div className="flex-1 border-t border-dashed border-copper/40" />
+                <span className="font-mono text-[8.5px] font-semibold tracking-[0.22em] text-copper/75 uppercase tabular-nums">
+                  LAB·{String(labProducts.length).padStart(2,"0")}
+                </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
