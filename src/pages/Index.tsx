@@ -92,11 +92,11 @@ const Index = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <div className="h-[32px] px-4 py-1.5" />
+        <div className="h-2" />
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
-        <section className="px-4 py-0.5">
+        <section className="px-4 pt-1 pb-0.5">
           {/* ── Standard Series ── */}
           {showClassic && (
             <>
