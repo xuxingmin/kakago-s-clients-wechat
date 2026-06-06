@@ -108,9 +108,11 @@ export default {
         /* TRIVA semantic surface aliases */
         oat: "hsl(var(--oat))",
         paper: "hsl(var(--paper))",
+        "logo-cream": "hsl(var(--logo-cream))",
         mist: "hsl(var(--mist))",
         espresso: "hsl(var(--espresso))",
         grape: "hsl(var(--purple-500))",
+        "deep-grape": "hsl(var(--purple-700))",
 
         /* ─────────────────────────────────────────────────────────────
            ⚫ BLACK SPECTRUM (legacy compatibility)

@@ -15,32 +15,33 @@
        Grape (Soul) · Copper (Accent) · Oat (Canvas) · Espresso (Ink)
        ═══════════════════════════════════════════════════════════ */
 
-    /* 🟣 GRAPE PURPLE SPECTRUM — #3B255F */
-    --purple-50:  270 33% 96%;
-    --purple-100: 270 30% 90%;
-    --purple-200: 270 28% 80%;
-    --purple-300: 270 28% 65%;
-    --purple-400: 270 30% 48%;
-    --purple-500: 270 42% 26%;   /* ★ Grape #3B255F */
-    --purple-600: 270 45% 22%;
-    --purple-700: 270 48% 18%;
-    --purple-800: 270 50% 14%;
-    --purple-900: 270 55% 10%;
+    /* 🟣 GRAPE PURPLE SPECTRUM — #2F1E4F (deepened) */
+    --purple-50:  267 35% 96%;
+    --purple-100: 267 32% 90%;
+    --purple-200: 267 30% 80%;
+    --purple-300: 267 30% 64%;
+    --purple-400: 267 32% 44%;
+    --purple-500: 267 45% 21%;   /* ★ Primary Purple #2F1E4F */
+    --purple-600: 267 48% 17%;
+    --purple-700: 267 52% 14%;   /* ★ Deep Purple #25163E */
+    --purple-800: 267 55% 11%;
+    --purple-900: 267 58% 8%;
 
-    /* 🟫 COPPER ACCENT SPECTRUM — #B46A3C */
-    --copper-50:  26 50% 94%;
-    --copper-100: 26 50% 86%;
-    --copper-200: 26 48% 76%;
-    --copper-300: 26 48% 64%;
-    --copper-400: 26 50% 52%;
-    --copper-500: 26 50% 47%;    /* ★ Copper #B46A3C */
-    --copper-600: 22 52% 40%;
-    --copper-700: 20 54% 32%;
+    /* 🟫 COPPER ACCENT SPECTRUM — #B5652F (warmer, deeper) */
+    --copper-50:  25 50% 94%;
+    --copper-100: 25 50% 86%;
+    --copper-200: 25 50% 74%;
+    --copper-300: 25 52% 60%;
+    --copper-400: 25 56% 48%;
+    --copper-500: 25 59% 45%;    /* ★ Roast Copper #B5652F */
+    --copper-600: 22 60% 38%;
+    --copper-700: 20 62% 30%;
 
     /* 🌾 OAT / PAPER / MIST SPECTRUM */
     --oat:        36 53% 91%;    /* ★ Body BG #F3EBDD */
-    --paper:      33 65% 94%;    /* ★ Card BG #F8F0E6 */
-    --mist:       40 9% 82%;     /* #D6D2CA */
+    --paper:      33 100% 97%;   /* ★ Card Cream #FFF8EF */
+    --logo-cream: 36 100% 95%;   /* ★ Logo Cream #FFF6E8 */
+    --mist:       33 16% 81%;    /* ★ Soft Gray #D8D1C8 */
     --espresso:   24 13% 9%;     /* ★ Text #181411 */
 
     /* 🔘 FOG GREY (warm neutrals) */
