@@ -154,15 +154,14 @@ const Index = () => {
             </>
           )}
 
-          <div className="flex items-center justify-between gap-2 mt-1 px-0.5 pb-2">
-            <div className="flex items-center gap-1.5 text-primary/40">
-              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
-              <Award className="w-2.5 h-2.5" strokeWidth={1.5} />
-              <Coffee className="w-2.5 h-2.5" strokeWidth={1.5} />
-            </div>
-            <div className="flex items-center gap-1">
+          <div className="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-foreground/15 px-0.5 pb-2">
+            <span className="text-[9px] font-black tracking-[0.22em] text-foreground/45 uppercase">
+              {t("TRIVA · 卷壹", "TRIVA · VOL.01")}
+            </span>
+            <div className="flex-1 h-px bg-foreground/10" />
+            <div className="flex items-center gap-1.5">
               <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-              <span className="text-[9px] font-black tracking-[0.18em] text-foreground/45 uppercase">
+              <span className="text-[9px] font-black tracking-[0.22em] text-copper uppercase">
                 {t("全城精品店 · 全听调遣", "Elite Cafés · On Command")}
               </span>
             </div>
