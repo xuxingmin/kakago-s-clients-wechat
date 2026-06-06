@@ -1,38 +1,30 @@
-import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CouponFlags, Coupon } from "@/components/CouponFlags";
 import trivaLogo from "@/assets/triva-logo.png.asset.json";
-
-// 用户可用优惠券（测试数据）
-const userCoupons: Coupon[] = [
-  { id: "c1", type: "universal", value: 3 },
-  { id: "c2", type: "latte", value: 2, applicableProducts: ["hot-latte", "iced-latte"] },
-  { id: "c3", type: "americano", value: 2, applicableProducts: ["hot-americano", "iced-americano"] },
-];
 
 export const BrandBanner = () => {
   const { t } = useLanguage();
-  const totalCoupons = userCoupons.length;
 
   return (
-    <section className="px-4 pt-1 pb-0.5 hero-reveal bg-background">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <img
-              src={trivaLogo.url}
-              alt="TRIVA"
-              className="h-8 w-auto object-contain mix-blend-multiply select-none"
-              draggable={false}
-            />
-            <Sparkles className="w-3.5 h-3.5 text-copper float-subtle" />
-          </div>
-          <p className="text-xs text-foreground/70 mt-1 font-light">
-            {t("不贵精品，即刻上瘾！", "Premium taste, instant addiction!")}
-          </p>
+    <section className="px-4 pt-2 pb-1 hero-reveal bg-background">
+      <div className="flex items-end justify-between gap-3 border-b border-foreground/15 pb-2">
+        <div className="flex items-end gap-2 min-w-0">
+          <img
+            src={trivaLogo.url}
+            alt="TRIVA"
+            className="h-9 w-auto object-contain mix-blend-multiply select-none"
+            draggable={false}
+          />
+          <span className="font-serif italic text-[11px] text-foreground/55 mb-1 truncate">
+            {t("精品咖啡 · 现做现送", "Specialty · Freshly Crafted")}
+          </span>
         </div>
-        {totalCoupons > 0 && <CouponFlags coupons={userCoupons} />}
+        <span className="text-[10px] font-black tracking-[0.18em] text-copper uppercase shrink-0 mb-1">
+          EST · HEFEI
+        </span>
       </div>
+      <p className="text-[11px] font-serif italic text-foreground/65 mt-1.5">
+        {t("不贵精品，即刻上瘾。", "Premium taste, instant addiction.")}
+      </p>
     </section>
   );
 };
