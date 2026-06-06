@@ -33,16 +33,16 @@ const ICON_BG = "bg-primary/10";
 const ICON_BG_LAB = "bg-purple-400/15";
 
 const allProducts: ProductTileData[] = [
-  { id: "hot-americano", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish", specZh: "360ml 热 中深烘焙", specEn: "360ml Hot Medium-Dark" },
-  { id: "iced-americano", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh", specZh: "360ml 冰 中深烘焙", specEn: "360ml Iced Medium-Dark" },
-  { id: "hot-latte", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced", specZh: "360ml 热 中深烘焙", specEn: "360ml Hot Medium-Dark" },
-  { id: "iced-latte", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear", specZh: "360ml 冰 中深烘焙", specEn: "360ml Iced Medium-Dark" },
-  { id: "cappuccino", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor", specZh: "240ml 热 中深烘焙", specEn: "240ml Hot Medium-Dark" },
-  { id: "flat-white", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense", specZh: "240ml 热 中深烘焙", specEn: "240ml Hot Medium-Dark" },
-  { id: "palo-santo-latte", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "真空慢煮", labelEn: "Sous-vide" }], isCreative: true },
-  { id: "koji-latte", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "恒温发酵", labelEn: "Koji Ferm." }], isCreative: true },
-  { id: "rock-salt-fermented", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: FlaskConical, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "乳酸发酵", labelEn: "Lacto Ferm." }], isCreative: true },
-  { id: "glass-latte", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "droplets", labelZh: "奶洗澄清", labelEn: "Milk Wash" }], isCreative: true },
+  { id: "hot-americano", sku: "TRV-ESP-01", nameZh: "热美式", nameEn: "Hot Americano", price: 12, image: coffeeAmericano, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "油脂完整 醇厚回甘", tagEn: "Rich crema, smooth finish", specZh: "360ml 热 中深烘焙", specEn: "360ml Hot Medium-Dark" },
+  { id: "iced-americano", sku: "TRV-ESP-02", nameZh: "冰美式", nameEn: "Iced Americano", price: 12, image: coffeeAmericano, icon: Snowflake, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "酸质明亮 清脆鲜爽", tagEn: "Bright acidity, crisp & fresh", specZh: "360ml 冰 中深烘焙", specEn: "360ml Iced Medium-Dark" },
+  { id: "hot-latte", sku: "TRV-MILK-01", nameZh: "热拿铁", nameEn: "Hot Latte", price: 15, image: coffeeLatte, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "奶泡绵密 丝滑平衡", tagEn: "Silky foam, perfectly balanced", specZh: "360ml 热 中深烘焙", specEn: "360ml Hot Medium-Dark" },
+  { id: "iced-latte", sku: "TRV-MILK-02", nameZh: "冰拿铁", nameEn: "Iced Latte", price: 15, image: coffeeLatte, icon: GlassWater, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "坚果韵律 清晰透亮", tagEn: "Nutty notes, crystal clear", specZh: "360ml 冰 中深烘焙", specEn: "360ml Iced Medium-Dark" },
+  { id: "cappuccino", sku: "TRV-MILK-03", nameZh: "卡布奇诺", nameEn: "Cappuccino", price: 15, image: coffeeCappuccino, icon: CupSoda, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "结构蓬松 啡味穿透", tagEn: "Fluffy structure, bold flavor", specZh: "240ml 热 中深烘焙", specEn: "240ml Hot Medium-Dark" },
+  { id: "flat-white", sku: "TRV-MILK-04", nameZh: "澳白", nameEn: "Flat White", price: 15, image: coffeeFlatWhite, icon: Coffee, iconColor: ICON_COLOR, iconBg: ICON_BG, tagZh: "极薄奶沫 致密醇厚", tagEn: "Thin microfoam, rich & dense", specZh: "240ml 热 中深烘焙", specEn: "240ml Hot Medium-Dark" },
+  { id: "palo-santo-latte", sku: "TRV-LAB-07", nameZh: "圣木拿铁", nameEn: "Palo Santo Latte", price: 22, image: coffeeDirty, icon: Flame, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "秘鲁圣木 · 雪松檀香黑巧克力", descEn: "Sacred wood · cedar sandalwood dark chocolate", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "真空慢煮", labelEn: "Sous-vide" }], isCreative: true },
+  { id: "koji-latte", sku: "TRV-LAB-08", nameZh: "米曲鲜咖", nameEn: "Koji Fresh Coffee", price: 20, image: coffeeMatcha, icon: Wheat, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "第五味觉 · 发酵糯米味噌麦芽", descEn: "Umami · fermented rice miso malt", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "恒温发酵", labelEn: "Koji Ferm." }], isCreative: true },
+  { id: "rock-salt-fermented", sku: "TRV-LAB-09", nameZh: "岩盐酵咖", nameEn: "Rock Salt Fermented", price: 20, image: coffeeCoconut, icon: FlaskConical, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "发酵反叛 · 希腊酸奶海盐芝士", descEn: "Fermented rebellion · yogurt sea salt cheese", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "flask", labelZh: "乳酸发酵", labelEn: "Lacto Ferm." }], isCreative: true },
+  { id: "glass-latte", sku: "TRV-LAB-10", nameZh: "玻璃拿铁", nameEn: "Glass Latte", price: 22, image: coffeeRose, icon: Beaker, iconColor: ICON_COLOR, iconBg: ICON_BG_LAB, descZh: "奶洗澄清 · 丝滑橙花熟成菠萝", descEn: "Milk-washed · silky orange blossom pineapple", specTags: [{ icon: "cup", labelZh: "360ml", labelEn: "360ml" }, { icon: "snowflake", labelZh: "冰", labelEn: "Iced" }, { icon: "droplets", labelZh: "奶洗澄清", labelEn: "Milk Wash" }], isCreative: true },
 ];
 
 const categories = [
@@ -97,21 +97,25 @@ const Index = () => {
 
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
         <section className="px-4 pt-1 pb-0.5">
-          {/* ── Standard Series ── */}
+          {/* ── Foundation Series ── */}
           {showClassic && (
             <>
-              <div className="mb-2 mt-1 border-t-2 border-primary pt-1.5">
-                <div className="flex items-baseline justify-between gap-2">
-                  <h2 className="font-serif text-base font-black tracking-tight text-primary">
+              <div className="mb-2.5 mt-2">
+                <div className="flex items-end gap-2">
+                  <span className="font-mono text-[9px] font-bold tracking-[0.22em] text-primary uppercase tabular-nums pb-0.5">
+                    Ch.I
+                  </span>
+                  <h2 className="font-serif text-[18px] font-bold tracking-tight text-espresso leading-none">
                     {t("意式基石", "FOUNDATION")}
                   </h2>
-                  <span className="text-[9px] font-black tracking-[0.18em] text-copper uppercase">
-                    {t("精品萃取 · 回归本味", "Pure Extraction")}
+                  <div className="flex-1 h-px bg-foreground/15 mb-1.5" />
+                  <span className="text-[9px] font-medium tracking-[0.2em] text-foreground/50 uppercase pb-0.5">
+                    {t("回归本味", "Pure Extraction")}
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+              <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
                 {classicProducts.map((product) => (
                   <ProductTile
                     key={product.id}
@@ -125,21 +129,25 @@ const Index = () => {
             </>
           )}
 
-          {/* ── Creative Series ── */}
+          {/* ── Avant-Garde Series ── */}
           {showLab && (
             <>
-              <div className={`${showClassic ? "mt-4" : "mt-1"} mb-2 border-t-2 border-copper pt-1.5`}>
-                <div className="flex items-baseline justify-between gap-2">
-                  <h2 className="font-serif italic text-base font-black tracking-tight text-copper">
+              <div className={`${showClassic ? "mt-5" : "mt-2"} mb-2.5`}>
+                <div className="flex items-end gap-2">
+                  <span className="font-mono text-[9px] font-bold tracking-[0.22em] text-copper uppercase tabular-nums pb-0.5">
+                    Ch.II
+                  </span>
+                  <h2 className="font-serif italic text-[18px] font-bold tracking-tight text-espresso leading-none">
                     {t("先锋实验", "AVANT-GARDE")}
                   </h2>
-                  <span className="text-[9px] font-black tracking-[0.18em] text-primary uppercase">
-                    {t("世界冠军灵感 · 先锋感官", "WBC Inspired")}
+                  <div className="flex-1 border-t border-dashed border-copper/40 mb-1.5" />
+                  <span className="text-[9px] font-medium tracking-[0.2em] text-foreground/50 uppercase pb-0.5">
+                    {t("先锋感官", "WBC Inspired")}
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+              <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
                 {labProducts.map((product, index) => (
                   <ProductTile
                     key={product.id}
