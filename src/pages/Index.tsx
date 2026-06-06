@@ -134,7 +134,7 @@ const Index = () => {
           {showLab && (
             <>
               <div className={`${showClassic ? "mt-6" : "mt-2"} mb-3 flex items-baseline gap-2`}>
-                <span className="font-mono text-[9px] font-bold tracking-[0.28em] text-copper uppercase tabular-nums">
+                <span className="font-mono text-[9px] font-bold tracking-[0.28em] text-primary uppercase tabular-nums">
                   Ch.II
                 </span>
                 <h2 className="font-serif italic text-[17px] font-bold tracking-tight text-espresso leading-none">
@@ -143,8 +143,8 @@ const Index = () => {
                 <span className="font-serif italic text-[10px] text-foreground/45 leading-none">
                   — WBC Inspired
                 </span>
-                <div className="flex-1 border-t border-dashed border-copper/40" />
-                <span className="font-mono text-[8.5px] font-semibold tracking-[0.22em] text-copper/75 uppercase tabular-nums">
+                <div className="flex-1 border-t border-dashed border-foreground/20" />
+                <span className="font-mono text-[8.5px] font-semibold tracking-[0.22em] text-foreground/45 uppercase tabular-nums">
                   LAB·{String(labProducts.length).padStart(2,"0")}
                 </span>
               </div>
