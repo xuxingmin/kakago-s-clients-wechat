@@ -101,7 +101,7 @@ export const ProductTile = ({
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 mt-auto pt-1">
         {product.specZh && !product.isCreative ? (
-          <div className="flex items-center gap-1.5 text-foreground/45 text-[9px]">
+          <div className="flex items-center gap-1.5 text-foreground/45 text-[9px] whitespace-nowrap">
             <span className="flex items-center gap-0.5"><CupSoda className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[0]}</span>
             <span className="w-px h-2 bg-foreground/15" />
             <span className="flex items-center gap-0.5"><Thermometer className="w-[9px] h-[9px]" strokeWidth={1.5} />{t(product.specZh, product.specEn || "").split(" ")[1]}</span>
