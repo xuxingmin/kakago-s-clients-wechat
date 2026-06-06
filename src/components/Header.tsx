@@ -31,10 +31,10 @@ export const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 shadow-[0_4px_18px_-8px_hsla(270,42%,26%,0.18)] transition-shadow duration-300">
+      <header className="sticky top-0 z-40 shadow-[0_4px_18px_-12px_hsla(270,42%,26%,0.18)] transition-shadow duration-300">
         {/* WeChat Status Bar */}
         <div className="h-8 bg-background flex items-end justify-between px-6 pb-0.5">
-          <span className="text-xs font-semibold text-foreground/85">
+          <span className="text-xs font-semibold text-foreground/85 tabular-nums">
             {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </span>
           <div className="flex items-center gap-1">
@@ -53,50 +53,48 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Navigation Bar - Matching PS mockup */}
+        {/* Navigation Bar - Editorial */}
         <div className="h-9 bg-background flex items-center justify-between px-3">
           {/* Left: Location + Status */}
           <button
             onClick={() => navigate("/address")}
-            className="flex items-center gap-1.5 text-white/90 truncate group min-w-0 flex-1"
+            className="flex items-center gap-1.5 text-foreground/85 truncate group min-w-0 flex-1 active:opacity-70 transition-opacity"
           >
-            <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+            <MapPin className="w-3.5 h-3.5 text-primary shrink-0" strokeWidth={1.75} />
             <span className="text-[13px] font-medium truncate">
               {locationLoading
                 ? t("定位中…", "Locating…")
                 : shortLocation || t("选择地址", "Select")}
             </span>
-            <div className="w-px h-3 bg-white/20 shrink-0 mx-0.5" />
+            <div className="w-px h-3 bg-foreground/15 shrink-0 mx-0.5" />
             <ServiceStatusBadge variant="capsule" />
-            <ChevronRight className="w-3 h-3 text-white/30 shrink-0" />
+            <ChevronRight className="w-3 h-3 text-foreground/35 shrink-0" strokeWidth={1.75} />
           </button>
 
           {/* Right: EN + WeChat capsule (dots + close) */}
           <div className="flex items-center gap-1.5 shrink-0 ml-2">
-            {/* EN Button - Purple */}
+            {/* EN Button - editorial ghost */}
             <button
               onClick={toggleLanguage}
-              className="h-7 px-2.5 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center hover:bg-primary/25 transition-colors"
+              className="h-7 px-2.5 rounded-full border border-primary/25 bg-primary/[0.06] flex items-center justify-center hover:bg-primary/12 active:scale-95 transition-all"
               aria-label={language === "zh" ? "Switch to English" : "切换中文"}
             >
-              <span className="text-[11px] font-bold text-primary">
-                {language === "zh" ? "ENGLISH" : "中文"}
+              <span className="text-[10px] font-black tracking-[0.14em] text-primary uppercase">
+                {language === "zh" ? "EN" : "中文"}
               </span>
             </button>
 
             {/* WeChat capsule: dots + close */}
-            <div className="flex items-center h-7 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm overflow-hidden">
-              <button className="h-7 w-8 flex items-center justify-center text-white/60 hover:text-white/90 transition-colors">
-                {/* Three dots icon */}
+            <div className="flex items-center h-7 rounded-full border border-foreground/15 bg-paper/60 backdrop-blur-sm overflow-hidden">
+              <button className="h-7 w-8 flex items-center justify-center text-foreground/55 hover:text-foreground transition-colors">
                 <svg width="16" height="4" viewBox="0 0 16 4" fill="currentColor">
-                  <circle cx="2" cy="2" r="1.5" />
-                  <circle cx="8" cy="2" r="1.5" />
-                  <circle cx="14" cy="2" r="1.5" />
+                  <circle cx="2" cy="2" r="1.4" />
+                  <circle cx="8" cy="2" r="1.4" />
+                  <circle cx="14" cy="2" r="1.4" />
                 </svg>
               </button>
-              <div className="w-px h-3.5 bg-white/20" />
-              <button className="h-7 w-8 flex items-center justify-center text-white/60 hover:text-white/90 transition-colors">
-                {/* Circle close icon */}
+              <div className="w-px h-3.5 bg-foreground/15" />
+              <button className="h-7 w-8 flex items-center justify-center text-foreground/55 hover:text-foreground transition-colors">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
                   <circle cx="8" cy="8" r="6.5" />
                   <line x1="5.5" y1="5.5" x2="10.5" y2="10.5" />
