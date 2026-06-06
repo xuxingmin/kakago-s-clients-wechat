@@ -97,21 +97,25 @@ const Index = () => {
 
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
         <section className="px-4 pt-1 pb-0.5">
-          {/* ── Standard Series ── */}
+          {/* ── Foundation Series ── */}
           {showClassic && (
             <>
-              <div className="mb-2 mt-1 border-t-2 border-primary pt-1.5">
-                <div className="flex items-baseline justify-between gap-2">
-                  <h2 className="font-serif text-base font-black tracking-tight text-primary">
+              <div className="mb-2.5 mt-2">
+                <div className="flex items-end gap-2">
+                  <span className="font-mono text-[9px] font-bold tracking-[0.22em] text-primary uppercase tabular-nums pb-0.5">
+                    Ch.I
+                  </span>
+                  <h2 className="font-serif text-[18px] font-bold tracking-tight text-espresso leading-none">
                     {t("意式基石", "FOUNDATION")}
                   </h2>
-                  <span className="text-[9px] font-black tracking-[0.18em] text-copper uppercase">
-                    {t("精品萃取 · 回归本味", "Pure Extraction")}
+                  <div className="flex-1 h-px bg-foreground/15 mb-1.5" />
+                  <span className="text-[9px] font-medium tracking-[0.2em] text-foreground/50 uppercase pb-0.5">
+                    {t("回归本味", "Pure Extraction")}
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+              <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
                 {classicProducts.map((product) => (
                   <ProductTile
                     key={product.id}
@@ -125,21 +129,25 @@ const Index = () => {
             </>
           )}
 
-          {/* ── Creative Series ── */}
+          {/* ── Avant-Garde Series ── */}
           {showLab && (
             <>
-              <div className={`${showClassic ? "mt-4" : "mt-1"} mb-2 border-t-2 border-copper pt-1.5`}>
-                <div className="flex items-baseline justify-between gap-2">
-                  <h2 className="font-serif italic text-base font-black tracking-tight text-copper">
+              <div className={`${showClassic ? "mt-5" : "mt-2"} mb-2.5`}>
+                <div className="flex items-end gap-2">
+                  <span className="font-mono text-[9px] font-bold tracking-[0.22em] text-copper uppercase tabular-nums pb-0.5">
+                    Ch.II
+                  </span>
+                  <h2 className="font-serif italic text-[18px] font-bold tracking-tight text-espresso leading-none">
                     {t("先锋实验", "AVANT-GARDE")}
                   </h2>
-                  <span className="text-[9px] font-black tracking-[0.18em] text-primary uppercase">
-                    {t("世界冠军灵感 · 先锋感官", "WBC Inspired")}
+                  <div className="flex-1 border-t border-dashed border-copper/40 mb-1.5" />
+                  <span className="text-[9px] font-medium tracking-[0.2em] text-foreground/50 uppercase pb-0.5">
+                    {t("先锋感官", "WBC Inspired")}
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-1.5 stagger-fade-in auto-rows-fr">
+              <div className="grid grid-cols-2 gap-2 stagger-fade-in auto-rows-fr">
                 {labProducts.map((product, index) => (
                   <ProductTile
                     key={product.id}
