@@ -62,7 +62,7 @@ export const ProductTile = ({
     }>
       {/* Lab badge for creative */}
       {labIndex !== undefined && (
-        <span className="absolute top-1 right-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-primary/10 border border-primary/25">
+        <span className="absolute top-1 left-1 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-primary/10 border border-primary/25 z-10">
           <FlaskConical className="w-2 h-2 text-primary/70" strokeWidth={2} />
           <span className="text-[7px] font-mono font-bold tracking-widest text-primary/70 uppercase">
             {String(labIndex).padStart(2, "0")}
