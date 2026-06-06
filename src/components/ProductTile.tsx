@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface ProductTileData {
   id: string;
+  sku?: string;
   nameZh: string;
   nameEn: string;
   price: number;
