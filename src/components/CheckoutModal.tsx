@@ -178,10 +178,10 @@ export const CheckoutModal = ({
         }`}
         style={{ height: "75vh" }}
       >
-        <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden border-t border-white/10">
+        <div className="bg-card rounded-t-3xl max-w-md mx-auto h-full flex flex-col safe-bottom overflow-hidden border-t border-foreground/10">
           {/* Handle */}
           <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
-            <div className="w-10 h-1 bg-white/20 rounded-full" />
+            <div className="w-10 h-1 bg-foreground/15 rounded-full" />
           </div>
 
           {/* Header */}
@@ -189,7 +189,7 @@ export const CheckoutModal = ({
             <h2 className="text-lg font-bold text-white">确认订单</h2>
             <button
               onClick={onClose}
-              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors min-h-[48px]"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-foreground/65 hover:text-white hover:bg-foreground/8 transition-colors min-h-[48px]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -200,20 +200,20 @@ export const CheckoutModal = ({
             {/* Delivery Info - Clickable to change address */}
             <button
               onClick={() => setShowAddressPicker(true)}
-              className="w-full bg-secondary rounded-2xl p-4 text-left hover:bg-white/10 transition-colors group min-h-[80px]"
+              className="w-full bg-secondary rounded-2xl p-4 text-left hover:bg-foreground/8 transition-colors group min-h-[80px]"
             >
               {selectedAddress ? (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-white">{selectedAddress.name}</span>
-                      <span className="text-sm text-white/60">{maskPhone(selectedAddress.phone)}</span>
+                      <span className="text-sm text-foreground/65">{maskPhone(selectedAddress.phone)}</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-foreground/45 group-hover:text-white transition-colors" />
                   </div>
                   <div className="flex items-start gap-2">
                     <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-white/60 line-clamp-2">
+                    <p className="text-sm text-foreground/65 line-clamp-2">
                       {selectedAddress.province}{selectedAddress.city}{selectedAddress.district} {selectedAddress.detail}
                     </p>
                   </div>
@@ -224,7 +224,7 @@ export const CheckoutModal = ({
                     <Plus className="w-4 h-4" />
                     <span className="font-medium">请添加收货地址</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-white/40" />
+                  <ChevronRight className="w-4 h-4 text-foreground/45" />
                 </div>
               )}
             </button>
@@ -236,7 +236,7 @@ export const CheckoutModal = ({
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-primary">TRIVA 品质保证</p>
-                <p className="text-xs text-white/60 mt-1 leading-relaxed">
+                <p className="text-xs text-foreground/65 mt-1 leading-relaxed">
                   您的订单将由 TRIVA 认证精品咖啡师制作，确保每一杯都达到专业标准。
                 </p>
               </div>
@@ -247,7 +247,7 @@ export const CheckoutModal = ({
               <h3 className="text-sm font-semibold text-white mb-3">订单明细</h3>
               
               {/* Product Item */}
-              <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+              <div className="flex items-center gap-3 pb-3 border-b border-foreground/10">
                 <div className="w-12 h-12 rounded-xl overflow-hidden bg-card flex-shrink-0">
                   <img
                     src={product.image}
@@ -257,18 +257,18 @@ export const CheckoutModal = ({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white">{product.name}</p>
-                  <p className="text-xs text-white/50">{product.tag}</p>
+                  <p className="text-xs text-foreground/55">{product.tag}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold text-white">¥{product.price.toFixed(2)}</p>
-                  <p className="text-xs text-white/50">x1</p>
+                  <p className="text-xs text-foreground/55">x1</p>
                 </div>
               </div>
 
               {/* Fee Breakdown */}
               <div className="pt-3 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-white/60">商品金额</span>
+                  <span className="text-sm text-foreground/65">商品金额</span>
                   <span className="text-sm text-white">¥{product.price.toFixed(2)}</span>
                 </div>
                 
@@ -279,7 +279,7 @@ export const CheckoutModal = ({
                 >
                   <div className="flex items-center gap-2">
                     <Ticket className="w-4 h-4 text-primary" />
-                    <span className="text-sm text-white/60">优惠券/代金券</span>
+                    <span className="text-sm text-foreground/65">优惠券/代金券</span>
                   </div>
                   <div className="flex items-center gap-1">
                     {activeCoupon ? (
@@ -291,14 +291,14 @@ export const CheckoutModal = ({
                         {applicableCoupons.length}张可用
                       </span>
                     ) : (
-                      <span className="text-sm text-white/40">暂无可用</span>
+                      <span className="text-sm text-foreground/45">暂无可用</span>
                     )}
-                    <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-foreground/45 group-hover:text-white transition-colors" />
                   </div>
                 </button>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-white/60">精品履约服务费</span>
+                  <span className="text-sm text-foreground/65">精品履约服务费</span>
                   <span className="text-sm text-white">¥{fulfillmentFee.toFixed(2)}</span>
                 </div>
               </div>
@@ -306,7 +306,7 @@ export const CheckoutModal = ({
           </div>
 
           {/* Footer - Fixed at bottom */}
-          <div className="flex-shrink-0 px-5 py-4 bg-card border-t border-white/10">
+          <div className="flex-shrink-0 px-5 py-4 bg-card border-t border-foreground/10">
             {/* Applied Coupon Badge */}
             {activeCoupon && (
               <div className="flex items-center justify-center gap-2 mb-3 py-2 bg-primary/10 rounded-xl">
@@ -322,7 +322,7 @@ export const CheckoutModal = ({
               <span className="text-base font-semibold text-white">合计</span>
               <div className="flex items-baseline gap-2">
                 {discount > 0 && (
-                  <span className="text-sm text-white/40 line-through">
+                  <span className="text-sm text-foreground/45 line-through">
                     ¥{(product.price + fulfillmentFee).toFixed(2)}
                   </span>
                 )}
@@ -355,12 +355,12 @@ export const CheckoutModal = ({
           }`}
           onClick={() => setShowAddressPicker(false)}
         />
-        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[70vh] flex flex-col safe-bottom border-t border-white/10">
+        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[70vh] flex flex-col safe-bottom border-t border-foreground/10">
           <div className="flex justify-center pt-3 pb-2">
-            <div className="w-10 h-1 bg-white/20 rounded-full" />
+            <div className="w-10 h-1 bg-foreground/15 rounded-full" />
           </div>
           
-          <div className="flex items-center justify-between px-5 pb-4 border-b border-white/10">
+          <div className="flex items-center justify-between px-5 pb-4 border-b border-foreground/10">
             <h3 className="text-base font-semibold text-white">选择收货地址</h3>
             <button
               onClick={() => setShowAddressPicker(false)}
@@ -378,21 +378,21 @@ export const CheckoutModal = ({
                 className={`w-full p-4 rounded-xl border-2 text-left transition-all min-h-[80px] ${
                   selectedAddress?.id === address.id
                     ? "border-primary bg-primary/10"
-                    : "border-white/10 hover:border-primary/50"
+                    : "border-foreground/10 hover:border-primary/50"
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-semibold text-white">{address.name}</span>
-                      <span className="text-sm text-white/60">{maskPhone(address.phone)}</span>
+                      <span className="text-sm text-foreground/65">{maskPhone(address.phone)}</span>
                       {address.isDefault && (
                         <span className="text-[10px] font-medium text-primary bg-primary/20 px-1.5 py-0.5 rounded">
                           默认
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-white/60 line-clamp-2">
+                    <p className="text-sm text-foreground/65 line-clamp-2">
                       {address.province}{address.city}{address.district} {address.detail}
                     </p>
                   </div>
@@ -430,12 +430,12 @@ export const CheckoutModal = ({
           }`}
           onClick={() => setShowCouponPicker(false)}
         />
-        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[60vh] flex flex-col safe-bottom border-t border-white/10">
+        <div className="relative bg-card rounded-t-3xl max-w-md mx-auto max-h-[60vh] flex flex-col safe-bottom border-t border-foreground/10">
           <div className="flex justify-center pt-3 pb-2">
-            <div className="w-10 h-1 bg-white/20 rounded-full" />
+            <div className="w-10 h-1 bg-foreground/15 rounded-full" />
           </div>
           
-          <div className="flex items-center justify-between px-5 pb-4 border-b border-white/10">
+          <div className="flex items-center justify-between px-5 pb-4 border-b border-foreground/10">
             <h3 className="text-base font-semibold text-white">选择优惠券</h3>
             <button
               onClick={() => setShowCouponPicker(false)}
@@ -452,11 +452,11 @@ export const CheckoutModal = ({
               className={`w-full p-4 rounded-xl border-2 text-left transition-all min-h-[64px] ${
                 !selectedCoupon && !activeCoupon
                   ? "border-primary bg-primary/10"
-                  : "border-white/10 hover:border-primary/50"
+                  : "border-foreground/10 hover:border-primary/50"
               }`}
             >
               <p className="text-sm font-medium text-white">不使用优惠券</p>
-              <p className="text-xs text-white/50 mt-0.5">原价支付</p>
+              <p className="text-xs text-foreground/55 mt-0.5">原价支付</p>
             </button>
 
             {applicableCoupons.map((coupon) => (
@@ -466,13 +466,13 @@ export const CheckoutModal = ({
                 className={`w-full p-4 rounded-xl border-2 text-left transition-all min-h-[64px] ${
                   activeCoupon?.id === coupon.id
                     ? "border-primary bg-primary/10"
-                    : "border-white/10 hover:border-primary/50"
+                    : "border-foreground/10 hover:border-primary/50"
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-white">{coupon.title}</p>
-                    <p className="text-xs text-white/50 mt-0.5">
+                    <p className="text-xs text-foreground/55 mt-0.5">
                       {coupon.type === "universal" ? "全品类通用" : "限定商品可用"}
                     </p>
                   </div>
@@ -484,7 +484,7 @@ export const CheckoutModal = ({
             ))}
 
             {applicableCoupons.length === 0 && (
-              <div className="py-8 text-center text-white/50 text-sm">
+              <div className="py-8 text-center text-foreground/55 text-sm">
                 暂无可用优惠券
               </div>
             )}
