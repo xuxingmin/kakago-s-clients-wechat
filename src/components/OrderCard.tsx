@@ -1,6 +1,19 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { Star, Coffee, Phone, RotateCcw, ChevronRight, X, FileText, Ban } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import {
+  Star,
+  Coffee,
+  Phone,
+  RotateCcw,
+  ChevronRight,
+  FileText,
+  Ban,
+  LifeBuoy,
+  ChevronDown,
+} from "lucide-react";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { useToast } from "@/hooks/use-toast";
+import { AfterSalesSheet } from "@/components/AfterSalesSheet";
 
 type OrderStatus = "pending" | "preparing" | "delivering" | "delivered" | "completed";
 
@@ -54,9 +67,7 @@ const getStatusConfig = (t: (zh: string, en: string) => string) => ({
   completed: { label: t("已完成", "Done"), color: "text-foreground/45", borderColor: "border-foreground/15", bgColor: "bg-foreground/[0.04]", blink: false },
 });
 
-const REFUND_WINDOW_MS = 60 * 1000;
-
-/* RadarScan removed — pending state now uses same layout as other states */
+const AFTER_SALES_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
   (
@@ -76,7 +87,6 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       onClick,
       onContact,
       onReorder,
-      onRefund,
       onCancel,
       onInvoice,
       t,
@@ -84,6 +94,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     },
     ref
   ) => {
+    const { toast } = useToast();
     const statusConfig = getStatusConfig(t);
     const statusInfo = statusConfig[status];
     const displayCafeName = t(cafeName || "", cafeNameEn || cafeName || "");
@@ -95,23 +106,62 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
     const isFinished = isCompleted || isDelivered;
     const canCancel = status === "pending";
 
-    const [refundSecondsLeft, setRefundSecondsLeft] = useState<number | null>(null);
+    // History vs current-completed split
+    const startOfToday = useMemo(() => new Date().setHours(0, 0, 0, 0), []);
+    const isHistory =
+      isCompleted &&
+      (!!userRating || (orderCreatedMs !== undefined && orderCreatedMs < startOfToday));
+    const isCurrentCompleted = isFinished && !isHistory;
 
-    useEffect(() => {
-      if (!orderCreatedMs || isFinished) return;
-      const calc = () => {
-        const elapsed = Date.now() - orderCreatedMs;
-        const remaining = Math.max(0, Math.ceil((REFUND_WINDOW_MS - elapsed) / 1000));
-        setRefundSecondsLeft(remaining);
-      };
-      calc();
-      const interval = setInterval(calc, 1000);
-      return () => clearInterval(interval);
-    }, [orderCreatedMs, isFinished]);
+    // After-sales availability
+    const withinAfterSalesWindow =
+      orderCreatedMs !== undefined && Date.now() - orderCreatedMs <= AFTER_SALES_WINDOW_MS;
+    const afterSalesEnabled = isFinished
+      ? withinAfterSalesWindow
+      : status === "delivering";
 
-    const canSelfRefund = refundSecondsLeft !== null && refundSecondsLeft > 0;
+    const [afterSalesOpen, setAfterSalesOpen] = useState(false);
+    const [popoverOpen, setPopoverOpen] = useState(false);
 
+    const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
 
+    const handleAfterSalesClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (!afterSalesEnabled) {
+        if (isFinished) {
+          toast({
+            title: t("售后已超时", "After-sales expired"),
+            description: t(
+              "已超过该食品安全订单的售后有效时效（24 小时）",
+              "Beyond the 24h food-safety after-sales window."
+            ),
+          });
+        } else {
+          toast({
+            title: t("暂不可申请售后", "Not yet eligible"),
+            description: t(
+              "订单进入配送后即可发起售后申请",
+              "After-sales opens once the order is out for delivery."
+            ),
+          });
+        }
+        return;
+      }
+      setPopoverOpen(false);
+      setAfterSalesOpen(true);
+    };
+
+    const handleContact = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setPopoverOpen(false);
+      onContact?.();
+    };
+
+    const handleInvoice = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setPopoverOpen(false);
+      onInvoice?.();
+    };
 
     return (
       <div className={`relative rounded-xl border bg-paper overflow-hidden transition-all duration-300 ${
@@ -203,12 +253,12 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
         </button>
 
         {/* Bottom action bar */}
-        <div className="flex items-center justify-between px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
-          {/* Left side */}
-          <div className="flex items-center gap-1.5">
-            {!isFinished && onCancel && (
+        <div className="flex items-center justify-between gap-1.5 px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
+          {/* Leftmost pill — varies by state */}
+          <div className="flex items-center">
+            {!isFinished && (
               <button
-                onClick={(e) => { e.stopPropagation(); if (canCancel) onCancel(); }}
+                onClick={(e) => { e.stopPropagation(); if (canCancel) onCancel?.(); }}
                 disabled={!canCancel}
                 className={`flex items-center gap-1 px-2 py-1.5 rounded-lg border text-[10px] font-medium transition-colors ${
                   canCancel
@@ -220,52 +270,96 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 {t("取消订单", "Cancel")}
               </button>
             )}
-            {isDelivered && !userRating && (
+
+            {isCurrentCompleted && !userRating && (
               <button
                 onClick={(e) => { e.stopPropagation(); onClick(); }}
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
               >
                 <Star className="w-3 h-3" />
-                {t("评价得TRIVA豆", "Rate for beans")}
+                {t("去评价", "Rate")}
               </button>
             )}
-            {isCompleted && !userRating && (
-              <button
-                onClick={(e) => { e.stopPropagation(); onClick(); }}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors"
-              >
-                <Star className="w-3 h-3" />
-                {t("评价得TRIVA豆", "Rate for beans")}
-              </button>
-            )}
-            {isFinished && userRating && (
-              <span className="text-[10px] text-white/30">
-                {t("已评价", "Rated")}
+
+            {isHistory && (
+              <span className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-[10px] font-medium text-white/40 bg-white/[0.02] border border-white/[0.04]">
+                {userRating ? t("已评价", "Rated") : t("未评价", "Not rated")}
               </span>
             )}
           </div>
 
-          {/* Right side actions */}
+          {/* Right cluster */}
           <div className="flex items-center gap-1.5">
-            {isFinished && onInvoice && (
-              <button
-                onClick={(e) => { e.stopPropagation(); onInvoice(); }}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-primary/30 bg-primary/5 text-[10px] font-medium text-primary hover:bg-primary/15 transition-colors"
+            {/* Unified Contact & After-sales popover */}
+            <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  onClick={stopPropagation}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/55 hover:text-white/80 transition-colors"
+                >
+                  <LifeBuoy className="w-3 h-3" />
+                  {t("联系与售后", "Help")}
+                  <ChevronDown className="w-2.5 h-2.5 opacity-70" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                side="top"
+                align="end"
+                sideOffset={6}
+                onClick={stopPropagation}
+                className="w-52 p-1 bg-paper border border-foreground/12 shadow-lg rounded-xl"
               >
-                <FileText className="w-3 h-3" />
-                {t("联系店家开票", "Request Invoice")}
-              </button>
-            )}
+                {/* Active states: 联系商家 + 申请售后 */}
+                {!isFinished && (
+                  <>
+                    <button
+                      onClick={handleContact}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-[12px] text-espresso hover:bg-oat transition-colors"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-primary" />
+                      <span>{t("联系商家", "Call store")}</span>
+                    </button>
+                    <button
+                      onClick={handleAfterSalesClick}
+                      disabled={!afterSalesEnabled}
+                      className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-[12px] transition-colors ${
+                        afterSalesEnabled
+                          ? "text-espresso hover:bg-oat"
+                          : "text-foreground/30 cursor-not-allowed"
+                      }`}
+                    >
+                      <LifeBuoy className="w-3.5 h-3.5" />
+                      <span>{t("申请售后", "Request after-sales")}</span>
+                    </button>
+                  </>
+                )}
 
-            {!isFinished && onContact && (
-              <button
-                onClick={(e) => { e.stopPropagation(); onContact(); }}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
-              >
-                <Phone className="w-3 h-3" />
-                {t("联系商家", "Contact")}
-              </button>
-            )}
+                {/* Completed/Delivered states: 联系商家开票 + 申请售后 */}
+                {isFinished && (
+                  <>
+                    <button
+                      onClick={handleInvoice}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-[12px] text-espresso hover:bg-oat transition-colors"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-primary" />
+                      <span>{t("联系商家开票", "Request invoice")}</span>
+                    </button>
+                    <button
+                      onClick={handleAfterSalesClick}
+                      disabled={!afterSalesEnabled}
+                      className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-[12px] transition-colors ${
+                        afterSalesEnabled
+                          ? "text-espresso hover:bg-oat"
+                          : "text-foreground/30 cursor-not-allowed"
+                      }`}
+                    >
+                      <LifeBuoy className="w-3.5 h-3.5" />
+                      <span>{t("申请售后", "Request after-sales")}</span>
+                    </button>
+                  </>
+                )}
+              </PopoverContent>
+            </Popover>
 
             {onReorder && (
               <button
@@ -283,11 +377,20 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
                 className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[10px] font-medium text-white/50 hover:text-white/70 transition-colors"
               >
                 <ChevronRight className="w-3 h-3" />
-                {t("查看订单", "View")}
+                {t("查看", "View")}
               </button>
             )}
           </div>
         </div>
+
+        {/* After-sales sheet */}
+        <AfterSalesSheet
+          open={afterSalesOpen}
+          onClose={() => setAfterSalesOpen(false)}
+          orderNumber={orderNumber}
+          items={items}
+          t={t}
+        />
       </div>
     );
   }
