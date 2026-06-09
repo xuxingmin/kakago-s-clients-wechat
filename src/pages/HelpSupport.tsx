@@ -128,6 +128,28 @@ const HelpSupport = () => {
   const [activeTab, setActiveTab] = useState<"faq" | "feedback" | "about">("faq");
   const [feedbackText, setFeedbackText] = useState("");
   const [feedbackContact, setFeedbackContact] = useState("");
+  const [deleteModal, setDeleteModal] = useState<null | "blocked" | "confirm">(null);
+  const { user, signOut } = useAuth();
+  const { orders } = useOrders();
+
+  const hasActiveOrder = orders.some((o) =>
+    ["pending", "preparing", "delivering", "after_sales", "appealing"].includes(o.status as string)
+  );
+
+  const handleDeleteClick = () => {
+    if (!user) {
+      toast.error(t("请先登录", "Please log in first"));
+      return;
+    }
+    setDeleteModal(hasActiveOrder ? "blocked" : "confirm");
+  };
+
+  const handleConfirmDelete = async () => {
+    setDeleteModal(null);
+    await signOut();
+    toast.success(t("账号注销申请已提交", "Account deletion request submitted"));
+    navigate("/");
+  };
 
   const toggleFAQ = (key: string) => {
     setOpenFAQ(openFAQ === key ? null : key);
