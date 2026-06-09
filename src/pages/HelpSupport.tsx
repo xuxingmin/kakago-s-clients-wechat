@@ -441,6 +441,59 @@ const HelpSupport = () => {
       <div className="flex-shrink-0">
         <BottomNav />
       </div>
+
+      {/* Blocked: active orders */}
+      <Dialog open={deleteModal === "blocked"} onOpenChange={(o) => !o && setDeleteModal(null)}>
+        <DialogContent className="max-w-[340px] rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-base">{t("无法注销", "Unable to Delete")}</DialogTitle>
+            <DialogDescription className="text-xs leading-relaxed pt-1">
+              {t(
+                "您当前有进行中的订单或售后申请，请在结案后再试。",
+                "You have orders or after-sales requests in progress. Please try again after they are closed."
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              onClick={() => setDeleteModal(null)}
+              className="w-full rounded-xl h-10 text-xs"
+            >
+              {t("我知道了", "Got it")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm deletion */}
+      <Dialog open={deleteModal === "confirm"} onOpenChange={(o) => !o && setDeleteModal(null)}>
+        <DialogContent className="max-w-[340px] rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-base">{t("注销须知", "Account Deletion Notice")}</DialogTitle>
+            <DialogDescription className="text-xs leading-relaxed pt-1 text-foreground/80">
+              {t(
+                "注销后，您账户内的所有会员资产（包括但不限于：TRIVA豆、待消费优惠券、会员等级与消费历史记录）将全额作废且无法恢复。系统将依法清除您的手机号等个人隐私信息。",
+                "Once deleted, all member assets (TRIVA Beans, unused coupons, membership tier and order history) will be permanently voided and cannot be restored. Your phone number and personal data will be erased in accordance with the law."
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-row gap-2 sm:gap-2">
+            <Button
+              onClick={() => setDeleteModal(null)}
+              className="flex-1 rounded-xl h-10 text-xs"
+            >
+              {t("放弃注销", "Keep Account")}
+            </Button>
+            <Button
+              onClick={handleConfirmDelete}
+              variant="secondary"
+              className="flex-1 rounded-xl h-10 text-xs bg-muted text-muted-foreground hover:bg-muted/80"
+            >
+              {t("确认注销", "Confirm Delete")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
