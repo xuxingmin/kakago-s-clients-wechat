@@ -304,6 +304,16 @@ const HelpSupport = () => {
                 </div>
               </div>
             </div>
+
+            {/* Account deletion entry */}
+            <div className="pt-6 flex justify-center">
+              <button
+                onClick={handleDeleteClick}
+                className="text-[11px] underline underline-offset-4 text-[#b2b2b2] hover:text-muted-foreground transition-colors"
+              >
+                {t("注销账号", "Delete Account")}
+              </button>
+            </div>
           </section>
         )}
 
