@@ -172,7 +172,7 @@ export const KakaBeanCelebration = ({ isOpen, beans, onClose }: KakaBeanCelebrat
             >
               {counter}
             </span>
-            {" "}{t("个 TRIVA 豆", "TRIVA Beans")}
+            {" "}{t("个 VAVA 豆", "VAVA Beans")}
           </p>
         </div>
 

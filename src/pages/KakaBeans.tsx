@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Coins, TrendingUp, TrendingDown, Gift, Coffee, Users, ShoppingCart } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
-import { BrandBanner } from "@/components/BrandBanner";
+
 import { Header } from "@/components/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -58,21 +58,22 @@ const KakaBeans = () => {
       {/* 固定顶部区域 */}
       <div className="flex-shrink-0">
         <Header />
-        <BrandBanner />
-        <div className="fog-divider mx-4" />
 
-        {/* Section Title with Back */}
-        <div className="px-4 pt-3 pb-1">
+        {/* Compact brand header — non-home pages */}
+        <div className="px-4 pt-3 pb-3 border-b border-dashed border-foreground/10 bg-oat">
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate(-1)}
-              className="w-7 h-7 rounded-full bg-secondary/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              className="w-7 h-7 rounded-full bg-paper border border-foreground/10 flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <h2 className="text-sm font-medium text-muted-foreground">{t("TRIVA豆", "TRIVA Beans")}</h2>
+            <span className="font-serif text-[15px] font-bold tracking-tight text-espresso">TRIVA</span>
+            <span className="text-foreground/25 text-[11px]">·</span>
+            <h2 className="font-serif text-[14px] font-medium text-foreground/85">{t("VAVA豆", "VAVA Beans")}</h2>
           </div>
         </div>
+
 
         {/* Balance Card */}
         <section className="px-4 pt-3 pb-2">
@@ -177,7 +178,7 @@ const KakaBeans = () => {
 
         <section className="px-4 py-3">
           <div className="flex items-center justify-center text-[10px] text-white/30">
-            <span>{t("💜 TRIVA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
+            <span>{t("💜 VAVA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
           </div>
         </section>
       </div>
