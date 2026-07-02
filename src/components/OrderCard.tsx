@@ -222,38 +222,47 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
             })}
           </div>
 
-          {/* Cafe attribution + total */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
-            <div className="flex items-center gap-1.5 min-w-0">
-              {!isSearching && storeLogo ? (
-                <img src={storeLogo} alt="" className="w-4 h-4 rounded-full object-cover" />
-              ) : !isSearching ? (
-                <div className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Coffee className="w-2.5 h-2.5 text-primary/40" />
-                </div>
-              ) : null}
+          {/* Certified node attribution + total */}
+          <div className="flex items-start justify-between pt-2 border-t border-dashed border-foreground/10 gap-2">
+            <div className="flex-1 min-w-0">
               {isSearching ? (
-                <span className="text-[10px] text-primary/60 font-mono animate-pulse">
-                  {t("正在为您匹配最近的精品咖啡馆", "Matching nearest specialty café")}
+                <span className="text-[10px] text-primary/70 font-mono animate-pulse">
+                  {t("正在匹配附近认证节点", "Matching certified node…")}
                 </span>
               ) : (
-                <span className="text-[10px] text-white/30 truncate">
-                  {displayCafeName} {t("为你呈现", "presents")}
-                  {cafeRating && (
-                    <span className="inline-flex items-center ml-1">
-                      <Star className="w-2.5 h-2.5 fill-primary text-primary inline" />
-                      <span className="text-primary/60 ml-0.5">{cafeRating.toFixed(1)}</span>
+                <>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1 h-1 rounded-full bg-[hsl(var(--matcha))]" />
+                    <span className="text-[10.5px] text-foreground/85">
+                      {t("由 ", "By ")}
+                      <span className="font-mono font-bold text-primary tracking-[0.05em]">
+                        HF-{String(((merchantId ?? displayCafeName ?? "017").charCodeAt(0) * 7) % 900 + 100)}
+                      </span>
+                      {t(" 认证节点制作", " · certified node")}
                     </span>
+                  </div>
+                  {displayCafeName && (
+                    <div className="flex items-center gap-1 mt-0.5 pl-2.5 text-[9.5px] text-foreground/45 truncate">
+                      <span className="truncate">{displayCafeName}</span>
+                      {cafeRating && (
+                        <span className="inline-flex items-center shrink-0">
+                          <span className="mx-0.5 text-foreground/25">·</span>
+                          <Star className="w-2.5 h-2.5 fill-copper-500 text-copper-500" />
+                          <span className="ml-0.5 text-copper-600 tabular-nums">{cafeRating.toFixed(1)}</span>
+                        </span>
+                      )}
+                    </div>
                   )}
-                </span>
+                </>
               )}
             </div>
-            <span className="text-base font-bold text-primary flex-shrink-0">¥{price.toFixed(0)}</span>
+            <span className="text-base font-bold text-primary flex-shrink-0 tabular-nums">¥{price.toFixed(0)}</span>
           </div>
         </button>
 
         {/* Bottom action bar */}
-        <div className="flex items-center justify-between gap-1.5 px-3.5 py-2.5 mt-2 border-t border-dashed border-white/[0.05]">
+        <div className="flex items-center justify-between gap-1.5 px-3.5 py-2.5 mt-2 border-t border-dashed border-foreground/10">
+
           {/* Leftmost pill — varies by state */}
           <div className="flex items-center">
             {!isFinished && (

@@ -3,6 +3,7 @@ import { Coffee, Award, Snowflake, GlassWater, CupSoda, Flame, Wheat, FlaskConic
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandBanner } from "@/components/BrandBanner";
+import { ServiceNodeBar } from "@/components/ServiceNodeBar";
 import { CategoryTabs } from "@/components/CategoryTabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
@@ -92,8 +93,9 @@ const Index = () => {
       <div className="flex-shrink-0">
         <Header />
         <BrandBanner />
-        <div className="h-2" />
+        <ServiceNodeBar />
       </div>
+
 
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-16">
         <section className="px-4 pt-1 pb-0.5">
