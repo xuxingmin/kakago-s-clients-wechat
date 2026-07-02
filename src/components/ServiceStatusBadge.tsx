@@ -1,4 +1,3 @@
-import { RefreshCw } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useServiceAvailability } from "@/hooks/useServiceAvailability";
 
@@ -6,73 +5,76 @@ interface ServiceStatusBadgeProps {
   variant?: "default" | "capsule";
 }
 
+/**
+ * TRIVA Service Status
+ * 三态：
+ *   ▸ 服务中 / N 个节点在线 · Matcha #0F6C5C
+ *   ▸ 定位中 · 正在匹配节点     · Citrus #E2B84B
+ *   ▸ 当前商圈暂未开放           · Berry  #A8453D
+ * 默认不再显示"暂停"。
+ */
 export const ServiceStatusBadge = ({ variant = "default" }: ServiceStatusBadgeProps) => {
   const { t } = useLanguage();
-  const { isAvailable, isLoading, nearbyMerchantCount, refresh } =
-    useServiceAvailability();
+  const { isAvailable, isLoading, nearbyMerchantCount, refresh } = useServiceAvailability();
 
-  // Capsule variant - compact for WeChat-style header
+  // ── State resolver ──────────────────────────────────────────
+  const state: "loading" | "ok" | "off" = isLoading
+    ? "loading"
+    : isAvailable
+    ? "ok"
+    : "off";
+
+  const dotClass =
+    state === "loading"
+      ? "bg-[hsl(var(--citrus))] animate-pulse"
+      : state === "ok"
+      ? "bg-[hsl(var(--matcha))] animate-pulse"
+      : "bg-[hsl(var(--berry))]";
+
+  const textClass =
+    state === "loading"
+      ? "text-foreground/55"
+      : state === "ok"
+      ? "text-foreground/85"
+      : "text-[hsl(var(--berry))]";
+
+  const zh =
+    state === "loading"
+      ? "正在匹配节点"
+      : state === "ok"
+      ? nearbyMerchantCount > 0
+        ? `${nearbyMerchantCount} 个节点在线`
+        : "服务中"
+      : "当前商圈暂未开放";
+
+  const en =
+    state === "loading"
+      ? "Matching…"
+      : state === "ok"
+      ? nearbyMerchantCount > 0
+        ? `${nearbyMerchantCount} nodes online`
+        : "Available"
+      : "Not yet in service";
+
   if (variant === "capsule") {
     return (
       <button
         onClick={refresh}
-        className="flex items-center gap-1 text-white/70 hover:text-white transition-colors"
+        className={`flex items-center gap-1 transition-colors ${textClass}`}
       >
-        {isLoading ? (
-          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
-        ) : isAvailable ? (
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-        ) : (
-          <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-        )}
-        <span className="text-[11px] font-medium">
-          {isLoading
-            ? t("定位中", "...")
-            : isAvailable
-            ? t("可服务", "OK")
-            : t("暂停", "Off")}
-        </span>
+        <span className={`w-1.5 h-1.5 rounded-full ${dotClass}`} />
+        <span className="text-[11px] font-medium">{t(zh, en)}</span>
       </button>
     );
   }
 
-  // Default variant
   return (
-    <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-border">
-      {isLoading ? (
-        <>
-          <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
-          <span className="text-xs text-white/80 font-medium">
-            {t("定位中...", "Locating...")}
-          </span>
-        </>
-      ) : isAvailable ? (
-        <>
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-xs text-white/80 font-medium">
-            {t("可提供服务", "Available")}
-          </span>
-          {nearbyMerchantCount > 0 && (
-            <span className="text-[10px] text-white/50">
-              ({nearbyMerchantCount})
-            </span>
-          )}
-        </>
-      ) : (
-        <>
-          <span className="w-2 h-2 rounded-full bg-red-500" />
-          <span className="text-xs text-white/60 font-medium">
-            {t("暂时无法提供服务", "Unavailable")}
-          </span>
-        </>
-      )}
-      <button
-        onClick={refresh}
-        className="ml-1 p-0.5 text-white/40 hover:text-white/80 transition-colors"
-        aria-label="Refresh"
-      >
-        <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
-      </button>
-    </div>
+    <button
+      onClick={refresh}
+      className="flex items-center gap-2 bg-paper/70 border border-foreground/10 px-3 py-1.5 rounded-full"
+    >
+      <span className={`w-2 h-2 rounded-full ${dotClass}`} />
+      <span className={`text-xs font-medium ${textClass}`}>{t(zh, en)}</span>
+    </button>
   );
 };
