@@ -70,7 +70,7 @@ const KakaBeans = () => {
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <h2 className="text-sm font-medium text-muted-foreground">{t("TRIVA豆", "TRIVA Beans")}</h2>
+            <h2 className="text-sm font-medium text-muted-foreground">{t("VAVA豆", "VAVA Beans")}</h2>
           </div>
         </div>
 
@@ -177,7 +177,7 @@ const KakaBeans = () => {
 
         <section className="px-4 py-3">
           <div className="flex items-center justify-center text-[10px] text-white/30">
-            <span>{t("💜 TRIVA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
+            <span>{t("💜 VAVA豆不可提现，可兑换咖啡", "💜 Beans are non-withdrawable, redeemable for coffee")}</span>
           </div>
         </section>
       </div>

@@ -100,14 +100,14 @@ const faqSections: { titleZh: string; titleEn: string; items: FAQItem[] }[] = [
     ],
   },
   {
-    titleZh: "TRIVA豆与优惠",
-    titleEn: "TRIVA Beans & Offers",
+    titleZh: "VAVA豆与优惠",
+    titleEn: "VAVA Beans & Offers",
     items: [
       {
-        questionZh: "TRIVA豆怎么获得和使用？",
-        questionEn: "How to earn and use TRIVA Beans?",
-        answerZh: "每笔订单完成后自动获得TRIVA豆奖励；邀请好友、参与活动也可获得额外豆子。TRIVA豆可用于兑换优惠券、抵扣订单金额等。",
-        answerEn: "Earn TRIVA Beans automatically after each completed order; also from inviting friends and events. Use them to redeem coupons or offset order amounts.",
+        questionZh: "VAVA豆怎么获得和使用？",
+        questionEn: "How to earn and use VAVA Beans?",
+        answerZh: "每笔订单完成后自动获得VAVA豆奖励；邀请好友、参与活动也可获得额外豆子。VAVA豆可用于兑换优惠券、抵扣订单金额等。",
+        answerEn: "Earn VAVA Beans automatically after each completed order; also from inviting friends and events. Use them to redeem coupons or offset order amounts.",
         icon: <Gift className="w-3.5 h-3.5 text-primary" />,
       },
       {
@@ -472,8 +472,8 @@ const HelpSupport = () => {
             <DialogTitle className="text-base">{t("注销须知", "Account Deletion Notice")}</DialogTitle>
             <DialogDescription className="text-xs leading-relaxed pt-1 text-foreground/80">
               {t(
-                "注销后，您账户内的所有会员资产（包括但不限于：TRIVA豆、待消费优惠券、会员等级与消费历史记录）将全额作废且无法恢复。系统将依法清除您的手机号等个人隐私信息。",
-                "Once deleted, all member assets (TRIVA Beans, unused coupons, membership tier and order history) will be permanently voided and cannot be restored. Your phone number and personal data will be erased in accordance with the law."
+                "注销后，您账户内的所有会员资产（包括但不限于：VAVA豆、待消费优惠券、会员等级与消费历史记录）将全额作废且无法恢复。系统将依法清除您的手机号等个人隐私信息。",
+                "Once deleted, all member assets (VAVA Beans, unused coupons, membership tier and order history) will be permanently voided and cannot be restored. Your phone number and personal data will be erased in accordance with the law."
               )}
             </DialogDescription>
           </DialogHeader>

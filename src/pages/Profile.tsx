@@ -41,7 +41,7 @@ const Profile = () => {
 
   const assetItems: AssetItem[] = [
     { Icon: Ticket, value: isLoggedIn ? "3" : "--", labelZh: "优惠券", labelEn: "Coupons", onClick: () => navigate("/wallet") },
-    { Icon: Coins, value: isLoggedIn ? "124K" : "--", labelZh: "TRIVA豆", labelEn: "TRIVA Beans", onClick: () => navigate("/kaka-beans") },
+    { Icon: Coins, value: isLoggedIn ? "124K" : "--", labelZh: "VAVA豆", labelEn: "VAVA Beans", onClick: () => navigate("/kaka-beans") },
   ];
 
   const menuItems: MenuItem[] = [

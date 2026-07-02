@@ -181,7 +181,7 @@ const Payment = () => {
               </div>
               {paymentInfo.beansUsed > 0 && (
                 <p className="text-primary/60 text-[10px] mt-2">
-                  {t(`已使用 ${paymentInfo.beansUsed.toLocaleString()} TRIVA豆抵扣 ¥${paymentInfo.beansDeduction.toFixed(2)}`, `${paymentInfo.beansUsed.toLocaleString()} beans deducted ¥${paymentInfo.beansDeduction.toFixed(2)}`)}
+                  {t(`已使用 ${paymentInfo.beansUsed.toLocaleString()} VAVA豆抵扣 ¥${paymentInfo.beansDeduction.toFixed(2)}`, `${paymentInfo.beansUsed.toLocaleString()} beans deducted ¥${paymentInfo.beansDeduction.toFixed(2)}`)}
                 </p>
               )}
               {/* Countdown */}
