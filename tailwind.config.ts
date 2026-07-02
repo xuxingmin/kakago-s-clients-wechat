@@ -110,9 +110,14 @@ export default {
         paper: "hsl(var(--paper))",
         "logo-cream": "hsl(var(--logo-cream))",
         mist: "hsl(var(--mist))",
+        "paper-grain": "hsl(var(--paper-grain))",
         espresso: "hsl(var(--espresso))",
         grape: "hsl(var(--purple-500))",
         "deep-grape": "hsl(var(--purple-700))",
+        fig: "hsl(var(--fig))",
+        matcha: "hsl(var(--matcha))",
+        berry: "hsl(var(--berry))",
+        citrus: "hsl(var(--citrus))",
 
         /* ─────────────────────────────────────────────────────────────
            ⚫ BLACK SPECTRUM (legacy compatibility)

@@ -42,7 +42,14 @@
     --paper:      33 100% 97%;   /* ★ Card Cream #FFF8EF */
     --logo-cream: 36 100% 95%;   /* ★ Logo Cream #FFF6E8 */
     --mist:       33 16% 81%;    /* ★ Soft Gray #D8D1C8 */
+    --paper-grain: 32 39% 86%;   /* ★ Divider tint #E9DDCE */
     --espresso:   24 13% 9%;     /* ★ Text #181411 */
+
+    /* 🎯 STATUS TOKENS — Service, delivery, alerts */
+    --matcha:  169 76% 24%;      /* ★ 服务中/正常 #0F6C5C */
+    --berry:   4   47% 44%;      /* ★ 暂停/异常 #A8453D */
+    --citrus:  45  74% 59%;      /* ★ 定位中/提醒 #E2B84B */
+    --fig:     263 39% 47%;      /* ★ Fresh Fig 辅助高亮 #6E4AA5 */
 
     /* 🔘 FOG GREY (warm neutrals) */
     --fog-50:  40 30% 96%;

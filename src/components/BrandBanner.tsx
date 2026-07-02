@@ -39,8 +39,8 @@ export const BrandBanner = () => {
             />
           </div>
           <div className="text-right pb-0.5">
-            <p className="font-serif italic text-[11px] leading-[1.35] text-[hsl(var(--logo-cream))]/85 tracking-wide">
-              {t("精品咖啡 · 现做现送", "Specialty Coffee")}
+            <p className="font-serif italic text-[11.5px] leading-[1.35] text-[hsl(var(--logo-cream))]/90 tracking-wide">
+              {t("附近好咖啡，已被组织起来", "Good coffee, organized nearby")}
             </p>
             <p className="font-mono text-[8px] tracking-[0.28em] uppercase text-[hsl(var(--logo-cream))]/55 mt-0.5 tabular-nums">
               HEFEI · ANHUI · CN
@@ -51,11 +51,11 @@ export const BrandBanner = () => {
         {/* Tagline */}
         <div className="flex items-center gap-2.5 mt-3 pt-2.5 border-t border-dashed border-[hsl(var(--logo-cream))]/20">
           <span className="font-mono text-[8.5px] tracking-[0.3em] font-semibold text-copper-300 uppercase shrink-0">
-            {t("本期主题", "THIS ISSUE")}
+            {t("网络", "NETWORK")}
           </span>
           <span className="w-1 h-1 rounded-full bg-copper-400/70 shrink-0" />
           <p className="font-serif italic text-[12.5px] text-[hsl(var(--logo-cream))]/90 leading-snug truncate">
-            {t("不贵精品 · 即刻上瘾", "Premium taste, instant addiction")}
+            {t("统一菜单 · 认证节点 · 稳定送达", "Unified menu · Certified nodes · Steady delivery")}
           </p>
         </div>
       </div>
