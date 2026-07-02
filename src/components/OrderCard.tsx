@@ -82,6 +82,7 @@ export const OrderCard = React.forwardRef<HTMLButtonElement, OrderCardProps>(
       eta,
       etaEn,
       storeLogo,
+      merchantId,
       isRevealed,
       userRating,
       onClick,
